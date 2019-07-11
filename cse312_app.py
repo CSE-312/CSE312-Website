@@ -1,23 +1,33 @@
-from flask import Flask, send_from_directory, render_template
-from flask_sockets import Sockets
+from flask import Flask, send_from_directory, render_template, request
+from flask_socketio import SocketIO
 import json
 
 app = Flask(__name__)
-sockets = Sockets(app)
+socket_server = SocketIO(app)
 
-all_sockets = []
+# all_sockets = []
 all_chat = []
 
-@sockets.route('/socket')
-def dodo(sock):
-    all_sockets.append(sock)
-    while not sock.closed:
-        message = sock.receive()
-        message = json.loads(message)
-        print(message)
-        all_chat.append(message)
-        for ws in all_sockets:
-            ws.send(json.dumps(all_chat))
+
+@socket_server.on('connect')
+def connect():
+    # all_sockets.append(request.sid)
+    print(request.sid + " connected")
+
+
+@socket_server.on('disconnect')
+def disconnect():
+    # if request.sid in all_sockets:
+    #     all_sockets.remove(request.sid)
+    print(request.sid + " disconnected")
+
+
+@socket_server.on('message')
+def message(the_message):
+    parsed_message = json.loads(the_message)
+    all_chat.append(parsed_message)
+
+    socket_server.emit('message', json.dumps(all_chat), broadcast=True)
 
 
 @app.route('/')
@@ -31,7 +41,8 @@ def send_style(filename):
 
 
 if __name__ == '__main__':
-    from gevent import pywsgi
-    from geventwebsocket.handler import WebSocketHandler
-    server = pywsgi.WSGIServer(('', 8312), app, handler_class=WebSocketHandler)
-    server.serve_forever()
+    socket_server.run(app, port=8312)
+    # from gevent import pywsgi
+    # from geventwebsocket.handler import WebSocketHandler
+    # server = pywsgi.WSGIServer(('', 8312), app, handler_class=WebSocketHandler)
+    # server.serve_forever()
