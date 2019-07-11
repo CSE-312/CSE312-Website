@@ -22,7 +22,7 @@ function sendMessage() {
 function renderMessages(rawMessage) {
     let chat = document.getElementById('chat');
     chat.innerHTML = "";
-    history = JSON.parse(rawMessage.data);
+    const history = JSON.parse(rawMessage.data);
     for (const message of history) {
         chat.innerHTML += message['username'] + ": " + message["message"] + "<br/>";
     }
