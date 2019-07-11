@@ -11,6 +11,9 @@ function sendMessage() {
     const chatBox = document.getElementById("chatInput");
     console.log(chatBox.value);
     const message = chatBox.value;
+    if(socket.readyState !== 1){
+        setupSocket();
+    }
     socket.send(JSON.stringify({'username': username, 'message': message}))
 }
 
