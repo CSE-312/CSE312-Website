@@ -26,9 +26,9 @@ def disconnect():
 @socket_server.on('message')
 def message(the_message):
     parsed_message = json.loads(the_message)
-    all_chat.append(parsed_message)
+    all_chat.append({'username':parsed_message['username'], 'message':html.escape(parsed_message['message'])})
 
-    socket_server.emit('message', html.escape(json.dumps(all_chat)), broadcast=True)
+    socket_server.emit('message', json.dumps(all_chat), broadcast=True)
 
 
 @app.route('/')
