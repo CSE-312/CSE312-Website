@@ -3,7 +3,7 @@ const username = generateRandomId();
 
 
 function setupSocket() {
-    socket = new WebSocket('ws://' + window.location.host + '/socket');
+    socket = new WebSocket('wss://' + window.location.host + '/socket');
     socket.addEventListener('message', renderMessages);
 }
 
