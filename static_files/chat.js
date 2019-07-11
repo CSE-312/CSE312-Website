@@ -1,3 +1,5 @@
+console.log("starting page JS");
+
 let socket = undefined;
 const username = generateRandomId();
 
@@ -31,3 +33,5 @@ function renderMessages(rawMessage) {
 function generateRandomId() {
     return "anon_" + Math.random().toString()
 }
+
+console.log("ending page JS");
