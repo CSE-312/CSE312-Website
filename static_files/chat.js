@@ -9,9 +9,8 @@ function setupSocket() {
 
 function sendMessage() {
     const chatBox = document.getElementById("chatInput");
-    console.log(chatBox.value);
     const message = chatBox.value;
-    if(socket.readyState !== 1){
+    if (socket.readyState !== 1) {
         setupSocket();
     }
     socket.send(JSON.stringify({'username': username, 'message': message}))
@@ -19,10 +18,14 @@ function sendMessage() {
 
 
 function renderMessages(message) {
-    console.log(message.data);
-    document.getElementById('chat').innerHTML = "<p>" + message.data + "</p>"
+    let chat = document.getElementById('chat');
+    chat.innerHTML = "";
+    history = JSON.parse(message);
+    for (const message of history) {
+        chat.innerHTML += message['username'] + ": " + message["message"] + "<br/>";
+    }
 }
 
 function generateRandomId() {
-    return "anon" + Math.random().toString()
+    return "anon_" + Math.random().toString()
 }
