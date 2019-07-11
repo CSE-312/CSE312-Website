@@ -8,14 +8,15 @@
     <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="static_files/chat.js"></script>
 </head>
-<body class="outer">
+<body class="outer" onload="setupSocket();">
 <div class="container">
 
     <div class="row">
         <div class="col-0 col-sm-0 col-md-1"></div>
 
-        <div class="col-12 col-sm-12 col-md-10">
+        <div class="col-10 col-sm-10 col-md-8">
 
             <hr/>
 
@@ -141,7 +142,8 @@
 
             </div>
         </div>
-        <div class="col-0 col-sm-0 col-md-1"></div>
+
+        <div class="col-2 col-sm-2 col-md-3"><input type="text" width="20" id="chatInput"><button onclick="sendMessage()">Send</button><div id="chat" hidden></div></div>
     </div>
 </div>
 

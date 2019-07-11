@@ -1,6 +1,23 @@
 from flask import Flask, send_from_directory, render_template
+from flask_sockets import Sockets
+import json
 
 app = Flask(__name__)
+sockets = Sockets(app)
+
+all_sockets = []
+all_chat = []
+
+@sockets.route('/socket')
+def dodo(sock):
+    all_sockets.append(sock)
+    while not sock.closed:
+        message = sock.receive()
+        message = json.loads(message)
+        print(message)
+        all_chat.append(message)
+        for ws in all_sockets:
+            ws.send(json.dumps(all_chat))
 
 
 @app.route('/')
@@ -14,4 +31,7 @@ def send_style(filename):
 
 
 if __name__ == '__main__':
-    app.run(port=8312)
+    from gevent import pywsgi
+    from geventwebsocket.handler import WebSocketHandler
+    server = pywsgi.WSGIServer(('', 8312), app, handler_class=WebSocketHandler)
+    server.serve_forever()
