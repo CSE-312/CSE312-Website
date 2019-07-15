@@ -1,5 +1,5 @@
 from flask import Flask, send_from_directory, render_template, request
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 import json
 import html
 
@@ -14,6 +14,7 @@ all_chat = []
 def connect():
     # all_sockets.append(request.sid)
     print(request.sid + " connected")
+    emit('message', json.dumps(all_chat))
 
 
 @socket_server.on('disconnect')
