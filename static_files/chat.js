@@ -22,18 +22,30 @@ function sendMessage() {
     if(message !== "") {
         socket.emit("message", JSON.stringify({'username': username, 'message': message}))
     }
+
+    let chat = document.getElementById('chat');
+    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+
     chatBox.focus();
 }
 
 
 function renderMessages(rawMessage) {
     let chat = document.getElementById('chat');
+
+    const scrolledBottom = chat.scrollHeight - chat.clientHeight <= chat.scrollTop + 5;
+
     chat.innerHTML = "";
     const history = JSON.parse(rawMessage);
-    history.reverse();
     for (const message of history) {
         chat.innerHTML += "<b>" + message['username'] + "</b>: " + message["message"] + "<br/>";
     }
+
+    if(scrolledBottom){
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+    }
+
+
 }
 
 function generateRandomId() {

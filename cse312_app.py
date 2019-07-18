@@ -34,6 +34,7 @@ def message(the_message):
 
 @app.route('/')
 def cse116():
+    print("serving request")
     return render_template('CSE312.html')
 
 

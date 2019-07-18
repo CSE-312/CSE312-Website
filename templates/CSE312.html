@@ -17,13 +17,12 @@
     <div class="row">
         <div class="col-0 col-sm-0 col-md-1"></div>
 
-        <div class="col-10 col-sm-10 col-md-8">
+        <div class="col-9 col-sm-9 col-md-7">
 
             <hr/>
 
             <h2>CSE312 - Summer 2019</h2>
             <hr/>
-
 
 
             <h3>Schedule</h3>
@@ -163,7 +162,19 @@
             </div>
         </div>
 
-        <div class="col-2 col-sm-2 col-md-3" id="chatSidebar" hidden><input type="text" width="20" id="chatInput"><button onclick="sendMessage()">Send</button><div id="chat"></div></div>
+        <div class="col-3 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>
+            <div id="chat">
+                {#                <b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br>#}
+            </div>
+            <br/>
+
+            <form class="form-inline" onkeypress="">
+                <div class="form-group row">
+                <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;
+                <input type="text" class="form-control" id="chatInput">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

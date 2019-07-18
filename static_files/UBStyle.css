@@ -8,6 +8,28 @@
 /*background-color: blue;*/
 /*}*/
 
+#chatSidebar {
+    /*float:right;*/
+    right: 0;
+    /*color: #ffffff;*/
+    /*background-color: #155db9;*/
+    /*width: 16.7%;*/
+    /*width: 22%;*/
+    /*width: 100%;*/
+    padding: 10px;
+    /*margin: 10px;*/
+    position: fixed;
+    /*height: calc(100% - 32px);*/
+    height: 100vh;
+    /*overflow: hidden;*/
+}
+
+#chat{
+    overflow-y: scroll;
+    height: calc(100vh - 85px);
+    /*display: flex;*/
+    /*flex-direction: column-reverse;*/
+}
 
 .container-fluid {
     height: 100%;
