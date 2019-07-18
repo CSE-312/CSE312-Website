@@ -163,12 +163,10 @@
         </div>
 
         <div class="col-3 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>
-            <div id="chat">
-                {#                <b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br><b>anon_329</b>: h<br><b>anon_329</b>: ghd<br><b>anon_329</b>: df<br><b>anon_329</b>: h<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: fgh<br><b>anon_329</b>: ghd<br><b>anon_329</b>: ghdf<br><b>anon_329</b>: df<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfgh<br><b>anon_329</b>: dfg<br><b>anon_329</b>: ger<br>#}
-            </div>
+            <div id="chat"></div>
             <br/>
 
-            <form class="form-inline" onkeypress="">
+            <form class="form-inline" onkeypress="return event.keyCode !== 13">
                 <div class="form-group row">
                 <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;
                 <input type="text" class="form-control" id="chatInput">
