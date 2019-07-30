@@ -3,33 +3,37 @@ from flask_socketio import SocketIO, emit
 import json
 import html
 
+from pymongo import MongoClient
+
 app = Flask(__name__)
 socket_server = SocketIO(app)
 
-# all_sockets = []
-all_chat = []
+mongo_client = MongoClient()
+db = mongo_client["cse312"]
+
+chat_collection = db["chat"]
 
 
 @socket_server.on('connect')
 def connect():
-    # all_sockets.append(request.sid)
     print(request.sid + " connected")
-    emit('message', json.dumps(all_chat))
+    all_chat = chat_collection.find({}, {'_id': 0})
+    emit('message', json.dumps(list(all_chat)))
 
 
 @socket_server.on('disconnect')
 def disconnect():
-    # if request.sid in all_sockets:
-    #     all_sockets.remove(request.sid)
     print(request.sid + " disconnected")
 
 
 @socket_server.on('message')
 def message(the_message):
     parsed_message = json.loads(the_message)
-    all_chat.append({'username':parsed_message['username'], 'message':html.escape(parsed_message['message'])})
-
-    socket_server.emit('message', json.dumps(all_chat), broadcast=True)
+    # all_chat.append({'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
+    chat_collection.insert_one(
+        {'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
+    all_chat = chat_collection.find({}, {'_id': 0})
+    socket_server.emit('message', json.dumps(list(all_chat)), broadcast=True)
 
 
 @app.route('/')
