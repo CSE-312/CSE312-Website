@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="static_files/chat.js"></script>
 </head>
-<body class="outer" onload="setupSocket();">
+<body class="outer" onload="collapse();setupSocket();">
 
 <div class="container-fluid">
 
@@ -277,6 +277,27 @@
 <script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
 <script src="/static_files/lib/socket.io-2.2.0.js"></script>
 
+<script>
+    function collapse() {
+        for(let x of document.getElementsByClassName("collapse")) {
+            if (localStorage.getItem(x.id) === "hide") {
+                x.setAttribute("class", "collapse");
+            }
+        }
+        for(let x of document.getElementsByTagName("a")){
+            if(x.getAttribute("data-toggle")) {
+                x.addEventListener("click", function (e) {
+                    const elem = document.getElementById(x.getAttribute("data-target").replace("#", ""));
+                    if(elem.classList.contains("show")){
+                        localStorage.setItem(elem.id, "hide");
+                    }else{
+                        localStorage.removeItem(elem.id);
+                    }
+                });
+            }
+        }
+    }
+</script>
 
 </body>
 </html>
