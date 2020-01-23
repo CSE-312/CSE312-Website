@@ -8,17 +8,17 @@ from pymongo import MongoClient
 app = Flask(__name__)
 socket_server = SocketIO(app)
 
-mongo_client = MongoClient()
-db = mongo_client["cse312"]
-
-chat_collection = db["chat"]
+# mongo_client = MongoClient()
+# db = mongo_client["cse312"]
+#
+# chat_collection = db["chat"]
 
 
 @socket_server.on('connect')
 def connect():
     print(request.sid + " connected")
-    all_chat = chat_collection.find({}, {'_id': 0})
-    emit('message', json.dumps(list(all_chat)))
+    # all_chat = chat_collection.find({}, {'_id': 0})
+    # emit('message', json.dumps(list(all_chat)))
 
 
 @socket_server.on('disconnect')
@@ -29,21 +29,20 @@ def disconnect():
 @socket_server.on('message')
 def message(the_message):
     parsed_message = json.loads(the_message)
-    # all_chat.append({'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
-    chat_collection.insert_one(
-        {'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
-    all_chat = chat_collection.find({}, {'_id': 0})
-    socket_server.emit('message', json.dumps(list(all_chat)), broadcast=True)
+    # chat_collection.insert_one(
+    #     {'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
+    # all_chat = chat_collection.find({}, {'_id': 0})
+    # socket_server.emit('message', json.dumps(list(all_chat)), broadcast=True)
 
 
 @app.route('/')
-def cse116():
+def cse312():
     print("serving request")
     return render_template('CSE312.html')
 
 
 @app.route('/static_files/<path:filename>')
-def send_style(filename):
+def serve_static(filename):
     return send_from_directory('static_files', filename)
 
 

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>CSE312: Web Apps</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
     <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,129 +11,89 @@
     <script src="static_files/chat.js"></script>
 </head>
 <body class="outer" onload="setupSocket();">
-<div class="container">
+
+<div class="container-fluid">
 
     <div class="row">
-        <div class="col-0 col-sm-0 col-md-1"></div>
+        <div class="col-0 col-sm-0 col-md-0"></div>
 
-        <div class="col-9 col-sm-9 col-md-7">
+        <div class="col-12 col-sm-9 col-md-8">
 
             <hr/>
 
-            <h2>CSE312 - Summer 2019</h2>
+            <h1>CSE312: Web Applications</h1>
+            <h2>Spring 2020</h2>
             <hr/>
 
 
-            <h3>Schedule</h3>
+            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-s20/assessments" target="_blank">
+                <img src="static_files/autolab.svg" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
 
-            <p>
-                This schedule is subject to change throughout the semester.
-            </p>
+            <a href="https://piazza.com/class/k5o2v2ppshw4bs" target="_blank">
+                <img src="static_files/piazza.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
 
-            <div id="block1">
-                <table class="table table-bordered">
+            <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" target="_blank">
+                <img src="static_files/youtube.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
 
-                    <tbody>
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 1</b></td>
-                    </tr>
+            <a href="https://discord.gg/Gnzg7F" target="_blank">
+                <img src="static_files/discord2.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
 
-                    {% include "lectures/lecture1.html" %}
+            <a href="https://www.twitch.tv/hartloff" target="_blank">
+                <img src="static_files/twitch.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
 
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 2</b></td>
-                    </tr>
+            <hr/>
 
 
-                    {% include "lectures/lecture2.html" %}
+            <div class="card">
+                <a data-toggle="collapse" data-target="#syllabus">
+                    <div class="card-header section-header">
+                        <h5>
+                            Syllabus
+                        </h5>
+                    </div>
+                </a>
 
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 3</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture3.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 4</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture4.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 5</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture5.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 6</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture6.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 7</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture7.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 8</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture8.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 9</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture9.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 10</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture10.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 11</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture11.html" %}
-
-                    <tr class="text-white bg-primary">
-                        <td colspan="3"><b>Lecture 12</b></td>
-                    </tr>
-
-
-                    {% include "lectures/lecture12.html" %}
-
-                    </tbody>
-                </table>
-
+                <div id="syllabus" class="collapse show">
+                    <div class="card-body">
+                        {% include "syllabus.html" %}
+                    </div>
+                </div>
             </div>
 
             <hr/>
 
+
             <div class="card">
-                <a data-toggle="collapse" data-target="#syllabus">
-                    <div class="card-header text-white section-header">
+                <a data-toggle="collapse" data-target="#homework">
+                    <div class="card-header section-header">
+                        <h5>
+                            Homework
+                        </h5>
+                    </div>
+                </a>
+
+                <div id="homework" class="collapse show">
+                    <div class="card-body">
+                        {% include "homework.html" %}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <hr/>
+
+
+            <div class="card">
+                <a data-toggle="collapse" data-target="#project">
+                    <div class="card-header section-header">
                         <h5>
                             Project
                         </h5>
                     </div>
                 </a>
 
-                <div id="syllabus">
+                <div id="project" class="collapse show">
                     <div class="card-body">
                         {% include "project.html" %}
                     </div>
@@ -142,50 +101,184 @@
 
             </div>
 
+
             <hr/>
 
-            <div class="card">
-                <a data-toggle="collapse" data-target="#syllabus">
-                    <div class="card-header text-white section-header">
-                        <h5>
-                            Syllabus
-                        </h5>
-                    </div>
-                </a>
 
-                <div id="syllabus">
-                    <div class="card-body">
-                        {% include "syllabus.html" %}
-                    </div>
+            <a data-toggle="collapse" data-target="#schedule">
+                <div class="card-header section-header">
+                    <h5>
+                        Schedule
+                    </h5>
                 </div>
+            </a>
 
+            <div id="schedule" class="collapse show">
+                <table class="table table-bordered">
+
+                    <tbody>
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 1</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1s2aCtIZFQmLoUzbjFPw4KOdMxLeRuQxmUc5_lV8LXIY/edit?usp=sharing">HW1: Front End</a></span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week1.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 2</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW2: Hello World</span>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week2.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 3</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW3: HTTP GET</span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week3.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 4</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW4: HTTP POST</span>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week4.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 5</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW5: AJAX</span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week5.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 6</b>
+{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 1</a></span>#}
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week6.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 7</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW6: Web Sockets</span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week7.html" %}
+
+
+                    <tr>
+                        <td colspan="3"><b>Spring Break</b></td>
+                    </tr>
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 8</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW7: HTTPS</span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week8.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 9</b>
+{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 2</a></span>#}
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week9.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 10</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW8: Authentication</span>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week10.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 11</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW9: Front End 2</span>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week11.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 12</b>
+{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 3</a></span>#}
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week12.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 13</b>
+                            <span class="float-right"><a class="hw-link" target="_blank" href="_______"></a>HW10: Streaming</span>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week13.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 14</b></td>
+                    </tr>
+
+
+                    {% include "lectures/week14.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Project Presentations: Friday, May 15 | Talbert 107 | 8-11am</b></td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
             </div>
+
+
         </div>
 
-        <div class="col-3 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>
+        <div class="col-0 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>
             <div id="chat"></div>
             <br/>
 
             <form class="form-inline" onkeypress="return event.keyCode !== 13">
                 <div class="form-group row">
-                <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;
-                <input type="text" class="form-control" id="chatInput">
+                    <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;
+                    <input type="text" class="form-control" id="chatInput">
                 </div>
             </form>
         </div>
     </div>
+
 </div>
 
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+
+<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
+<script src="/static_files/lib/popper-1.12.9.min.js"></script>
+<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
+<script src="/static_files/lib/socket.io-2.2.0.js"></script>
+
 
 </body>
 </html>
+

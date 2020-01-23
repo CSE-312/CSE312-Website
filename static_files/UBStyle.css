@@ -8,6 +8,12 @@
 /*background-color: blue;*/
 /*}*/
 
+
+.slide-icon {
+    width: 30px;
+    margin:4px;
+}
+
 #chatSidebar {
     /*float:right;*/
     right: 0;
@@ -24,7 +30,7 @@
     /*overflow: hidden;*/
 }
 
-#chat{
+#chat {
     overflow-y: scroll;
     height: calc(100vh - 85px);
     /*display: flex;*/
@@ -35,8 +41,28 @@
     height: 100%;
 }
 
-.section-header{
+.header {
+    /*display: inline;*/
+    padding-left: 10px;
+}
+
+.section-header {
     background: #030089;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.section-week {
+    background: #3265cb;
+    color: #ffffff;
+    /*cursor: pointer;*/
+}
+
+.hw-link {
+    /*background: #3265cb;*/
+    color: #bef0ff;
+    /*text-underline: #ffffff;*/
+    text-decoration: underline;
     cursor: pointer;
 }
 
@@ -67,10 +93,11 @@ div.xp-progress {
     height: 15px;
 }
 
-div.progress div.progress-bar{
+div.progress div.progress-bar {
     -webkit-transition: none !important;
     transition: none !important;
 }
+
 div.xp-progress-bar {
     background: linear-gradient(to bottom, #bbbb00 0%, #ffff00 35%, #ffff00 60%, #bbbb00 100%);
 }
@@ -229,6 +256,7 @@ div.padded {
     /*padding-right: 5%;*/
     padding: 4px 5px;
 }
+
 div.extra-padded {
     padding: 2% 3%;
 }
