@@ -286,7 +286,7 @@
         }
         for(let x of document.getElementsByTagName("a")){
             if(x.getAttribute("data-toggle")) {
-                x.addEventListener("click", function (e) {
+                x.addEventListener("click", function () {
                     const elem = document.getElementById(x.getAttribute("data-target").replace("#", ""));
                     if(elem.classList.contains("show")){
                         localStorage.setItem(elem.id, "hide");
