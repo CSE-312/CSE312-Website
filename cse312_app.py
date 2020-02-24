@@ -24,7 +24,7 @@ def connect():
 @socket_server.on('disconnect')
 def disconnect():
     print(request.sid + " disconnected")
-
+import html
 
 @socket_server.on('message')
 def message(the_message):
