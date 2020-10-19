@@ -30,7 +30,7 @@ def disconnect():
 def message(the_message):
     parsed_message = json.loads(the_message)
     # chat_collection.insert_one(
-    #     {'username': parsed_message['username'], 'message': html.escape(parsed_message['message'])})
+    #     {'username': html.escape(parsed_message['username']), 'message': html.escape(parsed_message['message'])})
     # all_chat = chat_collection.find({}, {'_id': 0})
     # socket_server.emit('message', json.dumps(list(all_chat)), broadcast=True)
 
