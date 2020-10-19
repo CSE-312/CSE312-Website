@@ -47,7 +47,7 @@ def serve_static(filename):
 
 
 if __name__ == '__main__':
-    socket_server.run(app, port=5000)
+    socket_server.run(app, host="0.0.0.0", port=5000)
     # from gevent import pywsgi
     # from geventwebsocket.handler import WebSocketHandler
     # server = pywsgi.WSGIServer(('', 8312), app, handler_class=WebSocketHandler)
