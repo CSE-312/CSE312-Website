@@ -8,6 +8,126 @@
 /*background-color: blue;*/
 /*}*/
 
+.section-card{
+    margin-bottom: 15px;
+    border: 2px solid;
+    border-radius: 0;
+}
+
+.card-review{
+    border-color: #f0f0f0;
+}
+
+
+.section-review {
+    background-color: #f0f0f0;
+    color: #000000;
+    cursor: pointer;
+}
+
+
+.card-testing{
+    border-color: #3265cb;
+}
+
+.section-testing {
+    background-color: #3265cb;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.my-social-icon{
+    width: 40px;
+    margin: 6px;
+}
+
+
+.help{
+    width: 14px;
+    /*margin: 4px;*/
+}
+
+.homework{
+    background-color: #f9fff9;
+}
+
+.lab{
+    background-color: #f9fff9;
+}
+
+.non_visual_link{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.non_visual_link:hover{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.reading{
+    text-align: left;
+    margin: 0;
+}
+
+li.reading{
+    margin: 0;
+}
+
+.table td{
+    padding: 7px;
+}
+
+.card-header {
+    padding: 10px;
+    font-weight: bold;
+    font-size: larger;
+}
+
+.week {
+    font-weight: bold;
+}
+
+.slide-icon {
+    text-align: center;
+    width: 35px;
+    margin: 4px;
+}
+
+.strike {
+    text-decoration: line-through;
+}
+
+.ta-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 180px;
+    padding: 20px
+}
+
+p, li {
+    text-align: justify;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+.objective {
+    list-style-type: square;
+}
+
+.section-header {
+    background: #030089;
+    cursor: pointer;
+}
+
+.section-intro {
+    background-color: #514f57;
+    color: #ffffff;
+    cursor: pointer;
+}
 
 .slide-icon {
     width: 30px;

@@ -3,7 +3,7 @@ from flask_socketio import SocketIO, emit
 import json
 import html
 
-from pymongo import MongoClient
+# from pymongo import MongoClient
 
 app = Flask(__name__)
 socket_server = SocketIO(app)

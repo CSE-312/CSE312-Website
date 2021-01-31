@@ -4,16 +4,20 @@
         <h3 class="card-title">Overview</h3>
 
         <p>
-            You'll work in a team to create a social media site of your own design which includes:
+            You'll work in teams of 4 to create a web app of your own design which must include:
         </p>
 
         <ul>
-            <li>User Accounts</li>
-            <li>Live sharing of multimedia content between users</li>
-            <li>Users can "vote" and comment on user-submitted content</li>
-            <li>Users can friend or follow other users</li>
-            <li>Users can send direct messages to other users</li>
+            <li>User Accounts with Secure Authentication</li>
+            <li>Users to see all users who are currently logged in</li>
+            <li>Users can send direct messages (DM) to other users with notifications when a DM is received</li>
+            <li>Users can share some form of multimedia content which is stored and hosted on your server</li>
+            <li>Live interactions between users via WebSockets (Cannot be text)</li>
         </ul>
+
+        <p>
+            You will also create a video presentation showing off your project at the end of the semester.
+        </p>
 
     </div>
 </div>
@@ -25,9 +29,9 @@
         <h3 class="card-title">Weekly Meetings</h3>
 
         <p>
-            All scheduled recitation sections are cancelled and replaced with team meetings which will start on week 5
-            of the semester. Your team will schedule a time and location for these meetings and all team members will submit the
-            team meeting form after each meeting.
+            All scheduled recitation sections are cancelled and replaced with team meetings which will start on week 3
+            of the semester. Your team will schedule a time and location for these meetings and all team members will
+            submit the team meeting form after each meeting.
         </p>
 
 
@@ -38,7 +42,8 @@
         <p>
             Meeting submissions and peer evaluations will be used to adjust individual grades at the discretion of the
             course staff. The average individual score for a team will equal the team score for each phase (ie. An
-            entire team will not be penalized based on meetings and evaluations).
+            entire team will not be penalized based on meetings and evaluations). Individual grade adjustments will
+            never result in a score > 100%.
         </p>
 
     </div>
@@ -46,19 +51,42 @@
 
 
 <div class="card border-dark mb-3">
+
     <div class="card-body">
         <h3 class="card-title">Submissions</h3>
 
         <p>
-            Your team must keep all code for your project in a GitHub repository. The state of the master branch of
-            this repository at the time of the deadline will be your official submission for that phase. In addition,
-            your team will make a video demo of your software and upload it to YouTube for each of the three project
-            phases.
+            The entire project is due after the last day of classes. However, your team is allowed to use 2 project
+            checkpoints during the semester. When a checkpoint is used, the course staff will review your project and
+            provide feedback on your progress. Checkpoints will follow these guidelines
         </p>
+
+        <ul>
+            <li>A checkpoint cannot be used within 3 weeks of another checkpoint or the project due date. To use both
+                checkpoints, you must plan ahead and use the first one at least 6 weeks before the project deadline
+            and the second at least 3 weeks before the project deadline</li>
+            <li>If a project is near completion when a checkpoint is used, a grade may be provided. If your team is
+                happy with this grade, you can be done with the project early.
+            </li>
+        </ul>
+
+        <p>
+            Specific requirements for the project and presentation, will be linked here.
+        </p>
+
+{#        <div><a href="https://docs.google.com/forms/d/e/1FAIpQLSeBhNfRkZI0hwtoCNDI8ybMg-ZbiOw_C9vUXk1FU1NskIVAkg/viewform?usp=sf_link" target="_blank">Project Team Formation</a></div>#}
+{#        <div><a href="https://docs.google.com/document/d/1d25tQoBDROrwe4VB6642S1Z00_jtlJ7PrKgSw2pt5h8/edit?usp=sharing" target="_blank">Project Phase 1</a></div>#}
+{#        <div><a href="https://docs.google.com/document/d/1tMmQurp25i82hdOHeY4371YGoJ-uFBFvwXOEBuilaK8/edit?usp=sharing" target="_blank">Project Phase 2</a></div>#}
+{#        <div><a href="https://docs.google.com/document/d/1tbZM_6cnqj49BrSFp9FZ-bDEcOZSD8aTDMUnF6oKxaY/edit?usp=sharing" target="_blank">Project Phase 3</a></div>#}
+{#        <div><a href="https://docs.google.com/document/d/16WJJ11GCx26YkMAZYz991FsLWJy1dB80t3o-atgt8tM/edit?usp=sharing" target="_blank">Presentation</a></div>#}
+
+<br/>
 
     </div>
 
+
 </div>
+
 
 
 <div class="card border-dark mb-3">
@@ -66,20 +94,20 @@
     <div class="card-body">
         <h3 class="card-title">Open-Source Reports</h3>
         <p>
-            As opposed to the homework assignments, you are allowed to use external libraries, frameworks, and services for your
-            project.
+            As opposed to the homework assignments, you are allowed to use external libraries, frameworks, and services
+            for your project.
             For example, instead of building your site starting with a TCP socket server you can use technology
             such as Express, Flask, Django, React, Angular, Handlebars, Apache, Nginx, Socket.io, Heroku, AWS, Firebase,
-            etc. Any time you use technology that was not developed by your team you must provide a report for that
-            technology.
+            etc. However, any time you use technology that was not developed by your team you must provide a report for
+            that technology.
         </p>
 
         <p>
-            <b>Report:</b> For each technology used in your project your team must submit a technical
+            <b>Report:</b> For each technology used in your project that would not be allowed for a homework assignment,
+            your team must submit a technical
             report explaining what it accomplishes, how it works, and the licenses
-            involved. In addition to the report, every team member who developed on the part of the project using a
-            specific technology must be prepared to answer questions about it at all times (Especially during your
-            presentation).
+            involved. In addition to the report, every team member who helped develop the part of the project using a
+            specific technology must be prepared to answer questions about it at all times.
         </p>
 
         <p>
@@ -109,8 +137,8 @@
                         starting with a TCP connection to
                         include how it routes requests, how headers are parsed, etc. and link to the exact code on
                         GitHub that parses HTTP headers and routes paths. Any other express features used must also be
-                        explained and the code linked. You do not have to explain features that are not used in your
-                        project.
+                        explained and the code linked. You do not have to explain features of the library that are not
+                        used in your project.
                     </li>
 
                 </ul>
@@ -133,41 +161,42 @@
             years of CSE education and is not appropriate for a project in a 300-level technical course.
             The use of frameworks/libraries/services are allowed for this project, and strongly encouraged outside of
             this course, but you must prove that you
-            understand what is being done for you by other developers and how they do it. In this course, you cannot
-            use technology that you do not understand.
+            understand what is being done for you by other developers and how they do it. <b>In this course, you cannot
+            use technology that you do not understand.</b>
         </p>
 
         <p>
             A report must be included in your repository for each library/framework used in your project. If any reports
             are missing, inadequate, or a team member who developed with a technology fails to answer questions about it
             the team is in violation and the project may become invalid. Consequences will be decided by the course staff on
-            a case-by-case basis which can range up to a 0 for all 4 parts of the project (All 3 phases and the
-            presentation).
+            a case-by-case basis which can range up to a 0 for the entire project.
         </p>
 
     </div>
 
 </div>
+
 <div class="card border-dark mb-3">
 
     <div class="card-body">
-        <h3 class="card-title">Submissions</h3>
+        <h3 class="card-title">Grading</h3>
 
         <p>
-            Specific requirements for each phase, and the presentation, will be linked here as we approach each
-            deadline.
+            Project grading is divided as follows:
         </p>
 
-        <div><a href="https://docs.google.com/forms/d/e/1FAIpQLSeBhNfRkZI0hwtoCNDI8ybMg-ZbiOw_C9vUXk1FU1NskIVAkg/viewform?usp=sf_link" target="_blank">Project Team Formation</a></div>
-        <div><a href="https://docs.google.com/document/d/1d25tQoBDROrwe4VB6642S1Z00_jtlJ7PrKgSw2pt5h8/edit?usp=sharing" target="_blank">Project Phase 1</a></div>
-        <div><a href="https://docs.google.com/document/d/1tMmQurp25i82hdOHeY4371YGoJ-uFBFvwXOEBuilaK8/edit?usp=sharing" target="_blank">Project Phase 2</a></div>
-        <div><a href="https://docs.google.com/document/d/1tbZM_6cnqj49BrSFp9FZ-bDEcOZSD8aTDMUnF6oKxaY/edit?usp=sharing" target="_blank">Project Phase 3</a></div>
-        <div><a href="https://docs.google.com/document/d/16WJJ11GCx26YkMAZYz991FsLWJy1dB80t3o-atgt8tM/edit?usp=sharing" target="_blank">Presentation</a></div>
+        <ul>
+            <li>[75%] Features - 15% for each of the 5 features listed at the beginning of this section (user accounts, etc.)</li>
+            <li>[15%] Presentation video</li>
+            <li>[10%] Checkpoints - 5% each time a project checkpoint is used. To earn the 5 points, a reasonable
+                amount of progress must have been made on the project</li>
+        </ul>
 
-<br/>
-    <p>
-        The three phases and the presentation are all equally weighted when computing you final grade.
-    </p>
+        <p>
+            <b>Security</b>: If there are any security issues with your project that have been covered in lecture, your project
+            grade may be changed to 0% at the discretion of the course staff and depending on the severity of the
+            security vulnerability.
+        </p>
 
     </div>
 

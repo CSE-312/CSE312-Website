@@ -7,48 +7,55 @@
     <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="static_files/chat.js"></script>
-</head>
-<body class="outer" onload="collapse();setupSocket();">
 
-<div class="container-fluid">
+    <base target="_blank">
+</head>
+<body class="outer" onload="collapse();">
+
+<div class="container">
 
     <div class="row">
-        <div class="col-0 col-sm-0 col-md-0"></div>
+        <div class="col-0 col-sm-0 col-md-1"></div>
 
-        <div class="col-12 col-sm-9 col-md-8">
+        <div class="col-12 col-sm-12 col-md-10">
 
             <hr/>
 
             <h1>CSE312: Web Applications</h1>
-            <h2>Spring 2020</h2>
+            <h2>Spring 2021</h2>
+
             <hr/>
 
+            <a href="https://www.twitch.tv/hartloff" class="non_visual_link">
+                <img src="static_files/twitch.png" class="img-responsive my-social-icon"/> Participate in live lecture
+                streams MWF 10:20-11:10am EST</a><br/>
 
-            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-s20/assessments" target="_blank">
-                <img src="static_files/autolab.svg" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
+            <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" class="non_visual_link">
+                <img src="static_files/_youtube_.png" class="img-responsive my-social-icon"/> Watch previous
+                lectures</a><br/>
 
-            <a href="https://piazza.com/class/k5o2v2ppshw4bs" target="_blank">
-                <img src="static_files/piazza.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
+            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-s21/assessments" class="non_visual_link">
+                <img src="static_files/autolab.svg" class="img-responsive my-social-icon"/> Submit assignments
+                here</a><br/>
 
-            <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" target="_blank">
-                <img src="static_files/youtube.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
+            <a href="https://piazza.com/class/kkjsfmbls581d7?cid=6" class="non_visual_link">
+                <img src="static_files/piazza.png" class="img-responsive my-social-icon"/> Ask questions when you need
+                help</a><br/>
 
-            <a href="https://discord.gg/HEdxdzp" target="_blank">
-                <img src="static_files/discord2.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
-
-            <a href="https://www.twitch.tv/hartloff" target="_blank">
-                <img src="static_files/twitch.png" class="img-responsive" height="45px"/></a>&nbsp;&nbsp;
+            <a href="https://discord.gg/nC4eBGM" class="non_visual_link">
+                <img src="static_files/discord2.png" class="img-responsive my-social-icon"/> Chat with other
+                students</a>
 
             <hr/>
 
 
             <div class="card">
                 <a data-toggle="collapse" data-target="#syllabus">
-                    <div class="card-header section-header">
-                        <h5>
-                            Syllabus
-                        </h5>
+                    <div class="card-header text-white section-header">
+                        <div>
+                            Syllabus <span class="float-right"><i
+                                class='far fa-caret-square-down'></i></span>
+                        </div>
                     </div>
                 </a>
 
@@ -64,10 +71,11 @@
 
             <div class="card">
                 <a data-toggle="collapse" data-target="#homework">
-                    <div class="card-header section-header">
-                        <h5>
-                            Homework
-                        </h5>
+                    <div class="card-header text-white section-header">
+                        <div>
+                            Homework <span class="float-right"><i
+                                class='far fa-caret-square-down'></i></span>
+                        </div>
                     </div>
                 </a>
 
@@ -85,10 +93,11 @@
 
             <div class="card">
                 <a data-toggle="collapse" data-target="#project">
-                    <div class="card-header section-header">
-                        <h5>
-                            Project
-                        </h5>
+                    <div class="card-header text-white section-header">
+                        <div>
+                            Project <span class="float-right"><i
+                                class='far fa-caret-square-down'></i></span>
+                        </div>
                     </div>
                 </a>
 
@@ -103,22 +112,31 @@
 
             <hr/>
 
+            <!--- HW1 --->
 
-            <a data-toggle="collapse" data-target="#schedule">
-                <div class="card-header section-header">
-                    <h5>
-                        Schedule
-                    </h5>
+            <a data-toggle="collapse" data-target="#block1">
+                <div class="card-header section-testing">
+                    <div>
+                        1 - Introduction<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
                 </div>
             </a>
 
-            <div id="schedule" class="collapse show">
+            <div id="block1" class="collapse show section-card card-testing">
+
                 <table class="table table-bordered">
 
                     <tbody>
+
+                    <tr class="homework">
+                         <td colspan="3">Homework 1
+{#                            <a href=""></a>#}
+                        </td>
+                    </tr>
+
+
                     <tr class="section-week">
                         <td colspan="3"><b>Week 1</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1s2aCtIZFQmLoUzbjFPw4KOdMxLeRuQxmUc5_lV8LXIY/edit?usp=sharing">HW1: Front End</a></span>
                         </td>
                     </tr>
 
@@ -126,16 +144,40 @@
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 2</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1-j6ydEnC8-e-PkVCcF2E2ZnRNN07tmZZJLvJqKhVyqg/edit?usp=sharing">HW2: Hello World</a></span>
                         </td>
                     </tr>
 
 
                     {% include "lectures/week2.html" %}
 
+                    </tbody>
+                </table>
+            </div>
+
+            <!--- HW2 --->
+
+            <a data-toggle="collapse" data-target="#block2">
+                <div class="card-header section-testing">
+                    <div>
+                        2 - Static Site<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="block2" class="collapse show section-card card-testing">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="homework">
+                         <td colspan="3">Homework 2
+{#                            <a href=""></a>#}
+                        </td>
+                    </tr>
+
                     <tr class="section-week">
                         <td colspan="3"><b>Week 3</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1T4AdY_eZVmfoW-Wtt1JsnU8w9EDIwvpnQmpPeYm2fwM/edit?usp=sharing">HW3: HTTP GET</a></span>
                         </td>
                     </tr>
 
@@ -143,16 +185,41 @@
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 4</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1iRKpTXW8qdhr9mCQ0HTm3e-pIj_lt4_ERQ98kc9hcAM/edit?usp=sharing">HW4: HTTP POST</a></span>
                         </td>
                     </tr>
 
 
                     {% include "lectures/week4.html" %}
 
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--- HW3 --->
+
+            <a data-toggle="collapse" data-target="#block3">
+                <div class="card-header section-testing">
+                    <div>
+                        3 - Dynamic Site<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="block3" class="collapse show section-card card-testing">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="homework">
+                         <td colspan="3">Homework 3
+{#                            <a href=""></a>#}
+                        </td>
+                    </tr>
+
                     <tr class="section-week">
                         <td colspan="3"><b>Week 5</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1Guwc_359CGvJmCbuhQDRLl7LlHKLPVeM2nSRIdlmdgA/edit?usp=sharing">HW5: AJAX</a></span>
                         </td>
                     </tr>
 
@@ -161,30 +228,69 @@
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 6</b>
-{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 1</a></span>#}
                         </td>
                     </tr>
 
 
                     {% include "lectures/week6.html" %}
 
-                    <tr class="section-week">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--- Break --->
+
+            <a data-toggle="collapse" data-target="#blockbreak">
+                <div class="card-header section-review">
+                    <div>
+                        Definitely Not Spring Break<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="blockbreak" class="collapse show section-card card-review">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="section-review">
                         <td colspan="3"><b>Week 7</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1uVTO7cSmbv4HTNGfJzjWSrsgZ9WzWBEe9h48nTAt8gg/edit?usp=sharing">HW6: WebSockets</a></span>
                         </td>
                     </tr>
 
                     {% include "lectures/week7.html" %}
 
 
-                    <tr>
-                        <td colspan="3"><b>Spring Break</b></td>
-                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
+            <!--- HW4 --->
+
+            <a data-toggle="collapse" data-target="#block4">
+                <div class="card-header section-testing">
+                    <div>
+                        4 - WebSockets<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="block4" class="collapse show section-card card-testing">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="homework">
+                         <td colspan="3">Homework 4
+{#                            <a href=""></a>#}
+                        </td>
+                    </tr>
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 8</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/19pZEVU8i-D1J3WlnNW9n6Om22bRDB25Zu1uxFUfMI-M/edit?usp=sharing">HW7: HTTPS</a></span>
                         </td>
                     </tr>
 
@@ -192,16 +298,40 @@
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 9</b>
-{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 2</a></span>#}
                         </td>
                     </tr>
 
                     {% include "lectures/week9.html" %}
 
 
+                    </tbody>
+                </table>
+            </div>
+
+            <!--- HW5 --->
+
+            <a data-toggle="collapse" data-target="#block5">
+                <div class="card-header section-testing">
+                    <div>
+                        5 - Authentication<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="block5" class="collapse show section-card card-testing">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="homework">
+                         <td colspan="3">Homework 5
+{#                            <a href=""></a>#}
+                        </td>
+                    </tr>
+
                     <tr class="section-week">
                         <td colspan="3"><b>Week 10</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1Fw1EmYjv_0nR1CJiy_uVByEOmX6tQ8Kd2DbCozYN2bU/edit?usp=sharing">HW8: Authentication</a></span>
                         </td>
                     </tr>
 
@@ -209,7 +339,6 @@
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 11</b>
-                            <span class="float-right"><del>HW9: Front End 2</del></span>
                         </td>
                     </tr>
 
@@ -217,18 +346,37 @@
                     {% include "lectures/week11.html" %}
 
 
-                    <tr class="section-week">
+                    </tbody>
+                </table>
+            </div>
+
+            <!--- Project --->
+
+            <a data-toggle="collapse" data-target="#blockx">
+                <div class="card-header section-review">
+                    <div>
+                        Web Apps<span class="float-right"><i
+                            class='far fa-caret-square-down'></i></span></div>
+                </div>
+            </a>
+
+            <div id="blockx" class="collapse show section-card card-review">
+
+                <table class="table table-bordered">
+
+                    <tbody>
+
+                    <tr class="section-review">
                         <td colspan="3"><b>Week 12</b>
-                            <span class="float-right"><a class="hw-link" target="_blank" href="https://docs.google.com/document/d/1m5u5_eDNdaC1DtoiNFUM1iXaV53gXXCpxarXNhtezUg/edit?usp=sharing">HW10: Streaming</a></span>
                         </td>
                     </tr>
 
 
                     {% include "lectures/week12.html" %}
 
-                    <tr class="section-week">
+                    <tr class="section-review">
                         <td colspan="3"><b>Week 13</b>
-{#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 3</a></span>#}
+                            {#                            <span class="float-right"><a class="hw-link" target="_blank" href="_______">Project 3</a></span>#}
                         </td>
                     </tr>
 
@@ -236,7 +384,7 @@
                     {% include "lectures/week13.html" %}
 
 
-                    <tr class="section-week">
+                    <tr class="section-review">
                         <td colspan="3"><b>Week 14</b></td>
                     </tr>
 
@@ -244,34 +392,42 @@
                     {% include "lectures/week14.html" %}
 
 
-                    <tr class="section-week">
-                        <td colspan="3"><del><b>Project Presentations: Friday, May 15 | Talbert 107 | 8-11am</b></del></td>
-                    </tr>
-
-                    <tr class="table-warning">
-                        <td colspan="3">Friday, May 15 @ 11:59pm
-                            <span class="float-right">Project Presentation Video Due</span>
-                        </td>
-                    </tr>
-
                     </tbody>
                 </table>
             </div>
 
+            {#                    <tr class="section-week">#}
+            {#                        <td colspan="3"><del><b>Project Presentations: Friday, May 15 | Talbert 107 | 8-11am</b></del></td>#}
+            {#                    </tr>#}
+            {##}
+            {#                    <tr class="table-warning">#}
+            {#                        <td colspan="3">Friday, May 15 @ 11:59pm#}
+            {#                            <span class="float-right">Project Presentation Video Due</span>#}
+            {#                        </td>#}
+            {#                    </tr>#}
+            {##}
+            {#                    </tbody>#}
+            {#                </table>#}
+            {#            </div>#}
+
 
         </div>
 
-        <div class="col-0 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>
-            <div id="chat"></div>
-            <br/>
 
-            <form class="form-inline" onkeypress="return event.keyCode !== 13">
-                <div class="form-group row">
-                    <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;
-                    <input type="text" class="form-control" id="chatInput">
-                </div>
-            </form>
-        </div>
+        <div class="col-0 col-sm-0 col-md-1"></div>
+
+        {#        <div class="col-0 col-sm-3 col-md-4 right-side-bar" id="chatSidebar" hidden>#}
+        {#            <div id="chat"></div>#}
+        {#            <br/>#}
+        {##}
+        {#            <form class="form-inline" onkeypress="return event.keyCode !== 13">#}
+        {#                <div class="form-group row">#}
+        {#                    <button type="button" class="btn-sm btn-primary" onclick="sendMessage()">Send</button>&nbsp;#}
+        {#                    <input type="text" class="form-control" id="chatInput">#}
+        {#                </div>#}
+        {#            </form>#}
+        {#        </div>#}
+
     </div>
 
 </div>
@@ -281,21 +437,22 @@
 <script src="/static_files/lib/popper-1.12.9.min.js"></script>
 <script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
 <script src="/static_files/lib/socket.io-2.2.0.js"></script>
+<script src="/static_files/lib/fontawesome.js"></script>
 
 <script>
     function collapse() {
-        for(let x of document.getElementsByClassName("collapse")) {
+        for (let x of document.getElementsByClassName("collapse")) {
             if (localStorage.getItem(x.id) === "hide") {
                 x.setAttribute("class", "collapse");
             }
         }
-        for(let x of document.getElementsByTagName("a")){
-            if(x.getAttribute("data-toggle")) {
+        for (let x of document.getElementsByTagName("a")) {
+            if (x.getAttribute("data-toggle")) {
                 x.addEventListener("click", function () {
                     const elem = document.getElementById(x.getAttribute("data-target").replace("#", ""));
-                    if(elem.classList.contains("show")){
+                    if (elem.classList.contains("show")) {
                         localStorage.setItem(elem.id, "hide");
-                    }else{
+                    } else {
                         localStorage.removeItem(elem.id);
                     }
                 });
