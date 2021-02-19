@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, render_template, request
+from flask import Flask, send_from_directory, render_template, request, make_response
 from flask_socketio import SocketIO, emit
 import json
 import html
@@ -38,12 +38,16 @@ def message(the_message):
 @app.route('/')
 def cse312():
     print("serving request")
-    return render_template('CSE312.html')
+    resp = make_response(render_template('CSE312.html'))
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
 
 
 @app.route('/static_files/<path:filename>')
 def serve_static(filename):
-    return send_from_directory('static_files', filename)
+    resp = make_response(send_from_directory('static_files', filename))
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
 
 
 if __name__ == '__main__':
