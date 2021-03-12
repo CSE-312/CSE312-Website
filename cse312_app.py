@@ -9,9 +9,26 @@ app = Flask(__name__)
 socket_server = SocketIO(app)
 
 # mongo_client = MongoClient()
-# db = mongo_client["cse312"]
+# db = mongo_client["cse312x"]
 #
 # chat_collection = db["chat"]
+
+chat_history = []
+
+@app.route('/send-message', methods=["POST"])
+def message():
+    clean_message = html.escape(request.data.decode())
+    print(clean_message)
+    if clean_message != "":
+        chat_history.append(clean_message)
+        # chat_collection.insert_one({'message': clean_message})
+    return "message received"
+
+
+@app.route('/get-messages')
+def messages():
+    # all_chat = chat_collection.find({}, {'_id': 0})
+    return json.dumps(chat_history)
 
 
 @socket_server.on('connect')
@@ -39,6 +56,13 @@ def message(the_message):
 def cse312():
     print("serving request")
     resp = make_response(render_template('CSE312.html'))
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
+
+@app.route('/chat')
+def chat():
+    print("serving request")
+    resp = make_response(render_template('chat.html'))
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
 
