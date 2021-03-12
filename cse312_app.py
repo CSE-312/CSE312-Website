@@ -74,10 +74,10 @@ def serve_static(filename):
     return resp
 
 
-# @app.after_request
-# def after(resp):
-#     resp.headers['Access-Control-Allow-Origin'] = "*"
-#     return resp##
+@app.after_request
+def after(resp):
+    resp.headers['Access-Control-Allow-Origin'] = "*"
+    return resp
 
 if __name__ == '__main__':
     socket_server.run(app, host="0.0.0.0", port=5000)
