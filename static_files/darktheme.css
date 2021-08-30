@@ -1,0 +1,68 @@
+/* Created from scratch by Nicholas <3 */
+
+/* Variables for easy modifications */
+:root {
+    --page-background-color: #0d1117;
+    --card-background-color: #181818;
+    --card-header-color: #3f3f3f;
+    --card-subheader-color: #272727;
+    --card-border-color: #5b6b80;
+    --text-color: #d9d9d9; /* A little easier on the eyes than white */
+    --link-color: #67b2e8;
+    --link-hover-color: #bfccff;
+}
+
+/* The whole page */
+body.outer {
+    background-color: var(--page-background-color);
+    color: var(--text-color);
+}
+
+.card, .card-review, .table-bordered td {
+    border-color: var(--card-border-color);
+}
+
+th {
+    border-color: var(--card-border-color) !important;
+}
+
+.card .border-dark {
+    border-color: var(--card-border-color) !important;
+}
+
+/* Dark card backgrounds */
+.card-body, .section-card, .table {
+    background-color: var(--card-background-color);
+}
+
+/* Lighter card headers */
+/* Removed to keep the original section colors */
+/*.card-header {*/
+/*    background-color: var(--card-header-color);*/
+/*    color: var(--text-color);*/
+/*}*/
+
+/* Slightly lighter card subheaders */
+.homework, .lab, .section-review {
+    background-color: var(--card-subheader-color);
+    color: var(--text-color);
+}
+
+/* For a lighter slides icon */
+.slide-icon {
+    filter: invert(100%);
+}
+
+/* Make links slightly lighter */
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Border blue horizontal bars so they're not too bright or invisible */
+hr {
+    background-color: var(--card-border-color);
+}

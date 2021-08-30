@@ -5,12 +5,14 @@
     <title>CSE312: Web Apps</title>
     <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
     <link rel="stylesheet" type="text/css" href="/static_files/UBStylin.css"/>
+    <link rel="stylesheet" type="text/css" id="darkThemeCss" href="/static_files/darktheme.css" disabled/>
     <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/static_files/cse312.js"></script>
 
     <base target="_blank">
 </head>
-<body class="outer" onload="collapse();">
+<body class="outer" onload="bodyLoaded();">
 
 <div class="container">
 
@@ -22,25 +24,27 @@
             <hr/>
 
             <h1>CSE312: Web Applications</h1>
-            <h2>Spring 2021</h2>
-
+            <h2>Fall 2021</h2>
+            <div class="darkThemeCheckboxRegion">
+                <label for="darkThemeCheckbox">Dark Theme</label>
+                <input id="darkThemeCheckbox" type="checkbox" onclick="setDarkMode(this.checked);"/>
+            </div>
             <hr/>
 
-            <a href="https://www.twitch.tv/hartloff" class="non_visual_link">
-                <img src="static_files/twitch.png" class="img-responsive my-social-icon"/> Participate in live lecture
-                streams MWF 10:20-11:10am EST</a><br/>
-
-            <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" class="non_visual_link">
-                <img src="static_files/_youtube_.png" class="img-responsive my-social-icon"/> Watch previous
-                lectures</a><br/>
-
-            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-s21/assessments" class="non_visual_link">
+            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-f21/assessments" class="non_visual_link">
                 <img src="static_files/autolab.svg" class="img-responsive my-social-icon"/> Submit assignments
                 here</a><br/>
 
-            <a href="https://piazza.com/class/kkjsfmbls581d7?cid=6" class="non_visual_link">
-                <img src="static_files/piazza.png" class="img-responsive my-social-icon"/> Ask questions when you need
-                help</a><br/>
+            <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" class="non_visual_link">
+                <img src="static_files/_youtube_.png" class="img-responsive my-social-icon"/> Watch past
+                lectures</a><br/>
+
+{#            <a href="https://piazza.com/class/kkjsfmbls581d7?cid=6" class="non_visual_link">#}
+{#                <img src="static_files/piazza.png" class="img-responsive my-social-icon"/> Ask questions when you need#}
+{#                help</a><br/>#}
+
+            <a href="https://www.twitch.tv/drhartloff" class="non_visual_link">
+                <img src="static_files/twitch.png" class="img-responsive my-social-icon"/> Select lectures may be live-streamed on Twitch</a><br/>
 
             <a href="https://discord.gg/nC4eBGM" class="non_visual_link">
                 <img src="static_files/discord2.png" class="img-responsive my-social-icon"/> Chat with other
@@ -117,7 +121,7 @@
             <a data-toggle="collapse" data-target="#block1">
                 <div class="card-header section-testing">
                     <div>
-                        1 - Introduction<span class="float-right"><i
+                        1 - Static Site<span class="float-right"><i
                             class='far fa-caret-square-down'></i></span></div>
                 </div>
             </a>
@@ -130,7 +134,7 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1xqUoiZLTf4x_xo_HPURcAEoPQ0iIIl-jgDPirwS4KF4/edit?usp=sharing">Homework 1</a>
+                            <a href="https://docs.google.com/document/d/1xqUoiZLTf4x_xo_HPURcAEoPQ0iIIl-jgDPirwS4KF4/edit?usp=sharing"></a>Homework 1
                         </td>
                     </tr>
 
@@ -150,6 +154,14 @@
 
                     {% include "lectures/week2.html" %}
 
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 3</b>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week3.html" %}
+
                     </tbody>
                 </table>
             </div>
@@ -159,7 +171,7 @@
             <a data-toggle="collapse" data-target="#block2">
                 <div class="card-header section-testing">
                     <div>
-                        2 - Static Site<span class="float-right"><i
+                        2 - Dynamic Site<span class="float-right"><i
                             class='far fa-caret-square-down'></i></span></div>
                 </div>
             </a>
@@ -172,16 +184,11 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1adZkYMkm1Z_R9wegfOtfhfNzgLNaNOILVf5flW6ZCbc/edit?usp=sharing">Homework 2</a>
+                            <a href="https://docs.google.com/document/d/1adZkYMkm1Z_R9wegfOtfhfNzgLNaNOILVf5flW6ZCbc/edit?usp=sharing"></a>Homework 2
                         </td>
                     </tr>
 
-                    <tr class="section-week">
-                        <td colspan="3"><b>Week 3</b>
-                        </td>
-                    </tr>
 
-                    {% include "lectures/week3.html" %}
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 4</b>
@@ -191,32 +198,6 @@
 
                     {% include "lectures/week4.html" %}
 
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!--- HW3 --->
-
-            <a data-toggle="collapse" data-target="#block3">
-                <div class="card-header section-testing">
-                    <div>
-                        3 - Dynamic Site<span class="float-right"><i
-                            class='far fa-caret-square-down'></i></span></div>
-                </div>
-            </a>
-
-            <div id="block3" class="collapse show section-card card-testing">
-
-                <table class="table table-bordered">
-
-                    <tbody>
-
-                    <tr class="homework">
-                         <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1AIRQSiVU3uMadM-6GarxlRXKVpmiAbnYb8Lx0M_ix5Q/edit?usp=sharing">Homework 3</a>
-                        </td>
-                    </tr>
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 5</b>
@@ -231,53 +212,23 @@
                         </td>
                     </tr>
 
-
                     {% include "lectures/week6.html" %}
 
-
                     </tbody>
                 </table>
             </div>
 
-            <!--- Break --->
+            <!--- HW3 --->
 
-            <a data-toggle="collapse" data-target="#blockbreak">
-                <div class="card-header section-review">
-                    <div>
-                        Definitely Not Spring Break<span class="float-right"><i
-                            class='far fa-caret-square-down'></i></span></div>
-                </div>
-            </a>
-
-            <div id="blockbreak" class="collapse show section-card card-review">
-
-                <table class="table table-bordered">
-
-                    <tbody>
-
-                    <tr class="section-review">
-                        <td colspan="3"><b>Week 7</b>
-                        </td>
-                    </tr>
-
-                    {% include "lectures/week7.html" %}
-
-
-                    </tbody>
-                </table>
-            </div>
-
-            <!--- HW4 --->
-
-            <a data-toggle="collapse" data-target="#block4">
+            <a data-toggle="collapse" data-target="#block3">
                 <div class="card-header section-testing">
                     <div>
-                        4 - WebSockets<span class="float-right"><i
+                        3 - WebSockets and Databases<span class="float-right"><i
                             class='far fa-caret-square-down'></i></span></div>
                 </div>
             </a>
 
-            <div id="block4" class="collapse show section-card card-testing">
+            <div id="block3" class="collapse show section-card card-testing">
 
                 <table class="table table-bordered">
 
@@ -285,9 +236,18 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1YH1-UixygmoKSjKZh6raoUwCb3jZbVPrsKosiD-4A3k/edit?usp=sharing">Homework 4</a>
+                            <a href="https://docs.google.com/document/d/1AIRQSiVU3uMadM-6GarxlRXKVpmiAbnYb8Lx0M_ix5Q/edit?usp=sharing"></a>Homework 3
                         </td>
                     </tr>
+
+
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 7</b>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week7.html" %}
+
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 8</b>
@@ -308,17 +268,17 @@
                 </table>
             </div>
 
-            <!--- HW5 --->
+            <!--- HW4 --->
 
-            <a data-toggle="collapse" data-target="#block5">
+            <a data-toggle="collapse" data-target="#block4">
                 <div class="card-header section-testing">
                     <div>
-                        5 - Authentication<span class="float-right"><i
+                        4 - Authentication<span class="float-right"><i
                             class='far fa-caret-square-down'></i></span></div>
                 </div>
             </a>
 
-            <div id="block5" class="collapse show section-card card-testing">
+            <div id="block4" class="collapse show section-card card-testing">
 
                 <table class="table table-bordered">
 
@@ -326,9 +286,10 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1sjtdoxap8WjXPi7JItFf8Q8AiHVVff28WD94jWuFoKo/edit?usp=sharing">Homework 5</a>
+                            <a href="https://docs.google.com/document/d/1YH1-UixygmoKSjKZh6raoUwCb3jZbVPrsKosiD-4A3k/edit?usp=sharing"></a>Homework 4
                         </td>
                     </tr>
+
 
                     <tr class="section-week">
                         <td colspan="3"><b>Week 10</b>
@@ -345,10 +306,18 @@
 
                     {% include "lectures/week11.html" %}
 
+                    <tr class="section-week">
+                        <td colspan="3"><b>Week 12</b>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week12.html" %}
 
                     </tbody>
                 </table>
             </div>
+
 
             <!--- Project --->
 
@@ -366,13 +335,6 @@
 
                     <tbody>
 
-                    <tr class="section-review">
-                        <td colspan="3"><b>Week 12</b>
-                        </td>
-                    </tr>
-
-
-                    {% include "lectures/week12.html" %}
 
                     <tr class="section-review">
                         <td colspan="3"><b>Week 13</b>
@@ -390,6 +352,14 @@
 
 
                     {% include "lectures/week14.html" %}
+
+
+                    <tr class="section-review">
+                        <td colspan="3"><b>Week 15</b></td>
+                    </tr>
+
+
+                    {% include "lectures/week15.html" %}
 
 
                     </tbody>
@@ -438,28 +408,6 @@
 <script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
 <script src="/static_files/lib/socket.io-2.2.0.js"></script>
 <script src="/static_files/lib/fontawesome.js"></script>
-
-<script>
-    function collapse() {
-        for (let x of document.getElementsByClassName("collapse")) {
-            if (localStorage.getItem(x.id) === "hide") {
-                x.setAttribute("class", "collapse");
-            }
-        }
-        for (let x of document.getElementsByTagName("a")) {
-            if (x.getAttribute("data-toggle")) {
-                x.addEventListener("click", function () {
-                    const elem = document.getElementById(x.getAttribute("data-target").replace("#", ""));
-                    if (elem.classList.contains("show")) {
-                        localStorage.setItem(elem.id, "hide");
-                    } else {
-                        localStorage.removeItem(elem.id);
-                    }
-                });
-            }
-        }
-    }
-</script>
 
 </body>
 </html>
