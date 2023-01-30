@@ -2,12 +2,6 @@
     margin-top: 20px;
 }
 
-.section-week {
-    background: #3265cb;
-    color: #ffffff;
-    /*cursor: pointer;*/
-}
-
 .table {
     /* Remove the annoying space under each table */
     margin-bottom: 0;
@@ -56,13 +50,16 @@ li.reading{
 }
 
 .card-header {
-    padding: 10px;
+    padding: 7px;
+    padding-left: 15px;
     font-weight: bold;
-    font-size: larger;
+    /*font-size: larger;*/
 }
 
 .week {
-    font-weight: bold;
+    padding: 7px;
+    padding-left: 15px;
+    /*font-weight: bold;*/
 }
 
 .slide-icon {
@@ -112,17 +109,40 @@ p, li {
     border-radius: 0;
 }
 
-.card-review{
+.card-intro{
     border-color: #f0f0f0;
 }
 
 
-.section-review {
+.section-intro {
     background-color: #f0f0f0;
     color: #000000;
     cursor: pointer;
 }
 
+.card-outro{
+    border-color: #555555;
+}
+
+.hw-content{
+    padding: 20px;
+}
+
+td.date{
+    /*width: 20%;*/
+    white-space: nowrap;
+}
+
+.section-outro {
+    background-color: #555555;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+
+.week{
+    background-color: #0089de;
+}
 
 
 .card-testing{

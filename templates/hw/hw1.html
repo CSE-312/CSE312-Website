@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE116: Computer Science 2</title>
+    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
+    <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
+    <link rel="stylesheet" type="text/css" id="darkThemeCss" href="/static_files/darktheme.css" disabled/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/static_files/cse116.js"></script>
+    <base target="_blank">
+</head>
+
+<body class="outer" onload="bodyLoaded();">
+<div class="container">
+    <div class="row">
+        <div class="col-0 col-sm-0 col-md-1"></div>
+        <div class="col-12 col-sm-12 col-md-10 main-hw-block">
+
+
+            <hr/>
+
+            <h1>Programming Task 1</h1>
+            <h2>Testing 1</h2>
+            <hr/>
+            <h5>Time Estimate: 5 hours</h5>
+            <hr/>
+
+            <div class="card-header section-testing">
+                <div>Requirements</div>
+            </div>
+
+            <div class="section-card card-testing hw-content">
+
+                <hr/>
+
+
+                <h3>
+                    Project Structure
+                </h3>
+
+                <hr/>
+                <p>
+                    GitHub Repository link: <a href="https://github.com/jessehartloff/CSE116-Project">https://github.com/jessehartloff/CSE116-Project</a>
+                </p>
+                <ol>
+                    <li>Clone the starter code from the repository into a new IntelliJ project</li>
+                    <li>Make sure the src folder is marked as the source root (Right click the src
+                        folder, choose “mark directory as” and choose sources root)
+                    </li>
+                </ol>
+                <p>
+                    Once you have the project opened in IntelliJ, you'll see a src folder containing 2
+                    Java packages named ratings and tests. Your code for this Task will go in the
+                    ratings.ProblemSet class, while your testing will go in tests.TestProblemSet. For
+                    now, the rest of the classes can be ignored, though they will be used in future Tasks.
+                </p>
+                <p>
+                    To submit your project, create a zip file containing your entire project and
+                    submit it to AutoLab. (Click file -> export -> Project to Zip File, though there may be
+                    slight differences to this across OSes and versions)
+                </p>
+
+                <br/>
+                <hr/>
+
+                <h3>
+                    Testing Requirements
+                </h3>
+
+                <hr/>
+                <p>
+                    This is primarily a testing task and your feedback in AutoLab will begin by checking your tests.
+                    You will write tests for 3 different methods. All of your testing will be in the
+                    tests.TestProblemSet class. You are strongly encouraged to write many individual tests in this one
+                    class.
+                </p>
+
+                <ol>
+                    <li>average
+                        <ul>
+                            <li>
+                                Add tests to the tests.TestProblemSet class that will test a static method named average
+                                in the ratings.ProblemSet class
+                            </li>
+                            <li> The average method will take an ArrayList of Doubles as
+                                a parameter and returns the average of the values in the ArrayList as a double
+                            </li>
+                            <li>
+                                If the ArrayList is empty, the method should return 0.0
+                            </li>
+                            <li>
+                                Examples:
+                                <ul>
+                                    <li>average([1,2,3]) returns 2.0</li>
+                                    <li>average([-5,5]) returns 0.0</li>
+                                    <li>average([7,7,8,8]) returns 7.5</li>
+                                    <li>average([]) returns 0.0</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>sumOfDigits
+                        <ul>
+                            <li>
+                                Add tests to the tests.TestProblemSet class that will test a static method named
+                                sumOfDigits in the ratings.ProblemSet class
+                            </li>
+                            <li>
+                                The sumOfDigits method will take an int as
+                                a parameter and returns the sum of the digits of the input as an int
+                            </li>
+                            <li>
+                                Examples:
+                                <ul>
+                                    <li>sumOfDigits(123) returns 6</li>
+                                    <li>sumOfDigits(57) returns 12</li>
+                                    <li>sumOfDigits(-36) returns 9</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>bestKey
+                        <ul>
+                            <li>
+                                Add tests to the tests.TestProblemSet class that will test a static method named
+                                bestKey in the ratings.ProblemSet class
+                            </li>
+                            <li>
+                                The bestKey method will take a HashMap of Strings to Integers as a parameter and
+                                returns a key mapping to the largest Integer
+
+                            </li>
+                            <li>
+                                If the HashMap is empty, the method should return the empty String
+                            </li>
+                            <li>
+                                The method may break ties arbitrarily. When you write a test case where there are
+                                multiple correct solutions, you must accept any of these as correct return values in
+                                your test
+                            </li>
+                            <li>
+                                Examples:
+                                <ul>
+                                    <li>bestKey({"CSE": 100, "MTH": 90, "MGT": 10}) returns "CSE"</li>
+                                    <li>bestKey({"cat": 5, "dog": 5, "fox": 4}) can return either "cat" or "dog"</li>
+                                    <li>bestKey({}) returns ""</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ol>
+
+
+                {#                Incorrect Solutions#}
+
+                <br/>
+                <hr/>
+
+                <h3>
+                    Programming Requirements
+                </h3>
+
+                <hr/>
+                <p>
+                    Implement the three methods that you've tested. You can, and should, run your tests while
+                    completing your code to check if it is correct.
+                </p>
+
+
+                <br/>
+                <hr/>
+
+                <h3>AutoLab Feedback</h3>
+
+                <hr/>
+                <p>
+                    The feedback in AutoLab will be given in 3 phases. If you don't complete a phase, then feedback for
+                    the following phase(s) will not be given.
+                </p>
+
+                <ol>
+                    <li>Running your tests on a Correct Solution
+                        <ul>
+                            <li>Your tests will be run against a solution that is known to be correct. If your tests do
+                                not pass this correct solution, there is an error somewhere in your tests that must be
+                                fixed
+                                before you can move on with the assignment. This can be caused by misunderstanding the
+                                task
+                                requirements from this document, or rejecting alternate solutions (eg. Only accepting
+                                one
+                                possible answer when there is a tie for bestKey)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Running your tests on several Incorrect Solutions
+                        <ul>
+                            <li>
+                                The next phase is to run your tests against incorrect solutions. This will assess the
+                                thoroughness of your tests. Your tests must be able to fail all of the incorrect
+                                solutions to pass this phase. If your tests pass an incorrect solution, it is an
+                                indicator that you need to add more testing
+                            </li>
+                            <li>
+                                Passing this phase does not necessarily mean that your testing is completely thorough.
+                                Satisfying AutoLab is the bare minimum testing requirement. The incorrect solutions will
+                                not cover every possible mistake, and it is sometimes possible to pass this phase
+                                with very weak testing. If you are struggling to earn credit for code that you believe
+                                is correct, you should write more than the required tests
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Running my tests on Your Solution
+                        <ul>
+                            <li>
+                                Once AutoLab is happy with your tests, it will run my tests against your code to check
+                                it for correctness. If your testing is thorough, and your code passes your tests, then
+                                you should pass this phase. If you pass your tests, but fail one of mine, it is an
+                                indicator that you should write more tests to help expose your bug
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <p>
+                    Once you complete all 3 phases, you will have completed this Task and AutoLab will confirm this
+                    with a score of 1 for complete.
+                </p>
+                <hr/>
+
+                <table class="table table-bordered">
+                    <tbody>
+
+                    <tr class="table-warning">
+                        <td colspan="3">Wednesday, February 15 @ 9:00 <b>AM</b><br/>
+                            Expected Deadline
+                        </td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td colspan="3">Wednesday, February 22 @ 9:00 <b>AM</b><br/>
+                            Deadline
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <div class="col-0 col-sm-0 col-md-1"></div>
+    </div>
+</div>
+
+
+<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
+<script src="/static_files/lib/popper-1.12.9.min.js"></script>
+<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
+<script src="/static_files/lib/fontawesome.js"></script>
+
+</body>
+</html>

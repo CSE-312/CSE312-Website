@@ -24,22 +24,22 @@
             <hr/>
 
             <h1>CSE312: Web Applications</h1>
-            <h2>Fall 2022</h2>
+            <h2>Spring 2023</h2>
             <div class="darkThemeCheckboxRegion">
                 <label for="darkThemeCheckbox">Dark Theme</label>
                 <input id="darkThemeCheckbox" type="checkbox" onclick="setDarkMode(this.checked);"/>
             </div>
             <hr/>
 
-            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-f22/assessments" class="non_visual_link">
-                <img src="static_files/autolab.svg" class="img-responsive my-social-icon"/> Submit assignments
+            <a href="https://autograder.cse.buffalo.edu/courses/CSE312-s23/assessments" class="non_visual_link">
+                <img src="static_files/autolab.svg" class="img-responsive my-social-icon"/> Submit assignments (Not yet active)
                 here</a><br/>
 
             <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" class="non_visual_link">
                 <img src="static_files/_youtube_.png" class="img-responsive my-social-icon"/> Watch past
                 lectures</a><br/>
 
-            <a href="https://piazza.com/class/l7e6j7nq48a1vt/post/6" class="non_visual_link">
+            <a href="https://piazza.com/class/ldgbnk3mq0o4m2/post/6" class="non_visual_link">
                 <img src="static_files/piazza.png" class="img-responsive my-social-icon"/> Ask questions and find office hours</a><br/>
 
             <a href="https://discord.gg/nC4eBGM" class="non_visual_link">
@@ -68,27 +68,6 @@
 
             <hr/>
 
-
-            <div class="card">
-                <a data-toggle="collapse" data-target="#homework">
-                    <div class="card-header text-white section-header">
-                        <div>
-                            Homework <span class="float-right"><i
-                                class='far fa-caret-square-down'></i></span>
-                        </div>
-                    </div>
-                </a>
-
-                <div id="homework" class="collapse show">
-                    <div class="card-body">
-                        {% include "homework.html" %}
-                    </div>
-                </div>
-
-            </div>
-
-
-            <hr/>
 
 
             <div class="card">
@@ -130,20 +109,21 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1kTUnKi8LiEj63jLM2S1xID23LjYhr86awqGT8q4m-WQ/edit?usp=sharing">Homework 1</a>
+                            <a href="https://docs.google.com/document/d/1NuTYbwF74GKUAhtTD4GcF0GOzt48AJOTQqTdaANGwMI/edit?usp=sharing">Homework 1</a>
+{#                            Homework 1#}
                         </td>
                     </tr>
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 1</b>
+                        <td colspan="3" class="week"><b>Week 1</b>
                         </td>
                     </tr>
 
                     {% include "lectures/week1.html" %}
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 2</b>
+                        <td colspan="3" class="week"><b>Week 2</b>
                         </td>
                     </tr>
 
@@ -152,7 +132,7 @@
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 3</b>
+                        <td colspan="3" class="week"><b>Week 3</b>
                         </td>
                     </tr>
 
@@ -180,14 +160,15 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                            <a href="https://docs.google.com/document/d/1Qmey0lCzGsiweTD3V6A7k8k4RH124ezqEcXR6Pp6VzE/edit?usp=sharing">Homework 2</a>
+{#                            <a href="https://docs.google.com/document/d/1Qmey0lCzGsiweTD3V6A7k8k4RH124ezqEcXR6Pp6VzE/edit?usp=sharing">Homework 2</a>#}
+                            Homework 2
                         </td>
                     </tr>
 
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 4</b>
+                        <td colspan="3" class="week"><b>Week 4</b>
                         </td>
                     </tr>
 
@@ -196,7 +177,7 @@
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 5</b>
+                        <td colspan="3" class="week"><b>Week 5</b>
                         </td>
                     </tr>
 
@@ -204,19 +185,11 @@
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 6</b>
+                        <td colspan="3" class="week"><b>Week 6</b>
                         </td>
                     </tr>
 
                     {% include "lectures/week6.html" %}
-
-
-                    <tr class="section-week">
-                        <td colspan="3"><b>Week 7</b>
-                        </td>
-                    </tr>
-
-                    {% include "lectures/week7.html" %}
 
                     </tbody>
                 </table>
@@ -240,14 +213,31 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                             <a href="https://docs.google.com/document/d/1q-kUn4N8yvJ6cmezJxV6yhFtepFIBgDcfja5VPOdnrc/edit?usp=sharing">Homework 3</a>
+{#                             <a href="https://docs.google.com/document/d/1q-kUn4N8yvJ6cmezJxV6yhFtepFIBgDcfja5VPOdnrc/edit?usp=sharing">Homework 3</a>#}
+                             Homework 3
                         </td>
                     </tr>
 
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 8</b>
+                        <td colspan="3" class="week"><b>Week 7</b>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week7.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3" class="week"><b>Spring Break! </b>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week7-and-a-half.html" %}
+
+
+                    <tr class="section-week">
+                        <td colspan="3" class="week"><b>Week 8</b>
                         </td>
                     </tr>
 
@@ -256,19 +246,12 @@
                     {% include "lectures/week8.html" %}
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 9</b>
+                        <td colspan="3" class="week"><b>Week 9</b>
                         </td>
                     </tr>
 
                     {% include "lectures/week9.html" %}
 
-
-                    <tr class="section-week">
-                        <td colspan="3"><b>Week 10</b>
-                        </td>
-                    </tr>
-
-                    {% include "lectures/week10.html" %}
 
 
                     </tbody>
@@ -293,14 +276,22 @@
 
                     <tr class="homework">
                          <td colspan="3">
-                             <a href="https://docs.google.com/document/d/1WxSfDcU-E_lzN18eBn_saQqS9kLHNo_okx1FAwno57c/edit?usp=sharing">Homework 4</a>
+{#                             <a href="https://docs.google.com/document/d/1WxSfDcU-E_lzN18eBn_saQqS9kLHNo_okx1FAwno57c/edit?usp=sharing">Homework 4</a>#}
+                             Homework 4
                         </td>
                     </tr>
 
 
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 11</b>
+                        <td colspan="3" class="week"><b>Week 10</b>
+                        </td>
+                    </tr>
+
+                    {% include "lectures/week10.html" %}
+
+                    <tr class="section-week">
+                        <td colspan="3" class="week"><b>Week 11</b>
                         </td>
                     </tr>
 
@@ -308,7 +299,7 @@
                     {% include "lectures/week11.html" %}
 
                     <tr class="section-week">
-                        <td colspan="3"><b>Week 12</b>
+                        <td colspan="3" class="week"><b>Week 12</b>
                         </td>
                     </tr>
 
@@ -316,13 +307,6 @@
                     {% include "lectures/week12.html" %}
 
 
-                    <tr class="section-review">
-                        <td colspan="3"><b>Week 13</b>
-                        </td>
-                    </tr>
-
-
-                    {% include "lectures/week13.html" %}
 
 
                     </tbody>
@@ -347,21 +331,22 @@
                     <tbody>
 
 
+                    <tr class="section-review">
+                        <td colspan="3" class="week"><b>Week 13</b>
+                        </td>
+                    </tr>
+
+
+                    {% include "lectures/week13.html" %}
 
                     <tr class="section-review">
-                        <td colspan="3"><b>Week 14</b></td>
+                        <td colspan="3" class="week"><b>Week 14</b></td>
                     </tr>
 
 
                     {% include "lectures/week14.html" %}
 
 
-                    <tr class="section-review">
-                        <td colspan="3"><b>Week 15</b></td>
-                    </tr>
-
-
-                    {% include "lectures/week15.html" %}
 
 
                     </tbody>
