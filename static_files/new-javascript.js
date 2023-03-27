@@ -94,7 +94,9 @@ function startVideo() {
 
         // called when an ice candidate needs to be sent to the peer
         webRTCConnection.onicecandidate = function (data) {
-            socket.send(JSON.stringify({'messageType': 'webRTC-candidate', 'candidate': data.candidate}));
+            if(data.candidate) {
+                socket.send(JSON.stringify({'messageType': 'webRTC-candidate', 'candidate': data.candidate}));
+            }
         };
     })
 }
