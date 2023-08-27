@@ -68,6 +68,6 @@ hr {
 }
 
 /* Dark text on the bootstrap elements that don't change color based on the theme (Deadlines should still stand out) */
-.table-warning, .table-danger{
+.table-warning, .table-danger, .table-success, .table-info{
     color: black;
 }
