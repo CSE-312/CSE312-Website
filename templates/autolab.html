@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE312: Web Apps</title>
+    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
+    <link rel="stylesheet" type="text/css" href="/static_files/UBStylin.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <base target="_blank">
+</head>
+<body class="outer">
+
+<div class="container">
+
+    <form method="get" action="https://autolab.cse.buffalo.edu/oauth/authorize" enctype="application/x-www-form-urlencoded">
+        <input type="text" name="response_type" value="code" hidden/>
+        <input type="text" name="client_id" value="{{ client_id }}" hidden/>
+        <input type="text" name="redirect_uri" value="{{ redirect_uri }}" hidden/>
+        <input type="text" name="state" value="{{ state }}" hidden/>
+
+        <input type="submit" value="login with Autolab"/>
+    </form>
+
+</div>
+
+
+<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
+<script src="/static_files/lib/popper-1.12.9.min.js"></script>
+<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
+
+
+</body>
+</html>
+
