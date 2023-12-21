@@ -1,6 +1,7 @@
 import base64
 import json
 import random
+import secrets
 from urllib.parse import urlencode
 
 from flask import Flask, send_from_directory, render_template, request, make_response
@@ -15,8 +16,8 @@ users_collection = db["users"]
 
 
 def start_session():
-    token = "121wqwefwef4thisistotallyrandom" + str(random.random())
-    state = "somerandomthing" + str(random.random())
+    token = secrets.token_urlsafe(20)
+    state = secrets.token_urlsafe(20)
     users_collection.insert_one({"token": token, "state": state})
     return [token, state]
 
@@ -93,13 +94,7 @@ def check_token(token):
         return [None, None]
 
 
+# TODO: Use refresh tokens. For now, once the token expires you'll lose access and things will break
+
 if __name__ == '__main__':
     pass
-    print(urlencode({"re": " "}))
-    # users_collection.insert_one({"token": "token", "state": "state"})
-
-    # cash_in_code_for_token()
-    # dic = {}
-    # x = dic.get("code")
-    # print(x)
-    # user_info()
