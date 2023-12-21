@@ -9,4 +9,7 @@ RUN pip3 install -r requirements.txt
 
 EXPOSE 5000
 
-CMD ["python3", "cse312_app.py"]
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
+RUN chmod +x /wait
+
+CMD /wait && python3 -u cse312_app.py
