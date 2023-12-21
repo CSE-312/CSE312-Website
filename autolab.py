@@ -9,7 +9,7 @@ import requests
 
 import autolab_config
 
-mongo_client = MongoClient()
+mongo_client = MongoClient("mongo")
 db = mongo_client["autolab"]
 users_collection = db["users"]
 
@@ -57,7 +57,7 @@ def cash_in_code_for_token(code, token):
 
     response = requests.post(token_url, headers=headers, data=data)
     print(response)
-    the_good_stuff = json.loads(response.raw.decode())
+    the_good_stuff = json.loads(response.content.decode())
     access_token = the_good_stuff.get("access_token")
     refresh_token = the_good_stuff.get("refresh_token")
     scope = the_good_stuff.get("scope")
@@ -76,7 +76,7 @@ def user_info(access_token, token):
     }
     response = requests.get(user_url, headers=headers)
     print(response)
-    user_data = json.loads(response.raw.decode())
+    user_data = json.loads(response.content.decode())
     email = user_data.get("email")
     first_name = user_data.get("first_name")
     last_name = user_data.get("last_name")
@@ -87,8 +87,8 @@ def user_info(access_token, token):
 def check_token(token):
     user_record = users_collection.find_one({"token": token})
     if user_record and "email" in user_record:
-        return [user_record.contains("email"),
-                user_record.contains("first_name") + " " + user_record.contains("last_name")]
+        return [user_record.get("email"),
+                user_record.get("first_name") + " " + user_record.get("last_name")]
     else:
         return [None, None]
 
