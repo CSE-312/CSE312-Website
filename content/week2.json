@@ -1,0 +1,75 @@
+{
+  "title": "Week 2: Web Basics",
+  "theme": "intro",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "January 29",
+      "title": "Front End Development - HTML/CSS + JavaScript",
+      "slides": "2_1_Front_End.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.w3schools.com/html/default.asp",
+          "text": "HTML [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/css/default.asp",
+          "text": "CSS [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/js/default.asp",
+          "text": "JavaScript [W3 Schools]"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "January 31",
+      "title": "HTTP Request/Response",
+      "slides": "1_2_HTTP.pdf",
+      "reading_list": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
+          "text": "HTTP (Wikipedia)"
+        },
+        {
+          "url": "https://tools.ietf.org/html/rfc2616",
+          "text": "RFC2616 - HTTP 1.1"
+        },
+        {
+          "url": "https://docs.python.org/3/library/socketserver.html",
+          "text": "Python TCP Server"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "February 2",
+      "title": "Docker and Docker Compose",
+      "slides": "1_5_Docker / 1_6_DockerCompose.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.docker.com/",
+          "text": "Docker"
+        },
+        {
+          "url": "https://docs.docker.com/get-started/",
+          "text": "Docker - Getting Started"
+        },
+        {
+          "url": "https://docs.docker.com/docker-for-windows/wsl/",
+          "text": "Docker For Windows Users"
+        },
+        {
+          "url": "https://docs.docker.com/compose/",
+          "text": "Docker Compose"
+        }
+      ]
+    }
+  ]
+}

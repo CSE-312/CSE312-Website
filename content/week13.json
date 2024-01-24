@@ -1,0 +1,37 @@
+{
+  "title": "Week 13: Project Presentations",
+  "theme": "outro",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 22",
+      "time": "9:00 AM",
+      "assignment": "Project Part 2",
+      "deadline_type": ""
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "April 22",
+      "title": "Presentations",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "April 24",
+      "title": "Presentations",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "April 26",
+      "title": "Presentations",
+      "reading_list": []
+    }
+  ]
+}

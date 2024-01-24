@@ -1,0 +1,42 @@
+{
+  "title": "Week 7: Image Uploads",
+  "theme": "ds",
+  "homework": [
+    {
+      "title": "Homework 3: Image Uploads",
+      "url": "",
+      "released": false
+    }
+  ],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "March 4",
+      "title": "Multipart and File Uploads",
+      "slides": "3_1_multipart_files.pdf",
+      "reading_list": [
+        {
+          "url": "https://tools.ietf.org/html/rfc1521",
+          "text": "RFC1521 - Multipart Form"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "March 6",
+      "title": "Testing Multipart Uploads",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "March 8",
+      "title": "Buffering HTTP Requests",
+      "slides": "3_5_Buffers.pdf",
+      "reading_list": []
+    }
+  ]
+}

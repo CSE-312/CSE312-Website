@@ -1,0 +1,22 @@
+
+
+{% macro lecture(content) -%}
+    <tr>
+        <td class="date">{{ content.day }}<br/>{{ content.date }}</td>
+        <td>
+            <h6 class="header">{{ content.title }}
+                {% if content.slides %}
+                    - <a href="static_files/slides/{{ content.slides }}" target="_blank">Slides</a>
+                {% endif %}
+            </h6>
+            {% if content.reading_list %}
+                <ul class="reading">
+                    {% for reading_item in content.reading_list %}
+                        <li class="reading"><a href="{{ reading_item.url }}">{{ reading_item.text }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </td>
+    </tr>
+{%- endmacro %}
+

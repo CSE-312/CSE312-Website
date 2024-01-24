@@ -129,7 +129,7 @@ p, li {
 }
 
 td.date{
-    /*width: 20%;*/
+    width: 20%;
     white-space: nowrap;
 }
 
@@ -143,6 +143,15 @@ td.date{
 .week{
     background-color: #0089de;
 }
+
+
+
+.section-outro {
+    background-color: #555555;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
 
 
 .card-testing{

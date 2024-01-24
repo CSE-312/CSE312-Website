@@ -1,0 +1,60 @@
+{
+  "title": "Week 12: Deployment",
+  "theme": "oop",
+  "homework": [
+    {
+      "title": "Project Part 3",
+      "url": "",
+      "released": false
+    }
+],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 15",
+      "time": "9:00 AM",
+      "assignment": "Last Day to Sign up for a Presentation Time",
+      "deadline_type": ""
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 15",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "expected"
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 15",
+      "time": "9:00 AM",
+      "assignment": "Homework 3",
+      "deadline_type": "final"
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "April 15",
+      "title": "Deployment Examples",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "April 17",
+      "title": "Extra Topic",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "April 19",
+      "title": "DoS and DDoS",
+      "slides": "4_7_DoS.pdf",
+      "reading_list": []
+    }
+  ]
+}

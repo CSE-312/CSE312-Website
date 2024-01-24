@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CSE312: Web Apps{% endblock %}</title>
+    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
+    <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
+    <link rel="stylesheet" type="text/css" id="darkThemeCss" href="/static_files/darktheme.css" disabled/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/static_files/cse312.js"></script>
+    <base target="_blank">
+</head>
+
+<body class="outer" onload="bodyLoaded();">
+<div class="container">
+
+    <div class="row">
+        <div class="col-0 col-sm-0 col-md-1"></div>
+
+        <div class="col-12 col-sm-12 col-md-10">
+
+
+            <hr/>
+
+            {% block header %}{% endblock %}
+
+            <div class="darkThemeCheckboxRegion">
+                <label for="darkThemeCheckbox">Dark Theme</label>
+                <input id="darkThemeCheckbox" type="checkbox" onclick="setDarkMode(this.checked);"/>
+            </div>
+            <hr/>
+
+            {% block content %}{% endblock %}
+
+            <hr/>
+
+
+        </div>
+
+
+        <div class="col-0 col-sm-0 col-md-1"></div>
+    </div>
+</div>
+
+
+<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
+<script src="/static_files/lib/popper-1.12.9.min.js"></script>
+<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
+<script src="/static_files/lib/fontawesome.js"></script>
+
+</body>
+</html>

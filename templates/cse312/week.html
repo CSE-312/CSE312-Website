@@ -1,0 +1,28 @@
+
+
+{% import 'cse312/homework.html' as homework_macro %}
+{% import 'cse312/deadline.html' as deadline_macro %}
+{% import 'cse312/lecture.html' as lecture_macro %}
+
+{% macro week(content) -%}
+
+    {% for hw in content.homework %}
+        {{ homework_macro.homework(hw) }}
+    {% endfor %}
+
+
+    <tr class="lab">
+        <td colspan="3">Recitation: {{ content.recitation }}</td>
+    </tr>
+
+
+    {% for content in content.content %}
+        {% if content.type == "lecture" %}
+            {{ lecture_macro.lecture(content) }}
+        {% elif content.type == "deadline" %}
+            {{ deadline_macro.deadline(content) }}
+        {% endif %}
+    {% endfor %}
+
+
+{%- endmacro %}

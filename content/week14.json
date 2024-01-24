@@ -1,0 +1,45 @@
+{
+  "title": "Week 14: Project Presentations",
+  "theme": "outro",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 29",
+      "time": "9:00 AM",
+      "assignment": "Homework 5",
+      "deadline_type": ""
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 29",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "final"
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "April 29",
+      "title": "Presentations",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "May 1",
+      "title": "Presentations",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "May 3",
+      "title": "Presentations",
+      "reading_list": []
+    }
+  ]
+}

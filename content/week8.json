@@ -1,0 +1,47 @@
+{
+  "title": "Week 8: Video",
+  "theme": "ds",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "March 11",
+      "time": "9:00 AM",
+      "assignment": "Homework 2",
+      "deadline_type": "expected"
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "March 11",
+      "time": "9:00 AM",
+      "assignment": "Homework 1",
+      "deadline_type": "final"
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "March 11",
+      "title": "Video",
+      "reading_list": [
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "March 13",
+      "title": "Video",
+      "reading_list": [
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "March 15",
+      "title": "Video",
+      "reading_list": []
+    }
+  ]
+}

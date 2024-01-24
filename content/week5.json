@@ -1,0 +1,48 @@
+{
+  "title": "Week 5: Authentication",
+  "theme": "oop",
+  "homework": [
+    {
+      "title": "Homework 2: Authentication",
+      "url": "",
+      "released": false
+    },
+    {
+      "title": "Project Part 1",
+      "url": "",
+      "released": false
+    }
+  ],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "February 19",
+      "title": "Authentication and Secure Password Storage",
+      "slides": "2_4_Authentication.pdf",
+      "reading_list": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Bcrypt",
+          "text": "bcrypt (Wikipedia)"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "February 21",
+      "title": "Authentication Tokens and Sessions",
+      "slides": "2_5_Authentication_Tokens.pdf",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "February 23",
+      "title": "XSRF",
+      "slides": "2_8_XSRF.pdf",
+      "reading_list": []
+    }
+  ]
+}

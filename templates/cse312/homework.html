@@ -1,0 +1,16 @@
+
+
+{% macro homework(content) -%}
+    <tr class="homework">
+        <td colspan="3">
+            {% if content.released %}
+            <a href="hw/{{ content.url }}">
+                {{ content.title }}
+            </a>
+            {%  else %}
+                {{ content.title }}
+            {% endif %}
+        </td>
+    </tr>
+{%- endmacro %}
+

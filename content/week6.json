@@ -1,0 +1,47 @@
+{
+  "title": "Week 6: OAuth 2.0",
+  "theme": "oop",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "February 26",
+      "time": "9:00 AM",
+      "assignment": "Homework 1",
+      "deadline_type": "expected"
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "February 26",
+      "title": "OAuth 2.0",
+      "slides": "4_4_OAuth.pdf",
+      "reading_list": [
+        {
+          "url": "https://datatracker.ietf.org/doc/html/rfc6749",
+          "text": "RFC 6749 - OAuth 2.0"
+        },
+        {
+          "url": "https://datatracker.ietf.org/doc/html/rfc6750",
+          "text": "RFC 6750 - OAuth 2.0 Tokens"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "February 28",
+      "title": "OAuth 2.0",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "March 1",
+      "title": "OAuth 2.0 Example",
+      "reading_list": []
+    }
+  ]
+}

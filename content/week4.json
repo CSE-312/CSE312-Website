@@ -1,0 +1,70 @@
+{
+  "title": "Week 4: HTTP POST and Databases",
+  "theme": "testing",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "February 12",
+      "title": "Databases and HTML Templates",
+      "slides": "2_3_Databases_and_HTML_Templates.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.mysql.com",
+          "text": "MySQL"
+        },
+        {
+          "url": "https://www.w3schools.com/sql/",
+          "text": "SQL Tutorial"
+        },
+        {
+          "url": "https://www.mongodb.com",
+          "text": "MongoDB"
+        },
+        {
+          "url": "https://www.tutorialspoint.com/mongodb/index.htm",
+          "text": "MongoDB Tutorial"
+        },
+        {
+          "url": "https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b",
+          "text": "Waiting Workaround"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Web_template_system",
+          "text": "Templating (Wikipedia)"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "February 14",
+      "title": "HTML Injection Attacks and Browser Extensions",
+      "slides": "2_7_Injection_Attacks.pdf",
+      "reading_list": [
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension",
+          "text": "Browser Extension tutorial"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "February 16",
+      "title": "CRUD and REST API",
+      "slides": "2_6_API.pdf",
+      "reading_list": []
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "February 16",
+      "time": "11:59 PM",
+      "assignment": "Team Formation",
+      "deadline_type": ""
+    }
+  ]
+}

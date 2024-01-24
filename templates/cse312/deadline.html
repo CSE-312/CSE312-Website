@@ -1,0 +1,38 @@
+
+
+{% macro deadline(content) -%}
+    {% if content.deadline_type == "expected" %}
+        <tr class="table-info">
+    {% elif content.deadline_type == "late" %}
+        <tr class="table-warning">
+    {% elif content.deadline_type == "final" %}
+        <tr class="table-danger">
+    {% else %}
+        <tr class="table-info">
+    {% endif %}
+        <td colspan="3">{{ content.day }}, {{ content.date }} @ {{ content.time }}<br/>
+        {{ content.assignment }}:
+    {% if content.deadline_type == "expected" %}
+        Expected Deadline
+    {% elif content.deadline_type == "late" %}
+        Late Deadline
+    {% elif content.deadline_type == "final" %}
+        Final Deadline
+    {% else %}
+        Deadline
+    {% endif %}
+</td>
+</tr>
+
+
+{%- endmacro %}
+
+
+{
+"type": "deadline",
+"day": "Saturday",
+"date": "January 1",
+"time": "1pm",
+"assignment": "Task1",
+"deadline_type": "late"
+},

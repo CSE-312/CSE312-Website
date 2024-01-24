@@ -1,0 +1,59 @@
+{
+  "title": "Week 9: WebSockets",
+  "theme": "testing",
+  "homework": [
+    {
+      "title": "Homework 4: WebSockets",
+      "url": "",
+      "released": false
+    },
+    {
+      "title": "Project Part 2",
+      "url": "",
+      "released": false
+    }
+  ],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "March 25",
+      "time": "9:00 AM",
+      "assignment": "Project Part 1",
+      "deadline_type": ""
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "March 25",
+      "title": "WebSocket Handshake",
+      "slides": "3_3_WebSocket_Handshake.pdf",
+      "reading_list": [
+        {
+          "url": "https://tools.ietf.org/html/rfc6455",
+          "text": "RFC 6455"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+          "text": "WebSocket Documentation and Examples"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "March 27",
+      "title": "WebSocket Frames",
+      "slides": "3_4_WebSocket_Frames.pdf",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "March 29",
+      "title": "Testing WebSocket and Buffering",
+      "reading_list": []
+    }
+  ]
+}

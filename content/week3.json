@@ -1,0 +1,81 @@
+{
+  "title": "Week 3: HTTP GET",
+  "theme": "testing",
+  "homework": [
+    {
+      "title": "Homework 1: HTTP",
+      "url": "https://docs.google.com/document/d/1qtIdmrnxji3-pRasc-n3J_m_DLc8k0UwdLb8VIF0k2Y/edit?usp=sharing",
+      "released": false
+    }
+  ],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "February 5",
+      "title": "HTTP - Static Files, MIME Types, and Encodings",
+      "slides": "1_3_Encodings.pdf",
+      "reading_list": [
+        {
+          "url": "https://en.wikipedia.org/wiki/UTF-8",
+          "text": "UTF-8 (Wikipedia)"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types",
+          "text": "MIME types"
+        },
+        {
+          "url": "https://www.iana.org/assignments/media-types/media-types.xhtml",
+          "text": "Every MIME type"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
+          "text": "String MIME types"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "February 7",
+      "title": "Cookies",
+      "slides": "1_4_Cookies.pdf",
+      "reading_list": [
+        {
+          "url": "https://tools.ietf.org/html/rfc6265",
+          "text": "RFC6265 - Cookies"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie",
+          "text": "Directives Overview"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date",
+          "text": "Date Formatting"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "February 9",
+      "title": "HTTP POST, Forms, and AJAX",
+      "slides": "2_2_POST_Forms.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.w3schools.com/html/html_forms.asp",
+          "text": "HTML Forms [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/xml/ajax_intro.asp",
+          "text": "AJAX [W3 Schools]"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Query_string",
+          "text": "Query Strings (Wikipedia)"
+        }
+      ]
+    }
+  ]
+}

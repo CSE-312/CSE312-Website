@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% import 'cse312/week.html' as week_macro %}
+
+{% block header %}
+    <h1>CSE312: Web Applications</h1>
+    <h2>Spring 2024</h2>
+{% endblock %}
+
+{% block content %}
+    <a href="https://autolab.cse.buffalo.edu/courses/cse312-s24/assessments" class="non_visual_link">
+        <img src="static_files/images/autolab.svg" class="img-responsive my-social-icon" alt="Autolab"/> Submit programming
+        assignments</a>
+    <br/>
+
+    <a href="https://www.youtube.com/channel/UCxB_9AWzBvp4mWSk8zpFU6g/videos" class="non_visual_link">
+        <img src="static_files/images/_youtube_.png" class="img-responsive my-social-icon" alt="YouTube"/> Watch past lectures</a>
+    <br/>
+
+    <a href="https://piazza.com/class/lrqm7c87up82t5/post/6" class="non_visual_link">
+        <img src="static_files/images/piazza.png" class="img-responsive my-social-icon" alt="Piazza"/> Ask questions and find office
+        hours</a><br/>
+
+    <a href="https://discord.gg/nC4eBGM" class="non_visual_link">
+        <img src="static_files/images/discord2.png" class="img-responsive my-social-icon" alt="Discord"/> Chat with other students</a>
+    <br/>
+
+    <hr/>
+
+
+    <div class="card">
+        <a data-toggle="collapse" data-target="#syllabus">
+            <div class="card-header text-white section-header">
+                <div>
+                    Syllabus <span class="float-right"><i
+                        class='far fa-caret-square-down'></i></span>
+                </div>
+            </div>
+        </a>
+
+        <div id="syllabus" class="collapse show">
+            <div class="card-body">
+                {% include "cse312/syllabus.html" %}
+            </div>
+        </div>
+    </div>
+
+
+    <hr/>
+
+
+
+    {% for week_content in weeks %}
+        <a data-toggle="collapse" data-target="#card{{ loop.index }}">
+            <div class="card-header section-{{ week_content.theme }}">
+                <div>
+                    {{ week_content.title }} <span class="float-right"><i class='far fa-caret-square-down'></i></span>
+                </div>
+            </div>
+        </a>
+
+        <div id="card{{ loop.index }}" class="collapse show section-card card-{{ week_content.theme }}">
+            <table class="table table-bordered">
+                <tbody>
+                {{ week_macro.week(week_content) }}
+                </tbody>
+            </table>
+        </div>
+
+    {% endfor %}
+
+{#    <hr>#}
+{#    <a href="https://github.com/jessehartloff/CSE312" class="non_visual_link">#}
+{#        <img src="static_files/images/github.png" class="img-responsive my-social-icon" alt="Website GitHub"/> Website GitHub</a>#}
+{#    <br/>#}
+
+{% endblock %}
+

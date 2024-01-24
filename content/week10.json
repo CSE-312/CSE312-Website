@@ -1,0 +1,47 @@
+{
+  "title": "Week 10: WebRTC",
+  "theme": "testing",
+  "homework": [],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 1",
+      "time": "9:00 AM",
+      "assignment": "Homework 3",
+      "deadline_type": "expected"
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 1",
+      "time": "9:00 AM",
+      "assignment": "Homework 2",
+      "deadline_type": "final"
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "April 1",
+      "title": "WebRTC Overview",
+      "slides": "3_7_WebRTC.pdf",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "April 3",
+      "title": "WebRTC Details",
+      "slides": "3_8_WebRTC_2.pdf",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "April 5",
+      "title": "WebSocket and WebRTC Examples",
+      "reading_list": []
+    }
+  ]
+}
