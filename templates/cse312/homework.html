@@ -4,7 +4,7 @@
     <tr class="homework">
         <td colspan="3">
             {% if content.released %}
-            <a href="hw/{{ content.url }}">
+            <a href="{{ content.url }}">
                 {{ content.title }}
             </a>
             {%  else %}
