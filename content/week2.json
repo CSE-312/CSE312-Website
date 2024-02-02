@@ -51,7 +51,7 @@
       "day": "Friday",
       "date": "February 2",
       "title": "Docker and Docker Compose",
-      "slides": "1_5_Docker / 1_6_DockerCompose.pdf",
+      "slides": "1_5_Docker.pdf",
       "reading_list": [
         {
           "url": "https://www.docker.com/",
