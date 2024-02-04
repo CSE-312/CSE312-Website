@@ -41,5 +41,12 @@ def serve_static(filename):
     return resp
 
 
+@app.route('/rec')
+def recitation_attendance_tool():
+    resp = make_response(render_template("cse312/recAttendance.html"))
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
+
+
 if __name__ == '__main__':
     socket_server.run(app, host="0.0.0.0", port=5000)
