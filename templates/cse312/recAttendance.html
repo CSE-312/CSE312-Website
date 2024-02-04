@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE116: Computer Science 2</title>
+    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
+    <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
+    <link rel="stylesheet" type="text/css" id="darkThemeCss" href="/static_files/darktheme.css" disabled/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/static_files/cse312.js"></script>
+    <base target="_blank">
+</head>
+
+<body class="outer" onload="loadLocalStorage();">
+<div class="container">
+    <div class="row">
+        <div class="col-0 col-sm-0 col-md-1"></div>
+        <div class="col-12 col-sm-12 col-md-10 main-hw-block">
+
+
+            <hr/>
+
+            <h1>Attendance Collection Tool</h1>
+            <h2>CSE312 Recitation</h2>
+            <hr/>
+
+            <div class="card-header section-testing">
+                <div>Quick Action: Mark Student as Present</div>
+            </div>
+
+            <div class="section-card card-testing hw-content">
+                <form id="quickMarkAsPresent" onkeydown="if(event.keyCode === 13) return false;">
+                    <div class="form-group row">
+                        <label for="section" class="col-sm-1 col-form-label">Section</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="section">
+                                <option hidden disabled selected value> -- select an option --</option>
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="A3">A3</option>
+                                <option value="A4">A4</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="B3">B3</option>
+                                <option value="B4">B4</option>
+                            </select>
+                        </div>
+                        <label for="week" class="col-sm-1 col-form-label">Week</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" id="week">
+                                <option hidden disabled selected value> -- select an option --</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCardSwipe" class="col-sm-1 col-form-label">Card</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="inputCardSwipe" oninput="quickMarkAsPresent();"
+                                   onsubmit="return false;"
+                                   placeholder="Plug in the reader, click this textbox, and SCAN!" type="text">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-outline-primary btn-block"
+                                    onclick="document.getElementById('inputCardSwipe').value = '';">Clear
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+                <hr>
+                <div id="lastStudent" class="alert alert-secondary text-center" role="alert">
+                    No student scanned in current session.
+                </div>
+
+                <table id="studentData" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Week</th>
+                        <th scope="col">Section</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">P#</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <hr>
+                <button type="button" class="btn btn-danger btn-lg btn-block" data-toggle="modal"
+                        data-target="#warningModal">Wipe table
+                </button>
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="warningModal" tabindex="-1" role="dialog"
+                     aria-labelledby="warningModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="warningModalLabel">Caution!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                You are about to delete all local card swipe data.<br>
+                                Please ensure you have backed up the data or stored it appropriately.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" onclick="wipeTable()">Wipe table data
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-0 col-sm-0 col-md-1"></div>
+    </div>
+</div>
+
+<script>
+    function quickMarkAsPresent() {
+        let input = document.getElementById("inputCardSwipe");
+        let status = document.getElementById("lastStudent")
+        let inputLength = input.value.length
+        if (inputLength === 0) {
+            status.className = "alert alert-secondary text-center"
+            status.innerText = "Waiting for input..."
+        } else if (input.value.length < 115) {
+            status.className = "alert alert-secondary text-center";
+            status.innerText = "Waiting for card reader to finish..."
+        } else if (input.value.length >= 115) {
+            // locate the first ? in input
+            let trimmedInput = input.value.trim();
+            if (document.getElementById("week").value === "" || document.getElementById("section").value === "") {
+                input.setAttribute("inputCardSwipe", "readonly");
+                input.value = "";
+                status.className = "alert alert-danger text-center"
+                status.innerHTML = "<strong>Attendance not recorded!</strong> You MUST select a section and week number."
+                input.removeAttribute("readonly");
+            } else if (!trimmedInput.startsWith("%B") && !trimmedInput.endsWith("?")) {
+                input.setAttribute("inputCardSwipe", "readonly");
+                input.value = "";
+                status.className = "alert alert-danger text-center"
+                status.innerText = "Unable to read card data! Please swipe card again."
+                input.removeAttribute("readonly");
+            } else {
+                let personNumber = trimmedInput.substring(trimmedInput.indexOf("?") - 15, trimmedInput.indexOf("?") - 7);
+                let lastName = trimmedInput.substring(trimmedInput.indexOf("^") + 1, trimmedInput.indexOf("/")).trim();
+                console.log(personNumber);
+                input.setAttribute("inputCardSwipe", "readonly");
+                input.value = "";
+                status.className = "alert alert-success text-center"
+                status.innerHTML = "Read success! <br> <strong>" + personNumber + " " + lastName + "</strong>";
+                input.removeAttribute("readonly");
+                let table = document.getElementById('studentData').getElementsByTagName('tbody')[0];
+                let newRow = table.insertRow(table.rows.length);
+                let newWeek = newRow.insertCell(0);
+                newWeek.innerText = document.getElementById("week").value;
+                let newSection = newRow.insertCell(1);
+                newSection.innerText = document.getElementById("section").value;
+                let newLastName = newRow.insertCell(2);
+                newLastName.innerText = lastName;
+                let newPersonNumber = newRow.insertCell(3);
+                newPersonNumber.innerText = personNumber;
+                localStorage.setItem('studentData', document.getElementById('studentData').innerHTML);
+            }
+
+        }
+
+    }
+
+    function wipeTable() {
+        localStorage.removeItem('studentData');
+        location.reload();
+    }
+
+    function loadLocalStorage() {
+        if (localStorage.getItem('studentData') != null) {
+            document.getElementById('studentData').innerHTML = localStorage.getItem('studentData');
+        }
+    }
+</script>
+
+<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
+<script src="/static_files/lib/popper-1.12.9.min.js"></script>
+<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
+<script src="/static_files/lib/fontawesome.js"></script>
+
+</body>
+</html>
