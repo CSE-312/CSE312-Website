@@ -47,6 +47,12 @@ def recitation_attendance_tool():
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
 
+@app.route('/failMe', methods=["GET", "POST"])
+def example_test():
+    resp = make_response("You may have been hacked..")
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    return resp
+
 
 if __name__ == '__main__':
     socket_server.run(app, host="0.0.0.0", port=5000)
