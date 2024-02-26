@@ -17,7 +17,7 @@
       "day": "Monday",
       "date": "February 26",
       "title": "OAuth 2.0",
-      "slides": "4_4_OAuth.pdf",
+      "slides": "2_9_OAuth.pdf",
       "reading_list": [
         {
           "url": "https://datatracker.ietf.org/doc/html/rfc6749",
