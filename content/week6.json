@@ -16,7 +16,7 @@
       "type": "lecture",
       "day": "Monday",
       "date": "February 26",
-      "title": "OAuth 2.0",
+      "title": "OAuth 2.0 - Overview",
       "slides": "2_9_OAuth.pdf",
       "reading_list": [
         {
@@ -33,14 +33,15 @@
       "type": "lecture",
       "day": "Wednesday",
       "date": "February 28",
-      "title": "OAuth 2.0",
+      "title": "OAuth 2.0 - Implementation Details",
+      "slides": "2_10_OAuth.pdf",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
       "date": "March 1",
-      "title": "OAuth 2.0 Example",
+      "title": "OAuth 2.0 - Add Ons",
       "reading_list": []
     }
   ]
