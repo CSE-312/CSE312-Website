@@ -42,7 +42,13 @@
       "day": "Friday",
       "date": "March 1",
       "title": "OAuth 2.0 - Add Ons",
-      "reading_list": []
+      "slides": "2_11_OAuth.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc7636",
+          "text": "RFC 7636 - PKCE"
+        }
+      ]
     }
   ]
 }
