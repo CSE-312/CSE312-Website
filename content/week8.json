@@ -24,23 +24,32 @@
       "type": "lecture",
       "day": "Monday",
       "date": "March 11",
-      "title": "Video",
+      "title": "Video - MP4",
+      "slides": "3_6_Video1.pdf",
       "reading_list": [
+        {
+          "url": "https://ffmpeg.org",
+          "text": "ffmpeg"
+        }
       ]
     },
     {
       "type": "lecture",
       "day": "Wednesday",
       "date": "March 13",
-      "title": "Video",
+      "title": "Video - Adaptive Bit-Rate (ABR)",
       "reading_list": [
+        {
+          "url": "",
+          "text": ""
+        }
       ]
     },
     {
       "type": "lecture",
       "day": "Friday",
       "date": "March 15",
-      "title": "Video",
+      "title": "Examples and Testing Media Uploads",
       "reading_list": []
     }
   ]
