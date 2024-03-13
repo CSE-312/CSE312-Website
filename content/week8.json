@@ -38,10 +38,19 @@
       "day": "Wednesday",
       "date": "March 13",
       "title": "Video - Adaptive Bit-Rate (ABR)",
+      "slides": "3_6_Video2.pdf",
       "reading_list": [
         {
-          "url": "",
-          "text": ""
+          "url": "https://datatracker.ietf.org/doc/html/rfc8216",
+          "text": "RFC8216 - HLS"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP",
+          "text": "MPEG-DASH [Wikipedia]"
+        },
+        {
+          "url": "https://videojs.com/getting-started",
+          "text": "video.js"
         }
       ]
     },
