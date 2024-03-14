@@ -2,7 +2,7 @@ from datetime import datetime
 import json
 
 from flask import Flask, send_from_directory, render_template, make_response
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 socket_server = SocketIO(app)
@@ -18,7 +18,7 @@ def load_content(content_filename):
         for week in content:
             with open(content_directory + week) as week_file:
                 week_content = json.load(week_file)
-                first_lesson_date_str: str = week_content.get("content")[0].get('date')
+                first_lesson_date_str: str = week_content.get("content")[0].get("date")
                 first_lesson_date: datetime = month_day_str_to_date(first_lesson_date_str)
                 week_number: int = get_week_number(first_lesson_date)
                 if week_number == current_week_number:
