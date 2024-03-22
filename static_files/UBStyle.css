@@ -1,3 +1,8 @@
+#current-week {
+    box-shadow: 0 0 16px 3px #005bbb;
+    border-radius: 5px;
+}
+
 .darkThemeCheckboxRegion {
     margin-top: 20px;
 }

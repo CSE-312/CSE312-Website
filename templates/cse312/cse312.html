@@ -51,20 +51,22 @@
 
 
     {% for week_content in weeks %}
-        <a data-toggle="collapse" data-target="#card{{ loop.index }}">
-            <div class="card-header section-{{ week_content.theme }}">
-                <div>
-                    {{ week_content.title }} <span class="float-right"><i class='far fa-caret-square-down'></i></span>
+        <div{% if "current_week" in week_content %} id="current-week"{% endif %}>
+            <a data-toggle="collapse" data-target="#card{{ loop.index }}">
+                <div class="card-header section-{{ week_content.theme }}">
+                    <div>
+                        {{ week_content.title }} <span class="float-right"><i class='far fa-caret-square-down'></i></span>
+                    </div>
                 </div>
-            </div>
-        </a>
+            </a>
 
-        <div id="card{{ loop.index }}" class="collapse show section-card card-{{ week_content.theme }}">
-            <table class="table table-bordered">
-                <tbody>
-                {{ week_macro.week(week_content) }}
-                </tbody>
-            </table>
+            <div id="card{{ loop.index }}" class="collapse show section-card card-{{ week_content.theme }}">
+                <table class="table table-bordered">
+                    <tbody>
+                    {{ week_macro.week(week_content) }}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     {% endfor %}
