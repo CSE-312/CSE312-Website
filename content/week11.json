@@ -14,6 +14,13 @@
       "type": "lecture",
       "day": "Monday",
       "date": "April 8",
+      "title": "Eclipse Day (No lecture or recitation)",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "April 10",
       "title": "Encryption",
       "slides": "21_Encryption.pdf",
       "reading_list": [
@@ -29,8 +36,8 @@
     },
     {
       "type": "lecture",
-      "day": "Wednesday",
-      "date": "April 10",
+      "day": "Friday",
+      "date": "April 12",
       "title": "HTTPS",
       "slides": "22_Encryption2.pdf",
       "reading_list": [
@@ -55,13 +62,6 @@
           "text": "AES (Wikipedia)"
         }
       ]
-    },
-    {
-      "type": "lecture",
-      "day": "Friday",
-      "date": "April 12",
-      "title": "Deployment and Reverse Proxy Servers",
-      "reading_list": []
     }
   ]
 }
