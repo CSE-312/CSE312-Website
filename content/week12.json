@@ -38,14 +38,15 @@
       "type": "lecture",
       "day": "Monday",
       "date": "April 15",
-      "title": "Deployment and Reverse Proxy Servers",
+      "title": "Reverse Proxy Servers - Nginx",
+      "slides": "5_4_HW_HTTPS.pdf",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
       "date": "April 17",
-      "title": "Deployment Examples",
+      "title": "Deployment",
       "reading_list": []
     },
     {
