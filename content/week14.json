@@ -25,21 +25,80 @@
       "day": "Monday",
       "date": "April 29",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "its m&m",
+            "The Sluggers",
+            "Cache Money",
+            "ikun"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "200 OK",
+            "theranos",
+            "Champions"
+          ]
+        }
+      ]
     },
     {
       "type": "lecture",
       "day": "Wednesday",
       "date": "May 1",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "The Winners",
+            "404 Group Not Found",
+            "TBD",
+            "666"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "Byte Bros",
+            "Recall",
+            "Project",
+            "Jesse's Tech Support"
+          ]
+        }
+      ]
     },
     {
       "type": "lecture",
       "day": "Friday",
       "date": "May 3",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "BELTS",
+            "To Be Determined",
+            "DROP TABLE cse312_grades;",
+            "Team Rocket"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "DucksOnQuack",
+            "The interns 2.0",
+            "Byte Brigade",
+            "ForProfitOnly"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -7,7 +7,7 @@
       "url": "https://docs.google.com/document/d/1--hMDuXVnWDkbFO6ucp_-xMV892ecUmDhsjBma7D5hc/edit?usp=sharing",
       "released": true
     }
-],
+  ],
   "recitation": "Yes Recitation",
   "content": [
     {
@@ -23,21 +23,77 @@
       "day": "Monday",
       "date": "April 22",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "Team team",
+            "JJKM",
+            "cse312-project"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "312-webapps-project",
+            "Love Sosa"
+          ]
+        }
+      ]
     },
     {
       "type": "lecture",
       "day": "Wednesday",
       "date": "April 24",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "Lopie Boop",
+            "CSE312-PROJECT",
+            "Intellectuals",
+            "Makeshift"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "CSSCrusaders",
+            "Team Name",
+            "jesseisnotworstcseteacher",
+            "We'reBadAtWebDesign"
+          ]
+        }
+      ]
     },
     {
       "type": "lecture",
       "day": "Friday",
       "date": "April 26",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "web-slingers",
+            "Clueless",
+            "CSE-312-SJTM-Project",
+            "Nah, I'd Win"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "312WebApp",
+            "wo ai cse312",
+            "The <div>as"
+          ]
+        }
+      ]
     }
   ]
 }

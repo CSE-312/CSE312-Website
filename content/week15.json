@@ -17,7 +17,27 @@
       "day": "Monday",
       "date": "May 6",
       "title": "Presentations",
-      "reading_list": []
+      "reading_list": [],
+      "text_lists": [
+        {
+          "header": "2pm",
+          "text_items": [
+            "cse312project",
+            "Programmers",
+            "HeapOverflow",
+            "Team Red"
+          ]
+        },
+        {
+          "header": "4pm",
+          "text_items": [
+            "Pending...",
+            "Derp",
+            "Team_CTP_Project",
+            "Brainiacs"
+          ]
+        }
+      ]
     }
   ]
 }

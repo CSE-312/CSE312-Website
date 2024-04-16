@@ -16,6 +16,17 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+
+            {% if content.text_lists %}
+                {% for text_list in content.text_lists %}
+                <div>{{ text_list.header }}</div>
+                <ul>
+                    {% for item in text_list.text_items %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            {% endif %}
         </td>
     </tr>
 {%- endmacro %}
