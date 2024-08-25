@@ -7,7 +7,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "March 11",
+      "date": "October 21",
       "time": "9:00 AM",
       "assignment": "Homework 2",
       "deadline_type": "expected"
@@ -15,7 +15,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "March 11",
+      "date": "October 21",
       "time": "9:00 AM",
       "assignment": "Homework 1",
       "deadline_type": "final"
@@ -23,7 +23,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "March 11",
+      "date": "October 21",
       "title": "Video - MP4",
       "slides": "3_6_Video1.pdf",
       "reading_list": [
@@ -36,7 +36,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "March 13",
+      "date": "October 23",
       "title": "Video - Adaptive Bit-Rate (ABR)",
       "slides": "3_6_Video2.pdf",
       "reading_list": [
@@ -57,7 +57,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "March 15",
+      "date": "October 25",
       "title": "Examples and Testing Media Uploads",
       "reading_list": []
     }

@@ -1,5 +1,5 @@
 {
-  "title": "Spring Break",
+  "title": "Fall Break 1",
   "theme": "intro",
   "homework": [],
   "recitation": "No Recitation",
@@ -7,22 +7,22 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "March 18",
-      "title": "No Lecture",
+      "date": "October 14",
+      "title": "No Lecture - Fall Break 1",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "March 20",
-      "title": "No Lecture",
+      "date": "October 16",
+      "title": "No Lecture - Catch Up Day",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "March 22",
-      "title": "No Lecture",
+      "date": "October 18",
+      "title": "No Lecture - Catch Up Day",
       "reading_list": []
     }
   ]

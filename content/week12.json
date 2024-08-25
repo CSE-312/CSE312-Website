@@ -13,7 +13,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 15",
+      "date": "November 18",
       "time": "9:00 AM",
       "assignment": "Last Day to Sign up for a Presentation Time",
       "deadline_type": ""
@@ -21,7 +21,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 15",
+      "date": "November 18",
       "time": "9:00 AM",
       "assignment": "Homework 4",
       "deadline_type": "expected"
@@ -29,7 +29,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 15",
+      "date": "November 18",
       "time": "9:00 AM",
       "assignment": "Homework 3",
       "deadline_type": "final"
@@ -37,7 +37,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "April 15",
+      "date": "November 18",
       "title": "Reverse Proxy Servers - Nginx",
       "slides": "5_4_HW_HTTPS.pdf",
       "reading_list": []
@@ -45,14 +45,14 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "April 17",
+      "date": "November 20",
       "title": "Deployment",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "April 19",
+      "date": "November 22",
       "title": "DoS and DDoS",
       "slides": "4_7_DoS.pdf",
       "reading_list": []

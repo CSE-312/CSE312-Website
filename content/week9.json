@@ -18,7 +18,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "March 25",
+      "date": "October 28",
       "time": "9:00 AM",
       "assignment": "Project Part 1",
       "deadline_type": ""
@@ -26,7 +26,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "March 25",
+      "date": "October 28",
       "title": "WebSocket Handshake",
       "slides": "3_3_WebSocket_Handshake.pdf",
       "reading_list": [
@@ -43,7 +43,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "March 27",
+      "date": "October 30",
       "title": "WebSocket Frames",
       "slides": "3_4_WebSocket_Frames.pdf",
       "reading_list": []
@@ -51,7 +51,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "March 29",
+      "date": "November 1",
       "title": "Testing WebSocket and Buffering",
       "slides": "3_5_WebSocket_Buffers.pdf",
       "reading_list": []

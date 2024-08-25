@@ -18,7 +18,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "February 19",
+      "date": "September 23",
       "title": "Authentication and Secure Password Storage",
       "slides": "2_4_Authentication.pdf",
       "reading_list": [
@@ -31,7 +31,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "February 21",
+      "date": "September 25",
       "title": "Authentication Tokens and Sessions",
       "slides": "2_5_Authentication_Tokens.pdf",
       "reading_list": []
@@ -39,7 +39,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "February 23",
+      "date": "September 27",
       "title": "XSRF",
       "slides": "2_8_XSRF.pdf",
       "reading_list": []

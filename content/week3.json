@@ -13,7 +13,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "February 5",
+      "date": "September 9",
       "title": "HTTP - Static Files, MIME Types, and Encodings",
       "slides": "1_3_Encodings.pdf",
       "reading_list": [
@@ -38,7 +38,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "February 7",
+      "date": "September 11",
       "title": "Cookies",
       "slides": "1_4_Cookies.pdf",
       "reading_list": [
@@ -59,7 +59,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "February 9",
+      "date": "September 13",
       "title": "HTTP POST, Forms, and AJAX",
       "slides": "2_2_POST_Forms.pdf",
       "reading_list": [

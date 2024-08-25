@@ -2,33 +2,19 @@
   "title": "Week 2: Web Basics",
   "theme": "intro",
   "homework": [],
-  "recitation": "Yes Recitation",
+  "recitation": "No Recitation",
   "content": [
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "January 29",
-      "title": "Front End Development - HTML/CSS + JavaScript",
-      "slides": "2_1_Front_End.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.w3schools.com/html/default.asp",
-          "text": "HTML [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/css/default.asp",
-          "text": "CSS [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/js/default.asp",
-          "text": "JavaScript [W3 Schools]"
-        }
-      ]
+      "date": "September 2",
+      "title": "No Lecture",
+      "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "January 31",
+      "date": "September 4",
       "title": "HTTP Request/Response",
       "slides": "1_2_HTTP.pdf",
       "reading_list": [
@@ -49,7 +35,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "February 2",
+      "date": "September 6",
       "title": "Docker and Docker Compose",
       "slides": "1_5_Docker.pdf",
       "reading_list": [

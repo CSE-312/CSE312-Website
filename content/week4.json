@@ -7,7 +7,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "February 12",
+      "date": "September 16",
       "title": "Databases and HTML Templates",
       "slides": "2_3_Databases_and_HTML_Templates.pdf",
       "reading_list": [
@@ -40,7 +40,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "February 14",
+      "date": "September 18",
       "title": "HTML Injection Attacks and Browser Extensions",
       "slides": "2_7_Injection_Attacks.pdf",
       "reading_list": [
@@ -53,7 +53,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "February 16",
+      "date": "September 20",
       "title": "CRUD and REST API",
       "slides": "2_6_API.pdf",
       "reading_list": []
@@ -61,7 +61,7 @@
     {
       "type": "deadline",
       "day": "Friday",
-      "date": "February 16",
+      "date": "September 20",
       "time": "11:59 PM",
       "assignment": "Team Formation",
       "deadline_type": ""

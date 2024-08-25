@@ -13,7 +13,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "March 4",
+      "date": "October 7",
       "title": "Multipart and File Uploads",
       "slides": "3_1_multipart_files.pdf",
       "reading_list": [
@@ -26,14 +26,14 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "March 6",
+      "date": "October 9",
       "title": "Multipart and File Uploads",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "March 8",
+      "date": "October 11",
       "title": "Buffering HTTP Requests",
       "slides": "3_5_Buffers.pdf",
       "reading_list": []

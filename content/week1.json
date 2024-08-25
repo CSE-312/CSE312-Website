@@ -6,15 +6,15 @@
   "content": [
     {
       "type": "lecture",
-      "day": "Wednesday",
-      "date": "January 24",
+      "day": "Monday",
+      "date": "August 26",
       "title": "Course Introduction",
       "reading_list": []
     },
     {
       "type": "lecture",
-      "day": "Friday",
-      "date": "January 26",
+      "day": "Wednesday",
+      "date": "August 28",
       "title": "TCP/IP",
       "slides": "1_1_TCPIP.pdf",
       "reading_list": [
@@ -25,6 +25,27 @@
         {
           "url": "https://en.wikipedia.org/wiki/Transmission_Control_Protocol",
           "text": "TCP (Wikipedia)"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "August 30",
+      "title": "Front End Development - HTML/CSS + JavaScript",
+      "slides": "2_1_Front_End.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.w3schools.com/html/default.asp",
+          "text": "HTML [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/css/default.asp",
+          "text": "CSS [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/js/default.asp",
+          "text": "JavaScript [W3 Schools]"
         }
       ]
     }

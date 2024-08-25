@@ -13,7 +13,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 22",
+      "date": "December 2",
       "time": "9:00 AM",
       "assignment": "Project Part 2",
       "deadline_type": ""
@@ -21,77 +21,29 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "April 22",
+      "date": "December 2",
       "title": "Presentations",
       "reading_list": [],
       "text_lists": [
-        {
-          "header": "2pm",
-          "text_items": [
-            "Team team",
-            "JJKM",
-            "cse312-project"
-          ]
-        },
-        {
-          "header": "4pm",
-          "text_items": [
-            "312-webapps-project"
-          ]
-        }
       ]
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "April 24",
+      "date": "December 4",
       "title": "Presentations",
       "reading_list": [],
       "text_lists": [
-        {
-          "header": "2pm",
-          "text_items": [
-            "Lopie Boop",
-            "CSE312-PROJECT",
-            "Intellectuals",
-            "Makeshift"
-          ]
-        },
-        {
-          "header": "4pm",
-          "text_items": [
-            "CSSCrusaders",
-            "Team Name",
-            "jesseisnotworstcseteacher",
-            "We'reBadAtWebDesign"
-          ]
-        }
       ]
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "April 26",
+      "date": "December 6",
       "title": "Presentations",
       "reading_list": [],
       "text_lists": [
-        {
-          "header": "2pm",
-          "text_items": [
-            "web-slingers",
-            "CSE-312-SJTM-Project",
-            "Nah, I'd Win"
-          ]
-        },
-        {
-          "header": "4pm",
-          "text_items": [
-            "312WebApp",
-            "wo ai cse312",
-            "The <div>as",
-            "Clueless"
-          ]
-        }
+
       ]
     }
   ]

@@ -1,0 +1,29 @@
+{
+  "title": "Fall Break 2",
+  "theme": "intro",
+  "homework": [],
+  "recitation": "No Recitation",
+  "content": [
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "November 25",
+      "title": "No Lecture - Catch Up Day",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "November 27",
+      "title": "No Lecture - Fall Break 2",
+      "reading_list": []
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "November 29",
+      "title": "No Lecture - Fall Break 2",
+      "reading_list": []
+    }
+  ]
+}

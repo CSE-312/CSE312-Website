@@ -7,7 +7,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 1",
+      "date": "November 4",
       "time": "9:00 AM",
       "assignment": "Homework 3",
       "deadline_type": "expected"
@@ -15,7 +15,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 1",
+      "date": "November 4",
       "time": "9:00 AM",
       "assignment": "Homework 2",
       "deadline_type": "final"
@@ -23,7 +23,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "April 1",
+      "date": "November 4",
       "title": "WebRTC Overview",
       "slides": "3_7_WebRTC.pdf",
       "reading_list": []
@@ -31,7 +31,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "April 3",
+      "date": "November 6",
       "title": "WebRTC Details",
       "slides": "3_8_WebRTC_2.pdf",
       "reading_list": []
@@ -39,7 +39,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "April 5",
+      "date": "November 8",
       "title": "WebSocket and WebRTC Examples",
       "reading_list": []
     }
