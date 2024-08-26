@@ -13,6 +13,22 @@
       "deadline_type": ""
     },
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "December 9",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "final"
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "December 9",
+      "time": "9:00 AM",
+      "assignment": "Homework 5",
+      "deadline_type": ""
+    },
+    {
       "type": "lecture",
       "day": "Monday",
       "date": "December 9",
