@@ -52,7 +52,7 @@
       "type": "lecture",
       "day": "Friday",
       "date": "November 1",
-      "title": "Testing WebSocket and Buffering",
+      "title": "WebSocket Buffering",
       "slides": "3_5_WebSocket_Buffers.pdf",
       "reading_list": []
     }

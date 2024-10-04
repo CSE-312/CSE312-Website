@@ -27,15 +27,15 @@
       "type": "lecture",
       "day": "Wednesday",
       "date": "October 9",
-      "title": "Multipart and File Uploads",
+      "title": "Buffering HTTP Requests",
+      "slides": "3_5_Buffers.pdf",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
       "date": "October 11",
-      "title": "Buffering HTTP Requests",
-      "slides": "3_5_Buffers.pdf",
+      "title": "Multipart and File Upload: Examples and Testing",
       "reading_list": []
     }
   ]
