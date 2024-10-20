@@ -1,266 +1,456 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>CSE116: Computer Science 2</title>
-    <link rel="stylesheet" href="/static_files/lib/bootstrap-4.0.0.min.css">
-    <link rel="stylesheet" type="text/css" href="/static_files/UBStyle.css"/>
-    <link rel="stylesheet" type="text/css" id="darkThemeCss" href="/static_files/darktheme.css" disabled/>
-    <link rel="shortcut icon" type="image/x-icon" href="/static_files/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="/static_files/cse116.js"></script>
-    <base target="_blank">
-</head>
+{% extends 'hw/hw.html' %}
 
-<body class="outer" onload="bodyLoaded();">
-<div class="container">
-    <div class="row">
-        <div class="col-0 col-sm-0 col-md-1"></div>
-        <div class="col-12 col-sm-12 col-md-10 main-hw-block">
+{% block title %}CSE312: Homework 1{% endblock %}
 
+{% block header %}
+    <h1>Homework 1: HTTP and Docker</h1>
+    <hr/>
+    <h5>In this assignment, you will lay the foundation for the web server you will build throughout this course. You will become familiar with the basics of HTTP and Docker.
+    </h5>
+    <hr/>
+{% endblock %}
 
-            <hr/>
+{% block task %}
 
-            <h1>Programming Task 1</h1>
-            <h2>Testing 1</h2>
-            <hr/>
-            <h5>Time Estimate: 5 hours</h5>
-            <hr/>
-
-            <div class="card-header section-testing">
-                <div>Requirements</div>
-            </div>
-
-            <div class="section-card card-testing hw-content">
-
-                <hr/>
-
-
-                <h3>
-                    Project Structure
-                </h3>
-
-                <hr/>
-                <p>
-                    GitHub Repository link: <a href="https://github.com/jessehartloff/CSE116-Project">https://github.com/jessehartloff/CSE116-Project</a>
-                </p>
-                <ol>
-                    <li>Clone the starter code from the repository into a new IntelliJ project</li>
-                    <li>Make sure the src folder is marked as the source root (Right click the src
-                        folder, choose “mark directory as” and choose sources root)
-                    </li>
-                </ol>
-                <p>
-                    Once you have the project opened in IntelliJ, you'll see a src folder containing 2
-                    Java packages named ratings and tests. Your code for this Task will go in the
-                    ratings.ProblemSet class, while your testing will go in tests.TestProblemSet. For
-                    now, the rest of the classes can be ignored, though they will be used in future Tasks.
-                </p>
-                <p>
-                    To submit your project, create a zip file containing your entire project and
-                    submit it to AutoLab. (Click file -> export -> Project to Zip File, though there may be
-                    slight differences to this across OSes and versions)
-                </p>
-
-                <br/>
-                <hr/>
-
-                <h3>
-                    Testing Requirements
-                </h3>
-
-                <hr/>
-                <p>
-                    This is primarily a testing task and your feedback in AutoLab will begin by checking your tests.
-                    You will write tests for 3 different methods. All of your testing will be in the
-                    tests.TestProblemSet class. You are strongly encouraged to write many individual tests in this one
-                    class.
-                </p>
-
-                <ol>
-                    <li>average
-                        <ul>
-                            <li>
-                                Add tests to the tests.TestProblemSet class that will test a static method named average
-                                in the ratings.ProblemSet class
-                            </li>
-                            <li> The average method will take an ArrayList of Doubles as
-                                a parameter and returns the average of the values in the ArrayList as a double
-                            </li>
-                            <li>
-                                If the ArrayList is empty, the method should return 0.0
-                            </li>
-                            <li>
-                                Examples:
-                                <ul>
-                                    <li>average([1,2,3]) returns 2.0</li>
-                                    <li>average([-5,5]) returns 0.0</li>
-                                    <li>average([7,7,8,8]) returns 7.5</li>
-                                    <li>average([]) returns 0.0</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>sumOfDigits
-                        <ul>
-                            <li>
-                                Add tests to the tests.TestProblemSet class that will test a static method named
-                                sumOfDigits in the ratings.ProblemSet class
-                            </li>
-                            <li>
-                                The sumOfDigits method will take an int as
-                                a parameter and returns the sum of the digits of the input as an int
-                            </li>
-                            <li>
-                                Examples:
-                                <ul>
-                                    <li>sumOfDigits(123) returns 6</li>
-                                    <li>sumOfDigits(57) returns 12</li>
-                                    <li>sumOfDigits(-36) returns 9</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li>bestKey
-                        <ul>
-                            <li>
-                                Add tests to the tests.TestProblemSet class that will test a static method named
-                                bestKey in the ratings.ProblemSet class
-                            </li>
-                            <li>
-                                The bestKey method will take a HashMap of Strings to Integers as a parameter and
-                                returns a key mapping to the largest Integer
-
-                            </li>
-                            <li>
-                                If the HashMap is empty, the method should return the empty String
-                            </li>
-                            <li>
-                                The method may break ties arbitrarily. When you write a test case where there are
-                                multiple correct solutions, you must accept any of these as correct return values in
-                                your test
-                            </li>
-                            <li>
-                                Examples:
-                                <ul>
-                                    <li>bestKey({"CSE": 100, "MTH": 90, "MGT": 10}) returns "CSE"</li>
-                                    <li>bestKey({"cat": 5, "dog": 5, "fox": 4}) can return either "cat" or "dog"</li>
-                                    <li>bestKey({}) returns ""</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                </ol>
-
-
-                {#                Incorrect Solutions#}
-
-                <br/>
-                <hr/>
-
-                <h3>
-                    Programming Requirements
-                </h3>
-
-                <hr/>
-                <p>
-                    Implement the three methods that you've tested. You can, and should, run your tests while
-                    completing your code to check if it is correct.
-                </p>
-
-
-                <br/>
-                <hr/>
-
-                <h3>AutoLab Feedback</h3>
-
-                <hr/>
-                <p>
-                    The feedback in AutoLab will be given in 3 phases. If you don't complete a phase, then feedback for
-                    the following phase(s) will not be given.
-                </p>
-
-                <ol>
-                    <li>Running your tests on a Correct Solution
-                        <ul>
-                            <li>Your tests will be run against a solution that is known to be correct. If your tests do
-                                not pass this correct solution, there is an error somewhere in your tests that must be
-                                fixed
-                                before you can move on with the assignment. This can be caused by misunderstanding the
-                                task
-                                requirements from this document, or rejecting alternate solutions (eg. Only accepting
-                                one
-                                possible answer when there is a tie for bestKey)
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Running your tests on several Incorrect Solutions
-                        <ul>
-                            <li>
-                                The next phase is to run your tests against incorrect solutions. This will assess the
-                                thoroughness of your tests. Your tests must be able to fail all of the incorrect
-                                solutions to pass this phase. If your tests pass an incorrect solution, it is an
-                                indicator that you need to add more testing
-                            </li>
-                            <li>
-                                Passing this phase does not necessarily mean that your testing is completely thorough.
-                                Satisfying AutoLab is the bare minimum testing requirement. The incorrect solutions will
-                                not cover every possible mistake, and it is sometimes possible to pass this phase
-                                with very weak testing. If you are struggling to earn credit for code that you believe
-                                is correct, you should write more than the required tests
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Running my tests on Your Solution
-                        <ul>
-                            <li>
-                                Once AutoLab is happy with your tests, it will run my tests against your code to check
-                                it for correctness. If your testing is thorough, and your code passes your tests, then
-                                you should pass this phase. If you pass your tests, but fail one of mine, it is an
-                                indicator that you should write more tests to help expose your bug
-                            </li>
-                        </ul>
-                    </li>
-                </ol>
-
-                <p>
-                    Once you complete all 3 phases, you will have completed this Task and AutoLab will confirm this
-                    with a score of 1 for complete.
-                </p>
-                <hr/>
-
-                <table class="table table-bordered">
-                    <tbody>
-
-                    <tr class="table-warning">
-                        <td colspan="3">Wednesday, February 15 @ 9:00 <b>AM</b><br/>
-                            Expected Deadline
-                        </td>
-                    </tr>
-                    <tr class="table-danger">
-                        <td colspan="3">Wednesday, February 22 @ 9:00 <b>AM</b><br/>
-                            Deadline
-                        </td>
-                    </tr>
-
-                    </tbody>
-                </table>
-            </div>
-
-
-        </div>
-        <div class="col-0 col-sm-0 col-md-1"></div>
+    <div class="card-header section-testing">
+        <div>Requirements</div>
     </div>
-</div>
+
+    <div class="section-card card-testing hw-content">
+        <h2>
+            Project Structure
+        </h2>
+        </hr>
+        <p>
+            Clone this: <a href="https://github.com/jessehartloff/WebAppProject">Github Repository.</a>
+        </p>
+        <ol>
+            <li>To start this assignment, clone this github repository containing the starter code.</li>
+            <li>You will expand this same starter code for every homework in this course and it contains much code for features that you won't fully implement until future assignments.
+            </li>
+        </ol>
+
+        <hr/>
+
+        <h3>
+            Docker
+        </h3>
+
+        <hr/>
+        <p>
+            <i>Note: For grading, Docker and docker compose are required for most objectives in the HW</i>
+            <br>
+            <br>
+            Setup your web server to deploy with Docker and docker compose. In the root directory of your submission, include a Dockerfile and a docker-compose.yml file with everything needed to create an image and run your server in a container. You must run 2 containers, one for your app and one for your database.    
+            
+            <ul>
+                <li> Map local port 8080 to your app in your docker-compose.yml file. </li>
+            </ul>
+        </p>
+
+        <hr/>
+
+        <h3>
+            Testing Procedure
+        </h3>
+
+        <hr/>
+        <p>
+            This testing procedure for each objective [except learning objective 1] will be followed by the course staff while grading your submission.
+            <ol>
+                <li>Download your submission and extract the zip file in a new directory.</li>
+                <li>cd into to the directory containing your submission.                </li>
+                <li>Run the command "docker compose up".</li>
+                <li>Navigate to http://localhost:8080/ in a browser and verify that your web page loads.</li>
+            </ol>
+            <span style="color: green;">You should use these steps to ensure that your Dockerfile/docker-compose.yml are set up properly to run your server. Even if you complete all the objectives, any error with your Docker/docker-compose.yml setup may result in not earning credit for the objectives.<strong> Many students have lost objectives by rushing right before the deadline and submitting with the wrong docker configuration</strong>. Don't let this happen to you.</span>
+            <br>
+            <br>
+            <i>Note: Testing in the course will be done using the latest versions of both Chrome and Firefox. You should ensure that your app functions properly in both browsers.</i>
+        </p>
+
+        <hr/>
+
+        <h3>
+            Learning Objective 1: Parsing and Routing HTTP Requests
+        </h3>
+
+        <hr/>
+
+        <h4>The Request Class</h4>
+        Complete the <code>Request</code> class in the util package of the starter code. The constructor has been set up and contains all the variables that should be populated by parsing the input which will be an HTTP request in bytes. Your task is to parse the bytes and set the <code>'body', 'method', 'path', 'http_version'</code>, and <code>'headers'</code> instance variables. Note that the body must be set as bytes while the other values will be set as str's (headers will map str to str).
+        <br><br>
+        The <code>headers</code> variable is a dictionary that must be populated with all of the headers of the request where the keys in the dictionary are the names of each header and the values are the header values. You must parse all of the headers of the request and add them all to this dictionary. (Technical note: HTTP requests are allowed to contain multiple headers with the same name. This means it's not 100% correct to store headers in a dictionary, but this will serve our purposes in this course while avoiding an increase in complexity).
+        <br><br>
+        If there is a Cookie header, all cookies must be parsed and stored in the <code>cookies</code> dictionary as Strings (The dictionary will map str to str). Your parser must support multiple cookies. Be sure to remove any leading/trailing white space from the cookie names and values.
+        <br><br>
+        <i>Note: The raw Cookies header should still be in your <code>headers</code> dictionary even after parsing the individual cookies in the cookies dictionary.</i>
+        <br><br>
+
+        <h4>The Router Class</h4>
+
+        You'll set up a <code>Router</code> class that will help you organize the code of your server throughout the semester. It is recommended that you study the provided hello path from the starter code and write at least one path (eg. hosting the HTML file at "GET /") without using the router to gain a better understanding of the structure of a server before implementing your <code>Router</code> class.
+
+        After Homework 1 you are welcome to make changes to the design of your router, but you are required to use a router throughout all homework assignments. The organization this router provides will prove useful as your server code gains more complexity.
+        <br><br>
+        Write a class named <code>Router</code> in a file named <code>util/router.py</code> with the following methods and functionality:
+        <br><br>
+        <ul>
+            <li>A method named <code>add_route</code> add_route that takes 4 parameters and is used to specify how to route a specific request based on its method and path. If you use a constructor, it must take no parameters.
+            </li>
+            <ul>
+                <li>The 4 parameters are:
+                    <ul>
+                        <li>The HTTP method (str) of the request.
+                        </li>
+                        <li>The path (str) of the request.
+                        </li>
+                        <li>A function that takes a <code>Request</code> object, and a TCPHandler as parameters and does not return anything. This will be the function that handles request matching the given method and path.
+                        </li>
+                        <li>A boolean indicating if the path must match exactly or begin with the provided path. This boolean should have a default value of False.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    The <code>add_route</code> method does not return anything.
+                </li>
+                <li>
+                    This method is called to add a route to the router. For example, if you have a function named <code>send_home_page</code> that takes a Request and a TCPHandler and send an HTTP response containing the HTML of your home page using the handler that should be called on a GET request for the path "/", you would call <code>add_route("GET", "/", send_home_page, True)</code>.
+                </li>
+            </ul>
+            <li>A method named <code>route_request</code>that takes a Request object and a TCPHandler and does not return anything.
+            </li>
+            <ul>
+                <li>This method will check the method and path of the request, determine which added path should be used, and call the function associated with that path with arguments matching the parameters of this method (eg. forward the Request and TCPHandler to the matching function).
+                </li>
+                <li>If there is no path for the request, return a 404 response.
+                </li>
+                <li>If multiple routes match the request, use the route that was added first with the <code>add_route</code> method.
+                </li>
+                <li>When determining if a route is a match, the method and path must both match. If the boolean (from the <code>add_route</code> method) was True, the path must match exactly. If the boolean was False, the path of the request must start with the path for the route for it to be considered a match. Eg. <code>add_route("GET", "/public/image/", serve_image)</code> uses the default boolean value of False so a request of "GET /public/image/eagle.jpg" would be routed to the <code>serve_image</code> function.
+                </li>
+            </ul>
+        </ul>
+
+        <h4>Testing Procedure</h4>
+        
+        <ol>
+            <li>Running the code using Python (Not Docker), run tests on the Request and Router classes to ensure they have all the functionality described above.
+            </li>
+            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You are allowed as many submissions as you'd like in order to complete this objective (All other objectives are manually graded after the deadline).
+            </li>
+        </ol>
+
+        <hr/>
+
+        <h3>
+            Learning Objective 2: Hosting an App
+        </h3>
+
+        <hr/>
+
+        <strong>Host Public Files</strong>: Host all of the files in the public directory under paths starting with /public/ (eg. When you receive a request for the path /public/style.css you should respond with the contents of the style.css file from the public directory). All files must be served with the correct MIME type.
+        <br><br>
+        <span style="color: red; font-weight: bold;">Security</span>: The <code>X-Content-Type-Options: nosniff</code> header must be set on all responses (Please double/triple check this header for the exact spelling and syntax. If you are off by 1 character, the browser will not disable MIME type sniffing which renders your header useless and can be a security issue)
+        <br><br>
+        <strong>Root Path / Home Page</strong>: The <code>index.html</code> file must be hosted at the root path "/". Visiting the root path should load the entire page. (eg. When you receive a request for the path "/", you will serve the file public/index.html).
+        <br><br>
+        <strong>Images</strong>: The images must also be hosted. For example, a request for the path <code>/public/image/kitten.jpg</code> should display this adorable image:
+        <br><br>
+        <img src="/static_files/images/kitten.jpg" alt="Cute Kitten" width="30%" height="auto">
+        <br><br>
+        <strong>UTF-8:</strong> Some files contain emojis that will be displayed when the page loads. These characters must display properly.
+        <br><br>
+        <strong>Content-Length:</strong> You must properly compute the <code>Content-Length</code> of each file. Recall that this length is the number of bytes, not the length of the string. For full credit, this length must be computed programmatically. Points will be lost if the length is hard-coded for each response.
+        <br><br>
+        <strong>Visit Counter:</strong> You must include a visit counter on your page that is tracked using a cookie. When a user first requests this page, set a cookie to 1 to track the number of times they visited this page. If the cookie is already set (Subsequent visits), read the cookie to check the number of times the user visited, increment this value by 1, then set the cookie again with the incremented value. This cookie should only be incremented when you receive a request for the home page (Path "/").
+        <br><br>
+        The visit counting cookie must have an expiration time of 1 hour or longer. It cannot be a session cookie.
+        <br><br>
+        The provided HTML has a placeholder with the string <code>{{visits}}</code> that should be replaced with your number of visits. To do this, you are expected to read the contents of the HTML file as a string, replace the placeholder with the correct value for the number of visits based on the value of the cookie, then serve the result after the replacement.
+        <br><br>
+        <strong>404:</strong> If a request is received for any path that should not serve content, return a 404 response with a message saying that the content was not found. This can be a plain text message.
+        <br><br>
+
+        <h4>Testing Procedure</h4>
+        <ol>
+            <li>Start your server using "docker compose up".</li>
+            <li>Open a browser and navigate to http://localhost:8080/.</li>
+            <li>Verify that the browser displays the website:
+                <ol type="a">
+                    <li>Verify that an image of an eagle displays on the page.</li>
+                    <li>Verify that the 2 emoji (non-ASCII characters) display properly.</li>
+                </ol>
+            </li>
+            <li>Verify that a UB icon is displayed in the tab for the page.</li>
+            <li>In the network tab of the browser console:
+                <ol type="a">
+                    <li>Verify that the HTML, CSS, JavaScript, and image were all served through separate HTTP request.</li>
+                    <li>Check each HTTP response for the correct MIME type.</li>
+                    <li>Check each HTTP response for the correct Content-Length.</li>
+                    <li>Verify in your code that the Content-Length was computed and not hardcoded.</li>
+                    <li> <span style="color: red; font-weight: bold;">Security:</span> Verify that the "X-Content-Type-Options: nosniff" header is set on each response with this exact spelling and syntax.
+                        <ol type="i">
+                            <li>To verify that the header is working, change the MIME type of your JS response to anything that is incorrect and verify that the JS did not run. If the browser is allowed to MIME sniff, your JS will still run even if the wrong MIME type on your response.</li>
+                        </ol>
+                    </li>
+                </ol>
+            </li>
+            <li>Open a browser and navigate to http://localhost:8080/public/image/&lt;image_name&gt;:
+                <ol type="a">
+                    <li>&lt;image_name&gt; can be any image provided in the starter repo.</li>
+                    <li>Verify that the browser displays &lt;image_name&gt;.</li>
+                </ol>
+            </li>
+            <li>Check the visit counter functionality:
+                <ol type="a">
+                    <li>In the application tab of the browser console, find and clear all cookies for localhost.</li>
+                    <li>Refresh the page.</li>
+                    <li>Verify that the page displays a "1" for the visit counter.</li>
+                    <li>Refresh the page.</li>
+                    <li>Verify that the page displays a "2" for the visit counter.</li>
+                    <li>In the application tab of the browser console, verify that there is a cookie set and that it has an expiration time (Make sure it is not a session cookie).</li>
+                    <li>Open a new window of the same browser and navigate to http://localhost:8080/.</li>
+                    <li>Verify that the page displays a "3" for the visit counter.</li>
+                    <li>Open a different browser (eg. If Chrome was used in the previous steps, use Firefox here and vica-versa) and navigate to http://localhost:8080/.</li>
+                    <li>Verify that the page displays a "1" for the visit counter.</li>
+                    <li>In the application tab of the browser console, find the cookie storing the number of visits and change the value to 100.</li>
+                    <li>Refresh the page.</li>
+                    <li>Verify that the page displays a "101" for the visit counter.</li>
+                </ol>
+            </li>
+            <li>Test 404 functionality:
+                <ol type="a">
+                    <li>Open a browser, with the browser console open on the network tab, and navigate to http://localhost:8080/&lt;any_string&gt; where &lt;any_string&gt; is chosen by the tester and is anything that does not match a path used in this assignment.
+                        <ol type="i">
+                            <li>Do not choose an &lt;any_string&gt; that starts with "public" (This makes it simpler to setup a server that serves every file in the public directory dynamically if a student chooses) or "chat-messages".</li>
+                        </ol>
+                    </li>
+                    <li>Verify that the browser displays a message indicating that the requested content was not found.</li>
+                    <li>In the browser console, verify that the response has a response code of 404, the Content-Type matches the type of content served, and the Content-Length contains the correct value.</li>
+                </ol>
+            </li>
+            <li>Review the server code to ensure that the Router class has been used to route each request.</li>
+        </ol>
+
+        <hr/>
+
+        <h3>
+            Learning Objective 3: Guest Chat and Database Storage
+        </h3>
+
+        <hr/>
+
+        The provided front end contains a chat area that will send requests to your server. Add the following paths to your server to enable the chat feature:
+        <br><br>
+
+        <ul>
+            <li>A path <code>/chat-messages</code> that accepts POST requests:
+                <ul>
+                    <li>This path is used when a user types a chat message and clicks send.</li>
+                    <li>The front end will send these chat messages in a JSON string with the format:
+                        <ul>
+                            <li>{"message": "The message being sent"}.</li>
+                            <li>You are allowed to use Python's json module to parse and format your JSON strings.</li>
+                        </ul>
+                    </li>
+                    <li>When you receive a chat message, you will store it in your database with:
+                        <ul>
+                            <li>The message that was sent, the username of the user that sent the message (You can use "Guest" for now), and a unique id for the message.</li>
+                        </ul>
+                    </li>
+                    <li>You may choose what you send in response to these requests (The front end will ignore the response).</li>
+                </ul>
+            </li>
+            <li>A path <code>/chat-messages</code> that accepts GET requests:
+                <ul>
+                    <li>This path is requested using polling to get the all the chat messages that have been sent to the app.</li>
+                    <li>Respond with all of the chat history in a JSON string representing an array of objects where each object has the keys "message", "username", and "id".</li>
+                    <li>Eg. If there were two chat messages submitted saying "Hi there" and "hello", a valid response would be [{"message": "Hi there", "username": "Guest", "id": "1"}, {"message": "hello", "username": "Guest", "id": "2"}].</li>
+                    <li>The default polling in the started code is 3 seconds. You can change this value to fit your testing preferences, but make sure it's <= 3 seconds before you submit (eg. If you set it to 30 seconds, we might assume you app is broken while grading).</li>
+                </ul>
+            </li>
+            <li>A path <code>/chat-messages/{id}</code> that accepts DELETE requests:
+                <ul>
+                    <li>The {id} in the path is the id of the record to delete.
+                        <ul>
+                            <li>Eg. DELETE /chat-messages/1 to delete the message with id 1.</li>
+                            <li>Eg. DELETE /chat-messages/2 to delete the message with id 2.</li>
+                        </ul>
+                    </li>
+                    <li>Respond with a 204 No Content response code:
+                        <ul>
+                            <li>There is no body to your response (We don't want to leak information about deleted records).</li>
+                            <li>You will give the same response even if there is no message with that id or the message has already been deleted.</li>
+                        </ul>
+                    </li>
+                    <li>After this request is sent for a message, that message should never be served again (It's deleted).</li>
+                    <li>Note that the "X" next to each chat message will send a DELETE request for that message.</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <p><strong>Database</strong>: This is the first objective that will require a database. Your database must run in a separate container using docker compose. <strong>No credit</strong> will be given if you store your data in the same container as your app. This is intended to give you experience working with multi-container apps.</p>
+        
+        <span style="color: red; font-weight: bold;">Security:</span> You must escape any HTML in the users' messages. Since your users can submit any text they want, a malicious user could submit HTML tags that attack other users. <strong>You cannot allow this.</strong> You must escape any submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
+        
+        <span style="color: red; font-weight: bold;">Security:</span> If you are using a SQL database, you must protect against SQL injection attacks.</p>
+
+        <h4>Testing Procedure</h4>
+        <ol>
+            <li>Start your server using docker compose up.</li>
+            <li>Open a browser and navigate to http://localhost:8080/.</li>
+            <li>Find the chat box and submit several times with text including at least once with text including HTML.</li>
+            <li>Verify that each message appears on the page within several seconds.</li>
+            <li><span style="color: red; font-weight: bold;">Security:</span> Verify that the submitted HTML displays as text and is not rendered as HTML.</li>
+            <li>Delete several chat messages by clicking the X next to those message:
+                <ol type="a">
+                    <li>Verify the response is a 204 No Content with no body.</li>
+                    <li>Verify that the messages are removed from chat and never reappear throughout the rest of this procedure.</li>
+                </ol>
+            </li>
+            <li>Refresh the page.</li>
+            <li>Verify that all sent messages appear when the page loads.</li>
+            <li>Restart the server using docker compose restart (Or restart using Docker Desktop).</li>
+            <li>Refresh the page and verify that all the messages still appear on the page.</li>
+            <li>Look through the code and verify that a database running via docker compose is being used for the persistent storage.</li>
+            <li><span style="color: red; font-weight: bold;">Security:</span> Look through the code to verify that prepared statements are being used to protect against SQL injection attacks [If SQL is being used].</li>
+        </ol>
+
+        <hr/>
+
+        <h3>
+            Application Objective 1: Highlight Your Own Messages
+        </h3>
+
+        <hr/>
+
+        <p>In a way of your choosing, each user's own messages should be highlighted in their browser (eg. Their name can be in a different color even if all names are still "Guest").</p>
+
+        <p><strong>Note:</strong> This objective, as with most application objectives, is much more open-ended than the learning objectives. You are expected to come up with creative solutions using the tools discussed in lecture to complete this objective. You might find it useful to modify the front end and create/track more cookies.</p>
+
+        <h4>Testing Procedure</h4>
+        <ol>
+            <li>Start your server using docker compose up.</li>
+            <li>Open a FireFox and Chrome window and navigate to http://localhost:8080/ in both.</li>
+            <li>Send chat messages from both browsers.</li>
+            <li>Verify that in each browser, messages sent from that browser and marked differently than messages sent from the other browser.</li>
+            <li>Refresh both browsers and verify that the messages are still marked properly.</li>
+        </ol>
+        
+        <hr/>
+
+        <h3>
+            Submission
+        </h3>
+
+        <hr/>
+
+        <p>Submit all files for your server to Autolab in a <strong>.zip</strong> file (A .rar or .tar file is not a .zip file!). Be sure to include:</p>
+
+        <ul>
+            <li>A docker-compose file in the root directory that exposes your app on port 8080.</li>
+            <li>All the static files you need to serve in the public directory (HTML/CSS/JavaScript/images)</li>
+        </ul>
+
+        <span style="color: orange;">It is strongly recommended that you download and test your submission after submitting. To do this, download your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped, run docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will do during grading.</span>
+        <br><br>
+        <span style="color: orange;">If you have any Docker or docker compose issues during grading, your grade for each objective may be limited to a 1/3.</span>
+            
+        <hr/>
+
+        <h3>
+            Grading
+        </h3>
+
+        <hr/>
+
+        <p>Each objective will be scored on a 0-3 scale as follows:</p>
+
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td><strong>3 (Complete)</strong></td>
+                <td>Clearly correct. Following the testing procedure results in all expected behavior.</td>
+            </tr>
+            <tr>
+                <td><strong>2 (Complete)</strong></td>
+                <td>Mostly correct, but with some minor issues. Following the testing procedure does not give the <em>exact</em> expected results, but all features are functional.</td>
+            </tr>
+            <tr>
+                <td><strong>1 (Incomplete)</strong></td>
+                <td>Not all features outlined in this document are functional, but an honest attempt was made to complete the objective. Following the testing procedure gives an incorrect result, or no results at all, during any step. This includes issues running Docker or docker-compose even if the code for the objective is correct.</td>
+            </tr>
+            <tr>
+                <td><span style="color: red; font-weight: bold;">0.3 (Incomplete)</span>
+                <td>The objective would earn a 3, but a <span style="color: red; font-weight: bold;">security</span> risk was found while testing.</td>
+            </tr>
+            <tr>
+                <td><span style="color: red; font-weight: bold;">0.2 (Incomplete)</span>
+                <td>The objective would earn a 2, but a <span style="color: red; font-weight: bold;">security</span> risk was found while testing.</td>
+            </tr>
+            <tr>
+                <td><span style="color: red; font-weight: bold;">0.1 (Incomplete)</span>
+                <td>The objective would earn a 1, but a <span style="color: red; font-weight: bold;">security</span> risk was found while testing.</td>
+            </tr>
+            <tr>
+                <td><strong>0 (Incomplete)</strong></td>
+                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library).</td>
+            </tr>
+        </table>
+        <br>
+
+        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score is meant to give you more feedback on your work.</p>
+
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td>3</td>
+                <td>Objective Complete</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Objective Complete</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Objective Not Complete</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>Objective Not Complete</td>
+            </tr>
+        </table>
+        <br>
+
+        <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
 
 
-<script src="/static_files/lib/jquery-3.3.1.min.js"></script>
-<script src="/static_files/lib/popper-1.12.9.min.js"></script>
-<script src="/static_files/lib/bootstrap-4.0.0.min.js"></script>
-<script src="/static_files/lib/fontawesome.js"></script>
+        <hr/>
 
-</body>
-</html>
+        <h3>
+            <span style="color: red; font-weight: bold;">Security Essay</span>
+        </h3>
+
+        <hr/>
+
+        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for the objective by submitting an essay about the security issue you exposed. These essays must:</p>
+
+        <ul>
+            <li>Be at least 1000 words in length.</li>
+            <li>Explain the security issue from your submission with specific details about your code.</li>
+            <li>Describe how you fixed the issue in your submission with specific details about the code you changed.</li>
+            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue in production code with live users.</li>
+        </ul>
+
+        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain incomplete.</p>
+
+        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance of the security issue that you exposed. If an interview is required, you will be contacted by the course staff for scheduling. Decisions of whether or not an interview is required will be made at the discretion of the course staff.</p>
+
+        <p>When you don't have to write an essay:</p>
+        <ul>
+            <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be secure.</li>
+            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway.</li>
+            <li>If you earn a 0.3 or 0.2 for a learning objective after the expected deadline, you may fix the issue and resubmit for the final deadline instead of writing an essay (Or you can write the essay so you don't have to sweat the final deadline).</li>
+        </ul>
+
+    </div>
+{% endblock %}
