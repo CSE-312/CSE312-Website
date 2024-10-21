@@ -25,6 +25,7 @@
       "day": "Monday",
       "date": "October 21",
       "title": "File Types",
+      "slides": "3_6_File_Types.pdf",
       "reading_list": [
         {
           "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types",
@@ -40,8 +41,8 @@
       "type": "lecture",
       "day": "Wednesday",
       "date": "October 23",
-      "title": "Multimedia Processing",
-      "slides": "3_6_Video1.pdf",
+      "title": "Media Processing",
+      "slides": "3_6_Media_Processing.pdf",
       "reading_list": [
         {
           "url": "https://pillow.readthedocs.io/en/stable/index.html",
