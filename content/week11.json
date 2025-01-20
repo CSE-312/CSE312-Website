@@ -3,24 +3,32 @@
   "theme": "oop",
   "homework": [
     {
-      "title": "Homework 5: HTTPS",
-      "url": "https://docs.google.com/document/d/1xfaobwajj-PoEp7J1KUR3UJn-AX18kueaqxHFDLMf8I/edit?usp=sharing",
-      "released": true
+      "title": "Team Project",
+      "url": "project.html",
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 7",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "final"
+    },
+    {
       "type": "lecture",
       "day": "Monday",
-      "date": "November 11",
+      "date": "April 7",
       "title": "Testing",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "November 13",
+      "date": "April 9",
       "title": "Encryption",
       "slides": "21_Encryption.pdf",
       "reading_list": [
@@ -37,7 +45,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "November 15",
+      "date": "April 11",
       "title": "HTTPS",
       "slides": "22_Encryption2.pdf",
       "reading_list": [

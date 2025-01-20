@@ -7,30 +7,22 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "November 4",
+      "date": "March 31",
       "time": "9:00 AM",
-      "assignment": "Homework 3",
+      "assignment": "Homework 4",
       "deadline_type": "expected"
-    },
-    {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "November 4",
-      "time": "9:00 AM",
-      "assignment": "Homework 2",
-      "deadline_type": "final"
     },
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "November 4",
+      "date": "March 31",
       "title": "WebSocket Testing",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "November 6",
+      "date": "April 2",
       "title": "WebRTC Overview",
       "slides": "3_7_WebRTC.pdf",
       "reading_list": []
@@ -38,10 +30,18 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "November 8",
+      "date": "April 4",
       "title": "WebRTC Details",
       "slides": "3_8_WebRTC_2.pdf",
       "reading_list": []
+    },
+    {
+      "type": "deadline",
+      "day": "Friday",
+      "date": "April 4",
+      "time": "11:59 PM",
+      "assignment": "Team Formation",
+      "deadline_type": ""
     }
   ]
 }

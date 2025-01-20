@@ -5,9 +5,17 @@
   "recitation": "Yes Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "February 10",
+      "time": "9:00 AM",
+      "assignment": "Homework 1",
+      "deadline_type": "expected"
+    },
+    {
       "type": "lecture",
       "day": "Monday",
-      "date": "September 16",
+      "date": "February 10",
       "title": "Databases and HTML Templates",
       "slides": "2_3_Databases_and_HTML_Templates.pdf",
       "reading_list": [
@@ -40,7 +48,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "September 18",
+      "date": "February 12",
       "title": "HTML Injection Attacks and Browser Extensions",
       "slides": "2_7_Injection_Attacks.pdf",
       "reading_list": [
@@ -53,18 +61,10 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "September 20",
+      "date": "February 14",
       "title": "CRUD and REST API",
       "slides": "2_6_API.pdf",
       "reading_list": []
-    },
-    {
-      "type": "deadline",
-      "day": "Friday",
-      "date": "September 20",
-      "time": "11:59 PM",
-      "assignment": "Team Formation",
-      "deadline_type": ""
     }
   ]
 }

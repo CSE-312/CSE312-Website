@@ -4,8 +4,8 @@
   "homework": [
     {
       "title": "Homework 1: HTTP",
-      "url": "https://docs.google.com/document/d/18ZCFYkHq8PDRVWYDrezGm3qdAOY2a3DzzMNQWGnDXfI/edit?usp=sharing",
-      "released": true
+      "url": "hw1.html",
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
@@ -13,7 +13,7 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "September 9",
+      "date": "February 3",
       "title": "HTTP - Static Files, MIME Types, and Encodings",
       "slides": "1_3_Encodings.pdf",
       "reading_list": [
@@ -38,7 +38,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "September 11",
+      "date": "February 5",
       "title": "Cookies",
       "slides": "1_4_Cookies.pdf",
       "reading_list": [
@@ -59,7 +59,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "September 13",
+      "date": "February 7",
       "title": "HTTP POST, Forms, and AJAX",
       "slides": "2_2_POST_Forms.pdf",
       "reading_list": [

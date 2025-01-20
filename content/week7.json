@@ -4,16 +4,24 @@
   "homework": [
     {
       "title": "Homework 3: Media Uploads",
-      "url": "https://docs.google.com/document/d/1tO6syFPuEUeVUXjZ1KuY0wRe0Q4eNIFQGpIkxRjx3eU/edit?usp=sharing",
-      "released": true
+      "url": "hw3.html",
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "March 3",
+      "time": "9:00 AM",
+      "assignment": "Homework 2",
+      "deadline_type": "final"
+    },
+    {
       "type": "lecture",
       "day": "Monday",
-      "date": "October 7",
+      "date": "March 3",
       "title": "Multipart and File Uploads",
       "slides": "3_1_multipart_files.pdf",
       "reading_list": [
@@ -26,7 +34,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "October 9",
+      "date": "March 5",
       "title": "Buffering HTTP Requests",
       "slides": "3_5_Buffers.pdf",
       "reading_list": []
@@ -34,7 +42,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "October 11",
+      "date": "March 7",
       "title": "Multipart and File Upload: Examples and Testing",
       "reading_list": []
     }

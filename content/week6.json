@@ -7,15 +7,15 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "September 30",
+      "date": "February 24",
       "time": "9:00 AM",
-      "assignment": "Homework 1",
+      "assignment": "Homework 2",
       "deadline_type": "expected"
     },
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "September 30",
+      "date": "February 24",
       "title": "OAuth 2.0 - Overview",
       "slides": "2_9_OAuth.pdf",
       "reading_list": [
@@ -32,7 +32,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "October 2",
+      "date": "February 26",
       "title": "OAuth 2.0 - Implementation Details",
       "slides": "2_10_OAuth.pdf",
       "reading_list": []
@@ -40,7 +40,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "October 4",
+      "date": "February 28",
       "title": "OAuth 2.0 - Add Ons",
       "slides": "2_11_OAuth.pdf",
       "reading_list": [

@@ -1,5 +1,5 @@
 {
-  "title": "Week 9: Video",
+  "title": "Week 8: Video",
   "theme": "ds",
   "homework": [],
   "recitation": "Yes Recitation",
@@ -7,23 +7,15 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "October 21",
+      "date": "March 10",
       "time": "9:00 AM",
-      "assignment": "Homework 2",
+      "assignment": "Homework 3",
       "deadline_type": "expected"
-    },
-    {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "October 21",
-      "time": "9:00 AM",
-      "assignment": "Homework 1",
-      "deadline_type": "final"
     },
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "October 21",
+      "date": "March 10",
       "title": "File Types",
       "slides": "3_6_File_Types.pdf",
       "reading_list": [
@@ -40,7 +32,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "October 23",
+      "date": "March 12",
       "title": "Media Processing",
       "slides": "3_6_Media_Processing.pdf",
       "reading_list": [
@@ -61,7 +53,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "October 25",
+      "date": "March 14",
       "title": "Examples and Testing Media Uploads",
       "reading_list": []
     }

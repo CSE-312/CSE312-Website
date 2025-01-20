@@ -2,42 +2,21 @@
   "title": "Week 13: Deployment",
   "theme": "oop",
   "homework": [
-    {
-      "title": "Project Part 3",
-      "url": "https://docs.google.com/document/d/1JUB2q4JzprFhyYnfsLD0JZFLQCI1cEdWU6f3QjFNoEI/edit?usp=sharing",
-      "released": true
-    }
 ],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "November 18",
+      "date": "April 14",
       "time": "9:00 AM",
-      "assignment": "Last Day to Sign up for a Presentation Time",
+      "assignment": "Last Day to Sign Up for a Presentation Time",
       "deadline_type": ""
-    },
-    {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "November 18",
-      "time": "9:00 AM",
-      "assignment": "Homework 4",
-      "deadline_type": "expected"
-    },
-    {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "November 18",
-      "time": "9:00 AM",
-      "assignment": "Homework 3",
-      "deadline_type": "final"
     },
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "November 18",
+      "date": "April 14",
       "title": "Reverse Proxy Servers - Nginx",
       "slides": "5_4_HW_HTTPS.pdf",
       "reading_list": []
@@ -45,14 +24,14 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "November 20",
+      "date": "April 16",
       "title": "Deployment",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "November 22",
+      "date": "April 18",
       "title": "DoS and DDoS",
       "slides": "4_7_DoS.pdf",
       "reading_list": []

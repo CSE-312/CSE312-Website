@@ -4,21 +4,24 @@
   "homework": [
     {
       "title": "Homework 2: Authentication",
-      "url": "https://docs.google.com/document/d/1GfxgJBoyxVUD681c9FGBDaEdaVWAOEggBmAGelMcGe8/edit?usp=sharing",
-      "released": true
-    },
-    {
-      "title": "Project Part 1",
-      "url": "https://docs.google.com/document/d/1F8VF6dElApGwZrkXFk2v0QJ3GsqpNantMblYY9KzFuM/edit?usp=sharing",
-      "released": true
+      "url": "hw2.html",
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "February 17",
+      "time": "9:00 AM",
+      "assignment": "Homework 1",
+      "deadline_type": "final"
+    },
+    {
       "type": "lecture",
       "day": "Monday",
-      "date": "September 23",
+      "date": "February 17",
       "title": "Authentication and Secure Password Storage",
       "slides": "2_4_Authentication.pdf",
       "reading_list": [
@@ -31,7 +34,7 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "September 25",
+      "date": "February 19",
       "title": "Authentication Tokens and Sessions",
       "slides": "2_5_Authentication_Tokens.pdf",
       "reading_list": []
@@ -39,7 +42,7 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "September 27",
+      "date": "February 21",
       "title": "XSRF",
       "slides": "2_8_XSRF.pdf",
       "reading_list": []

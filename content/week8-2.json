@@ -1,5 +1,5 @@
 {
-  "title": "Week 14: Fall Break 2",
+  "title": "Week 9: Spring Break",
   "theme": "intro",
   "homework": [],
   "recitation": "No Recitation",
@@ -7,22 +7,22 @@
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "November 25",
-      "title": "No Lecture - Catch Up Day",
+      "date": "March 17",
+      "title": "No Lecture - Spring Break",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "November 27",
-      "title": "No Lecture - Fall Break 2",
+      "date": "March 19",
+      "title": "No Lecture - Spring Break",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "November 29",
-      "title": "No Lecture - Fall Break 2",
+      "date": "March 21",
+      "title": "No Lecture - Spring Break",
       "reading_list": []
     }
   ]

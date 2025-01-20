@@ -1,36 +1,27 @@
 {
-  "title": "Week 15: Project Presentations",
+  "title": "Week 14: Project Presentations",
   "theme": "outro",
   "homework": [
-    {
-      "title": "Project Presentation",
-      "url": "https://docs.google.com/document/d/1--hMDuXVnWDkbFO6ucp_-xMV892ecUmDhsjBma7D5hc/edit?usp=sharing",
-      "released": false
-    }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "December 2",
+      "date": "April 21",
       "time": "9:00 AM",
-      "assignment": "Project Part 2",
-      "deadline_type": ""
+      "assignment": "Team Project Checkpoint",
+      "deadline_type": "expected"
     },
     {
       "type": "lecture",
       "day": "Monday",
-      "date": "December 2",
-      "title": "Presentations",
+      "date": "April 21",
+      "title": "Content",
       "reading_list": [],
       "text_lists": [
         {
           "text_items": [
-            "@7",
-            "\uD835\uDCFD\uD835\uDCEE\uD835\uDCEA\uD835\uDCF6 \uD835\uDCEF\uD835\uDCFB\uD835\uDCEE\uD835\uDCEA\uD835\uDCF4\uD835\uDD02",
-            "Algorithm Alchemists",
-            "The Cookie Jar"
           ]
         }
       ]
@@ -38,16 +29,12 @@
     {
       "type": "lecture",
       "day": "Wednesday",
-      "date": "December 4",
-      "title": "Presentations",
+      "date": "April 23",
+      "title": "Content",
       "reading_list": [],
       "text_lists": [
         {
           "text_items": [
-            "FakeBook-BarterPlace",
-            "Red Toyota Tercel",
-            "wetrustourusers",
-            "ShiftSpace"
           ]
         }
       ]
@@ -55,16 +42,12 @@
     {
       "type": "lecture",
       "day": "Friday",
-      "date": "December 6",
-      "title": "Presentations",
+      "date": "April 25",
+      "title": "Content",
       "reading_list": [],
       "text_lists": [
         {
           "text_items": [
-            "MESBD",
-            "TALRIZ",
-            "WAJD",
-            "Project EverGreen"
           ]
         }
       ]
