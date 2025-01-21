@@ -6,14 +6,6 @@
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "April 21",
-      "time": "9:00 AM",
-      "assignment": "Team Project Checkpoint",
-      "deadline_type": "expected"
-    },
-    {
       "type": "lecture",
       "day": "Monday",
       "date": "April 21",

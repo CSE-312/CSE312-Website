@@ -5,14 +5,6 @@
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
-      "day": "Monday",
-      "date": "February 10",
-      "time": "9:00 AM",
-      "assignment": "Homework 1",
-      "deadline_type": "expected"
-    },
-    {
       "type": "lecture",
       "day": "Monday",
       "date": "February 10",

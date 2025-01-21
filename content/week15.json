@@ -5,6 +5,27 @@
   "recitation": "No Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "May 5",
+      "time": "9:00 AM",
+      "assignment": "Team Project",
+      "deadline_type": ""
+    },
+    {
+      "type": "lecture",
+      "day": "Monday",
+      "date": "May 5",
+      "title": "Presentations",
+      "reading_list": [],
+      "text_lists": [
+        {
+          "text_items": [
+          ]
+        }
+      ]
+    },
+    {
       "type": "lecture",
       "day": "Monday",
       "date": "May 12",

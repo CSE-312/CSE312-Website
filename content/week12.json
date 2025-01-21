@@ -10,6 +10,14 @@
       "day": "Monday",
       "date": "April 14",
       "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "final"
+    },
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 14",
+      "time": "9:00 AM",
       "assignment": "Last Day to Sign Up for a Presentation Time",
       "deadline_type": ""
     },
