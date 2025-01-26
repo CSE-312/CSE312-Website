@@ -325,10 +325,32 @@
             All files must be served with the correct MIME type. You may use the file extensions to determine these
             MIME types.
         </p>
+
         <p>
-            Add another path that will route "/" as an exact match and serve "public/index.html" which will load the
-            homepage when someone visits your domain name. At this point, you can run your app and visit
-            "http://localhost:8080" in your browser to see the provided front end.
+            In addition to hosting all the files in the public directory, you will add paths for each of the pages of
+            the app. For each of these pages, you will need to render an HTML template (Don't panic, this comes down to
+            reading 2 files and doing 1 find and replace). There is an HTML template in "public/layout/layout.html".
+            This template contains all the structure of the app including menus, navigation, metadata, imports, etc.
+            This template has one placeholder that is exactly the string "{{ content }}". Each html file for a page
+            will be inserted at this placeholder so the structure does not have to be copied into every file. This
+            also makes it trivial to make changes to every page on the app. To render a page, for example "index.html",
+            you will read both the layout.html and index.html files. Then replace "{{ content }}" from the template with
+            all the content of index.html to render the full page. This rendered page is what you'll send to the client
+            when they request index.html.
+        </p>
+
+        <p>
+            Add the following special paths that require rendering HTML using layout.html as described above:
+        </p>
+        <ul>
+            <li>"/" - Render index.html</li>
+            <li>"/chat" - Render chat.html</li>
+        </ul>
+
+        <p>
+            At this point, you can run your app and visit
+            "http://localhost:8080" in your browser to see the provided front end. We will add more pages in each of the
+            homework assignments using the same template.html.
         </p>
 
 
@@ -358,10 +380,15 @@
         <p>
             The front end contains a chat feature that will send specific requests to your server. To enable this
             feature, implement the following end points. Note that will need to use both a database and cookies to
-            complete all of these end points. All functionality must persist through a server restart and you must
-            use a MongoDB database.
+            complete all of these end points. All functionality must persist through a server restart, and you must
+            use a MongoDB database. During grading, there will be a MongoDB database running on localhost port 27017.
         </p>
 
+        <p>
+            To test your app with a database, you can either install MongoDB on your device, use the provided
+            docker-compose.db-only.yml file with Docker, use Docker in the command line, or any other way you have to
+            run MongoDB on localhost.
+        </p>
 
         <h5>Create Chat Message (`POST /api/chats`)</h5>
 
@@ -455,38 +482,121 @@
 
         <hr/>
         <h3>
-            Application Objective 1
+            Application Objective 1 - Emoji Reactions
         </h3>
         <hr/>
 
         <p>
-        - add/remove reactions to chat messages (group reactions, have it be like 2 👍 1 👎)
+            Users can add/remove reactions to chat messages (group reactions, will display like 2 👍 1 👎)
+        </p>
+
+        <p>
+            If you click on a chat message, you will be able to choose an emoji as your reaction. You can click on the
+            emoji to remove your reaction. To enable this feature, add/modify the following end points
+        </p>
+
+
+        <h5>Add an emoji (`PATCH /api/reaction/{messageID}`)</h5>
+
+        <p>Updates an existing message with the new emoji. Called when a user reacts to a message. A user react to the
+            same message with multiple emojis, by hitting this end point multiple times, but they cannot react to the
+            same message with the same emoji multiple times. If you receive a request from the same user trying to react
+            to
+            a message with same emoji a second time, you should respond with a 403. You may choose the message for this
+            response</p>
+
+        <p>
+            The content of the request will be JSON in the format:
+        </p>
+        <p>{emoji: "👍"}</p>
+
+        <p>
+            Emojis can be treated as single character string.
+        </p>
+
+        <p>Errors:</p>
+        <ul>
+            <li>**400 Bad Request**: The request was not well-formed, or the emoji was not a 1 character string</li>
+            <li>**403 Forbidden**: A user attempted to react with the same emoji multiple times for the same message
+            </li>
+            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
+            <li></li>
+        </ul>
+        <h5>Remove an emoji (`DELETE /api/reaction/{messageID}`)</h5>
+
+        <p>
+            A user is removing an emoji reaction that they previously added.
+        </p>
+        <p>
+            The content of the request will be JSON in the format:
+        </p>
+        <p>{emoji: "👍"}</p>
+
+        <p>Errors:</p>
+        <ul>
+            <li>**403 Forbidden**: A user attempted to remove a reaction, but they don't have the given reaction for
+                the given message
+            </li>
+        </ul>
+
+        <h5>Send all reactions (`GET /api/chats`)</h5>
+
+
+        <p>
+            Modify the chats endpoint to add the emojis to all messages. Each message will have another field for
+            "reactions" containing a list of user ids that have reacted with that emoji. You have control over the ids
+            as long as they are unique for each user.
+        </p>
+
+        <p>For example: "reactions": {"👻": ["63fc690d-ea3a-4349-ba51-0c645af40453"], "🫠":
+            ["eda92e0a-eb7a-430b-a938-916d2102b480", "63fc690d-ea3a-4349-ba51-0c645af40453"]}</p>
+
+
+        <hr/>
+        <h3>
+            Application Objective 2 - Changing Nickname
+        </h3>
+        <hr/>
+
+        <p>
+            Allow users to change their nickname and retroactively change their name in all their old messages
+        </p>
+
+        <h5>Add/update nickname (`PATCH /api/nickname`)</h5>
+
+        <p>
+            Changes the users nickname to the name in the body of the request. This will change the nickname on all
+            messages sent by the user in the past and future.
+        </p>
+
+        <p>
+            The content of the request will be JSON in the format:
+        </p>
+        <p>{"nickname": string}</p>
+
+        <p>
+            When chat messages are server, each message from this user will not contain a field "nickname" containing
+            their chosen name.
         </p>
 
         <hr/>
         <h3>
-            Application Objective 2
+            Application Objective 3 - Profile Pictures
         </h3>
         <hr/>
 
         <p>
-        - allow users to change their nickname (+ retroactively change their name in all their old messages)
+            Use <a href="https://www.dicebear.com/how-to-use/http-api/">dicebear</a> to generate profile pictures and
+            save them for each user. These images must be consistent for each user and users will have different images.
+            When a user first visits your app, or when they first send a message in chat, you will generate a random
+            profile picture for them and save this image as part of their profile. Whenever they send a chat message,
+            that message must contain their profile picture in an "imageURL" field.
         </p>
-
-        <hr/>
-        <h3>
-            Application Objective 3
-        </h3>
-        <hr/>
 
         <p>
-            - use [dicebear](https://www.dicebear.com/how-to-use/http-api/) for generating profile pictures and saving
-        that
-        to the user and saving the file
+            Example field to be added to chat messages - "imageURL":
+            "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.svg"
         </p>
-
-
-
 
 
         <h3>Submission</h3>
@@ -495,10 +605,10 @@
 
 
         <p>It is strongly recommended that you download and test your submission after submitting. To do this, download
-        your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
-        run
-        docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
-        do
+            your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
+            run
+            docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
+            do
             during grading.</p>
 
 
@@ -506,53 +616,84 @@
 
         <p>Each objective will be scored on a 0-3 scale as follows:</p>
 
-        3 (Complete)
-        Clearly correct. Following the testing procedure results in all expected behavior
-        2 (Complete)
-        Mostly correct, but with some minor issues. Following the testing procedure does not give the exact expected
-        results, but all features are functional
-        1 (Incomplete)
-        Not all features outlined in this document are functional, but an honest attempt was made to complete the
-        objective. Following the testing procedure gives an incorrect result, or no results at all, during any step.
-        This includes issues running Docker or docker-compose even if the code for the objective is correct
-        0.3 (Incomplete)
-        The objective would earn a 3, but a security risk was found while testing
-        0.2 (Incomplete)
-        The objective would earn a 2, but a security risk was found while testing
-        0.1 (Incomplete)
-        The objective would earn a 1, but a security risk was found while testing
-        0 (Incomplete)
-        No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)
-
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3 (Complete)</td>
+                <td>Clearly correct. Following the testing procedure results in all expected behavior</td>
+            </tr>
+            <tr>
+                <td>2 (Complete)</td>
+                <td>Mostly correct, but with some minor issues. Following the testing procedure does not give the exact
+                    expected
+                    results, but all features are functional
+                </td>
+            <tr>
+                <td>1 (Incomplete)</td>
+                <td>Not all features outlined in this document are functional, but an honest attempt was made to
+                    complete the
+                    objective. Following the testing procedure gives an incorrect result, or no results at all, during
+                    any step.
+                    This includes issues running Docker or docker-compose even if the code for the objective is correct
+                </td>
+            <tr>
+                <td>0.3 (Incomplete)</td>
+                <td>The objective would earn a 3, but a security risk was found while testing</td>
+            <tr>
+                <td>0.2 (Incomplete)</td>
+                <td>The objective would earn a 2, but a security risk was found while testing</td>
+            <tr>
+                <td>0.1 (Incomplete)</td>
+                <td>The objective would earn a 1, but a security risk was found while testing</td>
+            <tr>
+                <td>0 (Incomplete)</td>
+                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
+        </table>
 
         <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
-        is
-            meant to give you more feedback on your work.</p>
+            is meant to give you more feedback on your work.</p>
 
-        3
-        Objective Complete
-        2
-        Objective Complete
-        1
-        Objective Not Complete
-        0
-        Objective Not Complete
-
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3</td>
+                <td>Objective Complete</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    Objective Complete
+                </td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+        </table>
 
         <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
 
 
         <h3>Security Essay</h3>
         <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
-        the
+            the
             objective by submitting an essay about the security issue you exposed. These essays must:</p>
 
         <ul>
             <li>Be at least 1000 words in length</li>
             <li>Explain the security issue from your submission with specific details about your code</li>
-            <li>Describe how you fixed the issue in your submission with specific details about the code you changed</li>
-            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue in
-        production code with live users</li>
+            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+            </li>
+            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+                in
+                production code with live users
+            </li>
         </ul>
 
 
@@ -562,20 +703,21 @@
         <p>Due Date: Security essays are due 1-week after grades are released.</p>
 
         <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
-        of
-        the security issue that you exposed. If an interview is required, you will be contacted by the course staff
-        for
-        scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
-        course
+            of
+            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+            for
+            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+            course
             staff.</p>
 
         <p>When you don't have to write an essay:</p>
         <ul>
             <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
-        secure</li>
-        <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway</li>
+                secure
+            </li>
+            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
+            </li>
         </ul>
-
 
 
     </div>
