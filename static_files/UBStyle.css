@@ -89,6 +89,10 @@ p, li {
     /*text-align: justify;*/
 }
 
+li {
+  margin: 6px 0;
+}
+
 .container-fluid {
     height: 100%;
 }
