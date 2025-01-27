@@ -28,11 +28,11 @@
             clone the starter code for this assignment using the link below.
         </p>
         <p>
-            GitHub Repository link: <a href=""></a>
+            GitHub Repository link: <a href="https://github.com/CSE-312/handout">https://github.com/CSE-312/handout</a>
         </p>
 
         <p>
-            You should never need to modify this front end. The grader in Autolab wil simulate this front end code so
+            You should never need to modify this front end. The grader in Autolab will simulate this front end code so
             any changes you make may affect the grading of your submissions (ie. Do not change the front end to fix your
             issues). Your tasks throughout the 4 homework assignments will be to build the corresponding end points
             on the back end that are called by the front end.
@@ -47,7 +47,7 @@
         <p>
             This section outlines all the requirements for the learning objective portion of this assignment. You must
             complete all of these requirements. The learning objective is autograded in Autolab and you may submit as
-            many times as you need to until you earn credit.
+            many times as you need until you earn credit.
         </p>
 
         <p>
@@ -63,10 +63,10 @@
             contains
             all the instance variables that should be populated by parsing the input which will be an HTTP request in
             bytes. Your
-            task is to parse the bytes and set the 'body', 'method', 'path', 'http_version', and 'headers' instance
-            variables. Note that the body must be set as bytes while the other values will be set as str's (headers will
-            map
-            str to str).
+            task is to parse the bytes and set the 'body', 'method', 'path', 'http_version', 'headers', and 'cookies'
+            instance
+            variables. Note that the body must be set as bytes while the other values will be set as str's (headers and
+            cookies will map str to str).
         </p>
         <p>
             The headers variable is a dictionary that must be populated with all of the headers of the request where the
@@ -88,10 +88,11 @@
             cookies in the cookies dictionary.
         </p>
 
+        <br>
         <h4>The Response Class</h4>
 
         <p>
-            Complete the Request class in the util package of the starter code. Unlike the Request class, there are no
+            Create a Request class in the util package of the starter code. Unlike the Request class, there are no
             specific instance variables that need to be set. Instead, the spec if to write specific methods (You will
             need instance variables to write these methods, but you may choose their names and they won't be accessed by
             the grader)
@@ -100,6 +101,14 @@
         <p>In the response class, implement the following methods:</p>
 
         <ul>
+            <li>The constructor
+                <ul>
+                    <li>
+                        The constructor must not take any parameters (Other than self). You may initialize any instance
+                        variables you'd like in this constructor in oder to complete the other methods.
+                    </li>
+                </ul>
+            </li>
             <li>set_status
                 <ul>
                     <li>
@@ -229,6 +238,7 @@
             </li>
         </ul>
 
+        <br>
         <h4>The Router Class</h4>
 
         <p>
@@ -255,7 +265,8 @@
                         <ul>
                             <li>The HTTP method (str) of the request</li>
                             <li>The path (str) of the request</li>
-                            <li>A function that takes a Request object, and a TCPHandler as parameters and does not
+                            <li>A <em>function</em> that takes a Request object, and a TCPHandler as parameters and does
+                                not
                                 return anything. This will
                                 be the function that handles request matching the given method and path
                             </li>
@@ -302,9 +313,9 @@
                 </ul>
             </li>
         </ul>
-
-
-        <h4>Host Static Files</h4>
+        <br>
+        <hr>
+        <h4>Hosting Static Files</h4>
 
         <p>
             This is the first task where you'll start adding functionality to your server (The three classes will make
@@ -372,7 +383,7 @@
             saying that the content was not found. This can be a plain text message.
         </p>
 
-
+        <br>
         <h4>
             Chat Feature
         </h4>
@@ -390,25 +401,31 @@
             run MongoDB on localhost.
         </p>
 
+        <br>
         <h5>Create Chat Message (`POST /api/chats`)</h5>
 
-        <p>Creates a new chat message. The frontend will send a `POST` request to your backend at the route
+        <p>Creates a new chat message. The frontend will send a POST request to your backend at the route
             `/api/chats`.
             Listed below is the format expected.</p>
 
         <p>Request (JSON): {"content": string}</p>
 
-        <p>Response (JSON): {"_id": string, "author": string, "content": string}</p>
+        <p>Response: 200 OK with a message of your choosing. A simple text response of "message sent" is fine</p>
 
         <p>Errors:</p>
         <ul>
-            <li>- **400 Bad Request**: _Errors must have text in body of response, the error message is for you to
+            <li><b>400 Bad Request</b>: The request was not formatted properly. Errors must have text in body of
+                response, the error message is for you to
                 decide
                 but
-                one is needed_
+                one is needed
             </li>
         </ul>
 
+        <p>
+            When a message is sent, you should create a unique id for the message and store it in your database along
+            with the author of the post.
+        </p>
         <p>
             If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
             cookie that is set and tracked by your server.
@@ -416,50 +433,53 @@
 
         <p>
             Since we don't have user accounts yet, you can choose random author names for users for now. The names must
-            be different for different users
+            be different for different users, but can be randomly generated. You are allowed to use the GUID package to
+            generate ids and tokens if you'd like.
         </p>
 
-
+        <br>
         <h5>Get Chat Messages (`GET /api/chats`)</h5>
 
-        <p>Retrieves all chat messages. The frontend will send a `GET` request to your backend at the route
+        <p>Retrieves all chat messages. The frontend will send a GET request to your backend at the route
             `/api/chats`.
             Listed below is the format expected.</p>
 
-        <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "lastUpdatedAt":
-            DateString}, ... ]}
+        <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...
+            ]}
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
             updated. If it has it must be set to true.</p>
 
+        <br>
         <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
 
-        <p>Updates an existing message with new content. The frontend will send a `PATCH` request to your backend at
-            the
-            route `/api/chats/{id}`. Listed below is the format expected.</p>
+        <p>Updates an existing message with new content. The frontend will send a PATCH request to your backend at
+            the route `/api/chats/{id}`. Listed below is the format expected.</p>
 
-        <p>{"content": string}</p>
+        <p>Request (JSON): {"content": string}</p>
 
         <p>Errors:</p>
         <ul>
             <li>**400 Bad Request**: This error is for when the request is missing the content in the request body.</li>
-            <li>**403 Forbidden**: This error is for when the user lacks permission (can only update own messages).</li>
+            <li>**403 Forbidden**: This error is for when the user lacks permission (can only update your own
+                messages).
+            </li>
             <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
-            <li></li>
         </ul>
         <p>Errors
             must have text in body of response, the error message is for you to decide but one is needed</p>
 
+        <br>
         <h5>Delete Chat Message (`DELETE /api/chats/{id}`)</h5>
 
-        <p>Deletes an existing message from chat history. The frontend will send a `DELETE` request to your backend at
+        <p>Deletes an existing message from chat history. The frontend will send a DELETE request to your backend at
             the
             route `/api/chats/{id}`. Listed below is the format expected.</p>
 
         <p>Errors:</p>
         <ul>
-            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
             <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages).</li>
+            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
         </ul>
 
         <p>Errors must have text in body of response, the error message is for you to decide but one is needed</p>
@@ -469,7 +489,7 @@
             malicious user could submit HTML tags that attack other users. You cannot allow this. You must escape any
             submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
 
-
+        <br>
         <h4>Testing Procedure</h4>
 
         <ol>
@@ -479,7 +499,7 @@
             </li>
         </ol>
 
-
+        <br>
         <hr/>
         <h3>
             Application Objective 1 - Emoji Reactions
@@ -495,7 +515,7 @@
             emoji to remove your reaction. To enable this feature, add/modify the following end points
         </p>
 
-
+        <br>
         <h5>Add an emoji (`PATCH /api/reaction/{messageID}`)</h5>
 
         <p>Updates an existing message with the new emoji. Called when a user reacts to a message. A user react to the
@@ -508,7 +528,7 @@
         <p>
             The content of the request will be JSON in the format:
         </p>
-        <p>{emoji: "👍"}</p>
+        <p>Request (JSON): {"emoji": "👍"}</p>
 
         <p>
             Emojis can be treated as single character string.
@@ -520,8 +540,9 @@
             <li>**403 Forbidden**: A user attempted to react with the same emoji multiple times for the same message
             </li>
             <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
-            <li></li>
         </ul>
+
+        <br>
         <h5>Remove an emoji (`DELETE /api/reaction/{messageID}`)</h5>
 
         <p>
@@ -530,7 +551,7 @@
         <p>
             The content of the request will be JSON in the format:
         </p>
-        <p>{emoji: "👍"}</p>
+        <p>Request (JSON): {"emoji": "👍"}</p>
 
         <p>Errors:</p>
         <ul>
@@ -538,7 +559,7 @@
                 the given message
             </li>
         </ul>
-
+        <br>
         <h5>Send all reactions (`GET /api/chats`)</h5>
 
 
@@ -551,7 +572,7 @@
         <p>For example: "reactions": {"👻": ["63fc690d-ea3a-4349-ba51-0c645af40453"], "🫠":
             ["eda92e0a-eb7a-430b-a938-916d2102b480", "63fc690d-ea3a-4349-ba51-0c645af40453"]}</p>
 
-
+        <br>
         <hr/>
         <h3>
             Application Objective 2 - Changing Nickname
@@ -561,7 +582,7 @@
         <p>
             Allow users to change their nickname and retroactively change their name in all their old messages
         </p>
-
+        <br>
         <h5>Add/update nickname (`PATCH /api/nickname`)</h5>
 
         <p>
@@ -572,13 +593,13 @@
         <p>
             The content of the request will be JSON in the format:
         </p>
-        <p>{"nickname": string}</p>
+        <p>Request (JSON): {"nickname": string}</p>
 
         <p>
-            When chat messages are server, each message from this user will not contain a field "nickname" containing
+            When chat messages are server, each message from this user will now contain a field "nickname" containing
             their chosen name.
         </p>
-
+        <br>
         <hr/>
         <h3>
             Application Objective 3 - Profile Pictures
@@ -598,9 +619,10 @@
             "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.svg"
         </p>
 
-
+        <br>
+        <hr>
         <h3>Submission</h3>
-
+        <hr>
         <p>Submit all files for your server to Autolab in a .zip file (A .rar or .tar file is not a .zip file!)</p>
 
 
@@ -611,9 +633,10 @@
             do
             during grading.</p>
 
-
+        <br>
+        <hr>
         <h3>Grading</h3>
-
+        <hr>
         <p>Each objective will be scored on a 0-3 scale as follows:</p>
 
         <table class="table table-bordered table-skinny">
@@ -648,7 +671,7 @@
                 <td>0 (Incomplete)</td>
                 <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
         </table>
-
+        <br>
         <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
             is meant to give you more feedback on your work.</p>
 
@@ -676,11 +699,13 @@
                 </td>
             </tr>
         </table>
-
+        <br>
         <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
 
-
+        <br>
+        <hr>
         <h3>Security Essay</h3>
+        <br>
         <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
             the
             objective by submitting an essay about the security issue you exposed. These essays must:</p>
