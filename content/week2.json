@@ -8,27 +8,6 @@
       "type": "lecture",
       "day": "Monday",
       "date": "January 27",
-      "title": "Front End Development - HTML/CSS + JavaScript",
-      "slides": "2_1_Front_End.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.w3schools.com/html/default.asp",
-          "text": "HTML [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/css/default.asp",
-          "text": "CSS [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/js/default.asp",
-          "text": "JavaScript [W3 Schools]"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
-      "day": "Wednesday",
-      "date": "January 29",
       "title": "HTTP Request/Response",
       "slides": "1_2_HTTP.pdf",
       "reading_list": [
@@ -43,6 +22,27 @@
         {
           "url": "https://docs.python.org/3/library/socketserver.html",
           "text": "Python TCP Server"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "January 29",
+      "title": "Front End Development - HTML/CSS + JavaScript",
+      "slides": "2_1_Front_End.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.w3schools.com/html/default.asp",
+          "text": "HTML [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/css/default.asp",
+          "text": "CSS [W3 Schools]"
+        },
+        {
+          "url": "https://www.w3schools.com/js/default.asp",
+          "text": "JavaScript [W3 Schools]"
         }
       ]
     },
