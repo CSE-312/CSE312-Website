@@ -12,7 +12,7 @@
 
 
     <tr class="lab">
-        <td colspan="3">Recitation: {{ content.recitation }}</td>
+        <td colspan="3">Recitation: {{ content.recitation }} {% if content.rec_slide_url %} - <a href="{{ content.rec_slide_url }}">Slides</a> {% endif %}</td>
     </tr>
 
 
