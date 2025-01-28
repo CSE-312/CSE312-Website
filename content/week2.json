@@ -29,20 +29,24 @@
       "type": "lecture",
       "day": "Wednesday",
       "date": "January 29",
-      "title": "Front End Development - HTML/CSS + JavaScript",
-      "slides": "2_1_Front_End.pdf",
+      "title": "HTTP - Static Files, MIME Types, and Encodings",
+      "slides": "1_3_Encodings.pdf",
       "reading_list": [
         {
-          "url": "https://www.w3schools.com/html/default.asp",
-          "text": "HTML [W3 Schools]"
+          "url": "https://en.wikipedia.org/wiki/UTF-8",
+          "text": "UTF-8 (Wikipedia)"
         },
         {
-          "url": "https://www.w3schools.com/css/default.asp",
-          "text": "CSS [W3 Schools]"
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types",
+          "text": "MIME types"
         },
         {
-          "url": "https://www.w3schools.com/js/default.asp",
-          "text": "JavaScript [W3 Schools]"
+          "url": "https://www.iana.org/assignments/media-types/media-types.xhtml",
+          "text": "Every MIME type"
+        },
+        {
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
+          "text": "String MIME types"
         }
       ]
     },
@@ -50,24 +54,20 @@
       "type": "lecture",
       "day": "Friday",
       "date": "January 31",
-      "title": "Docker and Docker Compose",
-      "slides": "1_5_Docker.pdf",
+      "title": "Cookies",
+      "slides": "1_4_Cookies.pdf",
       "reading_list": [
         {
-          "url": "https://www.docker.com/",
-          "text": "Docker"
+          "url": "https://tools.ietf.org/html/rfc6265",
+          "text": "RFC6265 - Cookies"
         },
         {
-          "url": "https://docs.docker.com/get-started/",
-          "text": "Docker - Getting Started"
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie",
+          "text": "Directives Overview"
         },
         {
-          "url": "https://docs.docker.com/docker-for-windows/wsl/",
-          "text": "Docker For Windows Users"
-        },
-        {
-          "url": "https://docs.docker.com/compose/",
-          "text": "Docker Compose"
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date",
+          "text": "Date Formatting"
         }
       ]
     }

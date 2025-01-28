@@ -14,52 +14,6 @@
       "type": "lecture",
       "day": "Monday",
       "date": "February 3",
-      "title": "HTTP - Static Files, MIME Types, and Encodings",
-      "slides": "1_3_Encodings.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/UTF-8",
-          "text": "UTF-8 (Wikipedia)"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types",
-          "text": "MIME types"
-        },
-        {
-          "url": "https://www.iana.org/assignments/media-types/media-types.xhtml",
-          "text": "Every MIME type"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
-          "text": "String MIME types"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
-      "day": "Wednesday",
-      "date": "February 5",
-      "title": "Cookies",
-      "slides": "1_4_Cookies.pdf",
-      "reading_list": [
-        {
-          "url": "https://tools.ietf.org/html/rfc6265",
-          "text": "RFC6265 - Cookies"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie",
-          "text": "Directives Overview"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date",
-          "text": "Date Formatting"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
-      "day": "Friday",
-      "date": "February 7",
       "title": "HTTP POST, Forms, and AJAX",
       "slides": "2_2_POST_Forms.pdf",
       "reading_list": [
@@ -76,6 +30,47 @@
           "text": "Query Strings (Wikipedia)"
         }
       ]
+    },
+    {
+      "type": "lecture",
+      "day": "Wednesday",
+      "date": "February 5",
+      "title": "Databases and HTML Templates",
+      "slides": "2_3_Databases_and_HTML_Templates.pdf",
+      "reading_list": [
+        {
+          "url": "https://www.mysql.com",
+          "text": "MySQL"
+        },
+        {
+          "url": "https://www.w3schools.com/sql/",
+          "text": "SQL Tutorial"
+        },
+        {
+          "url": "https://www.mongodb.com",
+          "text": "MongoDB"
+        },
+        {
+          "url": "https://www.tutorialspoint.com/mongodb/index.htm",
+          "text": "MongoDB Tutorial"
+        },
+        {
+          "url": "https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b",
+          "text": "Waiting Workaround"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Web_template_system",
+          "text": "Templating (Wikipedia)"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "February 7",
+      "title": "CRUD and REST API",
+      "slides": "2_6_API.pdf",
+      "reading_list": []
     }
   ]
 }
