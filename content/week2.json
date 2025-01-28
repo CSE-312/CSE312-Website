@@ -3,6 +3,7 @@
   "theme": "intro",
   "homework": [],
   "recitation": "Yes Recitation",
+  "rec_slide_url": "static_files/rec_slides/REC_1_Class_Overview.pdf",
   "content": [
     {
       "type": "lecture",
