@@ -507,6 +507,16 @@ div.header {
     color: #ffffff;
 }
 
+.h {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.n::before {
+    content: "Response: 200 OK with a message of your choosing. A simple text response of \"message sent\" is fine";
+}
+
 body.outer {
     /*background-color: #f7fbff;*/
     /*background-color: #1591ff;*/

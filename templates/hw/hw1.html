@@ -143,6 +143,10 @@
                         If this method is called multiple times, all headers across all calls must be part of the
                         response
                     </li>
+                    <li>
+                        Note: We will not test this method with multiple headers that have the same name, though it's
+                        recommended that handle this case as it may come up later in the semester
+                    </li>
                 </ul>
             </li>
 
@@ -164,6 +168,7 @@
                 </ul>
             </li>
 
+
             <li>text
                 <ul>
                     <li>
@@ -179,6 +184,24 @@
                         If this method is called multiple times, all text must be appended to the body. This method can
                         be combined with the bytes method (ie. calling both text and bytes should result in the text and
                         bytes from all calls appearing in the body as bytes)
+                    </li>
+                </ul>
+            </li>
+
+            <li class="h">binary
+                <ul>
+                    <li>
+                        Takes a str
+                    </li>
+                    <li>
+                        returns self
+                    </li>
+                    <li>
+                        Appends the input to the end of the body of the response in binary
+                    </li>
+                    <li>
+                        Each character in the input string should be converted into a binary string before being
+                        appended to the body
                     </li>
                 </ul>
             </li>
@@ -410,7 +433,9 @@
 
         <p>Request (JSON): {"content": string}</p>
 
-        <p>Response: 200 OK with a message of your choosing. A simple text response of "message sent" is fine</p>
+        <p><span class="n"></span><span class="h">
+            Response: 200 OK with a message of exactly "Great work sending a chat message!!"
+        </span></p>
 
         <p>Errors:</p>
         <ul>
@@ -444,8 +469,7 @@
             `/api/chats`.
             Listed below is the format expected.</p>
 
-        <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...
-            ]}
+        <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...]}
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
             updated. If it has it must be set to true.</p>
