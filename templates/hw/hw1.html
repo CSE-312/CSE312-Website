@@ -365,10 +365,10 @@
             the app. For each of these pages, you will need to render an HTML template (Don't panic, this comes down to
             reading 2 files and doing 1 find and replace). There is an HTML template in "public/layout/layout.html".
             This template contains all the structure of the app including menus, navigation, metadata, imports, etc.
-            This template has one placeholder that is exactly the string "{{ content }}". Each html file for a page
+            This template has one placeholder that is exactly the string "{{content}}". Each html file for a page
             will be inserted at this placeholder so the structure does not have to be copied into every file. This
             also makes it trivial to make changes to every page on the app. To render a page, for example "index.html",
-            you will read both the layout.html and index.html files. Then replace "{{ content }}" from the template with
+            you will read both the layout.html and index.html files. Then replace "{{content}}" from the template with
             all the content of index.html to render the full page. This rendered page is what you'll send to the client
             when they request index.html.
         </p>
