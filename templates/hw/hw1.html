@@ -28,7 +28,7 @@
             clone the starter code for this assignment using the link below.
         </p>
         <p>
-            GitHub Repository link: <a href="https://github.com/CSE-312/handout">https://github.com/CSE-312/handout</a>
+            GitHub Repository link: <a href="https://github.com/CSE-312/CSE312-Server">https://github.com/CSE-312/CSE312-Server</a>
         </p>
 
         <p>
@@ -69,34 +69,86 @@
             task is to parse the bytes and set the 'body', 'method', 'path', 'http_version', 'headers', and 'cookies'
             instance
             variables. Note that the body must be set as bytes while the other values will be set as str's (headers and
-            cookies will map str to str).
+            cookies will map str to str). More details about each instance variable:
         </p>
-        <p>
-            The headers variable is a dictionary that must be populated with all of the headers of the request where the
-            keys in the dictionary are the names of each header and the values are the header values. You must parse all
-            of
-            the headers of the request and add them all to this dictionary. (Technical note: HTTP requests are allowed
-            to
-            contain multiple headers with the same name. This means it's not 100% correct to store headers in a
-            dictionary,
-            but this will serve our purposes in this course while avoiding an increase in complexity).
-        </p>
-        <p>
-            If there is a Cookie header, all cookies must be parsed and stored in the cookies dictionary as Strings (The
-            dictionary will map str to str). Your parser must support multiple cookies. Be sure to remove any
-            leading/trailing white space from the cookie names and values.
-        </p>
-        <p>
-            Note: The raw Cookies header should still be in your headers dictionary even after parsing the individual
-            cookies in the cookies dictionary.
-        </p>
+
+        <ul>
+            <li>body
+                <ul>
+                    <li>
+                        All the content of the body of the request as bytes
+                    </li>
+                    <li>
+                        Ideally, the bytes of the body should never be converted to a str. It's recommended that you
+                        look for the first b"\r\n\r\n" and treat everything after that as the body before parsing any
+                        headers, which should be parsed as string since they are ASCII-only. If you convert the body
+                        to a string, you will have to fix this in HW3 when you handle image and video uploads
+                    </li>
+                </ul>
+            </li>
+            <li>method
+                <ul>
+                    <li>
+                        The HTTP method from the request line
+                    </li>
+                </ul>
+            </li>
+            <li>path
+                <ul>
+                    <li>
+                        The path from the request line
+                    </li>
+                </ul>
+            </li>
+            <li>http_version
+                <ul>
+                    <li>
+                        The HTTP version from the request line. You should parse this anyway, but it will always be
+                        "HTTP/1.1" in this course
+                    </li>
+                </ul>
+            </li>
+            <li>headers
+                <ul>
+                    <li>
+                        The headers variable is a dictionary that must be populated with all the headers of the
+                        request where the
+                        keys in the dictionary are the names of each header and the values are the header values. You
+                        must parse all
+                        the headers of the request and add them all to this dictionary
+                    </li>
+                    <li>Technical note: HTTP requests are allowed to
+                        contain multiple headers with the same name. This means it's not 100% correct to store headers
+                        in a dictionary,
+                        but this will serve our purposes in this course while avoiding an increase in complexity
+                    </li>
+                </ul>
+            </li>
+
+            <li>cookies
+                <ul>
+                    <li>
+                        If there is a Cookie header, all cookies must be parsed and stored in the cookies dictionary as
+                        Strings (The
+                        dictionary will map str to str). Your parser must support multiple cookies. Be sure to remove
+                        any
+                        leading/trailing white space from the cookie names and values.
+                    </li>
+                    <li> Note: The raw Cookies header should still be in your headers dictionary even after parsing the
+                        individual
+                        cookies in the cookies dictionary.
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
 
         <br>
         <h4>The Response Class</h4>
 
         <p>
             Create a Request class in the util package of the starter code. Unlike the Request class, there are no
-            specific instance variables that need to be set. Instead, the spec if to write specific methods (You will
+            specific instance variables that need to be set. Instead, the spec is to write specific methods (You will
             need instance variables to write these methods, but you may choose their names and they won't be accessed by
             the grader)
         </p>
@@ -104,15 +156,21 @@
         <p>In the response class, implement the following methods:</p>
 
         <ul>
-            <li>The constructor
+            <li>__init__(self)
                 <ul>
                     <li>
                         The constructor must not take any parameters (Other than self). You may initialize any instance
                         variables you'd like in this constructor in oder to complete the other methods.
                     </li>
+                    <li>
+                        Be careful not to use any of these method names as your variable names. For example, naming an
+                        instance variable "headers" will confuse python and make it think that you're trying to call the
+                        variable when you call the method
+                    </li>
                 </ul>
             </li>
-            <li>set_status
+
+            <li>set_status(self, code, text)
                 <ul>
                     <li>
                         Takes an int and a str
@@ -131,7 +189,7 @@
                 </ul>
             </li>
 
-            <li>headers
+            <li>headers(self, headers)
                 <ul>
                     <li>
                         Takes a dict of str to str
@@ -147,13 +205,12 @@
                         response
                     </li>
                     <li>
-                        Note: We will not test this method with multiple headers that have the same name, though it's
-                        recommended that handle this case as it may come up later in the semester
+                        Note: We will not test this method with multiple headers that have the same name
                     </li>
                 </ul>
             </li>
 
-            <li>cookies
+            <li>cookies(self, cookies)
                 <ul>
                     <li>
                         Takes a dict of str to str
@@ -162,31 +219,35 @@
                         returns self
                     </li>
                     <li>
-                        Adds all the key-value pairs from the input dict as cookies to the response
+                        Adds all the key-value pairs from the input dict as cookies to the response. Each cookie
+                        provided
+                        must be set using the appropriate headers
                     </li>
                     <li>
                         If this method is called multiple times, all cookies across all calls must be part of the
                         response
                     </li>
+                    <li>
+                        If a cookie has any directives, they will be part of its value in the input (ie. you don't have
+                        to do anything special for directives in this method)
+                    </li>
                 </ul>
             </li>
 
-
-            <li>text
+            <li>bytes(self, data)
                 <ul>
                     <li>
-                        Takes a str
+                        Takes bytes
                     </li>
                     <li>
                         returns self
                     </li>
                     <li>
-                        Appends the input to the end of the body of the response as bytes
+                        Appends the input to the end of the body of the response
                     </li>
                     <li>
-                        If this method is called multiple times, all text must be appended to the body. This method can
-                        be combined with the bytes method (ie. calling both text and bytes should result in the text and
-                        bytes from all calls appearing in the body as bytes)
+                        If this method is called multiple times, all bytes must be appended to the body. This method can
+                        be combined with the text method
                     </li>
                 </ul>
             </li>
@@ -209,25 +270,26 @@
                 </ul>
             </li>
 
-            <li>bytes
+            <li>text(self, data)
                 <ul>
                     <li>
-                        Takes bytes
+                        Takes a str
                     </li>
                     <li>
                         returns self
                     </li>
                     <li>
-                        Appends the input to the end of the body of the response
+                        Appends the input to the end of the body of the response as bytes
                     </li>
                     <li>
-                        If this method is called multiple times, all bytes must be appended to the body. This method can
-                        be combined with the text method
+                        If this method is called multiple times, all text must be appended to the body. This method can
+                        be combined with the bytes method (ie. calling both text and bytes should result in the text and
+                        bytes from all calls appearing in the body as bytes)
                     </li>
                 </ul>
             </li>
 
-            <li>json
+            <li>json(self, data)
                 <ul>
                     <li>
                         Takes either a dict or a list
@@ -236,17 +298,17 @@
                         returns self
                     </li>
                     <li>
-                        Set the body of the response to the input converted to json as bytes and sets the Content-Type
-                        to "application/json"
+                        Sets the body of the response to the input converted to json as bytes and sets the Content-Type
+                        to "application/json" while overwriting any content that was already in the body (Since
+                        appending would break the JSON format)
                     </li>
                     <li>
-                        This method can only be called once. Calling it again should replace the old body
+                        This method should only be called once. Calling it again will replace the old body
                     </li>
                 </ul>
             </li>
 
-
-            <li>to_data
+            <li>to_data(self)
                 <ul>
                     <li>
                         Does not take any parameters
@@ -259,6 +321,14 @@
                         The returned bytes must be properly formatted according the HTTP protocol and must contain all
                         headers, cookies, the status code and message, and the body of the response along with the
                         Content-Length header
+                    </li>
+                    <li>
+                        If the Content-Type header was never set using the headers method, it should default to
+                        "text/plain; charset=utf-8"
+                    </li>
+                    <li>
+                        The returned bytes may contain addition headers. eg. If you want to disable MIME type sniffing
+                        for every response, this class is the place to do it
                     </li>
                 </ul>
             </li>
@@ -281,70 +351,101 @@
         </p>
         <p>Write a class named Router in a file named util/router.py with the following methods and functionality:
         </p>
+
         <ul>
-            <li>If you use a constructor, it must take no parameters</li>
-            <li>A method named "add_route" that takes 4 parameters and is used to specify how to route a specific
-                request based
-                on its method and path
+            <li>__init__(self)
                 <ul>
-                    <li>The 4 parameters are
+                    <li>
+                        If you use a constructor, it must take no parameters. As with the Response class, you may use
+                        the constructor to initialize any instance variables you want to use
+                    </li>
+                </ul>
+            </li>
+
+            <li>add_route(self, method, path, action, exact_path=False)
+                <ul>
+                    <li>The "add_route" method takes 4 parameters and is used to specify how to route a
+                        specific request based on its method and path
                         <ul>
-                            <li>The HTTP method (str) of the request</li>
-                            <li>The path (str) of the request</li>
-                            <li>A <em>function</em> that takes a Request object, and a TCPHandler as parameters and does
-                                not
-                                return anything. This will
-                                be the function that handles request matching the given method and path
+                            <li>The 4 parameters are:
+                                <ul>
+                                    <li>The HTTP method (str) of the request</li>
+                                    <li>The path (str) of the request</li>
+                                    <li>A <em>function</em> that takes a Request object, and a TCPHandler as parameters
+                                        and does not return anything. This will
+                                        be the function that handles request matching the given method and path.
+                                        The provided hello_path function is an example of this type of function along
+                                        with sample usage of it in server.py
+                                    </li>
+                                    <li>A boolean indicating if the path must match exactly or begin with the provided
+                                        path. This boolean has a default value of False
+                                    </li>
+                                </ul>
                             </li>
-                            <li>A boolean indicating if the path must match exactly or begin with the provided path.
-                                This boolean should have a
-                                default value of False
+                            <li>The add_route method does not return anything</li>
+                            <li>This method is called to add a route to the router. For example, if you have a function
+                                named
+                                "send_home_page"
+                                that takes a Request and a TCPHandler and sends an HTTP response containing the HTML of
+                                your home page using the
+                                handler that should be called on a GET request for the path "/", you would call
+                                add_route("GET",
+                                "/",
+                                send_home_page, True)
                             </li>
                         </ul>
                     </li>
-                    <li>The add_route method does not return anything</li>
-                    <li>This method is called to add a route to the router. For example, if you have a function named
-                        "send_home_page"
-                        that takes a Request and a TCPHandler and send an HTTP response containing the HTML of your home
-                        page using the
-                        handler that should be called on a GET request for the path "/", you would call add_route("GET",
-                        "/",
-                        send_home_page, True)
-                    </li>
                 </ul>
             </li>
-            <li>A method named "route_request" that takes a Request object and a TCPHandler and does not return anything
+
+
+            <li>route_request(self, request, handler)
                 <ul>
+                    <li>The "route_request" method takes a Request object and a TCPHandler and does not return
+                        anything
+                    </li>
                     <li>
-                        This method will check the method and path of the request, determine which added path should be
+                        This method will check the method and path of the request, determine which added path
+                        should be
                         used, and call
-                        the function associated with that path with arguments matching the parameters of this method
+                        the function associated with that path with arguments matching the parameters of this
+                        method
                         (eg. forward the
                         Request and TCPHandler to the matching function)
                     </li>
-                    <li>If there is no path for the request, return a 404 response</li>
-                    <li>If multiple routes match the request, use the route that was added first with the add_route
-                        method
+                    <li>If there is no path matching the request, send a 404 Not Found response over the handler. You
+                        may choose the message in
+                        the body of this response</li>
+                    <li>If multiple routes match the request, use the route that was added first with the
+                        add_route method
                     </li>
-                    <li>When determining if a route is a match, the method and path must both match. If the boolean
+                    <li>When determining if a route is a match, the method and path must both match. If the
+                        boolean
                         (from the add_route
-                        method) was True, the path must match exactly. If the boolean was False, the path of the request
+                        method) was True, the path must match exactly. If the boolean was False, the path of the
+                        request
                         must start with
-                        the path for the route for it to be considered a match (eg. add_route("GET", "/public/image/",
+                        the path for the route for it to be considered a match (eg. add_route("GET",
+                        "/public/image/",
                         serve_image) uses
-                        the default boolean value of False so a request of "GET /public/image/eagle.jpg" would be routed
+                        the default boolean value of False so a request of "GET /public/image/eagle.jpg" would
+                        be routed
                         to the
                         serve_image function
                     </li>
+
                 </ul>
             </li>
         </ul>
+
+
         <br>
         <hr>
         <h4>Hosting Static Files</h4>
 
         <p>
-            This is the first task where you'll start adding functionality to your server (The three classes will make
+            This is the first task where you'll start adding functionality to your server (The three classes you've
+            written will make
             it easier for you develop your server throughout the semester). Review the code in server.py to see how it
             uses your Router and Request classes. Then, add a route to your router that will host all files in the
             public directory.
@@ -360,7 +461,9 @@
 
         <p>
             All files must be served with the correct MIME type. You may use the file extensions to determine these
-            MIME types.
+            MIME types. For this HW, you only need to handle the file extensions that appear in the provided public
+            directory. (Note: .ico is an image with MIME type "image/x-icon"). There are 7 total types you need
+            to handle.
         </p>
 
         <p>
@@ -368,10 +471,12 @@
             the app. For each of these pages, you will need to render an HTML template (Don't panic, this comes down to
             reading 2 files and doing 1 find and replace). There is an HTML template in "public/layout/layout.html".
             This template contains all the structure of the app including menus, navigation, metadata, imports, etc.
-            This template has one placeholder that is exactly the string "&#123;&#123;content&#125;&#125;". Each html file for a page
+            This template has one placeholder that is exactly the string <nobr>"&#123;&#123;content&#125;&#125;".</nobr> Each html
+            file for a page
             will be inserted at this placeholder so the structure does not have to be copied into every file. This
-            also makes it trivial to make changes to every page on the app. To render a page, for example "index.html",
-            you will read both the layout.html and index.html files. Then replace "&#123;&#123;content&#125;&#125;" from the template with
+            also makes it easier to make changes to every page on the app since only template.html has to be changed to affect all pages. To render a page, for example "index.html",
+            you will read both the layout.html and index.html files, then replace <nobr>"&#123;&#123;content&#125;&#125;"</nobr> from
+            the template with
             all the content of index.html to render the full page. This rendered page is what you'll send to the client
             when they request index.html.
         </p>
@@ -410,13 +515,14 @@
         </p>
 
         <br>
+        <hr/>
         <h4>
             Chat Feature
         </h4>
 
         <p>
             The front end contains a chat feature that will send specific requests to your server. To enable this
-            feature, implement the following end points. Note that will need to use both a database and cookies to
+            feature, implement the following end points. Note that you will need to use both a database and cookies to
             complete all of these end points. All functionality must persist through a server restart, and you must
             use a MongoDB database. During grading, there will be a MongoDB database running on localhost port 27017.
         </p>
@@ -432,7 +538,7 @@
 
         <p>Creates a new chat message. The frontend will send a POST request to your backend at the route
             `/api/chats`.
-            Listed below is the format expected.</p>
+            Listed below is the format expected. The entirety of the body of the request will be a JSON string</p>
 
         <p>Request (JSON): {"content": string}</p>
 
@@ -440,28 +546,25 @@
             Response: 200 OK with a message of exactly "Great work sending a chat message!!"
         </span></p>
 
-        <p>Errors:</p>
-        <ul>
-            <li><b>400 Bad Request</b>: The request was not formatted properly. Errors must have text in body of
-                response, the error message is for you to
-                decide
-                but
-                one is needed
-            </li>
-        </ul>
+        <p>
+            You may assume the request is properly formatted
+        </p>
 
         <p>
             When a message is sent, you should create a unique id for the message and store it in your database along
-            with the author of the post.
+            with the author of the post. See the spec for the GET request to see the expected format of a chat message.
         </p>
         <p>
             If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
-            cookie that is set and tracked by your server.
+            cookie that is set and tracked by your server. The name of this cookie must be exactly "session" and contain
+            a unique id used to identify this user. This cookie must be set when they send their first message (ie. do
+            not set the cookie when they first load your homepage. Some users will only use your API and not your front
+            end)
         </p>
 
         <p>
             Since we don't have user accounts yet, you can choose random author names for users for now. The names must
-            be different for different users, but can be randomly generated. You are allowed to use the GUID package to
+            be different for different users, but can be randomly generated. You are allowed to use the uuid package to
             generate ids and tokens if you'd like.
         </p>
 
@@ -475,7 +578,7 @@
         <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...]}
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
-            updated. If it has it must be set to true.</p>
+            updated. If it has it must be set to true. When a message is first created, this should be set to false.</p>
 
         <br>
         <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
@@ -487,15 +590,15 @@
 
         <p>Errors:</p>
         <ul>
-            <li>**400 Bad Request**: This error is for when the request is missing the content in the request body.</li>
-            <li>**403 Forbidden**: This error is for when the user lacks permission (can only update your own
-                messages).
+            <li>**403 Forbidden**: This error is for when the user lacks permission (Users can only update their own
+                messages. Your server needs to check for this). You may choose the message for this error
             </li>
-            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
+{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
         </ul>
-        <p>Errors
-            must have text in body of response, the error message is for you to decide but one is needed</p>
 
+        <p>
+            After a message has been updated using this endpoint, its "updated" field must be set to true
+        </p>
         <br>
         <h5>Delete Chat Message (`DELETE /api/chats/{id}`)</h5>
 
@@ -505,26 +608,27 @@
 
         <p>Errors:</p>
         <ul>
-            <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages).</li>
-            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
+            <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages). You
+                may choose the message for this error</li>
+{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
         </ul>
 
-        <p>Errors must have text in body of response, the error message is for you to decide but one is needed</p>
+        <p>After a message is deleted by its author, it must never be sent by the GET endpoint again.</p>
 
 
         <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
             malicious user could submit HTML tags that attack other users. You cannot allow this. You must escape any
             submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
 
-        <br>
-        <h4>Testing Procedure</h4>
-
-        <ol>
-            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You
-                are allowed as many submissions as you'd like in order to complete this objective (All application
-                objectives are manually graded after the final deadline)
-            </li>
-        </ol>
+{#        <br>#}
+{#        <h4>Testing Procedure</h4>#}
+{##}
+{#        <ol>#}
+{#            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You#}
+{#                are allowed as many submissions as you'd like in order to complete this objective (All application#}
+{#                objectives are manually graded after the final deadline)#}
+{#            </li>#}
+{#        </ol>#}
 
         <br>
         <hr/>
@@ -563,10 +667,10 @@
 
         <p>Errors:</p>
         <ul>
-            <li>**400 Bad Request**: The request was not well-formed, or the emoji was not a 1 character string</li>
+{#            <li>**400 Bad Request**: The request was not well-formed, or the emoji was not a 1 character string</li>#}
             <li>**403 Forbidden**: A user attempted to react with the same emoji multiple times for the same message
             </li>
-            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>
+{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
         </ul>
 
         <br>
