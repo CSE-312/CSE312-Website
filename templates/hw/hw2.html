@@ -119,7 +119,8 @@
             Your server must contain all of the following features.
         </p>
 
-        <h6>Registration</h6>
+        <br>
+        <h5>Registration</h5>
         <p>When a user sends a registration request, store their username and a salted hash of their password in your
             database. Their password must pass the criteria tested by your validate_password method or the registration
             fails.</p>
@@ -128,12 +129,17 @@
             If a registration is not successful (eg. password is not valid), return a 400 response with a message of
             your choosing.
         </p>
+        <p>
+            When a user registers, you should also generate a unique id for them in the same way that chat messages have
+            unique ids.
+        </p>
 
         <p><b>Security</b>: Never store plain text passwords. You must only store salted hashes of your users'
             passwords. It is
             strongly recommended that you use the bcrypt library to handle salting and hashing.</p>
 
-        <h6>Login</h6>
+        <br>
+        <h5>Login</h5>
         <p>When a user sends a login request, authenticate the request based on the data stored in your database. If the
             [salted hash of the] password matches what you have stored in the database, the user is authenticated.</p>
 
@@ -153,8 +159,9 @@
             text). Salting is not expected.</p>
         <p><b>Security</b>: Set the HttpOnly directive on your "auth_token" cookie.</p>
 
-        <h6>Logout</h6>
-        <p>Add a path for "/logout", that is used by the logout button on the front end, that will log a user out.
+        <br>
+        <h5>Logout</h5>
+        <p>Add a path for GET "/logout", that is used by the logout button on the front end, that will log a user out.
             When this button is pressed, the user's auth token must be removed from their cookies and invalided
             by your server (eg. the auth token they were issued should no longer work even if your server receives it as
             a
@@ -162,7 +169,8 @@
             expires
             date in the past</p>
 
-        <h6>Authenticated Chat</h6>
+        <br>
+        <h5>Authenticated Chat</h5>
         <p>Whenever a chat message is sent by an authenticated user, the message should contain their
             actual username. This is done by setting the "author" of their messages to their username.</p>
 
@@ -174,7 +182,8 @@
             login).
         </p>
 
-        <h6>Update and Delete Messages</h6>
+        <br>
+        <h5>Update and Delete Messages</h5>
         <p>Modify your update and delete message functionality to be based on user accounts instead of "session"
             cookies. A user
             should be able to log out, clear their session cookie, log back in, and still be able to delete their own
@@ -185,26 +194,55 @@
             code.
             If it is their own, you may choose the response you send (200 with a short message is fine).</p>
 
-
-        <h6>@me</h6>
+        <br>
+        <h5>@me</h5>
         <p>
-            Add and endpoint "/api/users/@me" that will return the requesters user profile. You should return everything in your
+            Add and endpoint GET "/api/users/@me" that will return the requesters user profile. You should return
+            everything
+            in your
             database stored for the user except their [hashed and salted] password and [hashed] auth token. This is used
             to display a users name on the page when they are logged in. If the user is not logged in, this endpoint
             returns an empty json object
         </p>
 
-        <h6>Filter/search users</h6>
+        <p>Response (JSON): {"username": string "id": string}</p>
+
+
+        <br>
+        <h5>Filter/search users</h5>
         <p>
-            Add an endpoint "/api/users/search" that takes a query string containing one key named "user". Return a json
-            array containing all the usernames that begin with the value of "user".
+            Add an endpoint GET "/api/users/search" that takes a query string containing one key named "user". Return a
+            json
+            array containing all the usernames that begin with the value of "user". This endpoint is case-sensitive,
+            meaning if a username is "Username" and the search is for "use" it will not return "Username" but a search
+            for "Use" will.
+        </p>
+        <p>
+            If the search term (The value of "user" in the query string) is empty, do not return any results.
         </p>
 
-        <h6>Update profile</h6>
+        <br>
+        <h5>Update profile</h5>
         <p>
-            Add an endpoint to update your profile. More details to come.
+            Add an endpoint POST "/api/users/settings" which will receive requests containing a username and password in
+            the same format as the registration and login endpoints. When you receive a request, update the users
+            username and password to the provided values.
         </p>
 
+        <p>
+            This endpoint must enforce the same password criteria as registering a new user. If the password does not
+            meet all criteria, return a 400 response with a message of your choice. Do not update their username if the
+            password is not valid.
+        </p>
+
+        <p>
+            You do not have the change the users prior messages when they change their username. Their old messages can
+            still have their old username.
+        </p>
+
+        <p>
+            When a password is changed, they must not be able to login with their old password.
+        </p>
 
         <br>
         <hr/>
@@ -214,9 +252,13 @@
         <hr/>
 
         <p>
-            Add 2FA
+            Allow users to enable 2FA on their accounts. More details TBD.
         </p>
 
+{#        <p>#}
+{#            When a user enables 2FA, generate a random secret for that user and store this secret in your database.#}
+{#            Then, modify the @me endpoint to return this#}
+{#        </p>#}
 
         <br>
         <hr/>
@@ -226,58 +268,49 @@
         <hr/>
 
         <p>
-            Enable the "login with GitHub" button.
+            Enable the "login with GitHub" button. This button uses the GET "authgithub" endpoint. You should add
+            functionality on this endpoint to follow the OAuth 2.0 protocol. After authenticating their account
+            through GitHub, use the API to get the user's email address. Use this email address as their
+            username for any messages they send.
         </p>
 
-        {#        Application Objective: OAuth - Login with Spotify#}
-        {#        Build a login with Spotify feature. To do this, use the button labeled Login with Spotify. Then, use Spotify's#}
-        {#        OAuth 2.0 API to allow your users to login using their Spotify account. After authenticating their account#}
-        {#        through Spotify, use the User Profile endpoint to get the user's email address. Use this email address as their#}
-        {#        username for any messages they send.#}
-        {##}
-        {#        You will use the Authorization Code Flow to build this feature and you should follow the documentation to guide#}
-        {#        your development. You will need a Spotify account to access the dev dashboard and this can be a free account.#}
-        {#        Note: You do not need to use the optional state.#}
-        {##}
-        {#        Use "http://localhost:8080/spotify" as your redirect_uri. The course staff will use this exact string in their#}
-        {#        Spotify app used to test your app.#}
-        {##}
-        {#        Don't forget to add the Spotify account you'll use for testing under User Management.#}
-        {##}
-        {#        You may use a library (eg. requests) to send HTTP requests to the Spotify API. You are also allowed to use the#}
-        {#        base64 library.#}
-        {##}
-        {#        Note: You are not required to handle refresh tokens for either of these AOs. You should code this for extra#}
-        {#        practice and experience, but since Spotify tokens expire in 1 hour it would be too tedious to test/grade such a#}
-        {#        requirement.#}
-        {##}
-        {#        Security: Never share your app's client secret or client id. Your submission must not contain your private#}
-        {#        information and should instead have placeholder text where it should go.#}
-        {##}
-        {#        Instead of submitting your code with this secret and id, set these values as environment variables in your#}
-        {#        docker-compose.yml file. Your submission should have placeholder values for these variables (ie. "changeMe" or#}
-        {#        "Put your client secret here"). For testing, we will paste our own secret/id into your docker-compose.yml before#}
-        {#        running docker compose up. You may also set your redirect_uri this way if you prefer not to hardcode it.#}
-        {##}
-        {#        Security: You must properly use the Authorization Code Flow. Using a different flow, or improperly using the#}
-        {#        Authorization Code Flow, that exposes your app to security issues discussed in lecture is a security concern.#}
-        {#        Testing Procedure#}
-        {#        Create an app through Spotify's Dev Dashboard#}
-        {#        Set your redirect_uri to "http://localhost:8080/spotify"#}
-        {#        Under User Management, add the Spotify account you will use for testing#}
-        {#        Copy your client secret and client id into the corresponding environment variables in the submissions#}
-        {#        docker-compose.yml file#}
-        {#        If there is an environment variable for the redirect_uri, set it to the string above. Otherwise, you may assume#}
-        {#        that it is hardcoded to this string#}
-        {#        Start the server using docker compose up#}
-        {#        Open a browser and navigate to http://localhost:8080/#}
-        {#        Click the login with Spotify button#}
-        {#        When you are redirected to Spotify, accept the authorization#}
-        {#        You should be redirected back to the home page#}
-        {#        Send a message in chat and verify that the email used for your Spotify account is displayed as your username#}
-        {#        Security: Look through the code and verify that no private information was submitted. This includes: client#}
-        {#        secret, client id, access tokens, refresh tokens, or authorization codes#}
-        {#        Security: Look through the code and verify that the Authorization Code Flow was properly used#}
+        <p>
+            You will use the Authorization Code Flow to build this feature and you should follow the documentation to
+            guide
+            your development. You will need a GitHub account to access the dev dashboard and this can be a free account.
+        </p>
+
+        <p>Use "http://localhost:8080/authcallback" as your redirect_uri. The course staff will use this exact string in
+            their
+            GitHub app used to test your app.</p>
+
+
+        <p>You may use a library (eg. requests) to send HTTP requests to the GitHub API. You are also allowed to use the
+            base64 library.</p>
+
+        <p>Note: You are not required to handle refresh tokens for either of these AOs. You should code this for extra
+            practice and experience, but it would be too tedious to test/grade such a
+            requirement since we'd have to wait for the tokens to expire before refreshing them.</p>
+
+        <p><b>Security</b>: Never share your app's client secret or client id. Your submission must not contain your
+            private
+            information and should instead have placeholders/variables where it should go.</p>
+
+        <p>Instead of submitting your code with this secret and id, set these values as environment variables in a
+            file named ".env". See the provided .env.example file for reference on the syntax. Use the variables names
+            "GITHUB_CLIENT_ID" and "GITHUB_CLIENT_SECRET" in this file. You can then use the
+            python-dotenv library to read this file on server startup. You will then have access to these variables
+            anywhere in your code (See database.py for an example of reading an environment variable).
+            Your submission should have placeholder values for these variables (ie. "changeMe"
+            or
+            "Put your client secret here" or ""). For testing, we will paste our own secret/id into your .env file
+            before
+            running docker compose up. You may also set your REDIRECT_URI this way if you prefer not to hardcode it.</p>
+
+        <p><b>Security</b>: You must properly use the Authorization Code Flow. Using a different flow, or improperly
+            using the
+            Authorization Code Flow, that exposes your app to security issues discussed in lecture is a security
+            concern.</p>
 
 
         <br>
@@ -288,8 +321,57 @@
         <hr/>
 
         <p>
-            Chat commands
+            If a user is logged in using GitHub, as opposed to using the register/login flow from the learning
+            objective,
+            they can enter special commands into the chat. If they type any of these commands into chat, your app will
+            use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any
+            message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was
+            sent with the result of the chat command. The commands are:
         </p>
+
+        <ul>
+            <li>
+                /repos @user
+                <ul>
+                    <li>List all GitHub repos of the target user (limit 50). These repos should appear as links where
+                        the text is the repo name. You have some flexibility in how to display all the links
+                    </li>
+                    <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts
+                        GitHub repos
+                    </li>
+                    <li>Note: This command results in HTML being rendered in chat. Since this HTML is completely under
+                        the
+                        control of your server, it is ok to render on the front end
+                    </li>
+                </ul>
+            </li>
+            <li>/star @repo
+                <ul>
+                    <li>use the current oauth user to star the provided repo. Display a confirmation of the star in
+                        chat
+                    </li>
+                    <li>
+                        Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub
+                        will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being
+                        displayed confirming that it was starred
+                    </li>
+                </ul>
+            </li>
+
+            <li>/createissue @repo @title
+                <ul>
+                    <li>Creates an issue on @repo with a title of @title. The body of this issue should be empty (Unless
+                        you want to add this functionality, but it's not required). Display a confirmation of the
+                        created issue in chat
+                    </li>
+                    <li>
+                        Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will
+                        create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"
+                        and an empty body and a confirmation message will be displayed in chat
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
 
         <br>
