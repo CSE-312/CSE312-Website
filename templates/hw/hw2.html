@@ -252,13 +252,24 @@
         <hr/>
 
         <p>
-            Allow users to enable 2FA on their accounts. More details TBD.
+            You will be building a <a href="https://www.twilio.com/docs/glossary/totp">TOTP</a> 2FA system on top of the existing account system you have created. This objective will require inspecting network requests and looking at frontend files (although not editing any of them).
+        </p>
+        
+        <p>
+            You can enable 2FA for an account by going to the settings page, and clicking "Regenerate 2FA". Upon clicking, the frontend will make a request to your backend to enable TOTP through a POST /api/totp/enable.
+            You should return a json body with the shape of { "secret": "string" }. The frontend will use this secret to generate a QR code automatically. 
+            One thing to note, every time you click "Regenerate 2FA", it is expected to set a new secret.
+            
+            You should use the <a href="https://pyauth.github.io/pyotp/">PYOTP library</a> to handle secret generation, and future validations. 
+            You can utilize the <a href="https://www.authy.com/">Authy</a> app or Duo app on your phone to manage your TOTP codes.
         </p>
 
-{#        <p>#}
-{#            When a user enables 2FA, generate a random secret for that user and store this secret in your database.#}
-{#            Then, modify the @me endpoint to return this#}
-{#        </p>#}
+        <p>
+            When a user with 2FA enabled goes to login, they will put in their username and password. Upon hitting submit, the window for 2FA will be opened and they will be prompted to enter their code generated from their phone. 
+            You will receive the code as part of the url-encoded body that comes with the login route. You will need to do additional parsing to extract this TOTP, similar to how extract_credentials works.
+            The way the frontend will tell whether a user has 2FA enabled and should open the 2FA window is when a 401 Unauthorized response is received from the login route. 
+            The frontend will open the window and upon a TOTP code being entered, it will retry the login.
+        </p>
 
         <br>
         <hr/>
