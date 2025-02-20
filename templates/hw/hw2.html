@@ -197,12 +197,10 @@
         <br>
         <h5>@me</h5>
         <p>
-            Add and endpoint GET "/api/users/@me" that will return the requesters user profile. You should return
-            everything
-            in your
-            database stored for the user except their [hashed and salted] password and [hashed] auth token. This is used
+            Add an endpoint GET "/api/users/@me" that will return the requesters user profile. You should return
+            everything in your database stored for the user except their [hashed and salted] password and [hashed] auth token. This is used
             to display a users name on the page when they are logged in. If the user is not logged in, this endpoint
-            returns an empty json object
+            returns an empty json object with a 401 status code
         </p>
 
         <p>Response (JSON): {"username": string "id": string}</p>
@@ -212,8 +210,7 @@
         <h5>Filter/search users</h5>
         <p>
             Add an endpoint GET "/api/users/search" that takes a query string containing one key named "user". Return a
-            json
-            array containing all the usernames that begin with the value of "user". This endpoint is case-sensitive,
+            json array with the following structure { "user": [{ "id": "1", "username": "bob" }] }. This endpoint is case-sensitive,
             meaning if a username is "Username" and the search is for "use" it will not return "Username" but a search
             for "Use" will.
         </p>
