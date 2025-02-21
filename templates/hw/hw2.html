@@ -1,9 +1,9 @@
 {% extends 'hw/hw.html' %}
 
-{% block title %}CSE312: Homework 1{% endblock %}
+{% block title %}CSE312: Homework 2{% endblock %}
 
 {% block header %}
-    <h1>Homework 1 - HTTP</h1>
+    <h1>Homework 2 - Authentication</h1>
     <hr/>
 {% endblock %}
 
@@ -69,12 +69,12 @@
             <li>The password can contain alphanumeric characters as well as the following special characters {'!', '@',
                 '#', '$', '%', '^', '&', '(', ')', '-', '_', '='} (Note: We are limiting passwords to these 12 special
                 characters to limit the tedium of writing this method. In the real world, you should support every valid
-                character, and you would also use a library to make this support trivial)
+                character, and you would also use a library to make this support trivial. Ensure you consider edge cases with parsing.)
             </li>
         </ul>
 
         <br>
-        <h4>Authentication Method: extract_credentials</h4>
+        <h4>Authentication Method: validate_password</h4>
         <p>
             In util/auth.py file, write another function named "validate_password" that takes a string (str) and returns
             a boolean specifying if the password

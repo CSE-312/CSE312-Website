@@ -140,14 +140,18 @@
                     </li>
                 </ul>
             </li>
-
         </ul>
+
+        <p>
+            Something to keep in mind, for the Request, Response, and Router classes, you must <b>not access any files or call any functions that access any files</b>. 
+            The first round tests that we run on your classes do not have access to your folder structure, and thus will throw an error if you try to open any files.
+        </p>
 
         <br>
         <h4>The Response Class</h4>
 
         <p>
-            Create a Request class in the util package of the starter code. Unlike the Request class, there are no
+            Create a Response class in the util package of the starter code. Unlike the Request class, there are no
             specific instance variables that need to be set. Instead, the spec is to write specific methods (You will
             need instance variables to write these methods, but you may choose their names and they won't be accessed by
             the grader)
@@ -160,7 +164,7 @@
                 <ul>
                     <li>
                         The constructor must not take any parameters (Other than self). You may initialize any instance
-                        variables you'd like in this constructor in oder to complete the other methods.
+                        variables you'd like in this constructor in order to complete the other methods.
                     </li>
                     <li>
                         Be careful not to use any of these method names as your variable names. For example, naming an
@@ -649,7 +653,7 @@
         <br>
         <h5>Add an emoji (`PATCH /api/reaction/{messageID}`)</h5>
 
-        <p>Updates an existing message with the new emoji. Called when a user reacts to a message. A user react to the
+        <p>Updates an existing message with the new emoji. Called when a user reacts to a message. A user reacts to the
             same message with multiple emojis, by hitting this end point multiple times, but they cannot react to the
             same message with the same emoji multiple times. If you receive a request from the same user trying to react
             to
@@ -727,7 +731,7 @@
         <p>Request (JSON): {"nickname": string}</p>
 
         <p>
-            When chat messages are server, each message from this user will now contain a field "nickname" containing
+            When chat messages are served, each message from this user will now contain a field "nickname" containing
             their chosen name.
         </p>
         <br>
