@@ -140,14 +140,18 @@
                     </li>
                 </ul>
             </li>
-
         </ul>
+
+        <p>
+            Something to keep in mind, for the Request, Response, and Router classes, you must <b>not access any files or call any functions that access any files</b>. 
+            The first round tests that we run on your classes do not have access to your folder structure, and thus will throw an error if you try to open any files.
+        </p>
 
         <br>
         <h4>The Response Class</h4>
 
         <p>
-            Create a Request class in the util package of the starter code. Unlike the Request class, there are no
+            Create a Response class in the util package of the starter code. Unlike the Request class, there are no
             specific instance variables that need to be set. Instead, the spec is to write specific methods (You will
             need instance variables to write these methods, but you may choose their names and they won't be accessed by
             the grader)
