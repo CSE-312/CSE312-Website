@@ -162,7 +162,7 @@
         <br>
         <h5>Logout</h5>
         <p>Add a path for GET "/logout", that is used by the logout button on the front end, that will log a user out.
-            When this button is pressed, the user's auth token must be removed from their cookies and invalided
+            When this button is pressed, the user's auth token must be removed from their cookies and invalidated
             by your server (eg. the auth token they were issued should no longer work even if your server receives it as
             a
             cookie value after log out). To remove a cookie, set a cookie with the same name and max age of 0 or an
@@ -175,10 +175,10 @@
             actual username. This is done by setting the "author" of their messages to their username.</p>
 
         <p>
-            When a user logs in, any messages that they sent as a guest should retroactively have their author set to
-            their username. Use you "session" cookie to track messages for this purpose. You should also ensure that
+            When a user registers their account, any messages that they sent as a guest should retroactively have their author set to
+            their username. Use your "session" cookie to track messages for this purpose. You should also ensure that
             messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then
-            logs in using a different account the guest message should still belong to the account of their first
+            logs in using a different account, the guest message should still belong to the account of their first
             login).
         </p>
 
