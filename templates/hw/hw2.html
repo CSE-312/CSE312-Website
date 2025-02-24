@@ -167,7 +167,8 @@
             a
             cookie value after log out). To remove a cookie, set a cookie with the same name and max age of 0 or an
             expires
-            date in the past</p>
+            date in the past. For the response, you can either sent a 302 Found with a Location header, or you can send a 200 with a message. 
+        Note that if you do the latter, you will be presented with a white screen with the message of your choosing, and that is okay.</p>
 
         <br>
         <h5>Authenticated Chat</h5>
