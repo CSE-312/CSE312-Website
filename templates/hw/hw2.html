@@ -249,6 +249,18 @@
         </h3>
         <hr/>
 
+        <p>
+            A quick note: Application objectives are open-ended in how you implement them.
+            This will require a lot of exploration and reading online documentation. 
+            You should snoop around the network tab and inspect how requests are sent and what responses are expected.
+            Furthermore, because of the open ended nature of the AOs and the manual grading involved, 
+            your implementation can vary in terms of formatting.
+            As long as you achieve the goal of the AO (and don't violate the spirit of the AO), 
+            and your implementation works with the frontend without any frontend modifications, you needn't worry.
+            
+            We reserve the right to deny AO credit if you utilize any unallowed libraries (ask first before you use a library that isn't already approved!)
+            or otherwise violate the spirit of the AOs.
+        </p>
 
         <p>
             Enable time-based one-time password (<a href="https://www.twilio.com/docs/glossary/totp">TOTP</a>) based
@@ -288,7 +300,7 @@
         <p>
             Enable the "login with GitHub" button. This button uses the GET "authgithub" endpoint. You should add
             functionality on this endpoint to follow the OAuth 2.0 protocol. After authenticating their account
-            through GitHub, use the API to get the user's email address. Use this email address as their
+            through GitHub, use the API to get the user's username (or email if available). Use this as their
             username for any messages they send.
         </p>
 
@@ -300,7 +312,11 @@
 
         <p>Use "http://localhost:8080/authcallback" as your redirect_uri. The course staff will use this exact string in
             their
-            GitHub app used to test your app.</p>
+            GitHub app used to test your app. 
+            Ensure that you are requesting the appropriate scopes in order to access the user's email and repos. 
+            During your testing, make sure you are granting permission to the appropriate repos and orgs you are testing with.
+            Do not spam public repos, or repos that you do not own/have affiliation with. Seriously.
+        </p>
 
 
         <p>You may use a library (eg. requests) to send HTTP requests to the GitHub API. You are also allowed to use the
@@ -344,7 +360,11 @@
             they can enter special commands into the chat. If they type any of these commands into chat, your app will
             use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any
             message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was
-            sent with the result of the chat command. The commands are:
+            sent with the result of the chat command. If a user is not logged in as an oauth user, you should reject the request
+            with a 400. If the inputs given by the user (repo name, etc) are not correct in any way (no access, doesn't exist, etc)  
+            you should reject with a 400 and a message describing why. 
+            
+            The commands are:
         </p>
 
         <ul>
@@ -357,9 +377,8 @@
                     <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts
                         GitHub repos
                     </li>
-                    <li>Note: This command results in HTML being rendered in chat. Since this HTML is completely under
-                        the
-                        control of your server, it is ok to render on the front end
+                    <li>Note: This command may result in HTML being rendered in chat. Since this HTML is completely under
+                        the control of your server, it is ok to render on the front end. 
                     </li>
                 </ul>
             </li>
@@ -371,7 +390,8 @@
                     <li>
                         Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub
                         will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being
-                        displayed confirming that it was starred
+                        displayed confirming that it was starred. This can be a message of your choosing, but we request 
+                        you make life easier for the graders and wrap the content in a link to the repo for easy viewing.
                     </li>
                 </ul>
             </li>
@@ -385,7 +405,9 @@
                     <li>
                         Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will
                         create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"
-                        and an empty body and a confirmation message will be displayed in chat
+                        and an empty body and a confirmation message will be displayed in chat. 
+                        This can be a message of your choosing, but we request 
+                        you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.
                     </li>
                 </ul>
             </li>
