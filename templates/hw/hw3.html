@@ -1,0 +1,420 @@
+{% extends 'hw/hw.html' %}
+
+{% block title %}CSE312: Homework 3{% endblock %}
+
+{% block header %}
+    <h1>Homework 3 - Multimedia Uploads</h1>
+    <hr/>
+{% endblock %}
+
+{% block task %}
+
+
+
+    <div class="card-header section-testing">
+        <div></div>
+    </div>
+
+    <div class="section-card card-testing hw-content">
+
+        <hr/>
+        <h3>
+            Introduction
+        </h3>
+        <hr/>
+        <p>
+            You will continue to add features to your app and pull from the repo to get the new front end features.
+        </p>
+        <p>
+            Sample Deployment: <a href="https://312demo.nico.engineer/">https://312demo.nico.engineer/</a>
+        </p>
+
+        <hr/>
+        <h3>
+            Learning Objective - Image and Video Uploads
+        </h3>
+        <hr/>
+        <p>
+            By the end of this
+            objective, your users will be able to upload an image to use as their profile picture and share videos
+            with other users. To enable these features, we'll first need a multipart parser.
+        </p>
+
+        <br>
+        <h4>Helper Method: parse_multipart</h4>
+        <p>
+
+            Create a file named util/multipart.py containing the following function (This file does not define a class).
+            In
+            this file,
+            write a function named "parse_multipart" that takes a Request object as a parameter. This
+            function will assume that the input Request is a multipart request and will extract all the relevant values
+            of
+            the request. This function returns an object containing the following fields (You have some freedom in how
+            you
+            design the classes for the objects as long as they have the required fields).
+        </p>
+
+        <ul>
+            <li>
+                boundary
+                <ul>
+                    <li>
+                        The value of the boundary from the Content-Type header as a string
+
+                    </li>
+                </ul>
+            </li>
+            <li>
+                parts
+                <ul>
+                    <li>
+                        A list of all the parts of the request in the order in which they appear in the request.
+                        Each part must be an object with the following fields
+                        <ul>
+                            <li>
+                                headers
+                                <ul>
+                                    <li>
+                                        A dictionary of all the headers for the part in the same format as a Request
+                                        object
+
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                name
+                                <ul>
+                                    <li>
+                                        The name from the Content-Disposition header that matches the name of that part
+                                        in the HTML form as a string
+
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                content
+                                <ul>
+                                    <li>
+                                        The content of the part in bytes
+                                    </li>
+                                    <li>Note: The content may be binary (eg. An image or video) and must never be
+                                        decoded as a string.
+                                    </li>
+                                    <li>Note: The content may contain the sequence b"\r\n\r\n" or b"\r\n" and there will
+                                        be a test
+                                        case for this. Be sure that
+                                        you
+                                        are not corrupting your data when this sequence is in the content of a part
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <br>
+        <hr>
+        <h4>Avatar Uploads</h4>
+
+        <p>
+            Add functionality to allow users to change their avatar (profile picture). Add the following path to render
+            a new
+            page using layout.html.
+        </p>
+
+        <ul>
+            <li>"/change-avatar" - Render change-avatar.html</li>
+        </ul>
+
+        <p>
+            Visit the Change Avatar page to find a form that sends multipart requests to your server containing an image
+            chosen by the user. Your server must listen for POST requests at the "api/users/avatar" endpoint and process
+            the uploaded images. This endpoint must have the following features:
+        </p>
+
+        <ul>
+            <li>
+                After a user uploads an avatar, this avatar must appear next to all their new chat messages. It is
+                acceptable if their previous messages are not updated. This is done by adding a "imageURL" field to
+                all their chat messages. The value of this field is the path where you saved the image (eg.
+                "imageURL":
+                "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
+            </li>
+            <li>
+                 Update the users "/api/users/@me" endpoint to include their "imageURL" in a field
+            </li>
+            <li>
+                Users can upload either .jpg, .png, or .gif files. You may identify the image type using the file
+                extension of the uploaded file, and you must serve the images with the corresponding MIME type
+            </li>
+            <li>
+                Avatar uploads must persist through a server restart (eg. Images must be saved to disk and the users
+                account must be updated in the database)
+            </li>
+        </ul>
+
+
+        <p>
+            Please keep the following notes in mind when implementing this feature. All of these will also apply
+            to video uploads.
+        </p>
+
+        <p>
+            <b>File Naming</b>: When an image is uploaded, your server will save the image as a file. It is recommended that
+            you devise a naming
+            convention for the image files instead of using the names submitted by your users. Naming the images
+            "image1.jpg", "image2.jpg", "image3.jpg", etc is fine, or you can generate guids as the names.
+        </p>
+
+
+        <p>
+            <b>Persistence</b>: Your uploads must persist through a server restart. You should store your images in files (It's
+            generally bad
+            practice to store large files in a database), and store the filenames in your database. Since your images
+            are
+            stored in files, they will already persist through a restart.
+        </p>
+        <p>
+            <b>Buffering</b>: Your app must allow for large images to be uploaded. You'll accomplish this by buffering your
+            HTTP
+            requests. Read the content length of the request and buffer until you read the whole body. Your buffering
+            should
+            be able to handle arbitrarily large files. You must use proper buffering for this. Do not increase the TCP
+            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files).
+        </p>
+        <p>
+            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this objective, you
+            will
+            be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to
+            your
+            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.jpg") you
+            still don't know how many images will be uploaded. This means that you must accept some variable from the
+            user
+            that you will use to read, and send, a file from your server. You must ensure that an attacker cannot use
+            this
+            variable to access files that you don’t want them to access. (In this course, it is sufficient to not allow
+            any
+            '/' characters in the filename. Eg. remove any "/" characters from the requested filename after extracting
+            it
+            from the path)
+        </p>
+
+        <br>
+        <hr>
+        <h4>VideoTube</h4>
+
+        <p>
+            Implement a [simplified] YouTube clone where users can share videos with each other. Add the following paths
+            that will be rendered using layout.html.
+        </p>
+
+        <ul>
+            <li>"/videotube" - Render change.html</li>
+            <li>"/videotube/upload" - Render upload.html</li>
+            <li>"/videotube/videos/{videoID}" - Render view-video.html</li>
+        </ul>
+
+
+        ////////////
+
+        pages:
+        ✅ /videos - YouTube-like homepage (calls GET /api/videos)
+        ✅ /create-video - YouTube-like video uploader (calls POST /api/videos)
+        ✅ /videos/:videoId - YouTube-like view video page (calls GET /api/videos/:id)
+        routes (LOs):
+
+        ✅ POST /api/videos - Multipart route, allow upload of video, title, description,
+        make timestamp. Ensure the video is not stored in the db, but rather the path
+        to the saved video (similar to hw 1 AO 3). Reject videos longer than 5 minutes.
+        ✅ GET /api/videos - Get all the details for all the videos uploaded (don’t
+        serve the actual video)
+        ✅ GET /public/videos/video.mp4 - Serve (chunk?) the video to the user
+        ✅ GET /api/videos/:id - Serve the details for a specific video
+
+
+
+- for change avatar, and upload video on videotube, make sure /api/users/@me works because if it receives a 401, it will redirect user to registration page
+- you may use datetime for getting current time in a safe string
+- use cse-312/transcriber for transcription
+
+        <br>
+        <hr/>
+        <h3>
+            Application Objective 1 - Video Captions
+        </h3>
+        <hr/>
+
+
+        <p>
+            Modify POST /api/videos - make it call an LLM and generate the
+        subtitles as an SRT file (you pipe in the audio, i return an SRT-
+        Homework 3 - Multimedia 1
+        compatible file that you save to /public/subtitles/video_subtitle.srt
+        (should this be a public file or a database stored thing?)
+        Modify GET /public/subtitles/video_subtitle.srt (mime type is
+        text/plain; charset=utf-8)
+            </p>
+
+        <br>
+        <hr/>
+        <h3>
+            Application Objective 2 - Thumbnail Chooser
+        </h3>
+        <hr/>
+
+        <p>       Modify POST /api/videos - make it generate 5 thumbnail images
+        (compressed?)
+        GET /api/videos/:id/thumbnails - Return a list with the 5 thumbnail
+        images paths
+AO3: save thumbnails as array in video doc. save each of the thumbnails separately, and then set thumbnailURL (default first frame). use getVideo for getting the thumbnails
+
+
+
+            </p>
+
+
+        <br>
+        <hr/>
+        <h3>
+            Application Objective 3 - Streaming...
+        </h3>
+        <hr/>
+
+        <p></p>
+
+
+        <br>
+        <hr>
+        <h3>Submission</h3>
+        <hr>
+        <p>Submit all files for your server to Autolab in a .zip file</p>
+
+        <p>
+            If you used any external libraries, be sure to add them to your requirements.txt. Autolab will install all
+            dependencies in this file, and no other dependencies, before starting your server.
+        </p>
+
+        <p>It is strongly recommended that you download and test your submission after submitting. To do this, download
+            your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
+            run
+            docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
+            do
+            during grading.</p>
+
+        <br>
+        <hr>
+        <h3>Grading</h3>
+        <hr>
+        <p>Each objective will be scored on a 0-3 scale as follows:</p>
+
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3 (Complete)</td>
+                <td>Clearly correct. Following the testing procedure results in all expected behavior</td>
+            </tr>
+            <tr>
+                <td>2 (Complete)</td>
+                <td>Mostly correct, but with some minor issues. Following the testing procedure does not give the exact
+                    expected
+                    results, but all features are functional
+                </td>
+            <tr>
+                <td>1 (Incomplete)</td>
+                <td>Not all features outlined in this document are functional, but an honest attempt was made to
+                    complete the
+                    objective. Following the testing procedure gives an incorrect result, or no results at all, during
+                    any step.
+                    This includes issues running Docker or docker-compose even if the code for the objective is correct
+                </td>
+            <tr>
+                <td>0.3 (Incomplete)</td>
+                <td>The objective would earn a 3, but a security risk was found while testing</td>
+            <tr>
+                <td>0.2 (Incomplete)</td>
+                <td>The objective would earn a 2, but a security risk was found while testing</td>
+            <tr>
+                <td>0.1 (Incomplete)</td>
+                <td>The objective would earn a 1, but a security risk was found while testing</td>
+            <tr>
+                <td>0 (Incomplete)</td>
+                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
+        </table>
+        <br>
+        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
+            is meant to give you more feedback on your work.</p>
+
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3</td>
+                <td>Objective Complete</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    Objective Complete
+                </td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+        </table>
+        <br>
+        <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
+
+        <br>
+        <hr>
+        <h3>Security Essay</h3>
+        <br>
+        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
+            the
+            objective by submitting an essay about the security issue you exposed. These essays must:</p>
+
+        <ul>
+            <li>Be at least 1000 words in length</li>
+            <li>Explain the security issue from your submission with specific details about your code</li>
+            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+            </li>
+            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+                in
+                production code with live users
+            </li>
+        </ul>
+
+
+        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
+            incomplete.</p>
+
+        <p>Due Date: Security essays are due 1-week after grades are released.</p>
+
+        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
+            of
+            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+            for
+            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+            course
+            staff.</p>
+
+        <p>When you don't have to write an essay:</p>
+        <ul>
+            <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
+                secure
+            </li>
+            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
+            </li>
+        </ul>
+
+
+    </div>
+{% endblock %}
