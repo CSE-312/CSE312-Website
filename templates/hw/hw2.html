@@ -176,7 +176,8 @@
             actual username. This is done by setting the "author" of their messages to their username.</p>
 
         <p>
-            When a user registers their account, any messages that they sent as a guest should retroactively have their author set to
+            When a user logs into their account, any messages that they sent as a guest should retroactively have
+            their author set to
             their username. Use your "session" cookie to track messages for this purpose. You should also ensure that
             messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then
             logs in using a different account, the guest message should still belong to the account of their first
