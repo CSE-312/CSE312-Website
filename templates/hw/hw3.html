@@ -283,15 +283,24 @@
         </h3>
         <hr/>
 
-- use cse-312/transcriber for transcription
         <p>
-            Modify POST /api/videos - make it call an LLM and generate the
-            subtitles as an SRT file (you pipe in the audio, i return an SRT-
-            Homework 3 - Multimedia 1
-            compatible file that you save to /public/subtitles/video_subtitle.srt
-            (should this be a public file or a database stored thing?)
-            Modify GET /public/subtitles/video_subtitle.srt (mime type is
-            text/plain; charset=utf-8)
+            Use an API to generate captions to uploaded videos. When a video is uploaded, use an API to generate
+            an SRT file for the video. Save this file on your server and add a "captionsFile" field to that video. When
+            the video is served as JSON for either GET /api/videos endpoints, its object should contain a
+            "captionsFile" field with a path to this file.
+        </p>
+
+        <p>
+            Example field to be added to videos - "captionsFile":
+            "/public/video/captions/eda92e0a-eb7a-430c-a938-916d2102b480.srt"
+        </p>
+
+        <p>
+            The MIME type for an srt file is "text/plain; charset=utf-8".
+        </p>
+
+        <p>
+            To accomplish this objective, you will need to extract the audio from the video using ffmpeg.
         </p>
 
         <br>
@@ -301,28 +310,62 @@
         </h3>
         <hr/>
 
-        <p> Modify POST /api/videos - make it generate 5 thumbnail images
-            (compressed?)
-            GET /api/videos/:id/thumbnails - Return a list with the 5 thumbnail
-            images paths
-            AO3: save thumbnails as array in video doc. save each of the thumbnails separately, and then set
-            thumbnailURL (default first frame). use getVideo for getting the thumbnails
-
-            self.router.add_route("GET", "/videotube/set-thumbnail", HTMLWithLayout("./public/set-thumbnail.html"),
-            False)
-
-            self.router.add_route("PUT", "/api/thumbnails/", updateThumbnail, False)
-
+        <p>
+            Use ffmpeg to generate 5 possible thumbnail images for each video that is uploaded. These 5 thumbnails
+            should be: The first frame of the video, the frame at 25% of the videos runtime, the frame at 50%, the
+            frame at 75%, and the last frame. Save all 5 frames as images and add them all to your videos data in a
+            "thumbnails" field as an array.
         </p>
 
-"thumbnails": [
-        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
-        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
-        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
-        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
-        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
-        ],
-        "thumbnailURL": "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg",
+
+        <p>
+            Example field to be added to videos - "thumbnails": [
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
+            ]
+        </p>
+
+        <p>
+            Add a second field named "thumbnailURL" to your video that is the selected thumbnail which will default to
+            the first frame of the video.
+        </p>
+
+        <p>
+            Example field to be added to videos - "thumbnailURL": "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
+        </p>
+
+        <p>
+            Add the following path to render the thumbnail chooser page.
+        </p>
+        <ul>
+            <li>"/videotube/set-thumbnail" - Render set-thumbnail.html</li>
+        </ul>
+
+        <p>
+            Using this page, users can change their thumbnail for a specific video. When they do, a request will be sent
+            to the following endpoint.
+        </p>
+
+
+        <br>
+        <h5>Change thumbnail (`PUT /api/thumbnails/{videoId}`)</h5>
+
+        <p>
+            Request body: {"thumbnailURL":"public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"}
+        </p>
+
+        <p>
+            When a request is received at this endpoint, update the "thumbnailURL" field of the video with id {videoId}
+            to the provided value. Respond with a message in JSON object indicating that the update was successful.
+        </p>
+
+        <p>
+            Response format (JSON): {"message": str}
+        </p>
+
 
         <br>
         <hr/>
@@ -331,7 +374,9 @@
         </h3>
         <hr/>
 
-        <p></p>
+        <p>
+
+        </p>
 
 
         <br>
