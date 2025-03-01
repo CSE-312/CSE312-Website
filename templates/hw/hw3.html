@@ -144,7 +144,7 @@
                 "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
             </li>
             <li>
-                 Update the users "/api/users/@me" endpoint to include their "imageURL" in a field
+                Update the users "/api/users/@me" endpoint to include their "imageURL" in a field
             </li>
             <li>
                 Users can upload either .jpg, .png, or .gif files. You may identify the image type using the file
@@ -163,7 +163,8 @@
         </p>
 
         <p>
-            <b>File Naming</b>: When an image is uploaded, your server will save the image as a file. It is recommended that
+            <b>File Naming</b>: When an image is uploaded, your server will save the image as a file. It is recommended
+            that
             you devise a naming
             convention for the image files instead of using the names submitted by your users. Naming the images
             "image1.jpg", "image2.jpg", "image3.jpg", etc is fine, or you can generate guids as the names.
@@ -171,14 +172,16 @@
 
 
         <p>
-            <b>Persistence</b>: Your uploads must persist through a server restart. You should store your images in files (It's
+            <b>Persistence</b>: Your uploads must persist through a server restart. You should store your images in
+            files (It's
             generally bad
             practice to store large files in a database), and store the filenames in your database. Since your images
             are
             stored in files, they will already persist through a restart.
         </p>
         <p>
-            <b>Buffering</b>: Your app must allow for large images to be uploaded. You'll accomplish this by buffering your
+            <b>Buffering</b>: Your app must allow for large images to be uploaded. You'll accomplish this by buffering
+            your
             HTTP
             requests. Read the content length of the request and buffer until you read the whole body. Your buffering
             should
@@ -186,7 +189,8 @@
             buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files).
         </p>
         <p>
-            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this objective, you
+            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this
+            objective, you
             will
             be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to
             your
@@ -212,33 +216,65 @@
         </p>
 
         <ul>
-            <li>"/videotube" - Render change.html</li>
-            <li>"/videotube/upload" - Render upload.html</li>
-            <li>"/videotube/videos/{videoID}" - Render view-video.html</li>
+            <li>"/videotube" - Render change.html (Displays all videos)</li>
+            <li>"/videotube/upload" - Render upload.html (Upload video form)</li>
+            <li>"/videotube/videos/{videoID}" - Render view-video.html (Displays a single video)</li>
         </ul>
 
-
-        ////////////
-
-        pages:
-        ✅ /videos - YouTube-like homepage (calls GET /api/videos)
-        ✅ /create-video - YouTube-like video uploader (calls POST /api/videos)
-        ✅ /videos/:videoId - YouTube-like view video page (calls GET /api/videos/:id)
-        routes (LOs):
-
-        ✅ POST /api/videos - Multipart route, allow upload of video, title, description,
-        make timestamp. Ensure the video is not stored in the db, but rather the path
-        to the saved video (similar to hw 1 AO 3). Reject videos longer than 5 minutes.
-        ✅ GET /api/videos - Get all the details for all the videos uploaded (don’t
-        serve the actual video)
-        ✅ GET /public/videos/video.mp4 - Serve (chunk?) the video to the user
-        ✅ GET /api/videos/:id - Serve the details for a specific video
+        <p>
+            To enable the video sharing feature on the front end, you will build out three additional endpoints. These
+            endpoints will allow users to upload videos, return all videos, and return the details of a single video.
+        </p>
 
 
+        <br>
+        <h5>Upload videos (`POST /api/videos`)</h5>
 
-- for change avatar, and upload video on videotube, make sure /api/users/@me works because if it receives a 401, it will redirect user to registration page
-- you may use datetime for getting current time in a safe string
-- use cse-312/transcriber for transcription
+        <p>
+            This endpoint with receive videos uploaded from the front end that will contain the videos title,
+            description, and the video itself. You should parse the request and store all this information. As with
+            images, the videos should be stored in files with only the filename stored in your database. Respond to
+            uploads with a 200 OK containing a JSON object with the unique id of the new video.
+        </p>
+
+        <p>Response (JSON): {"id": str}</p>
+
+        <p>
+            This endpoint must accept videos in either .mp4 or .mkv formats.
+        </p>
+
+        <p>
+            After a video has been uploaded, be sure your "/public" path will serve these videos. As long as you save
+            videos in the public directory, this will be mostly automatic but don't forget to add the MIME types for
+            .mp4 and .mkv content.
+        </p>
+
+        <br>
+        <h5>Retrieve all videos (`GET /api/videos`)</h5>
+
+        <p>
+            Return a JSON object containing information about all videos that have been uploaded in the following
+            format:
+        </p>
+
+        <p>Response (JSON): {"videos": [{"author_id": str, "title": str, "description": str, "video_path":
+            str,"created_at": str "id": str}, ...]}</p>
+
+
+        <p>Where "created_at" should be a timestamp that will be displayed on the front end. You can/should use the
+            datetime package to get a string format for the current time.</p>
+
+
+        <br>
+        <h5>Retrieve a single video (`GET /api/videos/{video_id}`)</h5>
+
+        <p>
+            Return all information about the video with an id matching {video_id}. The format follows the same structure
+            as the previous path, but with only 1 video object.
+        </p>
+
+        <p>Response (JSON): {"author_id": str, "title": str, "description": str, "video_path":
+            str,"created_at": str "id": str}</p>
 
         <br>
         <hr/>
@@ -247,16 +283,16 @@
         </h3>
         <hr/>
 
-
+- use cse-312/transcriber for transcription
         <p>
             Modify POST /api/videos - make it call an LLM and generate the
-        subtitles as an SRT file (you pipe in the audio, i return an SRT-
-        Homework 3 - Multimedia 1
-        compatible file that you save to /public/subtitles/video_subtitle.srt
-        (should this be a public file or a database stored thing?)
-        Modify GET /public/subtitles/video_subtitle.srt (mime type is
-        text/plain; charset=utf-8)
-            </p>
+            subtitles as an SRT file (you pipe in the audio, i return an SRT-
+            Homework 3 - Multimedia 1
+            compatible file that you save to /public/subtitles/video_subtitle.srt
+            (should this be a public file or a database stored thing?)
+            Modify GET /public/subtitles/video_subtitle.srt (mime type is
+            text/plain; charset=utf-8)
+        </p>
 
         <br>
         <hr/>
@@ -265,16 +301,28 @@
         </h3>
         <hr/>
 
-        <p>       Modify POST /api/videos - make it generate 5 thumbnail images
-        (compressed?)
-        GET /api/videos/:id/thumbnails - Return a list with the 5 thumbnail
-        images paths
-AO3: save thumbnails as array in video doc. save each of the thumbnails separately, and then set thumbnailURL (default first frame). use getVideo for getting the thumbnails
+        <p> Modify POST /api/videos - make it generate 5 thumbnail images
+            (compressed?)
+            GET /api/videos/:id/thumbnails - Return a list with the 5 thumbnail
+            images paths
+            AO3: save thumbnails as array in video doc. save each of the thumbnails separately, and then set
+            thumbnailURL (default first frame). use getVideo for getting the thumbnails
 
+            self.router.add_route("GET", "/videotube/set-thumbnail", HTMLWithLayout("./public/set-thumbnail.html"),
+            False)
 
+            self.router.add_route("PUT", "/api/thumbnails/", updateThumbnail, False)
 
-            </p>
+        </p>
 
+"thumbnails": [
+        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
+        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
+        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
+        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
+        "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
+        ],
+        "thumbnailURL": "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg",
 
         <br>
         <hr/>
