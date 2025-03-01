@@ -52,7 +52,8 @@
             of
             the request. This function returns an object containing the following fields (You have some freedom in how
             you
-            design the classes for the objects as long as they have the required fields).
+            design the classes for the objects as long as they have the required fields. Please note that a dict with
+            these fields is not an object. You must create a class, then create objects using that class).
         </p>
 
         <ul>
@@ -138,10 +139,13 @@
         <ul>
             <li>
                 After a user uploads an avatar, this avatar must appear next to all their new chat messages. It is
-                acceptable if their previous messages are not updated. This is done by adding a "imageURL" field to
+                acceptable if their previous messages are not updated. This is done by adding an "imageURL" field to
                 all their chat messages. The value of this field is the path where you saved the image (eg.
                 "imageURL":
                 "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
+            </li>
+            <li>
+                If the same user uploads a second avatar, it replaces the first one
             </li>
             <li>
                 Update the users "/api/users/@me" endpoint to include their "imageURL" in a field
@@ -186,7 +190,10 @@
             requests. Read the content length of the request and buffer until you read the whole body. Your buffering
             should
             be able to handle arbitrarily large files. You must use proper buffering for this. Do not increase the TCP
-            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files).
+            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files). You
+            can assume that all the headers, upto the first "\r\n\r\n", of the request are always read in the first read
+            from the socket with a 2048 buffer (eg. You do not have buffer while reading the headers and you can safely
+            read the content length before any buffering).
         </p>
         <p>
             <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this
@@ -240,13 +247,13 @@
         <p>Response (JSON): {"id": str}</p>
 
         <p>
-            This endpoint must accept videos in either .mp4 or .mkv formats.
+            This endpoint only needs to handle .mp4 videos.
         </p>
 
         <p>
             After a video has been uploaded, be sure your "/public" path will serve these videos. As long as you save
-            videos in the public directory, this will be mostly automatic but don't forget to add the MIME types for
-            .mp4 and .mkv content.
+            videos in the public directory, this will be mostly automatic but don't forget to add the MIME type for
+            .mp4 content.
         </p>
 
         <br>
@@ -334,7 +341,8 @@
         </p>
 
         <p>
-            Example field to be added to videos - "thumbnailURL": "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
+            Example field to be added to videos - "thumbnailURL":
+            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
         </p>
 
         <p>
@@ -370,14 +378,24 @@
         <br>
         <hr/>
         <h3>
-            Application Objective 3 - Streaming...
+            Application Objective 3 - Adaptive Bit-Rate
         </h3>
         <hr/>
 
         <p>
-
+            When a video is uploaded, re-encode it to HLS with at least 2 different resolutions/bit-rates and host all
+            required
+            files for the video. Add the path to the index file for the video in a new field named "hls_path" to the
+            video.
+        </p>
+        <p>
+            Example field to be added to videos - "hls_path": "public/videos/2439857234.m3u8"
         </p>
 
+        <p>
+            The single index file should refer to multiple other index files with different bit-rates. If done
+            correctly, you will be able to select the resolution manually on the front end when viewing a video.
+        </p>
 
         <br>
         <hr>
