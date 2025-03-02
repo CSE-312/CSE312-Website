@@ -243,13 +243,14 @@
         <p>
             This endpoint must enforce the same password criteria as registering a new user. If the password does not
             meet all criteria, return a 400 response with a message of your choice. Do not update their username if the
-            password is not valid. You should note, that in other routes like register, an empty password
-            in the url-encoded body would be invalid. However, for settings, to avoid users having to give their password
-            every time they want to change just their username, an empty password should not be interpreted as a request to change the password.
-            Thus, if you reuse your previously written password validation function, make sure the password is non-empty first. Do not set the password
-            to be an empty string.
+            password is not valid.
         </p>
 
+        <p>
+            To avoid users having to give their password every time they want to change just their username, an empty
+            password field should be interpreted as a request to change only their username. Note that this is not
+            checked during grading, but can be added to improve usability of the app.
+        </p>
         <p>
             You do not have the change the users prior messages when they change their username. Their old messages can
             still have their old username.
