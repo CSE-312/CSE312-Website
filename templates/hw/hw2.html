@@ -69,7 +69,8 @@
             <li>The password can contain alphanumeric characters as well as the following special characters {'!', '@',
                 '#', '$', '%', '^', '&', '(', ')', '-', '_', '='} (Note: We are limiting passwords to these 12 special
                 characters to limit the tedium of writing this method. In the real world, you should support every valid
-                character, and you would also use a library to make this support trivial. Ensure you consider edge cases with parsing.)
+                character, and you would also use a library to make this support trivial. Ensure you consider/test edge
+                cases when parsing)
             </li>
         </ul>
 
@@ -129,6 +130,11 @@
             If a registration is not successful (eg. password is not valid), return a 400 response with a message of
             your choosing.
         </p>
+
+        <p>
+            If registration is successful, respond with a 200 OK and any message of your choosing (The front end will
+            redirect to the login page so your message won't be displayed to the user).
+        </p>
         <p>
             When a user registers, you should also generate a unique id for them in the same way that chat messages have
             unique ids.
@@ -167,7 +173,7 @@
             a
             cookie value after log out). To remove a cookie, set a cookie with the same name and max age of 0 or an
             expires
-            date in the past. For the response, you can either sent a 302 Found with a Location header, or you can send a 200 with a message. 
+            date in the past. For the response, you can either send a 302 Found with a Location header, or you can send a 200 with a message.
         Note that if you do the latter, you will be presented with a white screen with the message of your choosing, and that is okay.</p>
 
         <br>
@@ -182,6 +188,12 @@
             messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then
             logs in using a different account, the guest message should still belong to the account of their first
             login).
+        </p>
+
+        <p>
+            Note: To accomplish this, you will need to read the "session" cookie on login. Some browsers will
+            automatically add a "/api" path to this cookie so it will not be sent to the /login path. To correct this,
+            manually set the path directive to "/"
         </p>
 
         <br>
@@ -212,7 +224,7 @@
         <h5>Filter/search users</h5>
         <p>
             Add an endpoint GET "/api/users/search" that takes a query string containing one key named "user". Return a
-            json array with the following structure { "users": [{ "id": "1", "username": "bob" }] }. This endpoint is case-sensitive,
+            json array with the following structure {"users": [{ "id": "1", "username": "bob" }]}. This endpoint is case-sensitive,
             meaning if a username is "Username" and the search is for "use" it will not return "Username" but a search
             for "Use" will.
         </p>
@@ -254,12 +266,12 @@
             A quick note: Application objectives are open-ended in how you implement them.
             This will require a lot of exploration and reading online documentation. 
             You should snoop around the network tab and inspect how requests are sent and what responses are expected.
-            Furthermore, because of the open ended nature of the AOs and the manual grading involved, 
+            Furthermore, because of the open-ended nature of the AOs and the manual grading involved,
             your implementation can vary in terms of formatting.
             As long as you achieve the goal of the AO (and don't violate the spirit of the AO), 
             and your implementation works with the frontend without any frontend modifications, you needn't worry.
             
-            We reserve the right to deny AO credit if you utilize any unallowed libraries (ask first before you use a library that isn't already approved!)
+            You may lose AO credit if you utilize any unallowed libraries (ask first before you use a library that isn't already approved!)
             or otherwise violate the spirit of the AOs.
         </p>
 
@@ -391,7 +403,7 @@
                     <li>
                         Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub
                         will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being
-                        displayed confirming that it was starred. This can be a message of your choosing, but we request 
+                        displayed confirming that it was starred. This can be a message of your choosing, but we ask that
                         you make life easier for the graders and wrap the content in a link to the repo for easy viewing.
                     </li>
                 </ul>
@@ -407,7 +419,7 @@
                         Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will
                         create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"
                         and an empty body and a confirmation message will be displayed in chat. 
-                        This can be a message of your choosing, but we request 
+                        This can be a message of your choosing, but we ask that
                         you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.
                     </li>
                 </ul>
