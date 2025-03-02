@@ -279,16 +279,17 @@
             Enable time-based one-time password (<a href="https://www.twilio.com/docs/glossary/totp">TOTP</a>) based
             2-factor authentication (2FA) on your app.
             This objective will require inspecting network requests and
-            reviewing some frontend files (you shouldn't edit anything on the front edit any of them) to learn exactly
+            reviewing some frontend files (you shouldn't edit anything on the front end) to learn exactly
             how to implement this feature.
         </p>
 
         <p>
             When a user enables 2FA by clicking "Regenerate 2FA" on the setting page,
-            your app should return a json in the format {"secret": string}. Each time a user clicks "Regenerate 2FA",
-            your server is expected to generate a new secret. The frontend will use this secret to
+            your app should return a json object in the format {"secret": string}. Each time a user clicks "Regenerate 2FA",
+            your server is expected to generate a new secret. The front end will use this secret to
             generate a QR code which your users can scan using any authenticator app on their phone
-            (eg. <a href="https://www.authy.com/">Authy</a>, Duo, Google Authenticator).
+            (eg. <a href="https://www.authy.com/">Authy</a>, Duo, Google Authenticator). You may choose any high-entropy
+            string for your secrets. The secrets must be different for each user.
         </p>
 
         <p>
@@ -311,16 +312,20 @@
         <hr/>
 
         <p>
-            Enable the "login with GitHub" button. This button uses the GET "authgithub" endpoint. You should add
+            Enable the "login with GitHub" button. This button uses the GET "/authgithub" endpoint. You should add
             functionality on this endpoint to follow the OAuth 2.0 protocol. After authenticating their account
             through GitHub, use the API to get the user's username (or email if available). Use this as their
             username for any messages they send.
         </p>
 
         <p>
-            You will use the Authorization Code Flow to build this feature and you should follow the documentation to
-            guide
+            You will use the Authorization Code Flow to build this feature, and you should follow
+            <a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app">
+                the documentation</a> to guide
             your development. You will need a GitHub account to access the dev dashboard and this can be a free account.
+            Once you do, follow the Authorization Code Flow documentation which GitHub calls their
+            <a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps#web-application-flow">
+                Web Application Flow</a>. No, you cannot use the Device Flow or the Non-Web Application Flow.
         </p>
 
         <p>Use "http://localhost:8080/authcallback" as your redirect_uri. The course staff will use this exact string in
@@ -333,7 +338,7 @@
 
 
         <p>You may use a library (eg. requests) to send HTTP requests to the GitHub API. You are also allowed to use the
-            base64 library.</p>
+            base64 library, if needed.</p>
 
         <p>Note: You are not required to handle refresh tokens for either of these AOs. You should code this for extra
             practice and experience, but it would be too tedious to test/grade such a
@@ -352,7 +357,7 @@
             or
             "Put your client secret here" or ""). For testing, we will paste our own secret/id into your .env file
             before
-            running docker compose up. You may also set your REDIRECT_URI this way if you prefer not to hardcode it.</p>
+            running your app. You may also set your REDIRECT_URI this way if you prefer not to hardcode it.</p>
 
         <p><b>Security</b>: You must properly use the Authorization Code Flow. Using a different flow, or improperly
             using the
