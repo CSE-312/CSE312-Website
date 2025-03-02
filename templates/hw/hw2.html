@@ -237,16 +237,17 @@
         <p>
             Add an endpoint POST "/api/users/settings" which will receive requests containing a username and password in
             the same format as the registration and login endpoints. When you receive a request, update the users
-            username and password to the provided values. You should note, that in other routes like register, an empty password
-            in the url-encoded body would be invalid. However, for settings, to avoid users having to give their password
-            every time they want to change just their username, an empty password should not be interpreted as a request to change the password.
-            Thus, if you reuse your previously written password validation function, make sure the password is non-empty first.
+            username and password to the provided values.
         </p>
 
         <p>
             This endpoint must enforce the same password criteria as registering a new user. If the password does not
             meet all criteria, return a 400 response with a message of your choice. Do not update their username if the
-            password is not valid.
+            password is not valid. You should note, that in other routes like register, an empty password
+            in the url-encoded body would be invalid. However, for settings, to avoid users having to give their password
+            every time they want to change just their username, an empty password should not be interpreted as a request to change the password.
+            Thus, if you reuse your previously written password validation function, make sure the password is non-empty first. Do not set the password
+            to be an empty string.
         </p>
 
         <p>
