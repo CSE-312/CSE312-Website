@@ -132,7 +132,7 @@
 
         <p>
             Visit the Change Avatar page to find a form that sends multipart requests to your server containing an image
-            chosen by the user. Your server must listen for POST requests at the "api/users/avatar" endpoint and process
+            chosen by the user. Your server must listen for POST requests at the "/api/users/avatar" endpoint and process
             the uploaded images. This endpoint must have the following features:
         </p>
 
@@ -143,6 +143,9 @@
                 all their chat messages. The value of this field is the path where you saved the image (eg.
                 "imageURL":
                 "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
+            </li>
+            <li>
+                When an image is successfully uploaded, respond with a 200 and a message of your choice
             </li>
             <li>
                 If the same user uploads a second avatar, it replaces the first one
@@ -195,23 +198,23 @@
             from the socket with a 2048 buffer (eg. You do not have buffer while reading the headers and you can safely
             read the content length before any buffering).
         </p>
-        <p>
-            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this
-            objective, you
-            will
-            be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to
-            your
-            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.jpg") you
-            still don't know how many images will be uploaded. This means that you must accept some variable from the
-            user
-            that you will use to read, and send, a file from your server. You must ensure that an attacker cannot use
-            this
-            variable to access files that you don’t want them to access. (In this course, it is sufficient to not allow
-            any
-            '/' characters in the filename. Eg. remove any "/" characters from the requested filename after extracting
-            it
-            from the path)
-        </p>
+{#        <p>#}
+{#            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this#}
+{#            objective, you#}
+{#            will#}
+{#            be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to#}
+{#            your#}
+{#            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.jpg") you#}
+{#            still don't know how many images will be uploaded. This means that you must accept some variable from the#}
+{#            user#}
+{#            that you will use to read, and send, a file from your server. You must ensure that an attacker cannot use#}
+{#            this#}
+{#            variable to access files that you don’t want them to access. (In this course, it is sufficient to not allow#}
+{#            any#}
+{#            '/' characters in the filename. Eg. remove any "/" characters from the requested filename after extracting#}
+{#            it#}
+{#            from the path)#}
+{#        </p>#}
 
         <br>
         <hr>
@@ -223,7 +226,7 @@
         </p>
 
         <ul>
-            <li>"/videotube" - Render change.html (Displays all videos)</li>
+            <li>"/videotube" - Render videotube.html (Displays all videos)</li>
             <li>"/videotube/upload" - Render upload.html (Upload video form)</li>
             <li>"/videotube/videos/{videoID}" - Render view-video.html (Displays a single video)</li>
         </ul>
@@ -256,6 +259,11 @@
             .mp4 content.
         </p>
 
+        <p>
+            Testing will only be done with authenticated users. It's up to you if you want to support guest video
+            uploads.
+        </p>
+
         <br>
         <h5>Retrieve all videos (`GET /api/videos`)</h5>
 
@@ -280,8 +288,8 @@
             as the previous path, but with only 1 video object.
         </p>
 
-        <p>Response (JSON): {"author_id": str, "title": str, "description": str, "video_path":
-            str,"created_at": str "id": str}</p>
+        <p>Response (JSON): {"video": {"author_id": str, "title": str, "description": str, "video_path":
+            str,"created_at": str "id": str}}</p>
 
         <br>
         <hr/>
