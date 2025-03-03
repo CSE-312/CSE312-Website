@@ -42,6 +42,13 @@
 
         <br>
         <h4>Helper Method: parse_multipart</h4>
+
+        <p>
+            READ ME!: Before you get started, please go to this line in your server.py: "socketserver.TCPServer.allow_reuse_address = True" and "server = socketserver.TCPServer((host, port), MyTCPHandler)". 
+            Change it from <b>TCPServer</b> to <b>ThreadingTCPServer</b>.
+            This will make sure that your server can handle multiple requests at once, without blocking other requests and causing a socket timeout.
+        </p>
+
         <p>
 
             Create a file named util/multipart.py containing the following function (This file does not define a class).
