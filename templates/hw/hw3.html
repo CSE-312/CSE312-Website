@@ -200,20 +200,20 @@
         </p>
         <p>
             <b>Buffering</b>: Your app must allow for large images to be uploaded. You'll accomplish this by buffering
-            your
-            HTTP
-            requests. Read the content length (for compatibility purposes, you should lowercase headers when relying on them, so Content-Length would be content-length) of the request and buffer until you read the whole body. 
+            your HTTP requests. Read the content length (for compatibility purposes, you should lowercase headers when relying on them, so Content-Length would be content-length) of the request and buffer until you read the whole body. 
             Your buffering should be able to handle arbitrarily large files. You must use proper buffering for this. Do not increase the TCP
-            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files). You
-            can assume that all the headers, upto the first "\r\n\r\n", of the request are always read in the first read
+            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files). Do not attempt to shove the entire content-length into recv either.
+            You can assume that all the headers, upto the first "\r\n\r\n", of the request are always read in the first read
             from the socket with a 2048 buffer (eg. You do not have buffer while reading the headers and you can safely
             read the content length before any buffering).
+
+            You should do your buffering in server.py, and not just in the route for changing the avatar, as this will be critical for the next part of this objective.
         </p>
 
         <p>
             If you have an insufficient buffering implementation, it is almost certain you will fail some of the second round tests. 
             You can self-verify that your solution works by making sure that your fully read buffered request has the exact same body length as the Content-Length header.
-            (Remember, headers don't contribute to the body length nor content-length)
+            (Remember, headers don't contribute to the body length nor content-length). If the number is higher, you have read into another request being sent on the same socket back-to-back.
         </p>
 
 
