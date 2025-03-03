@@ -310,8 +310,8 @@
 
         <p>
             The API is limited to only being able to transcribe videos less than or equal to one minute in duration. 
-            You should use this demo video for testing transcription, as it's what we will use: https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30%20second%20pitch.mp4.
-            This video will produce this outputted VTT file https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/fab03410-626b-48d6-9383-d9dc3ffecd66.vtt. 
+            You should use this demo video for testing transcription, as it's what we will use: https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4.
+            This video will produce this outputted VTT file https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt. 
             You can use these as test values to avoid hitting ratelimits on the API (it is heavily ratelimited to avoid high cost).
             The transcription endpoint is asynchronous, and returns a response before the file is fully transcribed. 
             That's why only an id is returned, which you can then request using the retrieve transcript endpoint, which will return the url of the saved transcript when it's ready.
