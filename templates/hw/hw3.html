@@ -123,6 +123,31 @@
             </li>
         </ul>
 
+        <p>
+            When you are testing this, make sure your request is less than the buffer chunk size that the server is requesting.
+            In the next part of this LO, you will be implementing buffering, which will allow you to test with larger requests.
+            Once you complete it, go back and test your parse_multipart with larger requests (1mb+)
+        </p>
+
+        <br>
+        <h4>Buffering</h4>
+
+        <p>
+            When your server receives a request, it will only request the first 2048 bytes of that request. 
+            What happens when we have a request that is larger than 2048 bytes? That is very, very common with multipart requests.
+            With your current implementation, the body will be cut off after it crosses the 2048 byte size.
+            Therefore, in order to get the full request, we must implement <b>buffering</b>. This allows us to request all the bytes associated with the request.
+            You will implement this by reading the Content-Length header (for compatibility purposes, you should lowercase headers when relying on them, so Content-Length would be content-length).
+            You have a guarantee that the Content-Length header is in the first 2048 bytes of the request. Once you have it, you can use that number (while factoring in the amount of bytes you already read)
+            in order to request as many other bytes needed. You should should request in chunks of 2048 (or however many bytes are left). You should not attempt to solve this by using an absurdly large number in recv. 
+        </p>
+
+        <p>
+            If you have an insufficient buffering implementation, it is almost certain you will fail some of the second round tests. 
+            You can self-verify that your solution works by making sure that your fully read buffered request has the exact same body length as the Content-Length header.
+            (Remember, headers don't contribute to the body length nor content-length)
+        </p>
+
         <br>
         <hr>
         <h4>Avatar Uploads</h4>
