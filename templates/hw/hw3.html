@@ -294,28 +294,37 @@
         <br>
         <hr/>
         <h3>
-            Application Objective 1 - Video Captions
+            Application Objective 1 - Video Subtitles
         </h3>
         <hr/>
 
         <p>
-            Use an API to generate captions to uploaded videos. When a video is uploaded, use an API to generate
-            an SRT file for the video. Save this file on your server and add a "captionsFile" field to that video. When
-            the video is served as JSON for either GET /api/videos endpoints, its object should contain a
-            "captionsFile" field with a path to this file.
+            Videos are subtitled on the internet using VTT file (insert link to read more about them).
+            This application objective will involve you taking an uploaded video, extracting the audio from that video,
+            and uploading that audio to an API in order to generate a VTT file for the video. 
+            You will then save the id returned in the response, and then whenever the video is requested, send back the url to retrieve 
+            the transcript from the API.
+        </p>
+
+        <p>A free-to-use API is provided for you at <a href="https://transcription-api.nico.engineer/">https://transcription-api.nico.engineer/</a>. You will need to read <a href="https://github.com/CSE-312/transcriber">this README file</a> to understand how to use the API.</p>
+
+        <p>
+            The API is limited to only being able to transcribe videos less than or equal to one minute in duration. 
+            You should use this demo video for testing transcription, as it's what we will use: https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30%20second%20pitch.mp4.
+            This video will produce this outputted VTT file https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/fab03410-626b-48d6-9383-d9dc3ffecd66.vtt. 
+            You can use these as test values to avoid hitting ratelimits on the API (it is heavily ratelimited to avoid high cost).
+            The transcription endpoint is asynchronous, and returns a response before the file is fully transcribed. 
+            That's why only an id is returned, which you can then request using the retrieve transcript endpoint, which will return the url of the saved transcript when it's ready.
+            This usually takes around 30 seconds for big files.
         </p>
 
         <p>
-            Example field to be added to videos - "captionsFile":
-            "/public/video/captions/eda92e0a-eb7a-430c-a938-916d2102b480.srt"
+            To accomplish this objective, you will need to extract the audio from the video using ffmpeg. You'll also find that ffprobe (which comes with ffmpeg) is useful for determining video duration.
         </p>
 
         <p>
-            The MIME type for an srt file is "text/plain; charset=utf-8".
-        </p>
-
-        <p>
-            To accomplish this objective, you will need to extract the audio from the video using ffmpeg.
+            You will need to use an auth token when interacting with the API. -- insert instructions of how to get token here --. Do not abuse the API or send unnecessary requests. 
+            Bulky or otherwise abusive requests will result in your access being revoked.
         </p>
 
         <br>
