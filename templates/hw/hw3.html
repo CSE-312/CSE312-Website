@@ -45,7 +45,7 @@
 
         <p>
             READ ME!: Before you get started, please go to this line in your server.py: "socketserver.TCPServer.allow_reuse_address = True" and "server = socketserver.TCPServer((host, port), MyTCPHandler)". 
-            Change it from <b>TCPServer</b> to <b>ThreadingTCPServer</b>.
+            Change both of these lines from <b>TCPServer</b> to <b>ThreadingTCPServer</b>.
             This will make sure that your server can handle multiple requests at once, without blocking other requests and causing a socket timeout.
         </p>
 
