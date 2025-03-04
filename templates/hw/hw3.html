@@ -212,7 +212,7 @@
             from the socket with a 2048 buffer (eg. You do not have buffer while reading the headers, and you can safely
             read the content length before any buffering).
 
-            It's recommended that you buffer in server.py before sending hte request to your router, and not just in the
+            It's recommended that you buffer in server.py before sending the request to your router, and not just in the
             route for changing the avatar, as this will cover all future large requests for any path.
         </p>
 
@@ -324,11 +324,10 @@
         <hr/>
 
         <p>
-            Videos are subtitled on the internet using VTT file (insert link to read more about them).
+            Videos are subtitled on the internet using <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API">VTT files</a>.
             This application objective will involve you taking an uploaded video, extracting the audio from that video,
-            and uploading that audio to an API in order to generate a VTT file for the video. 
-            You will then save the id returned in the response, and then whenever the video is requested, send back the url to retrieve 
-            the transcript from the API.
+            and uploading that audio to an API in order to generate a VTT file for the video. You will then save the id returned in the response, 
+            and then whenever the video is requested, send back the url to retrieve the transcript from the API.
         </p>
 
         <p>A free-to-use API is provided for you at <a href="https://transcription-api.nico.engineer/">https://transcription-api.nico.engineer/</a>. You will need to read <a href="https://github.com/CSE-312/transcriber">this README file</a> to understand how to use the API.</p>
@@ -338,9 +337,9 @@
             You should use this demo video for testing transcription, as it's what we will use: https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4.
             This video will produce this outputted VTT file https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt. 
             You can use these as test values to avoid hitting ratelimits on the API (it is heavily ratelimited to avoid high cost).
-            The transcription endpoint is asynchronous, and returns a response before the file is fully transcribed. 
-            That's why only an id is returned, which you can then request using the retrieve transcript endpoint, which will return the url of the saved transcript when it's ready.
-            This usually takes around 30 seconds for big files.
+            The transcription endpoint is asynchronous, and returns an id before the file is fully transcribed. 
+            You can then request using the id and the retrieve transcript endpoint, which will return VTT file.
+            Transcription takes around 30 seconds for large files.
         </p>
 
         <p>
