@@ -16,30 +16,9 @@
       "type": "lecture",
       "day": "Monday",
       "date": "March 10",
-      "title": "File Types",
-      "slides": "3_6_File_Types.pdf",
+      "title": "Video Processing",
+      "slides": "3_6_Video1.pdf",
       "reading_list": [
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/MIME_types/Common_types",
-          "text": "Common MIME types"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/List_of_file_signatures",
-          "text": "File Signatures (Wikipedia)"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
-      "day": "Wednesday",
-      "date": "March 12",
-      "title": "Media Processing",
-      "slides": "3_6_Media_Processing.pdf",
-      "reading_list": [
-        {
-          "url": "https://pillow.readthedocs.io/en/stable/index.html",
-          "text": "Python Image Library"
-        },
         {
           "url": "https://ffmpeg.org",
           "text": "ffmpeg"
@@ -52,9 +31,30 @@
     },
     {
       "type": "lecture",
+      "day": "Wednesday",
+      "date": "March 12",
+      "title": "Video - Adaptive Bit-Rate (ABR)",
+      "slides": "3_6_Video2.pdf",
+      "reading_list": [
+        {
+          "url": "https://datatracker.ietf.org/doc/html/rfc8216",
+          "text": "RFC8216 - HLS"
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP",
+          "text": "MPEG-DASH [Wikipedia]"
+        },
+        {
+          "url": "https://videojs.com/getting-started",
+          "text": "video.js"
+        }
+      ]
+    },
+    {
+      "type": "lecture",
       "day": "Friday",
       "date": "March 14",
-      "title": "Examples and Testing Media Uploads",
+      "title": "Streaming",
       "reading_list": []
     }
   ]
