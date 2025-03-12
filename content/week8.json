@@ -34,7 +34,7 @@
       "day": "Wednesday",
       "date": "March 12",
       "title": "Video - Adaptive Bit-Rate (ABR)",
-      "slides": "3_6_Video2.pdf",
+      "slides": "ABR.pdf",
       "reading_list": [
         {
           "url": "https://datatracker.ietf.org/doc/html/rfc8216",
