@@ -322,17 +322,16 @@
         <br>
         <hr/>
         <h3>
-            Application Objective 1 - Video Subtitles
+            Application Objective 1 - Video Subtitles using LLMs
         </h3>
         <hr/>
 
         <p>
             Videos are subtitled on the internet using <a
-                href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API">VTT files</a>.
+                href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API">VTT files</a>. Historically, this was done by hand by humans. 
+                However, you're being given the exciting opportunity to leverage AI and LLMs to automatically generate these subtitles.
             This application objective will involve you taking an uploaded video, extracting the audio from that video,
-            and uploading that audio to an API in order to generate a VTT file for the video. You will then save the id
-            returned in the response,
-            and then whenever the video is requested, send back the url to retrieve the transcript from the API.
+            and uploading that audio to an API in order to generate a VTT file for the video.
         </p>
 
         <p>A free-to-use API is provided for you at <a href="https://transcription-api.nico.engineer/">https://transcription-api.nico.engineer/</a>.
@@ -344,14 +343,11 @@
         <p>
             The API is limited to only being able to transcribe videos less than or equal to one minute in duration.
             You should use this demo video for testing transcription, as it's what we will use:
-            https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4.
+            <a href="https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4">https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4</a>.
             This video will produce this outputted VTT file
-            https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt.
+            <a href="https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt">https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt</a>.
             You can use these as test values to avoid hitting ratelimits on the API (it is heavily ratelimited to avoid
             high cost).
-            The transcription endpoint is asynchronous, and returns an id before the file is fully transcribed.
-            You can then request using the id and the retrieve transcript endpoint, which will return VTT file.
-            Transcription takes around 30 seconds for large files.
         </p>
         <p>
             To accomplish this objective, you will need to extract the audio from the video using ffmpeg. You'll also
@@ -362,6 +358,24 @@
             You will need to use an auth token when interacting with the API. Check your feedback on the "HW2-AO1 API
             Key" assignment on Autolab to obtain your API key. Do not abuse the API or send unnecessary requests.
             Bulky or otherwise abusive requests will result in your access being revoked.
+        </p>
+
+        <p>
+            When a video is uploaded, you should extract the audio from the video as an mp3 file, and upload it to the api.
+            You should read the docs for the API to understand how to do this. 
+            You should save the returned id by the API with your video metadata in the database, under the "transcription_id" field.
+        </p>
+
+        <p>
+            You will make a GET `/api/transcriptions/{videoId}` endpoint. This route should call the transcription API with the transcription_id associated with the requested video.
+            The transcription API will return either a VTT file if the transcription is complete, or a 420 status code if the transcription is not complete/does not exist. Your API should return either a 200 with the VTT file, or a 400 if the transcription is not complete/does not exist.
+            
+            If successful, you should be able to upload a video to the site and see the subtitles associated with your uploaded video.
+        </p>
+
+        <p>
+            NOTE: The transcription API is asynchronous, therefore it does not wait until the transcription is complete to return a response. Because of the heavy computing nature of transcription, the API will take about 30 seconds before a transcription is actually ready.
+            Therefore, when testing, you should wait 30 seconds before refreshing the page on the view video page to see the subtitles.
         </p>
 
         <br>
