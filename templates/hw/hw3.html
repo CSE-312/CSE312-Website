@@ -219,6 +219,12 @@
             route for changing the avatar, as this will cover all future large requests for any path.
         </p>
 
+        <p>
+            <b>Do not submit with any print statements printing out the full buffered request body.</b> 
+            If you submit to autolab with these print statements, it will crash your submission. 
+            This is because you're printing the contents of a <b>2GB video file</b>.
+        </p>
+
         {#        <p>#}
         {#            If you have an insufficient buffering implementation, it is almost certain you will fail some of the second round tests. #}
         {#            You can self-verify that your solution works by making sure that your fully read buffered request has the exact same body length as the Content-Length header.#}
