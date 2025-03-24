@@ -215,15 +215,16 @@
 
         <br>
         <hr>
-        <h4>User List and Heartbeat</h4>
+        <h4>User Lists</h4>
 
         <p>
-            Send a message of type "user_list" containing a field named "users" with an array containing all the
+            Send a message of type "active_users_list" containing a field named "users" with an array containing all the
             authenticated users who have an active WS connection. Each user is represented as an object with a field
             "username"
         </p>
         <p>
-            Example Message: {"messageType": "user_list", "users": [{"username": "admin"}, {"username": "cse312"}]}
+            Example Message: {"messageType": "active_users_list", "users": [{"username": "admin"}, {"username":
+            "cse312"}]}
         </p>
 
         <p>
@@ -281,6 +282,23 @@
         </p>
 
         <ul>
+            <li>
+                When a client sends a WS message of type "get_all_users", send them a list of all users who've
+                registered on your app
+                <ul>
+                    <li>
+                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}
+                    </li>
+                    <li>
+                        Send the user list in this format - {"messageType": "all_users_list", "users": [{"username":
+                        "admin"}, {"username": "cse312"}]}
+                    </li>
+                    <li>
+                        Note that you're returning all users whether they are currently using the app or not. Return
+                        ever registered user. This will populate the dropdown list for DMs
+                    </li>
+                </ul>
+            </li>
             <li>
                 When a client sends a WS message of type "select_user", which means they chose this user from the DM
                 dropdown, send them all the DM history between them and the chosen user
