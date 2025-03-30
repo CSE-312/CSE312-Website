@@ -25,15 +25,14 @@
       "type": "lecture",
       "day": "Monday",
       "date": "April 14",
-      "title": "Reverse Proxy Servers - Nginx",
-      "slides": "5_4_HW_HTTPS.pdf",
+      "title": "Deployment",
       "reading_list": []
     },
     {
       "type": "lecture",
       "day": "Wednesday",
       "date": "April 16",
-      "title": "Deployment",
+      "title": "Logging",
       "reading_list": []
     },
     {

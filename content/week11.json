@@ -5,7 +5,7 @@
     {
       "title": "Team Project",
       "url": "hw/project.html",
-      "released": false
+      "released": true
     }
   ],
   "recitation": "Yes Recitation",
@@ -22,13 +22,6 @@
       "type": "lecture",
       "day": "Monday",
       "date": "April 7",
-      "title": "Testing",
-      "reading_list": []
-    },
-    {
-      "type": "lecture",
-      "day": "Wednesday",
-      "date": "April 9",
       "title": "Encryption",
       "slides": "21_Encryption.pdf",
       "reading_list": [
@@ -44,8 +37,8 @@
     },
     {
       "type": "lecture",
-      "day": "Friday",
-      "date": "April 11",
+      "day": "Wednesday",
+      "date": "April 9",
       "title": "HTTPS",
       "slides": "22_Encryption2.pdf",
       "reading_list": [
@@ -70,6 +63,14 @@
           "text": "AES (Wikipedia)"
         }
       ]
+    },
+    {
+      "type": "lecture",
+      "day": "Friday",
+      "date": "April 11",
+      "title": "Reverse Proxy Servers - Nginx",
+      "slides": "5_4_HW_HTTPS.pdf",
+      "reading_list": []
     }
   ]
 }
