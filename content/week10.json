@@ -3,6 +3,7 @@
   "theme": "testing",
   "homework": [],
   "recitation": "Yes Recitation",
+  "rec_slide_url": "static_files/rec_slides/REC_10_HW4_websockets.pdf",
   "content": [
     {
       "type": "deadline",
