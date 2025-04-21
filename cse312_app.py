@@ -10,9 +10,9 @@ socket_server = SocketIO(app)
 content_directory = "content/"
 content_root = content_directory + "cse312.json"
 
-mongo_client = MongoClient("mongo")
-db = mongo_client["cse312"]
-ip_collection = db["ips"]
+# mongo_client = MongoClient("mongo")
+# db = mongo_client["cse312"]
+# ip_collection = db["ips"]
 
 def load_content(content_filename):
     all_content = []
@@ -46,12 +46,12 @@ def cse312():
     content = load_content(content_root)
     resp = make_response(render_template('cse312/cse312.html', weeks=content))
     resp.headers["X-Content-Type-Options"] = "nosniff"
-    try:
-        real_ip = request.headers["X-Real-IP"]
-        # real_ip = request.remote_addr # for local testing
-        ip_collection.insert_one({"ip": real_ip})
-    except Exception:
-        pass
+    # try:
+    #     real_ip = request.headers["X-Real-IP"]
+    #     # real_ip = request.remote_addr # for local testing
+    #     ip_collection.insert_one({"ip": real_ip})
+    # except Exception:
+    #     pass
     return resp
 
 

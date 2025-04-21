@@ -536,6 +536,13 @@ a.menu_link {
     /*color: #e7e7e7;*/
 }
 
+a.hidden {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+
 html.outer, body.outer {
     /*height: 100%;*/
     /*overflow:hidden;*/

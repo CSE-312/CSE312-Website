@@ -22,7 +22,7 @@
                 <div>{{ text_list.header }}</div>
                 <ul>
                     {% for item in text_list.text_items %}
-                        <li>{{ item }}</li>
+                        <li>{{ item | safe}}</li>
                     {% endfor %}
                 </ul>
                 {% endfor %}
