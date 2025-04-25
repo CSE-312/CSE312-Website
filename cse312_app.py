@@ -69,6 +69,12 @@ def serve_static(filename):
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
 
+@app.route('/live')
+def stream():
+    resp = make_response(send_from_directory('static_files', 'stream.html'))
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
+
 
 @app.route('/rec')
 def recitation_attendance_tool():

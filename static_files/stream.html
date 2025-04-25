@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+    <video id="video" width="100%" controls autoplay muted></video>
+
+    <select id="qualitySelect">
+        <option value="auto">Auto</option>
+    </select>
+
+    <script>
+        const video = document.getElementById('video');
+        const select = document.getElementById('qualitySelect');
+        const hls = new Hls();
+
+        hls.loadSource('http://159.89.179.140:8080/hls/mystream.m3u8');  // Your HLS URL
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+            console.log("Available bitrates:", data.levels);
+
+            // Populate quality selection dropdown
+            data.levels.forEach((level, index) => {
+                const option = document.createElement("option");
+                option.value = index;
+                option.text = `${level.height}p (${level.bitrate / 1000} kbps)`;
+                select.appendChild(option);
+            });
+        });
+
+        // Change bitrate on selection
+        select.addEventListener("change", function() {
+            if (select.value === "auto") {
+                hls.currentLevel = -1; // Auto
+            } else {
+                hls.currentLevel = parseInt(select.value);
+            }
+        });
+    </script>
+</body>
+</html>
