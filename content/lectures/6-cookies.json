@@ -1,0 +1,18 @@
+{
+  "title": "Cookies",
+  "slides": "1_6_Cookies.pdf",
+  "reading_list": [
+    {
+      "url": "https://tools.ietf.org/html/rfc6265",
+      "text": "RFC6265 - Cookies"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie",
+      "text": "Directives Overview"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date",
+      "text": "Date Formatting"
+    }
+  ]
+}

@@ -1,76 +1,30 @@
 {
-  "title": "Week 2: Web Basics",
-  "theme": "intro",
-  "homework": [],
-  "recitation": "Yes Recitation",
+  "title": "Week 2: Web App Basics",
+  "theme": "hw1",
+  "homework": [
+    {
+      "title": "Homework 1: HTTP",
+      "url": "hw/hw1.html",
+      "released": false
+    }
+  ],
+  "recitation": "No Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_1_Class_Overview.pdf",
   "content": [
     {
-      "type": "lecture",
+      "lecture": "break.json",
       "day": "Monday",
-      "date": "January 27",
-      "title": "HTTP Request/Response",
-      "slides": "1_2_HTTP.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
-          "text": "HTTP (Wikipedia)"
-        },
-        {
-          "url": "https://tools.ietf.org/html/rfc2616",
-          "text": "RFC2616 - HTTP 1.1"
-        },
-        {
-          "url": "https://docs.python.org/3/library/socketserver.html",
-          "text": "Python TCP Server"
-        }
-      ]
+      "date": "September 1"
     },
     {
-      "type": "lecture",
+      "lecture": "3-post.json",
       "day": "Wednesday",
-      "date": "January 29",
-      "title": "HTTP - Static Files, MIME Types, and Encodings",
-      "slides": "1_3_Encodings.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/UTF-8",
-          "text": "UTF-8 (Wikipedia)"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types",
-          "text": "MIME types"
-        },
-        {
-          "url": "https://www.iana.org/assignments/media-types/media-types.xhtml",
-          "text": "Every MIME type"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
-          "text": "String MIME types"
-        }
-      ]
+      "date": "September 3"
     },
     {
-      "type": "lecture",
+      "lecture": "4-db.json",
       "day": "Friday",
-      "date": "January 31",
-      "title": "Cookies",
-      "slides": "1_4_Cookies.pdf",
-      "reading_list": [
-        {
-          "url": "https://tools.ietf.org/html/rfc6265",
-          "text": "RFC6265 - Cookies"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie",
-          "text": "Directives Overview"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date",
-          "text": "Date Formatting"
-        }
-      ]
+      "date": "September 5"
     }
   ]
 }

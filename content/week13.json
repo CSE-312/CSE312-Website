@@ -1,49 +1,32 @@
 {
-  "title": "Week 14: Review",
-  "theme": "outro",
+  "title": "Week 13: Deployment",
+  "theme": "hw5",
   "homework": [
-  ],
+],
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "lecture",
+      "type": "deadline",
       "day": "Monday",
-      "date": "April 21",
-      "title": "Working with LLMs and AI [feat Zaid]",
-      "reading_list": [],
-      "text_lists": [
-        {
-          "text_items": [
-          ]
-        }
-      ]
+      "date": "November 17",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "ao"
     },
     {
-      "type": "lecture",
+      "lecture": "32-.json",
+      "day": "Monday",
+      "date": "November 17"
+    },
+    {
+      "lecture": "33-.json",
       "day": "Wednesday",
-      "date": "April 23",
-      "title": "Architecture",
-      "reading_list": [],
-      "slides": "5_5_Architecture.pdf",
-      "text_lists": [
-        {
-          "text_items": [
-          ]
-        }
-      ]
+      "date": "November 19"
     },
     {
-      "type": "lecture",
+      "lecture": "34-.json",
       "day": "Friday",
-      "date": "April 25",
-      "title": "Streaming",
-      "reading_list": [],
-      "text_lists": [
-        {
-          "text_items": [
-          ]
-        }
-      ]
+      "date": "November 21"
     }
   ]
 }

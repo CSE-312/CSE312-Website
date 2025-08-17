@@ -1,0 +1,30 @@
+{
+  "title": "Databases and HTML Templates",
+  "slides": "1_4_Databases.pdf",
+  "reading_list": [
+    {
+      "url": "https://www.mysql.com",
+      "text": "MySQL"
+    },
+    {
+      "url": "https://www.w3schools.com/sql/",
+      "text": "SQL Tutorial"
+    },
+    {
+      "url": "https://www.mongodb.com",
+      "text": "MongoDB"
+    },
+    {
+      "url": "https://www.tutorialspoint.com/mongodb/index.htm",
+      "text": "MongoDB Tutorial"
+    },
+    {
+      "url": "https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b",
+      "text": "Waiting Workaround"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Web_template_system",
+      "text": "Templating (Wikipedia)"
+    }
+  ]
+}

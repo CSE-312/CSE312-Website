@@ -1,77 +1,24 @@
 {
-  "title": "Week 3: HTTP GET",
-  "theme": "testing",
-  "homework": [
-    {
-      "title": "Homework 1: HTTP",
-      "url": "hw/hw1.html",
-      "released": true
-    }
-  ],
+  "title": "Week 3: APIs and Docker",
+  "theme": "hw1",
   "recitation": "Yes Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_2_HW1.pdf",
   "content": [
     {
-      "type": "lecture",
+      "lecture": "5-api.json",
       "day": "Monday",
-      "date": "February 3",
-      "title": "HTTP POST, Forms, and AJAX",
-      "slides": "2_2_POST_Forms.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.w3schools.com/html/html_forms.asp",
-          "text": "HTML Forms [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/xml/ajax_intro.asp",
-          "text": "AJAX [W3 Schools]"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Query_string",
-          "text": "Query Strings (Wikipedia)"
-        }
-      ]
+      "date": "September 8"
+
     },
     {
-      "type": "lecture",
+      "lecture": "6-cookies.json",
       "day": "Wednesday",
-      "date": "February 5",
-      "title": "Databases and HTML Templates",
-      "slides": "2_3_Databases_and_HTML_Templates.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.mysql.com",
-          "text": "MySQL"
-        },
-        {
-          "url": "https://www.w3schools.com/sql/",
-          "text": "SQL Tutorial"
-        },
-        {
-          "url": "https://www.mongodb.com",
-          "text": "MongoDB"
-        },
-        {
-          "url": "https://www.tutorialspoint.com/mongodb/index.htm",
-          "text": "MongoDB Tutorial"
-        },
-        {
-          "url": "https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b",
-          "text": "Waiting Workaround"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Web_template_system",
-          "text": "Templating (Wikipedia)"
-        }
-      ]
+      "date": "September 10"
     },
     {
-      "type": "lecture",
+      "lecture": "7-docker.json",
       "day": "Friday",
-      "date": "February 7",
-      "title": "CRUD and REST API",
-      "slides": "2_6_API.pdf",
-      "reading_list": []
+      "date": "September 12"
     }
   ]
 }

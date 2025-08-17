@@ -1,47 +1,37 @@
 {
-  "title": "Week 13: Deployment",
-  "theme": "oop",
+  "title": "Week 12: HTTPS and Deployment",
+  "theme": "hw5",
   "homework": [
-],
+    {
+      "title": "Homework 5: Deployment",
+      "url": "hw/hw5.html",
+      "released": false
+    }
+  ],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "April 14",
+      "date": "November 10",
       "time": "9:00 AM",
       "assignment": "Homework 4",
-      "deadline_type": "final"
+      "deadline_type": "lo"
     },
     {
-      "type": "deadline",
+      "lecture": "29-encryption.json",
       "day": "Monday",
-      "date": "April 14",
-      "time": "9:00 AM",
-      "assignment": "Last Day to Sign Up for a Presentation Time",
-      "deadline_type": ""
+      "date": "November 10"
     },
     {
-      "type": "lecture",
-      "day": "Monday",
-      "date": "April 14",
-      "title": "Deployment",
-      "reading_list": []
-    },
-    {
-      "type": "lecture",
+      "lecture": "30-https.json",
       "day": "Wednesday",
-      "date": "April 16",
-      "title": "Logging",
-      "reading_list": []
+      "date": "November 12"
     },
     {
-      "type": "lecture",
+      "lecture": "31-nginx.json",
       "day": "Friday",
-      "date": "April 18",
-      "title": "DoS and DDoS",
-      "slides": "4_7_DoS.pdf",
-      "reading_list": []
+      "date": "November 14"
     }
   ]
 }

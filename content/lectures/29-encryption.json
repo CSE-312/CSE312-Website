@@ -1,0 +1,14 @@
+{
+  "title": "Encryption",
+  "slides": "21_Encryption.pdf",
+  "reading_list": [
+    {
+      "url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)",
+      "text": "RSA (Wikipedia)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Certificate_authority",
+      "text": "CAs (Wikipedia)"
+    }
+  ]
+}

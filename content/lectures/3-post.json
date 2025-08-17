@@ -1,0 +1,18 @@
+{
+  "title": "HTTP - Static Files, MIME Types, and Encodings",
+  "slides": "1_3_POST.pdf",
+  "reading_list": [
+    {
+      "url": "https://www.w3schools.com/html/html_forms.asp",
+      "text": "HTML Forms [W3 Schools]"
+    },
+    {
+      "url": "https://www.w3schools.com/xml/ajax_intro.asp",
+      "text": "AJAX [W3 Schools]"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Query_string",
+      "text": "Query Strings (Wikipedia)"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "TCP/IP",
+  "slides": "1_1_TCPIP.pdf",
+  "reading_list": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Internet_Protocol",
+      "text": "IP (Wikipedia)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Transmission_Control_Protocol",
+      "text": "TCP (Wikipedia)"
+    }
+  ]
+}

@@ -1,54 +1,37 @@
 {
-  "title": "Week 6: OAuth 2.0",
-  "theme": "oop",
-  "homework": [],
+  "title": "Week 6: Multipart Requests and Media Uploads",
+  "theme": "hw3",
+  "homework": [
+    {
+      "title": "Homework 3: Media Uploads",
+      "url": "hw/hw3.html",
+      "released": false
+    }
+  ],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "February 24",
+      "date": "September 29",
       "time": "9:00 AM",
-      "assignment": "Homework 1",
-      "deadline_type": "final"
+      "assignment": "Homework 2",
+      "deadline_type": "lo"
     },
     {
-      "type": "lecture",
+      "lecture": "14-multipart.json",
       "day": "Monday",
-      "date": "February 24",
-      "title": "OAuth 2.0 - Overview",
-      "slides": "2_9_OAuth.pdf",
-      "reading_list": [
-        {
-          "url": "https://datatracker.ietf.org/doc/html/rfc6749",
-          "text": "RFC 6749 - OAuth 2.0"
-        },
-        {
-          "url": "https://datatracker.ietf.org/doc/html/rfc6750",
-          "text": "RFC 6750 - OAuth 2.0 Tokens"
-        }
-      ]
+      "date": "September 29"
     },
     {
-      "type": "lecture",
+      "lecture": "15-buffering.json",
       "day": "Wednesday",
-      "date": "February 26",
-      "title": "OAuth 2.0 - Implementation Details",
-      "slides": "2_10_OAuth.pdf",
-      "reading_list": []
+      "date": "October 1"
     },
     {
-      "type": "lecture",
+      "lecture": "16-upload_examples.json",
       "day": "Friday",
-      "date": "February 28",
-      "title": "OAuth 2.0 - Add Ons",
-      "slides": "2_11_OAuth.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.rfc-editor.org/rfc/rfc7636",
-          "text": "RFC 7636 - PKCE"
-        }
-      ]
+      "date": "October 3"
     }
   ]
 }

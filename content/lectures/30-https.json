@@ -1,0 +1,26 @@
+{
+  "title": "HTTPS",
+  "slides": "22_Encryption2.pdf",
+  "reading_list": [
+    {
+      "url": "https://tools.ietf.org/html/rfc5246",
+      "text": "RFC 5246 - TLS 1.2"
+    },
+    {
+      "url": "https://tools.ietf.org/html/rfc8446",
+      "text": "RFC 8446 - TLS 1.3"
+    },
+    {
+      "url": "https://tls.ulfheim.net/",
+      "text": "TLS 1.2 Example"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Diffie–Hellman_key_exchange",
+      "text": "Diffie-Hellman Key Exchange (Wikipedia)"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Advanced_Encryption_Standard",
+      "text": "AES (Wikipedia)"
+    }
+  ]
+}

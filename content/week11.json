@@ -1,76 +1,24 @@
 {
-  "title": "Week 12: HTTPS and Deployment",
-  "theme": "oop",
-  "homework": [
-    {
-      "title": "Team Project",
-      "url": "hw/project.html",
-      "released": true
-    }
-  ],
+  "title": "Week 11: WebRTC",
+  "theme": "hw4",
+  "homework": [],
   "recitation": "Yes Recitation",
+  "rec_slide_url": "static_files/rec_slides/REC_10_HW4_websockets.pdf",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "26-ws_testing.json",
       "day": "Monday",
-      "date": "April 7",
-      "time": "9:00 AM",
-      "assignment": "Homework 4",
-      "deadline_type": "expected"
+      "date": "November 3"
     },
     {
-      "type": "lecture",
-      "day": "Monday",
-      "date": "April 7",
-      "title": "Encryption",
-      "slides": "21_Encryption.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)",
-          "text": "RSA (Wikipedia)"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Certificate_authority",
-          "text": "CAs (Wikipedia)"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
+      "lecture": "27-webrtc1.json",
       "day": "Wednesday",
-      "date": "April 9",
-      "title": "HTTPS",
-      "slides": "22_Encryption2.pdf",
-      "reading_list": [
-        {
-          "url": "https://tools.ietf.org/html/rfc5246",
-          "text": "RFC 5246 - TLS 1.2"
-        },
-        {
-          "url": "https://tools.ietf.org/html/rfc8446",
-          "text": "RFC 8446 - TLS 1.3"
-        },
-        {
-          "url": "https://tls.ulfheim.net/",
-          "text": "TLS 1.2 Example"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Diffie–Hellman_key_exchange",
-          "text": "Diffie-Hellman Key Exchange (Wikipedia)"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Advanced_Encryption_Standard",
-          "text": "AES (Wikipedia)"
-        }
-      ]
+      "date": "November 5"
     },
     {
-      "type": "lecture",
+      "lecture": "28-webrtc2.json",
       "day": "Friday",
-      "date": "April 11",
-      "title": "Reverse Proxy Servers - Nginx",
-      "slides": "4_3_deployment.pdf",
-      "reading_list": []
+      "date": "November 7"
     }
   ]
 }

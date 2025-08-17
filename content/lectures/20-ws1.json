@@ -1,0 +1,14 @@
+{
+  "title": "WebSocket Handshake",
+  "slides": "3_3_WebSocket_Handshake.pdf",
+  "reading_list": [
+    {
+      "url": "https://tools.ietf.org/html/rfc6455",
+      "text": "RFC 6455"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+      "text": "WebSocket Documentation and Examples"
+    }
+  ]
+}

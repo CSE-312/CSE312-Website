@@ -1,0 +1,14 @@
+{
+  "title": "Video Processing",
+  "slides": "3_6_Media_Processing.pdf",
+  "reading_list": [
+    {
+      "url": "https://ffmpeg.org",
+      "text": "ffmpeg"
+    },
+    {
+      "url": "https://pypi.org/project/ffmpeg-python/",
+      "text": "ffmpeg-python"
+    }
+  ]
+}

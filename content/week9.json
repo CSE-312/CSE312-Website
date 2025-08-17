@@ -1,55 +1,29 @@
 {
-  "title": "Week 10: WebSockets",
-  "theme": "testing",
+  "title": "Week 9: WebSockets",
+  "theme": "hw4",
   "homework": [
     {
       "title": "Homework 4: WebSockets",
       "url": "hw/hw4.html",
-      "released": true
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "20-ws1.json",
       "day": "Monday",
-      "date": "March 24",
-      "time": "9:00 AM",
-      "assignment": "Homework 3",
-      "deadline_type": "expected"
+      "date": "October 20"
     },
     {
-      "type": "lecture",
-      "day": "Monday",
-      "date": "March 24",
-      "title": "WebSocket Handshake",
-      "slides": "3_3_WebSocket_Handshake.pdf",
-      "reading_list": [
-        {
-          "url": "https://tools.ietf.org/html/rfc6455",
-          "text": "RFC 6455"
-        },
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
-          "text": "WebSocket Documentation and Examples"
-        }
-      ]
-    },
-    {
-      "type": "lecture",
+      "lecture": "21-ws2.json",
       "day": "Wednesday",
-      "date": "March 26",
-      "title": "WebSocket Frames",
-      "slides": "3_4_WebSocket_Frames.pdf",
-      "reading_list": []
+      "date": "October 22"
     },
     {
-      "type": "lecture",
+      "lecture": "22-ws3.json",
       "day": "Friday",
-      "date": "March 28",
-      "title": "WebSocket Buffering",
-      "slides": "3_5_WebSocket_Buffers.pdf",
-      "reading_list": []
+      "date": "October 24"
     }
   ]
 }

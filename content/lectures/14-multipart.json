@@ -1,0 +1,10 @@
+{
+  "title": "Multipart and File Uploads",
+  "slides": "3_1_multipart_files.pdf",
+  "reading_list": [
+    {
+      "url": "https://tools.ietf.org/html/rfc1521",
+      "text": "RFC1521 - Multipart Form"
+    }
+  ]
+}

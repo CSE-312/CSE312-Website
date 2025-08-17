@@ -1,0 +1,14 @@
+{
+  "title": "OAuth 2.0 - Overview",
+  "slides": "2_9_OAuth.pdf",
+  "reading_list": [
+    {
+      "url": "https://datatracker.ietf.org/doc/html/rfc6749",
+      "text": "RFC 6749 - OAuth 2.0"
+    },
+    {
+      "url": "https://datatracker.ietf.org/doc/html/rfc6750",
+      "text": "RFC 6750 - OAuth 2.0 Tokens"
+    }
+  ]
+}

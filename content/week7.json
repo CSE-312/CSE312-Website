@@ -1,50 +1,31 @@
 {
-  "title": "Week 7: Image Uploads",
-  "theme": "ds",
-  "homework": [
-    {
-      "title": "Homework 3: Media Uploads",
-      "url": "hw/hw3.html",
-      "released": true
-    }
-  ],
+  "title": "Week 7: Video",
+  "theme": "hw3",
+  "homework": [],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "March 3",
+      "date": "October 6",
       "time": "9:00 AM",
       "assignment": "Homework 2",
-      "deadline_type": "expected"
+      "deadline_type": "ao"
     },
     {
-      "type": "lecture",
+      "lecture": "17-video.json",
       "day": "Monday",
-      "date": "March 3",
-      "title": "Multipart and File Uploads",
-      "slides": "3_1_multipart_files.pdf",
-      "reading_list": [
-        {
-          "url": "https://tools.ietf.org/html/rfc1521",
-          "text": "RFC1521 - Multipart Form"
-        }
-      ]
+      "date": "October 6"
     },
     {
-      "type": "lecture",
+      "lecture": "18-abr.json",
       "day": "Wednesday",
-      "date": "March 5",
-      "title": "Buffering HTTP Requests",
-      "slides": "3_5_Buffers.pdf",
-      "reading_list": []
+      "date": "October 8"
     },
     {
-      "type": "lecture",
+      "lecture": "19-streaming.json",
       "day": "Friday",
-      "date": "March 7",
-      "title": "Multipart and File Upload: Examples and Testing",
-      "reading_list": []
+      "date": "October 10"
     }
   ]
 }

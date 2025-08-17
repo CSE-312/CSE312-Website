@@ -1,51 +1,30 @@
 {
-  "title": "Week 5: Authentication",
-  "theme": "oop",
-  "homework": [
-    {
-      "title": "Homework 2: Authentication",
-      "url": "hw/hw2.html",
-      "released": true
-    }
-  ],
+  "title": "Week 5: OAuth 2.0",
+  "theme": "hw2",
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "February 17",
+      "date": "September 22",
       "time": "9:00 AM",
       "assignment": "Homework 1",
-      "deadline_type": "expected"
+      "deadline_type": "ao"
     },
     {
-      "type": "lecture",
+      "lecture": "11-oauth1.json",
       "day": "Monday",
-      "date": "February 17",
-      "title": "Authentication and Secure Password Storage",
-      "slides": "2_4_Authentication.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/Bcrypt",
-          "text": "bcrypt (Wikipedia)"
-        }
-      ]
+      "date": "September 22"
     },
     {
-      "type": "lecture",
+      "lecture": "12-oauth2.json",
       "day": "Wednesday",
-      "date": "February 19",
-      "title": "Authentication Tokens and Sessions",
-      "slides": "2_5_Authentication_Tokens.pdf",
-      "reading_list": []
+      "date": "September 24"
     },
     {
-      "type": "lecture",
+      "lecture": "13-oauth3.json",
       "day": "Friday",
-      "date": "February 21",
-      "title": "XSRF",
-      "slides": "2_8_XSRF.pdf",
-      "reading_list": []
+      "date": "September 26"
     }
   ]
 }

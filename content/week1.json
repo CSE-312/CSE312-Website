@@ -1,32 +1,23 @@
 {
-  "title": "Week 1: Introduction",
+  "title": "Week 1: HTTP",
   "theme": "intro",
   "homework": [],
   "recitation": "No Recitation",
   "content": [
     {
-      "type": "lecture",
-      "day": "Wednesday",
-      "date": "January 22",
-      "title": "Course Introduction",
-      "reading_list": []
+      "lecture": "0-intro.json",
+      "day": "Monday",
+      "date": "August 25"
     },
     {
-      "type": "lecture",
+      "lecture": "1-http.json",
+      "day": "Wednesday",
+      "date": "August 27"
+    },
+    {
+      "lecture": "2-encodings.json",
       "day": "Friday",
-      "date": "January 24",
-      "title": "TCP/IP",
-      "slides": "1_1_TCPIP.pdf",
-      "reading_list": [
-        {
-          "url": "https://en.wikipedia.org/wiki/Internet_Protocol",
-          "text": "IP (Wikipedia)"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/Transmission_Control_Protocol",
-          "text": "TCP (Wikipedia)"
-        }
-      ]
+      "date": "August 29"
     }
   ]
 }

@@ -1,9 +1,9 @@
 
 
 {% macro deadline(content) -%}
-    {% if content.deadline_type == "expected" %}
+    {% if content.deadline_type == "ao" %}
         <tr class="table-info">
-    {% elif content.deadline_type == "late" %}
+    {% elif content.deadline_type == "lo" %}
         <tr class="table-warning">
     {% elif content.deadline_type == "final" %}
         <tr class="table-danger">
@@ -12,10 +12,10 @@
     {% endif %}
         <td colspan="3">{{ content.day }}, {{ content.date }} @ {{ content.time }}<br/>
         {{ content.assignment }}:
-    {% if content.deadline_type == "expected" %}
-        Expected Deadline
-    {% elif content.deadline_type == "late" %}
-        Late Deadline
+    {% if content.deadline_type == "ao" %}
+        Application Objective Deadline
+    {% elif content.deadline_type == "lo" %}
+        Learning Objective Deadline
     {% elif content.deadline_type == "final" %}
         Final Deadline
     {% else %}

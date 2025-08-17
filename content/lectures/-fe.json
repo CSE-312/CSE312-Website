@@ -1,0 +1,22 @@
+{
+  "title": "Front End Development - HTML/CSS + JavaScript",
+  "slides": "2_1_Front_End.pdf",
+  "reading_list": [
+    {
+      "url": "https://www.w3schools.com/html/default.asp",
+      "text": "HTML [W3 Schools]"
+    },
+    {
+      "url": "https://www.w3schools.com/css/default.asp",
+      "text": "CSS [W3 Schools]"
+    },
+    {
+      "url": "https://www.w3schools.com/js/default.asp",
+      "text": "JavaScript [W3 Schools]"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension",
+      "text": "Browser Extension tutorial"
+    }
+  ]
+}

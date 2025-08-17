@@ -1,0 +1,10 @@
+{
+  "title": "Authentication and Secure Password Storage",
+  "slides": "2_4_Authentication.pdf",
+  "reading_list": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Bcrypt",
+      "text": "bcrypt (Wikipedia)"
+    }
+  ]
+}

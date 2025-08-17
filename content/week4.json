@@ -1,67 +1,38 @@
 {
-  "title": "Week 4: HTTP POST and Databases",
-  "theme": "testing",
-  "homework": [],
+  "title": "Week 4: Authentication",
+  "theme": "hw2",
+  "homework": [
+    {
+      "title": "Homework 2: Authentication",
+      "url": "hw/hw2.html",
+      "released": false
+    }
+  ],
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "lecture",
+      "type": "deadline",
       "day": "Monday",
-      "date": "February 10",
-      "title": "Docker and Docker Compose",
-      "slides": "1_5_Docker.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.docker.com/",
-          "text": "Docker"
-        },
-        {
-          "url": "https://docs.docker.com/get-started/",
-          "text": "Docker - Getting Started"
-        },
-        {
-          "url": "https://docs.docker.com/docker-for-windows/wsl/",
-          "text": "Docker For Windows Users"
-        },
-        {
-          "url": "https://docs.docker.com/compose/",
-          "text": "Docker Compose"
-        }
-      ]
+      "date": "September 15",
+      "time": "9:00 AM",
+      "assignment": "Homework 1",
+      "deadline_type": "lo"
     },
     {
-      "type": "lecture",
+      "lecture": "8-auth.json",
+      "day": "Monday",
+      "date": "September 15"
+
+    },
+    {
+      "lecture": "9-auth_sessions.json",
       "day": "Wednesday",
-      "date": "February 12",
-      "title": "Front End Development - HTML/CSS + JavaScript",
-      "slides": "2_1_Front_End.pdf",
-      "reading_list": [
-        {
-          "url": "https://www.w3schools.com/html/default.asp",
-          "text": "HTML [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/css/default.asp",
-          "text": "CSS [W3 Schools]"
-        },
-        {
-          "url": "https://www.w3schools.com/js/default.asp",
-          "text": "JavaScript [W3 Schools]"
-        }
-      ]
+      "date": "September 17"
     },
     {
-      "type": "lecture",
+      "lecture": "10-xsrf.json",
       "day": "Friday",
-      "date": "February 14",
-      "title": "HTML Injection Attacks and Browser Extensions",
-      "slides": "2_7_Injection_Attacks.pdf",
-      "reading_list": [
-        {
-          "url": "https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension",
-          "text": "Browser Extension tutorial"
-        }
-      ]
+      "date": "September 19"
     }
   ]
 }

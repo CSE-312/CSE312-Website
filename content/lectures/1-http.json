@@ -1,0 +1,18 @@
+{
+  "title": "HTTP Request/Response",
+  "slides": "1_1_HTTP.pdf",
+  "reading_list": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol",
+      "text": "HTTP (Wikipedia)"
+    },
+    {
+      "url": "https://tools.ietf.org/html/rfc2616",
+      "text": "RFC2616 - HTTP 1.1"
+    },
+    {
+      "url": "https://docs.python.org/3/library/socketserver.html",
+      "text": "Python TCP Server"
+    }
+  ]
+}

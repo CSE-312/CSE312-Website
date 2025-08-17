@@ -22,6 +22,15 @@ def load_content(content_filename):
         for week in content:
             with open(content_directory + week) as week_file:
                 week_content = json.load(week_file)
+                lectures_and_deadlines = week_content["content"]
+                for lecture_or_deadline in lectures_and_deadlines:
+                    if "lecture" in lecture_or_deadline:
+                        lecture_or_deadline["type"] = "lecture"
+                        lecture_filename = content_directory + "lectures/" + lecture_or_deadline["lecture"]
+                        print(lecture_filename)
+                        with open(lecture_filename) as lecture_file:
+                            lecture_content = json.load(lecture_file)
+                            lecture_or_deadline.update(lecture_content)
                 first_lesson_date_str: str = week_content.get("content")[0].get("date")
                 first_lesson_date: datetime = month_day_str_to_date(first_lesson_date_str)
                 week_number: int = get_week_number(first_lesson_date)

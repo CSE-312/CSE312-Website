@@ -118,21 +118,6 @@ li {
     border-radius: 0;
 }
 
-.card-intro{
-    border-color: #f0f0f0;
-}
-
-
-.section-intro {
-    background-color: #f0f0f0;
-    color: #000000;
-    cursor: pointer;
-}
-
-.card-outro{
-    border-color: #555555;
-}
-
 .hw-content{
     padding: 20px;
 }
@@ -142,11 +127,6 @@ td.date{
     white-space: nowrap;
 }
 
-.section-outro {
-    background-color: #555555;
-    color: #f0f0f0;
-    cursor: pointer;
-}
 
 
 .week{
@@ -163,40 +143,71 @@ td.date{
 
 
 
-.card-testing{
+.card-intro{
+    border-color: #f0f0f0;
+}
+
+
+.section-intro {
+    background-color: #f0f0f0;
+    color: #000000;
+    cursor: pointer;
+}
+
+.card-outro{
+    border-color: #555555;
+}
+
+.section-outro {
+    background-color: #555555;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+.card-hw1{
     border-color: #3265cb;
 }
 
-.section-testing {
+.section-hw1 {
     background-color: #3265cb;
     color: #ffffff;
     cursor: pointer;
 }
 
 
-.card-oop{
+.card-hw2{
     border-color: #3c9b3b;
 }
-.section-oop {
+.section-hw2 {
     background-color: #3c9b3b;
     color: #ffffff;
     cursor: pointer;
 }
 
-.card-fp{
+.card-hw3{
     border-color: #cca238;
 }
-.section-fp {
+.section-hw3 {
     background-color: #cca238;
     color: #ffffff;
     cursor: pointer;
 }
 
-.card-ds{
+.card-hw4{
+    border-color: #9f0000;
+}
+
+.section-hw4 {
+    background-color: #9f0000;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.card-hw5{
     border-color: #319397;
 }
 
-.section-ds {
+.section-hw5 {
     background-color: #319397;
     color: #ffffff;
     cursor: pointer;

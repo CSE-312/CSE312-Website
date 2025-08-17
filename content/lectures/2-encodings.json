@@ -1,0 +1,22 @@
+{
+  "title": "HTTP POST, Forms, and AJAX",
+  "slides": "1_2_Encodings.pdf",
+  "reading_list": [
+    {
+      "url": "https://en.wikipedia.org/wiki/UTF-8",
+      "text": "UTF-8 (Wikipedia)"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types",
+      "text": "MIME types"
+    },
+    {
+      "url": "https://www.iana.org/assignments/media-types/media-types.xhtml",
+      "text": "Every MIME type"
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options",
+      "text": "String MIME types"
+    }
+  ]
+}

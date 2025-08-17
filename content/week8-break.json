@@ -1,0 +1,31 @@
+{
+  "title": "Week 8: Break",
+  "theme": "intro",
+  "homework": [],
+  "recitation": "No Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "October 13",
+      "time": "9:00 AM",
+      "assignment": "Homework 3",
+      "deadline_type": "lo"
+    },
+    {
+      "lecture": "break.json",
+      "day": "Monday",
+      "date": "October 13"
+    },
+    {
+      "lecture": "break.json",
+      "day": "Wednesday",
+      "date": "October 15"
+    },
+    {
+      "lecture": "break.json",
+      "day": "Friday",
+      "date": "October 17"
+    }
+  ]
+}

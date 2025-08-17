@@ -1,51 +1,31 @@
 {
-  "title": "Week 16: Project Presentations",
+  "title": "Week 15: Content",
   "theme": "outro",
   "homework": [],
-  "recitation": "No Recitation",
+  "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "May 5",
+      "date": "December 1",
       "time": "9:00 AM",
-      "assignment": "Team Project",
-      "deadline_type": ""
+      "assignment": "Homework 5",
+      "deadline_type": "ao"
     },
     {
-      "type": "lecture",
+      "lecture": "35-.json",
       "day": "Monday",
-      "date": "May 5",
-      "title": "Presentations",
-      "reading_list": [],
-      "text_lists": [
-        {
-          "text_items": [
-            "type_int",
-            "Kris Schindler Fan Club",
-            "Nightmare Rotation",
-            "500 Internal Server Error"
-          ]
-        }
-      ]
+      "date": "December 1"
     },
     {
-      "type": "lecture",
-      "day": "Monday",
-      "date": "May 12",
-      "title": "Presentations (During Final Exam Time - 3:30 - 6:30 PM in Davis 101)",
-      "reading_list": [],
-      "text_lists": [
-        {
-          "text_items": [
-            "\uD83D\uDE2D",
-            "CPS",
-            "cse312Tic-Tac-Toe",
-            "PokerGods",
-            "Merge Conflict"
-          ]
-        }
-      ]
+      "lecture": "36-.json",
+      "day": "Wednesday",
+      "date": "December 3"
+    },
+    {
+      "lecture": "37-.json",
+      "day": "Friday",
+      "date": "December 5"
     }
   ]
 }

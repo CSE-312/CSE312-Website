@@ -1,0 +1,22 @@
+{
+  "title": "Docker and Docker Compose",
+  "slides": "1_7_Docker.pdf",
+  "reading_list": [
+    {
+      "url": "https://www.docker.com/",
+      "text": "Docker"
+    },
+    {
+      "url": "https://docs.docker.com/get-started/",
+      "text": "Docker - Getting Started"
+    },
+    {
+      "url": "https://docs.docker.com/docker-for-windows/wsl/",
+      "text": "Docker For Windows Users"
+    },
+    {
+      "url": "https://docs.docker.com/compose/",
+      "text": "Docker Compose"
+    }
+  ]
+}
