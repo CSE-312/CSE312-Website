@@ -370,71 +370,71 @@
             concern.</p>
 
 
-        <br>
-        <hr/>
-        <h3>
-            Application Objective 3 - GitHub Chat Commands
-        </h3>
-        <hr/>
-
-        <p>
-            If a user is logged in using GitHub, as opposed to using the register/login flow from the learning
-            objective,
-            they can enter special commands into the chat. If they type any of these commands into chat, your app will
-            use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any
-            message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was
-            sent with the result of the chat command. If a user is not logged in as an oauth user, you should reject the request
-            with a 400. If the inputs given by the user (repo name, etc) are not correct in any way (no access, doesn't exist, etc)  
-            you should reject with a 400 and a message describing why. 
-            
-            The commands are:
-        </p>
-
-        <ul>
-            <li>
-                /repos @user
-                <ul>
-                    <li>List all GitHub repos of the target user (limit 50). These repos should appear as links where
-                        the text is the repo name. You have some flexibility in how to display all the links
-                    </li>
-                    <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts
-                        GitHub repos
-                    </li>
-                    <li>Note: This command may result in HTML being rendered in chat. Since this HTML is completely under
-                        the control of your server, it is ok to render on the front end. 
-                    </li>
-                </ul>
-            </li>
-            <li>/star @repo
-                <ul>
-                    <li>use the current oauth user to star the provided repo. Display a confirmation of the star in
-                        chat
-                    </li>
-                    <li>
-                        Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub
-                        will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being
-                        displayed confirming that it was starred. This can be a message of your choosing, but we ask that
-                        you make life easier for the graders and wrap the content in a link to the repo for easy viewing.
-                    </li>
-                </ul>
-            </li>
-
-            <li>/createissue @repo @title
-                <ul>
-                    <li>Creates an issue on @repo with a title of @title. The body of this issue should be empty (Unless
-                        you want to add this functionality, but it's not required). Display a confirmation of the
-                        created issue in chat
-                    </li>
-                    <li>
-                        Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will
-                        create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"
-                        and an empty body and a confirmation message will be displayed in chat. 
-                        This can be a message of your choosing, but we ask that
-                        you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.
-                    </li>
-                </ul>
-            </li>
-        </ul>
+{#        <br>#}
+{#        <hr/>#}
+{#        <h3>#}
+{#            Application Objective 3 - GitHub Chat Commands#}
+{#        </h3>#}
+{#        <hr/>#}
+{##}
+{#        <p>#}
+{#            If a user is logged in using GitHub, as opposed to using the register/login flow from the learning#}
+{#            objective,#}
+{#            they can enter special commands into the chat. If they type any of these commands into chat, your app will#}
+{#            use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any#}
+{#            message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was#}
+{#            sent with the result of the chat command. If a user is not logged in as an oauth user, you should reject the request#}
+{#            with a 400. If the inputs given by the user (repo name, etc) are not correct in any way (no access, doesn't exist, etc)  #}
+{#            you should reject with a 400 and a message describing why. #}
+{#            #}
+{#            The commands are:#}
+{#        </p>#}
+{##}
+{#        <ul>#}
+{#            <li>#}
+{#                /repos @user#}
+{#                <ul>#}
+{#                    <li>List all GitHub repos of the target user (limit 50). These repos should appear as links where#}
+{#                        the text is the repo name. You have some flexibility in how to display all the links#}
+{#                    </li>#}
+{#                    <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts#}
+{#                        GitHub repos#}
+{#                    </li>#}
+{#                    <li>Note: This command may result in HTML being rendered in chat. Since this HTML is completely under#}
+{#                        the control of your server, it is ok to render on the front end. #}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#            <li>/star @repo#}
+{#                <ul>#}
+{#                    <li>use the current oauth user to star the provided repo. Display a confirmation of the star in#}
+{#                        chat#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub#}
+{#                        will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being#}
+{#                        displayed confirming that it was starred. This can be a message of your choosing, but we ask that#}
+{#                        you make life easier for the graders and wrap the content in a link to the repo for easy viewing.#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{##}
+{#            <li>/createissue @repo @title#}
+{#                <ul>#}
+{#                    <li>Creates an issue on @repo with a title of @title. The body of this issue should be empty (Unless#}
+{#                        you want to add this functionality, but it's not required). Display a confirmation of the#}
+{#                        created issue in chat#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will#}
+{#                        create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"#}
+{#                        and an empty body and a confirmation message will be displayed in chat. #}
+{#                        This can be a message of your choosing, but we ask that#}
+{#                        you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        </ul>#}
 
 
         <br>

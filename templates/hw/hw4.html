@@ -275,79 +275,79 @@
             frames are sent back-to-back.
         </p>
 
+{#        <br>#}
+{#        <hr>#}
+{#        <h3>#}
+{#            Application Objective 2 - Direct Messaging (DMs)#}
+{#        </h3>#}
+{#        <hr>#}
+{##}
+{#        <p>#}
+{#            Implement DMs on the Direct Messaging page. To accomplish this, add the following functionality to your#}
+{#            server:#}
+{#        </p>#}
+{##}
+{#        <ul>#}
+{#            <li>#}
+{#                When a client sends a WS message of type "get_all_users", send them a list of all users who've#}
+{#                registered on your app#}
+{#                <ul>#}
+{#                    <li>#}
+{#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Send the user list in this format - {"messageType": "all_users_list", "users": [{"username":#}
+{#                        "admin"}, {"username": "cse312"}]}#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Note that you're returning all users whether they are currently using the app or not. Return#}
+{#                        ever registered user. This will populate the dropdown list for DMs#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#            <li>#}
+{#                When a client sends a WS message of type "select_user", which means they chose this user from the DM#}
+{#                dropdown, send them all the DM history between them and the chosen user#}
+{#                <ul>#}
+{#                    <li>#}
+{#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Send this user a WS message of type "message_history" containing all the DMs sent between these#}
+{#                        2 users sorted by age (Oldest first)#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        Message history format - {"messageType": "message_history", "messages": [{"messageType":#}
+{#                        "direct_message", "fromUser": "admin", "text": "hi"}, {"messageType": "direct_message",#}
+{#                        "fromUser": "koby", "text": "hey"}]}#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#            <li>#}
+{#                Users send message DMs as WS messages of type "direct_message"#}
+{#                <ul>#}
+{#                    <li>#}
+{#                        DM format (from client) - {"messageType":"direct_message", "targetUser":"koby", "text":"hi"}#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        When you receive a DM, store it in your database and send the message to both clients in the#}
+{#                        conversation#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        DM format (from server) - {"messageType": "direct_message", "fromUser": "admin", "text": "hey"}#}
+{#                    </li>#}
+{#                </ul>#}
+{#            </li>#}
+{#        </ul>#}
+{##}
+{#        <p>#}
+{#            Security: Do not send DMs to anyone other than the 2 users who are part of the conversation.#}
+{#        </p>#}
+
         <br>
         <hr>
         <h3>
-            Application Objective 2 - Direct Messaging (DMs)
-        </h3>
-        <hr>
-
-        <p>
-            Implement DMs on the Direct Messaging page. To accomplish this, add the following functionality to your
-            server:
-        </p>
-
-        <ul>
-            <li>
-                When a client sends a WS message of type "get_all_users", send them a list of all users who've
-                registered on your app
-                <ul>
-                    <li>
-                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}
-                    </li>
-                    <li>
-                        Send the user list in this format - {"messageType": "all_users_list", "users": [{"username":
-                        "admin"}, {"username": "cse312"}]}
-                    </li>
-                    <li>
-                        Note that you're returning all users whether they are currently using the app or not. Return
-                        ever registered user. This will populate the dropdown list for DMs
-                    </li>
-                </ul>
-            </li>
-            <li>
-                When a client sends a WS message of type "select_user", which means they chose this user from the DM
-                dropdown, send them all the DM history between them and the chosen user
-                <ul>
-                    <li>
-                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}
-                    </li>
-                    <li>
-                        Send this user a WS message of type "message_history" containing all the DMs sent between these
-                        2 users sorted by age (Oldest first)
-                    </li>
-                    <li>
-                        Message history format - {"messageType": "message_history", "messages": [{"messageType":
-                        "direct_message", "fromUser": "admin", "text": "hi"}, {"messageType": "direct_message",
-                        "fromUser": "koby", "text": "hey"}]}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Users send message DMs as WS messages of type "direct_message"
-                <ul>
-                    <li>
-                        DM format (from client) - {"messageType":"direct_message", "targetUser":"koby", "text":"hi"}
-                    </li>
-                    <li>
-                        When you receive a DM, store it in your database and send the message to both clients in the
-                        conversation
-                    </li>
-                    <li>
-                        DM format (from server) - {"messageType": "direct_message", "fromUser": "admin", "text": "hey"}
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-        <p>
-            Security: Do not send DMs to anyone other than the 2 users who are part of the conversation.
-        </p>
-
-        <br>
-        <hr>
-        <h3>
-            Application Objective 3 - Video Calls with WebRTC
+            Application Objective 2 - Video Calls with WebRTC
         </h3>
         <hr/>
 

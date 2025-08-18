@@ -1,0 +1,146 @@
+{% extends 'hw/hw.html' %}
+
+{% block title %}CSE312: Homework 5{% endblock %}
+
+{% block header %}
+    <h1>Homework 5 - Deployment</h1>
+    <hr/>
+{% endblock %}
+
+{% block task %}
+
+
+
+    <div class="card-header section-testing">
+        <div></div>
+    </div>
+
+    <div class="section-card card-testing hw-content">
+
+        <hr/>
+        <h3>
+            Introduction
+        </h3>
+        <hr/>
+        <p>
+            You will continue to add features to your app
+        </p>
+
+        -nginx
+        -https w/ pre-created self-signed certs (Or provide a script to generate.. or try to have them generated with
+        docker, but I recall there being a huge issue with this. I think it was hard to enter the cournty code)
+        -Logging
+        -IP rate limiting (How to test when it's all localhost?)
+        --Forwarding real IP through nginx
+        -Have them use a second device to test
+        -XSRF?? Could finally do this properly with multiple apps in different containers on different local ports that need to talk to each other - microservice it
+
+        <br>
+        <hr>
+        <h3>Grading</h3>
+        <hr>
+        <p>Each objective will be scored on a 0-3 scale as follows:</p>
+
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3 (Complete)</td>
+                <td>Clearly correct</td>
+            </tr>
+            <tr>
+                <td>2 (Complete)</td>
+                <td>Mostly correct, but with some minor issues
+                </td>
+            <tr>
+                <td>1 (Incomplete)</td>
+                <td>Not all features outlined in this document are functional, but an honest attempt was made to
+                    complete the objective
+                </td>
+            <tr>
+                <td>0.3 (Incomplete)</td>
+                <td>The objective would earn a 3, but a security risk was found while testing</td>
+            <tr>
+                <td>0.2 (Incomplete)</td>
+                <td>The objective would earn a 2, but a security risk was found while testing</td>
+            <tr>
+                <td>0.1 (Incomplete)</td>
+                <td>The objective would earn a 1, but a security risk was found while testing</td>
+            <tr>
+                <td>0 (Incomplete)</td>
+                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
+        </table>
+        <br>
+        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
+            is meant to give you more feedback on your work.</p>
+
+        <table class="table table-bordered table-skinny">
+            <tr>
+                <td>3</td>
+                <td>Objective Complete</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>
+                    Objective Complete
+                </td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>
+                    Objective Not Complete
+                </td>
+            </tr>
+        </table>
+        <br>
+        <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
+
+        <br>
+        <hr>
+        <h3>Security Essay</h3>
+        <br>
+        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
+            the
+            objective by submitting an essay about the security issue you exposed. These essays must:</p>
+
+        <ul>
+            <li>Be at least 1000 words in length</li>
+            <li>Explain the security issue from your submission with specific details about your code</li>
+            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+            </li>
+            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+                in
+                production code with live users
+            </li>
+        </ul>
+
+
+        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
+            incomplete.</p>
+
+        <p>Due Date: Security essays are due 1-week after grades are released.</p>
+
+        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
+            of
+            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+            for
+            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+            course
+            staff.</p>
+
+        <p>When you don't have to write an essay:</p>
+        <ul>
+            <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
+                secure
+            </li>
+            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
+            </li>
+        </ul>
+
+
+    </div>
+{% endblock %}

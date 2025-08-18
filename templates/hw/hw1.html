@@ -584,6 +584,29 @@
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
             updated. If it has it must be set to true. When a message is first created, this should be set to false.</p>
 
+
+        <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
+            malicious user could submit HTML tags that attack other users. You cannot allow this. You must escape any
+            submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
+
+{#        <br>#}
+{#        <h4>Testing Procedure</h4>#}
+{##}
+{#        <ol>#}
+{#            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You#}
+{#                are allowed as many submissions as you'd like in order to complete this objective (All application#}
+{#                objectives are manually graded after the final deadline)#}
+{#            </li>#}
+{#        </ol>#}
+
+        <br>
+        <hr/>
+        <h3>
+            Application Objective 1 - Chat Features with Cookies
+        </h3>
+        <hr/>
+
+
         <br>
         <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
 
@@ -620,161 +643,23 @@
         <p>After a message is deleted by its author, it must never be sent by the GET endpoint again.</p>
 
 
-        <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
-            malicious user could submit HTML tags that attack other users. You cannot allow this. You must escape any
-            submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
 
-{#        <br>#}
-{#        <h4>Testing Procedure</h4>#}
-{##}
-{#        <ol>#}
-{#            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You#}
-{#                are allowed as many submissions as you'd like in order to complete this objective (All application#}
-{#                objectives are manually graded after the final deadline)#}
-{#            </li>#}
-{#        </ol>#}
+
 
         <br>
         <hr/>
         <h3>
-            Application Objective 1 - Emoji Reactions
+            Application Objective 2 - Docker and Docker Compose
         </h3>
         <hr/>
 
         <p>
-            Users can add/remove reactions to chat messages (group reactions, will display like 2 👍 1 👎)
-        </p>
-
-        <p>
-            If you click on a chat message, you will be able to choose an emoji as your reaction. You can click on the
-            emoji to remove your reaction. To enable this feature, add/modify the following end points
-        </p>
-
-        <br>
-        <h5>Add an emoji (`PATCH /api/reaction/{messageID}`)</h5>
-
-        <p>Updates an existing message with the new emoji. Called when a user reacts to a message. A user reacts to the
-            same message with multiple emojis, by hitting this end point multiple times, but they cannot react to the
-            same message with the same emoji multiple times. If you receive a request from the same user trying to react
-            to
-            a message with same emoji a second time, you should respond with a 403. You may choose the message for this
-            response</p>
-
-        <p>
-            The content of the request will be JSON in the format:
-        </p>
-        <p>Request (JSON): {"emoji": "👍"}</p>
-
-        <p>
-            Emojis can be treated as single character string.
-        </p>
-
-        <p>Errors:</p>
-        <ul>
-{#            <li>**400 Bad Request**: The request was not well-formed, or the emoji was not a 1 character string</li>#}
-            <li>**403 Forbidden**: A user attempted to react with the same emoji multiple times for the same message
-            </li>
-{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
-        </ul>
-
-        <br>
-        <h5>Remove an emoji (`DELETE /api/reaction/{messageID}`)</h5>
-
-        <p>
-            A user is removing an emoji reaction that they previously added.
+            Note: this will be required for the Learning Objective on all future HWs. It's a free Application Objective
+            to do it now
         </p>
         <p>
-            The content of the request will be JSON in the format:
+            Make sure your app runs properly with docker compose up on port 8080
         </p>
-        <p>Request (JSON): {"emoji": "👍"}</p>
-
-        <p>Errors:</p>
-        <ul>
-            <li>**403 Forbidden**: A user attempted to remove a reaction, but they don't have the given reaction for
-                the given message
-            </li>
-        </ul>
-        <br>
-        <h5>Send all reactions (`GET /api/chats`)</h5>
-
-
-        <p>
-            Modify the chats endpoint to add the emojis to all messages. Each message will have another field for
-            "reactions" containing a list of user ids that have reacted with that emoji. You have control over the ids
-            as long as they are unique for each user.
-        </p>
-
-        <p>For example: "reactions": {"👻": ["63fc690d-ea3a-4349-ba51-0c645af40453"], "🫠":
-            ["eda92e0a-eb7a-430b-a938-916d2102b480", "63fc690d-ea3a-4349-ba51-0c645af40453"]}</p>
-
-        <br>
-        <hr/>
-        <h3>
-            Application Objective 2 - Changing Nickname
-        </h3>
-        <hr/>
-
-        <p>
-            Allow users to change their nickname and retroactively change their name in all their old messages
-        </p>
-        <br>
-        <h5>Add/update nickname (`PATCH /api/nickname`)</h5>
-
-        <p>
-            Changes the users nickname to the name in the body of the request. This will change the nickname on all
-            messages sent by the user in the past and future.
-        </p>
-
-        <p>
-            The content of the request will be JSON in the format:
-        </p>
-        <p>Request (JSON): {"nickname": string}</p>
-
-        <p>
-            When chat messages are served, each message from this user will now contain a field "nickname" containing
-            their chosen name.
-        </p>
-        <br>
-        <hr/>
-        <h3>
-            Application Objective 3 - Profile Pictures
-        </h3>
-        <hr/>
-
-        <p>
-            Use <a href="https://www.dicebear.com/how-to-use/http-api/">dicebear</a> to generate profile pictures and
-            save them for each user. These images must be consistent for each user and users will have different images.
-            When a user first visits your app, or when they first send a message in chat, you will generate a random
-            profile picture for them and save this image as part of their profile. Whenever they send a chat message,
-            that message must contain their profile picture in an "imageURL" field.
-        </p>
-
-        <p>
-            Example field to be added to chat messages - "imageURL":
-            "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.svg"
-        </p>
-
-        <p>
-            You are allowed to use the requests library when making requests to the dicebear API. If you use requests,
-            or any external library, be sure to add it to your requirements.txt.
-        </p>
-        <br>
-        <hr>
-        <h3>Submission</h3>
-        <hr>
-        <p>Submit all files for your server to Autolab in a .zip file (A .rar or .tar file is not a .zip file!)</p>
-
-        <p>
-            If you used any external libraries, be sure to add them to your requirements.txt. Autolab will install all
-            dependencies in this file, and no other dependencies, before starting your server.
-        </p>
-
-        <p>It is strongly recommended that you download and test your submission after submitting. To do this, download
-            your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
-            run
-            docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
-            do
-            during grading.</p>
 
         <br>
         <hr>
