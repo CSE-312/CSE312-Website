@@ -26,14 +26,47 @@
             You will continue to add features to your app
         </p>
 
-        -nginx
-        -https w/ pre-created self-signed certs (Or provide a script to generate.. or try to have them generated with
-        docker, but I recall there being a huge issue with this. I think it was hard to enter the cournty code)
-        -Logging
-        -IP rate limiting (How to test when it's all localhost?)
-        --Forwarding real IP through nginx
-        -Have them use a second device to test
-        -XSRF?? Could finally do this properly with multiple apps in different containers on different local ports that need to talk to each other - microservice it
+        <hr/>
+        <h3>
+            Learning Objective - HTTPS with Nginx
+        </h3>
+        <hr/>
+        <p>
+            -nginx
+            -https w/ pre-created self-signed certs
+        </p>
+
+        <br>
+        <hr>
+        <h3>
+            Application Objective 1 - IP Rate Limiting + Logging?
+        </h3>
+        <hr/>
+
+        <p>
+            -Forwarding real IP through nginx
+            -IP Rate limiting
+            -Testing when you're on localhost - no excuse after grading that you didn't know
+        </p>
+
+        <br>
+        <hr>
+        <h3>
+            Application Objective 2 - JWTs and Authentication Servers
+        </h3>
+        <hr/>
+
+        <p>
+            Warning: This objective is much more substantial than the other 2 on this HW
+        </p>
+        <p>
+            -Add an auther server
+            -Use nginx to route register/login to this server
+            -Auth server issues JWTs
+            -App server verifies JWTs for auth
+            -CORS may have something to say here that also needs to be handled
+        </p>
+
 
         <br>
         <hr>
