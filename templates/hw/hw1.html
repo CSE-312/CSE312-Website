@@ -558,18 +558,10 @@
             When a message is sent, you should create a unique id for the message and store it in your database along
             with the author of the post. See the spec for the GET request to see the expected format of a chat message.
         </p>
-        <p>
-            If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
-            cookie that is set and tracked by your server. The name of this cookie must be exactly "session" and contain
-            a unique id used to identify this user. This cookie must be set when they send their first message (ie. do
-            not set the cookie when they first load your homepage. Some users will only use your API and not your front
-            end)
-        </p>
 
         <p>
-            Since we don't have user accounts yet, you can choose random author names for users for now. The names must
-            be different for different users, but can be randomly generated. You are allowed to use the uuid package to
-            generate ids and tokens if you'd like.
+            For the Learning Objective, you may use whatever string you'd like for the usernames. You can even use the
+            same username for every message, regardless of author.
         </p>
 
         <br>
@@ -582,7 +574,8 @@
         <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...]}
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
-            updated. If it has it must be set to true. When a message is first created, this should be set to false.</p>
+            updated. If it has it must be set to true. When a message is first created, this should be set to false.
+    (This will always be false until you work on AO1)</p>
 
 
         <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
@@ -606,6 +599,20 @@
         </h3>
         <hr/>
 
+
+        <p>
+            If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
+            cookie that is set and tracked by your server. The name of this cookie must be exactly "session" and contain
+            a unique id used to identify this user. This cookie must be set when they send their first message (ie. do
+            not set the cookie when they first load your homepage. Some users will only use your API and not your front
+            end)
+        </p>
+
+        <p>
+            Since we don't have user accounts yet, you can choose random author names for users for now. The names must
+            be different for different users, but can be randomly generated. You are allowed to use the uuid package to
+            generate ids and tokens if you'd like.
+        </p>
 
         <br>
         <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
