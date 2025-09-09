@@ -341,6 +341,15 @@
         <br>
         <h4>The Router Class</h4>
 
+        <div class="alert alert-info">
+            When importing local files from the `util` folder (e.g., `request`,
+            `response`, `router`), you must prefix the import with `util.`. For
+            example, use `import util.request` instead of `import request`.
+            Failure to do so will cause your submission to crash in Autolab,
+            even if it works locally. This prefixing is not required for
+            external libraries or packages.
+        </div>
+        
         <p>
             You'll set up a Router class that will help you organize the code of your server throughout the semester. It
             is
