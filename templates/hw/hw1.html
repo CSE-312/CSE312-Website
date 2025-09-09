@@ -524,6 +524,13 @@
             Chat Feature
         </h4>
 
+        <div class="alert alert-info">
+            When connecting to your database, you should use the provided database.py file to ensure you connect to
+            the correct host. Your app must function properly when ran directly through server.py with a database
+            running on localhost (This is the structure in Autolab). If you are working on AO2, you must not break this
+            functionality.
+        </div>
+
         <p>
             The front end contains a chat feature that will send specific requests to your server. To enable this
             feature, implement the following end points. Note that you will need to use both a database and cookies to
@@ -661,12 +668,18 @@
         <hr/>
 
         <p>
-            Note: this will be required for the Learning Objective on all future HWs. It's a free Application Objective
-            to do it now
+            Note: This will be required for the Learning Objective on all future HWs
         </p>
         <p>
             Make sure your app runs properly with docker compose up on port 8080
         </p>
+
+        <div class="alert alert-info">
+            Your app must still work with a database running on localhost when your app is started using server.py. The
+            primary goal for this objective is make sure your app runs with docker compose in additional to running
+            locally. Your app will work with both database setups if you use the provided database.py file to connect to
+            your database.
+        </div>
 
         <br>
         <hr>
