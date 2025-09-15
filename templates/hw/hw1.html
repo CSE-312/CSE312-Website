@@ -341,6 +341,15 @@
         <br>
         <h4>The Router Class</h4>
 
+        <div class="alert alert-info">
+            When importing local files from the `util` folder (e.g., `request`,
+            `response`, `router`), you must prefix the import with `util.`. For
+            example, use `import util.request` instead of `import request`.
+            Failure to do so will cause your submission to crash in Autolab,
+            even if it works locally. This prefixing is not required for
+            external libraries or packages.
+        </div>
+        
         <p>
             You'll set up a Router class that will help you organize the code of your server throughout the semester. It
             is
@@ -524,6 +533,13 @@
             Chat Feature
         </h4>
 
+        <div class="alert alert-info">
+            When connecting to your database, you should use the provided database.py file to ensure you connect to
+            the correct host. Your app must function properly when ran directly through server.py with a database
+            running on localhost (This is the structure in Autolab). If you are working on AO2, you must not break this
+            functionality.
+        </div>
+
         <p>
             The front end contains a chat feature that will send specific requests to your server. To enable this
             feature, implement the following end points. Note that you will need to use both a database and cookies to
@@ -558,18 +574,10 @@
             When a message is sent, you should create a unique id for the message and store it in your database along
             with the author of the post. See the spec for the GET request to see the expected format of a chat message.
         </p>
-        <p>
-            If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
-            cookie that is set and tracked by your server. The name of this cookie must be exactly "session" and contain
-            a unique id used to identify this user. This cookie must be set when they send their first message (ie. do
-            not set the cookie when they first load your homepage. Some users will only use your API and not your front
-            end)
-        </p>
 
         <p>
-            Since we don't have user accounts yet, you can choose random author names for users for now. The names must
-            be different for different users, but can be randomly generated. You are allowed to use the uuid package to
-            generate ids and tokens if you'd like.
+            For the Learning Objective, you may use whatever string you'd like for the usernames. You can even use the
+            same username for every message, regardless of author.
         </p>
 
         <br>
@@ -582,7 +590,8 @@
         <p>Response (JSON): {"messages": [{"author": string, "id": string, "content": string, "updated": boolean}, ...]}
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
-            updated. If it has it must be set to true. When a message is first created, this should be set to false.</p>
+            updated. If it has it must be set to true. When a message is first created, this should be set to false.
+    (This will always be false until you work on AO1)</p>
 
 
         <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
@@ -606,6 +615,20 @@
         </h3>
         <hr/>
 
+
+        <p>
+            If the same user creates multiple posts, all posts must have the same author. This should be tracked using a
+            cookie that is set and tracked by your server. The name of this cookie must be exactly "session" and contain
+            a unique id used to identify this user. This cookie must be set when they send their first message (ie. do
+            not set the cookie when they first load your homepage. Some users will only use your API and not your front
+            end)
+        </p>
+
+        <p>
+            Since we don't have user accounts yet, you can choose random author names for users for now. The names must
+            be different for different users, but can be randomly generated. You are allowed to use the uuid package to
+            generate ids and tokens if you'd like.
+        </p>
 
         <br>
         <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
@@ -654,12 +677,18 @@
         <hr/>
 
         <p>
-            Note: this will be required for the Learning Objective on all future HWs. It's a free Application Objective
-            to do it now
+            Note: This will be required for the Learning Objective on all future HWs
         </p>
         <p>
             Make sure your app runs properly with docker compose up on port 8080
         </p>
+
+        <div class="alert alert-info">
+            Your app must still work with a database running on localhost when your app is started using server.py. The
+            primary goal for this objective is make sure your app runs with docker compose in additional to running
+            locally. Your app will work with both database setups if you use the provided database.py file to connect to
+            your database.
+        </div>
 
         <br>
         <hr>
