@@ -4,6 +4,7 @@ from pymongo import MongoClient
 
 from flask import Flask, send_from_directory, render_template, make_response, request
 from flask_socketio import SocketIO
+import os
 
 app = Flask(__name__)
 socket_server = SocketIO(app)
@@ -67,6 +68,9 @@ def cse312():
 
 @app.get('/hw/<hw_url>')
 def hw(hw_url):
+    list_of_hws = os.listdir('templates/hw')
+    if hw_url not in list_of_hws:
+        return "Homework not found", 404
     resp = make_response(render_template('hw/' + str(hw_url)))
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
