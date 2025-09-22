@@ -181,19 +181,19 @@
         <p>Whenever a chat message is sent by an authenticated user, the message should contain their
             actual username. This is done by setting the "author" of their messages to their username.</p>
 
-        <p>
+        <p>This is no longer required since it depends on an Application Objective from a previous assignment. <s>
             When a user logs into their account, any messages that they sent as a guest should retroactively have
             their author set to
             their username. Use your "session" cookie to track messages for this purpose. You should also ensure that
             messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then
             logs in using a different account, the guest message should still belong to the account of their first
-            login).
+            login).</s>
         </p>
 
-        <p>
+        <p><s>
             Note: To accomplish this, you will need to read the "session" cookie on login. Some browsers will
             automatically add a "/api" path to this cookie so it will not be sent to the /login path. To correct this,
-            manually set the path directive to "/"
+            manually set the path directive to "/"</s>
         </p>
 
         <br>
