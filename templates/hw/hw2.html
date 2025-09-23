@@ -205,8 +205,45 @@
 
         <p>When a user attempts to update or remove a message that is not their own, respond to the request with a 403
             response
-            code.
-            If it is their own, you may choose the response you send (200 with a short message is fine).</p>
+            code. If it is their own, you may choose the response you send (200 with a short message is fine).</p>
+
+        <p>
+            If you did not complete the update and delete endpoints from HW1, the specs are:
+        </p>
+
+        <br>
+        <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
+
+        <p>Updates an existing message with new content. The frontend will send a PATCH request to your backend at
+            the route `/api/chats/{id}`. Listed below is the format expected.</p>
+
+        <p>Request (JSON): {"content": string}</p>
+
+        <p>Errors:</p>
+        <ul>
+            <li>**403 Forbidden**: This error is for when the user lacks permission (Users can only update their own
+                messages. Your server needs to check for this). You may choose the message for this error
+            </li>
+        </ul>
+
+        <p>
+            After a message has been updated using this endpoint, its "updated" field must be set to true
+        </p>
+        <br>
+        <h5>Delete Chat Message (`DELETE /api/chats/{id}`)</h5>
+
+        <p>Deletes an existing message from chat history. The frontend will send a DELETE request to your backend at
+            the
+            route `/api/chats/{id}`. Listed below is the format expected.</p>
+
+        <p>Errors:</p>
+        <ul>
+            <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages). You
+                may choose the message for this error</li>
+        </ul>
+
+        <p>After a message is deleted by its author, it must never be sent by the GET endpoint again.</p>
+
 
         <br>
         <h5>@me</h5>
