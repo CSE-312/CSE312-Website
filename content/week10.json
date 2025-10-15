@@ -14,17 +14,17 @@
       "deadline_type": "ao"
     },
     {
-      "lecture": "23-mid_review1.json",
+      "lecture": "23-ws_testing.json",
       "day": "Monday",
       "date": "October 27"
     },
     {
-      "lecture": "24-mid_review2.json",
+      "lecture": "24-mid_review1.json",
       "day": "Wednesday",
       "date": "October 29"
     },
     {
-      "lecture": "25-midterm.json",
+      "lecture": "25-mid_review2.json",
       "day": "Friday",
       "date": "October 31"
     }
