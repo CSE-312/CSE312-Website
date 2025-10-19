@@ -44,8 +44,8 @@
         <h4>Authentication Method: extract_credentials</h4>
         <p>
 
-            Create a file named util/auth.py containing the following functions (This file does not define a class). In
-            this file,
+            Create a file named util/auth.py containing the following functions (Note that these functions are not
+            methods of a class). In this file,
             write a function named "extract_credentials" that takes a Request object and returns a list containing 2
             elements,
             a username then a password, both as strings (str)
@@ -66,7 +66,7 @@
                 percent-encoded characters)
             </li>
             <li>The password can contain alphanumeric characters as well as the following special characters {'!', '@',
-                '#', '$', '%', '^', '&', '(', ')', '-', '_', '='} (Note: We are limiting passwords to these 12 special
+                '#', '$', '%', '^', '&', '(', ')', '-', '_', '='} (Note: We are limiting passwords to these special
                 characters to limit the tedium of writing this method. In the real world, you should support every valid
                 character, and you would also use a library to make this support trivial. Ensure you consider/test edge
                 cases when parsing)
@@ -85,7 +85,7 @@
             <li>The password contains at least 1 lowercase letter</li>
             <li>The password contains at least 1 uppercase letter</li>
             <li>The password contains at least 1 number</li>
-            <li>The password contains at least 1 of the 12 special characters listed above</li>
+            <li>The password contains at least 1 of the special characters listed above</li>
             <li>The password does not contain any invalid characters (eg. any character that is not an alphanumeric or
                 one of
                 the 12 special characters)
@@ -132,7 +132,7 @@
 
         <p>
             If registration is successful, respond with a 200 OK and any message of your choosing (The front end will
-            redirect to the login page so your message won't be displayed to the user).
+            redirect to the login page and your message won't be displayed to the user).
         </p>
         <p>
             When a user registers, you should also generate a unique id for them in the same way that chat messages have
@@ -172,34 +172,34 @@
             a
             cookie value after log out). To remove a cookie, set a cookie with the same name and max age of 0 or an
             expires
-            date in the past. For the response, you can either send a 302 Found with a Location header, or you can send a 200 with a message.
-        Note that if you do the latter, you will be presented with a white screen with the message of your choosing, and that is okay.</p>
+            date in the past. For the response, send a 302 Found that redirects the user to your homepage.</p>
 
         <br>
         <h5>Authenticated Chat</h5>
         <p>Whenever a chat message is sent by an authenticated user, the message should contain their
             actual username. This is done by setting the "author" of their messages to their username.</p>
 
-        <p>This is no longer required since it depends on an Application Objective from a previous assignment. <s>
-            When a user logs into their account, any messages that they sent as a guest should retroactively have
-            their author set to
-            their username. Use your "session" cookie to track messages for this purpose. You should also ensure that
-            messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then
-            logs in using a different account, the guest message should still belong to the account of their first
-            login).</s>
-        </p>
-
-        <p><s>
-            Note: To accomplish this, you will need to read the "session" cookie on login. Some browsers will
-            automatically add a "/api" path to this cookie so it will not be sent to the /login path. To correct this,
-            manually set the path directive to "/"</s>
-        </p>
+        {#        <p>This is no longer required since it depends on an Application Objective from a previous assignment. <s>#}
+        {#            When a user logs into their account, any messages that they sent as a guest should retroactively have#}
+        {#            their author set to#}
+        {#            their username. Use your "session" cookie to track messages for this purpose. You should also ensure that#}
+        {#            messages cannot be "claimed" multiple times (eg. If a user sends a guest message, logs in, logs out, then#}
+        {#            logs in using a different account, the guest message should still belong to the account of their first#}
+        {#            login).</s>#}
+        {#        </p>#}
+        {##}
+        {#        <p><s>#}
+        {#            Note: To accomplish this, you will need to read the "session" cookie on login. Some browsers will#}
+        {#            automatically add a "/api" path to this cookie so it will not be sent to the /login path. To correct this,#}
+        {#            manually set the path directive to "/"</s>#}
+        {#        </p>#}
 
         <br>
         <h5>Update and Delete Messages</h5>
-        <p>Modify your update and delete message functionality to be based on user accounts instead of "session"
-            cookies. A user
-            should be able to log out, clear their session cookie, log back in, and still be able to delete their own
+        <p>Modify, or create if you did not finish this feature from HW1, your update and delete message functionality
+            to be based on user accounts instead of "session" cookies. A user
+            should be able to log out, clear all their cookies, log back in, and still be able to update/delete their
+            own
             messages.</p>
 
         <p>When a user attempts to update or remove a message that is not their own, respond to the request with a 403
@@ -207,61 +207,36 @@
             code. If it is their own, you may choose the response you send (200 with a short message is fine).</p>
 
         <p>
-            If you did not complete the update and delete endpoints from HW1, the specs are:
+            If you did not complete the update and delete endpoints from HW1, refer to that HW doc for the
+            specifications of these endpoints.
         </p>
 
-        <br>
-        <h5>Update Chat Message (`PATCH /api/chats/{id}`)</h5>
-
-        <p>Updates an existing message with new content. The frontend will send a PATCH request to your backend at
-            the route `/api/chats/{id}`. Listed below is the format expected.</p>
-
-        <p>Request (JSON): {"content": string}</p>
-
-        <p>Errors:</p>
-        <ul>
-            <li>**403 Forbidden**: This error is for when the user lacks permission (Users can only update their own
-                messages. Your server needs to check for this). You may choose the message for this error
-            </li>
-        </ul>
-
-        <p>
-            After a message has been updated using this endpoint, its "updated" field must be set to true
-        </p>
-        <br>
-        <h5>Delete Chat Message (`DELETE /api/chats/{id}`)</h5>
-
-        <p>Deletes an existing message from chat history. The frontend will send a DELETE request to your backend at
-            the
-            route `/api/chats/{id}`. Listed below is the format expected.</p>
-
-        <p>Errors:</p>
-        <ul>
-            <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages). You
-                may choose the message for this error</li>
-        </ul>
-
-        <p>After a message is deleted by its author, it must never be sent by the GET endpoint again.</p>
-
+        {#        FUTURE: add a 401 Unauthorized response if they are not logged and 403 Forbidden if they are logged in but
+                  not the author. Make sure to update the grader too #}
 
         <br>
         <h5>@me</h5>
         <p>
             Add an endpoint GET "/api/users/@me" that will return the requesters user profile. You should return
-            everything in your database stored for the user except their [hashed and salted] password and [hashed] auth token. This is used
+            everything in your database stored for the user except their [hashed and salted] password and [hashed] auth
+            token. This is used
             to display a users name on the page when they are logged in. If the user is not logged in, this endpoint
             returns an empty json object with a 401 status code
         </p>
 
         <p>Response (JSON): {"username": string "id": string}</p>
 
+        <p>
+            As more data is added to user profiles, that data should also be returned by this endpoint.
+        </p>
 
         <br>
         <h5>Filter/search users</h5>
         <p>
             Add an endpoint GET "/api/users/search" that takes a query string containing one key named "user". Return a
-            json array with the following structure {"users": [{ "id": "1", "username": "bob" }]}. This endpoint is case-sensitive,
-            meaning if a username is "Username" and the search is for "use" it will not return "Username" but a search
+            json object containing all the users with a username that starts with the query value with the following
+            structure {"users": [{ "id": "1", "username": "bob" }, ...]}. This endpoint is case-sensitive,
+            meaning if a username is "Username" and the search is for "use" it will not return "Username", but a search
             for "Use" will.
         </p>
         <p>
@@ -272,14 +247,14 @@
         <h5>Update profile</h5>
         <p>
             Add an endpoint POST "/api/users/settings" which will receive requests containing a username and password in
-            the same format as the registration and login endpoints. When you receive a request, update the users
-            username and password to the provided values.
+            the same format as the registration and login endpoints. When you receive a request at this endpoint, update
+            the users username and password to the provided values.
         </p>
 
         <p>
             This endpoint must enforce the same password criteria as registering a new user. If the password does not
-            meet all criteria, return a 400 response with a message of your choice. Do not update their username if the
-            password is not valid.
+            meet all criteria, return a 400 response with a message of your choice. Do not update their username, or
+            password, if the password is not valid.
         </p>
 
         <p>
@@ -288,8 +263,9 @@
             checked during grading, but can be added to improve usability of the app.
         </p>
         <p>
-            You do not have the change the users prior messages when they change their username. Their old messages can
-            still have their old username.
+            You do not have to change the author of the users prior messages when they change their username. Their old
+            messages can still have their old username.
+            {# FUTURE: Change this so they do have to update the old messages. It's not much work and gets them using the DB a little more #}
         </p>
 
         <p>
@@ -303,24 +279,26 @@
         </h3>
         <hr/>
 
-        <p>
-            Note: Starting with this objective, all Application Objectives will require that you app functions properly
+        <div class="alert alert-info">
+            Note: Starting with this objective, all Application Objectives will require that your app functions properly
             using docker compose. When running "docker compose up" your app must be fully functional on localhost port
             8080. If docker is not setup properly, you cannot earn credit for any of the Application Objectives even if
             you wrote functioning code for the objective.
-        </p>
+        </div>
 
         <p>
-            A quick note: Application objectives are open-ended in how you implement them.
-            This will require a lot of exploration and reading online documentation. 
+            A quick note: Application objectives are more open-ended in how you implement them than the Learning
+            Objectives (Enabled by them being manually graded).
+            This will require a lot of exploration and reading online documentation.
             You should snoop around the network tab and inspect how requests are sent and what responses are expected.
             Furthermore, because of the open-ended nature of the AOs and the manual grading involved,
             your implementation can vary in terms of formatting.
-            As long as you achieve the goal of the AO (and don't violate the spirit of the AO), 
+            As long as you achieve the goal of the AO (and don't violate the spirit of the AO),
             and your implementation works with the frontend without any frontend modifications, you needn't worry.
-            
-            You may lose AO credit if you utilize any unallowed libraries (ask first before you use a library that isn't already approved!)
-            or otherwise violate the spirit of the AOs.
+
+            You may still lose AO credit if you utilize any unallowed libraries (ask first before you use a library that
+            isn't already approved!), your server does not function properly with docker compose,
+            or you otherwise violate the spirit of the AOs.
         </p>
 
         <p>
@@ -333,7 +311,8 @@
 
         <p>
             When a user enables 2FA by clicking "Regenerate 2FA" on the setting page,
-            your app should return a json object in the format {"secret": string}. Each time a user clicks "Regenerate 2FA",
+            your app should return a json object in the format {"secret": string}. Each time a user clicks "Regenerate
+            2FA",
             your server is expected to generate a new secret. The front end will use this secret to
             generate a QR code which your users can scan using any authenticator app on their phone
             (eg. <a href="https://www.authy.com/">Authy</a>, Duo, Google Authenticator). You may choose any high-entropy
@@ -343,10 +322,11 @@
         <p>
             When a user with 2FA enabled logs in, you should expect them to provide a TOTP code in addition to their
             username and password. If no TOTP code is provided (The request only contains username and password), return
-            a 401 response with a message of your choosing. If a TOTP code (Study the front end and network traffic to
+            a 401 response with a message of your choosing. If a TOTP code is provided you will verify this code while
+            authenticating them. Study the front end and network traffic to
             see the exact format of this code in the request. You may want to modify your extract_credentials function
-            to also extract the TOTP if it's present) you will verify this code while authenticating them. If
-            both their password and TOTP code are valid, they should be logged in.
+            to also extract the TOTP if it's present (Be sure to not break logging in without TOTP when making changes).
+            If both their password and TOTP code are valid, they should be logged in.
         </p>
 
         <p>You can, and should, use the <a href="https://pyauth.github.io/pyotp/">PYOTP library</a> to
@@ -378,23 +358,23 @@
 
         <p>Use "http://localhost:8080/authcallback" as your redirect_uri. The course staff will use this exact string in
             their
-            GitHub app used to test your app. 
-            Ensure that you are requesting the appropriate scopes in order to access the user's email and repos. 
-            During your testing, make sure you are granting permission to the appropriate repos and orgs you are testing with.
-            Do not spam public repos, or repos that you do not own/have affiliation with. Seriously.
+            GitHub app used to test your app.
+            Ensure that you are requesting the appropriate scopes in order to access the user's information.
+{#            During your testing, make sure you are granting permission to the appropriate repos and orgs you are testing#}
+{#            with.#}
+{#            Do not spam public repos, or repos that you do not own/have affiliation with. Seriously.#}
         </p>
 
 
         <p>You may use a library (eg. requests) to send HTTP requests to the GitHub API. You are also allowed to use the
             base64 library, if needed.</p>
 
-        <p>Note: You are not required to handle refresh tokens for either of these AOs. You should code this for extra
+        <p>Note: You are not required to handle refresh tokens. You should code this for extra
             practice and experience, but it would be too tedious to test/grade such a
             requirement since we'd have to wait for the tokens to expire before refreshing them.</p>
 
-        <p><b>Security</b>: Never share your app's client secret or client id. Your submission must not contain your
-            private
-            information and should instead have placeholders/variables where it should go.</p>
+        <p><b>Security</b>: Never share your app's client secret. Your submission must not contain your
+            client secret and should instead have placeholders/variables where it should go.</p>
 
         <p>Instead of submitting your code with this secret and id, set these values as environment variables in a
             file named ".env". See the provided .env.example file for reference on the syntax. Use the variables names
@@ -413,71 +393,71 @@
             concern.</p>
 
 
-{#        <br>#}
-{#        <hr/>#}
-{#        <h3>#}
-{#            Application Objective 3 - GitHub Chat Commands#}
-{#        </h3>#}
-{#        <hr/>#}
-{##}
-{#        <p>#}
-{#            If a user is logged in using GitHub, as opposed to using the register/login flow from the learning#}
-{#            objective,#}
-{#            they can enter special commands into the chat. If they type any of these commands into chat, your app will#}
-{#            use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any#}
-{#            message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was#}
-{#            sent with the result of the chat command. If a user is not logged in as an oauth user, you should reject the request#}
-{#            with a 400. If the inputs given by the user (repo name, etc) are not correct in any way (no access, doesn't exist, etc)  #}
-{#            you should reject with a 400 and a message describing why. #}
-{#            #}
-{#            The commands are:#}
-{#        </p>#}
-{##}
-{#        <ul>#}
-{#            <li>#}
-{#                /repos @user#}
-{#                <ul>#}
-{#                    <li>List all GitHub repos of the target user (limit 50). These repos should appear as links where#}
-{#                        the text is the repo name. You have some flexibility in how to display all the links#}
-{#                    </li>#}
-{#                    <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts#}
-{#                        GitHub repos#}
-{#                    </li>#}
-{#                    <li>Note: This command may result in HTML being rendered in chat. Since this HTML is completely under#}
-{#                        the control of your server, it is ok to render on the front end. #}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#            <li>/star @repo#}
-{#                <ul>#}
-{#                    <li>use the current oauth user to star the provided repo. Display a confirmation of the star in#}
-{#                        chat#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub#}
-{#                        will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being#}
-{#                        displayed confirming that it was starred. This can be a message of your choosing, but we ask that#}
-{#                        you make life easier for the graders and wrap the content in a link to the repo for easy viewing.#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{##}
-{#            <li>/createissue @repo @title#}
-{#                <ul>#}
-{#                    <li>Creates an issue on @repo with a title of @title. The body of this issue should be empty (Unless#}
-{#                        you want to add this functionality, but it's not required). Display a confirmation of the#}
-{#                        created issue in chat#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will#}
-{#                        create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"#}
-{#                        and an empty body and a confirmation message will be displayed in chat. #}
-{#                        This can be a message of your choosing, but we ask that#}
-{#                        you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
+        {#        <br>#}
+        {#        <hr/>#}
+        {#        <h3>#}
+        {#            Application Objective 3 - GitHub Chat Commands#}
+        {#        </h3>#}
+        {#        <hr/>#}
+        {##}
+        {#        <p>#}
+        {#            If a user is logged in using GitHub, as opposed to using the register/login flow from the learning#}
+        {#            objective,#}
+        {#            they can enter special commands into the chat. If they type any of these commands into chat, your app will#}
+        {#            use the GitHub API to generate the text of their message. All commands begin with the character '/'. If any#}
+        {#            message is sent to chat that starts with /, you should treat it as a chat command and replace whatever was#}
+        {#            sent with the result of the chat command. If a user is not logged in as an oauth user, you should reject the request#}
+        {#            with a 400. If the inputs given by the user (repo name, etc) are not correct in any way (no access, doesn't exist, etc)  #}
+        {#            you should reject with a 400 and a message describing why. #}
+        {#            #}
+        {#            The commands are:#}
+        {#        </p>#}
+        {##}
+        {#        <ul>#}
+        {#            <li>#}
+        {#                /repos @user#}
+        {#                <ul>#}
+        {#                    <li>List all GitHub repos of the target user (limit 50). These repos should appear as links where#}
+        {#                        the text is the repo name. You have some flexibility in how to display all the links#}
+        {#                    </li>#}
+        {#                    <li>Example: A message of "/repos ufoscout" will generate a message with 50 links to user ufoscouts#}
+        {#                        GitHub repos#}
+        {#                    </li>#}
+        {#                    <li>Note: This command may result in HTML being rendered in chat. Since this HTML is completely under#}
+        {#                        the control of your server, it is ok to render on the front end. #}
+        {#                    </li>#}
+        {#                </ul>#}
+        {#            </li>#}
+        {#            <li>/star @repo#}
+        {#                <ul>#}
+        {#                    <li>use the current oauth user to star the provided repo. Display a confirmation of the star in#}
+        {#                        chat#}
+        {#                    </li>#}
+        {#                    <li>#}
+        {#                        Example: A message of "/star ufoscout/docker-compose-wait" from a user who logged in with GitHub#}
+        {#                        will result in that user starring the repo ufoscout/docker-compose-wait and a chat message being#}
+        {#                        displayed confirming that it was starred. This can be a message of your choosing, but we ask that#}
+        {#                        you make life easier for the graders and wrap the content in a link to the repo for easy viewing.#}
+        {#                    </li>#}
+        {#                </ul>#}
+        {#            </li>#}
+        {##}
+        {#            <li>/createissue @repo @title#}
+        {#                <ul>#}
+        {#                    <li>Creates an issue on @repo with a title of @title. The body of this issue should be empty (Unless#}
+        {#                        you want to add this functionality, but it's not required). Display a confirmation of the#}
+        {#                        created issue in chat#}
+        {#                    </li>#}
+        {#                    <li>#}
+        {#                        Example: A message of "/createissue CSE-312/CSE312-Website Finish the HW2 handout doc" will#}
+        {#                        create an issue on the CSE-312/CSE312-Website repo with the title "Finish the HW2 handout doc"#}
+        {#                        and an empty body and a confirmation message will be displayed in chat. #}
+        {#                        This can be a message of your choosing, but we ask that#}
+        {#                        you make life easier for the graders and wrap the content in a link to the created issue for easy viewing.#}
+        {#                    </li>#}
+        {#                </ul>#}
+        {#            </li>#}
+        {#        </ul>#}
 
 
         <br>
@@ -491,12 +471,16 @@
             dependencies in this file, and no other dependencies, before starting your server.
         </p>
 
-        <p>It is strongly recommended that you download and test your submission after submitting. To do this, download
+        <div class="alert alert-info">
+            It is strongly recommended that you download and test your submission after submitting. To do this, download
             your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
             run
-            docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
-            do
-            during grading.</p>
+            docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
+            simulates exactly what the TAs will do during grading.
+            <br><br>
+            If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
+            Objective even if your code functions properly when running server.py
+        </div>
 
         <br>
         <hr>

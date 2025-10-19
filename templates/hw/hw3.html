@@ -45,17 +45,20 @@
 
 
         <p>
-
-            Create a file named util/multipart.py containing the following function (This file does not define a class).
-            In
-            this file,
-            write a function named "parse_multipart" that takes a Request object as a parameter. This
+            Create a file named util/multipart.py containing the following function.
+            In this file,
+            write a function named "parse_multipart" that takes a Request object as a parameter and returns an object. This
             function will assume that the input Request is a multipart request and will extract all the relevant values
             of
             the request. This function returns an object containing the following fields (You have some freedom in how
             you
             design the classes for the objects as long as they have the required fields. Please note that a dict with
             these fields is not an object. You must create a class, then create objects using that class).
+        </p>
+
+        <p>
+            Note that while you'll create a class to complete this feature, the parse_multipart function itself is not
+            a method of your class.
         </p>
 
         <ul>
@@ -73,15 +76,14 @@
                 <ul>
                     <li>
                         A list of all the parts of the request in the order in which they appear in the request.
-                        Each part must be an object with the following fields
+                        Each part must be an object (You'll need to create a second class) with the following fields:
                         <ul>
                             <li>
                                 headers
                                 <ul>
                                     <li>
                                         A dictionary of all the headers for the part in the same format as a Request
-                                        object
-
+                                        object (dictionary of string to string)
                                     </li>
                                 </ul>
                             </li>
@@ -154,7 +156,7 @@
                 "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
             </li>
             <li>
-                When an image is successfully uploaded, respond with a 200 and a message of your choice
+                When an image is successfully uploaded, respond with a 200 OK and a message of your choice
             </li>
             <li>
                 If the same user uploads a second avatar, it replaces the first one
@@ -183,7 +185,7 @@
             that
             you devise a naming
             convention for the image files instead of using the names submitted by your users. Naming the images
-            "image1.jpg", "image2.jpg", "image3.jpg", etc is fine, or you can generate guids as the names.
+            "image1.jpg", "image2.png", "image3.jpg", etc is fine, or you can generate guids as the names.
         </p>
 
 
@@ -214,7 +216,7 @@
         <p>
             <b>Do not submit with any print statements printing out the full buffered request body.</b> 
             If you submit to autolab with these print statements, it will crash your submission. 
-            This is because you're printing the contents of a <b>2GB video file</b>.
+            This is because you're printing the contents of a very large video file.
         </p>
 
         {#        <p>#}
@@ -224,13 +226,13 @@
         {#        </p>#}
 
 
-        {#        <p>#}
+        {#  FUTURE: Bring this back, but update it, and lecture content, to work with the /public route. Removing slashes doesn't wok anymore'      <p>#}
         {#            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this#}
         {#            objective, you#}
         {#            will#}
         {#            be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to#}
         {#            your#}
-        {#            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.jpg") you#}
+        {#            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.png"), you#}
         {#            still don't know how many images will be uploaded. This means that you must accept some variable from the#}
         {#            user#}
         {#            that you will use to read, and send, a file from your server. You must ensure that an attacker cannot use#}
@@ -259,7 +261,7 @@
 
         <p>
             To enable the video sharing feature on the front end, you will build out three additional endpoints. These
-            endpoints will allow users to upload videos, return all videos, and return the details of a single video.
+            endpoints will allow users to upload videos, see all videos, and watch a single video.
         </p>
 
 
@@ -270,7 +272,7 @@
             This endpoint with receive videos uploaded from the front end that will contain the videos title,
             description, and the video itself. You should parse the request and store all this information. As with
             images, the videos should be stored in files with only the filename stored in your database. Respond to
-            uploads with a 200 OK containing a JSON object with the unique id of the new video.
+            uploads with a 200 OK containing a JSON object with a unique id that you generate for the new video.
         </p>
 
         <p>Response (JSON): {"id": str}</p>
@@ -398,11 +400,11 @@
 
         <p>
             Example field to be added to videos - "thumbnails": [
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
             ]
         </p>
 
@@ -413,7 +415,7 @@
 
         <p>
             Example field to be added to videos - "thumbnailURL":
-            "public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
+            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
         </p>
 
         <p>
@@ -433,12 +435,12 @@
         <h5>Change thumbnail (`PUT /api/thumbnails/{videoId}`)</h5>
 
         <p>
-            Request body: {"thumbnailURL":"public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"}
+            Request body: {"thumbnailURL":"/public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"}
         </p>
 
         <p>
             When a request is received at this endpoint, update the "thumbnailURL" field of the video with id {videoId}
-            to the provided value. Respond with a message in JSON object indicating that the update was successful.
+            to the provided value. Respond with a message in a JSON object indicating that the update was successful.
         </p>
 
         <p>
@@ -460,7 +462,7 @@
             video.
         </p>
         <p>
-            Example field to be added to videos - "hls_path": "public/videos/2439857234.m3u8"
+            Example field to be added to videos - "hls_path": "/public/videos/2439857234.m3u8"
         </p>
 
         <p>
@@ -479,12 +481,16 @@
             dependencies in this file, and no other dependencies, before starting your server.
         </p>
 
-        <p>It is strongly recommended that you download and test your submission after submitting. To do this, download
+        <div class="alert alert-info">
+            It is strongly recommended that you download and test your submission after submitting. To do this, download
             your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
             run
-            docker compose up, then navigate to localhost:8080 in your browser. This simulates exactly what the TAs will
-            do
-            during grading.</p>
+            docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
+            simulates exactly what the TAs will do during grading.
+            <br><br>
+            If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
+            Objective even if your code functions properly when running server.py
+        </div>
 
         <br>
         <hr>

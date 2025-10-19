@@ -32,6 +32,28 @@
         </h3>
         <hr/>
         <p>
+            Setup your app to listen for HTTPS requests on port 443 using a self-signed certificate and nginx running in a separate docker container. The app must function properly. More specifically:
+
+If you receive an HTTP request over port 80, it should be redirected to HTTPS over port 443
+The app should be set up to use WebSockets for the chat feature. The WebSockets should be encrypted using WSS
+Add the secure directive to your auth token cookies
+
+        </p>
+
+        <p>
+            Testing Procedure
+Start your server with docker compose up
+Open a browser and, with the network tab open, navigate to http://localhost
+Accept any warning about a self-signed certificate
+Verify that the home page loads
+Check the network tab to verify that you received a redirect to https://localhost and that the page loaded properly over HTTPS
+Verify that WebSocket connection was made using the WSS protocol
+Register and login
+Send a message in chat and verify that the feature still works (Displays your username) over WSS
+Check the auth token cookie and verify that the secure directive was set
+        </p>
+
+        <p>
             -nginx
             -https w/ pre-created self-signed certs
         </p>
@@ -42,6 +64,33 @@
             Application Objective 1 - IP Rate Limiting
         </h3>
         <hr/>
+
+        <p>
+            DoS Protection (IP rate limiting)
+Add very basic DoS protection to your app based on rate limiting IP addresses. Your IP protection should:
+
+Block requests from an IP address if it has made more than 50 requests within a 10 second period
+Every single request from an IP should count towards this limit (eg. Just loading your homepage requires ~5 requests that all count toward the limit)
+While an IP is blocked, respond to all requests from the IP with a 429 "Too Many Requests" response with a message explaining the issue to the user
+When an IP becomes blocked, it should remain blocked for 30 seconds
+After 30 seconds pass, requests from the IP should be handled as usual unless they hit your rate limit and become blocked again
+Testing Procedure
+Navigate to the public deployment
+Count the number of requests made to load the page
+Refresh slowly enough times to reach 70 requests, but not fast enough to trigger the rate limiter (<50 requests per 10 seconds)
+Ensure all requests are handled as expected
+Wait ~10 seconds
+Refresh quickly such that >50 requests are sent in at 10 second window
+Ensure that after the 50th request, you start seeing 429 responses and the page no longer loads
+Wait ~20 seconds
+Refresh the page and ensure that you are still blocked
+Wait another ~10 seconds
+Refresh the page and ensure that it loads
+[Hit the rate limit again on the same device] Refresh quickly such that >50 requests are sent in at 10 second window
+Ensure that after the 50th request, you start seeing 429 responses and the page no longer loads
+Within 30 seconds, on a second device with a different public IP address, navigate to the public deployment and ensure that the page loads
+Make sure the other device has a different public IP address. If you are at a residence, all your devices probably have the same public IP address. To ensure you have a different IP, you can use your phone on mobile data, or turn on a VPN
+        </p>
 
         <p>
             -Forwarding real IP through nginx
@@ -60,12 +109,39 @@
             Warning: This objective is much more substantial than the other 2 on this HW
         </p>
         <p>
-            -Add an authur server
+            -Add an auth server
             -Use nginx to route register/login to this server
-            -Auth server issues JWTs
-            -App server verifies JWTs for auth
-            -CORS may have something to say here that also needs to be handled
+            -Auth server issues JWTs as cookies
+            -App server verifies JWTs for auth (Shared secret or excryption keys. I prefer encryption keys. Maybe generated in Python or during compose up)
+            --must be done without talking a DB
+            -CORS may have something to say here that also needs to be handled (Probably not though since from the browsers pov, it's all 1 server, nginx)
         </p>
+
+        Do I let them use a library for most of the work? Would need to remove the warning about this one being harder than the other 2
+        https://pyjwt.readthedocs.io/en/latest/usage.html#encoding-decoding-tokens-with-rs256-rsa
+
+
+        <br>
+        <hr>
+        <h3>Submission</h3>
+        <hr>
+        <p>Submit all files for your server to Autolab in a .zip file</p>
+
+        <p>
+            If you used any external libraries, be sure to add them to your requirements.txt. Autolab will install all
+            dependencies in this file, and no other dependencies, before starting your server.
+        </p>
+
+        <div class="alert alert-info">
+            It is strongly recommended that you download and test your submission after submitting. To do this, download
+            your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
+            run
+            docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
+            simulates exactly what the TAs will do during grading.
+            <br><br>
+            If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
+            Objective even if your code functions properly when running server.py
+        </div>
 
 
         <br>

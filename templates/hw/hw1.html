@@ -23,9 +23,8 @@
         <hr/>
         <p>
             In this assignment you will build the foundation of the server that you will develop throughout the
-            semester. All 4 homework assignments will continue to build on the same web app. The front end of the app
-            will be provided to you, and we will release new features to the front end for each homework. You can
-            clone the starter code for this assignment using the link below.
+            semester. All homework assignments will continue to build on the same web app. The front end of the app
+            is provided for you, which you can clone using the link below.
         </p>
         <p>
             GitHub Repository link: <a href="https://github.com/CSE-312/CSE312-Server">https://github.com/CSE-312/CSE312-Server</a>
@@ -37,7 +36,7 @@
         <p>
             You should never need to modify this front end. The grader in Autolab will simulate this front end code so
             any changes you make may affect the grading of your submissions (ie. Do not change the front end to fix your
-            issues). Your tasks throughout the 5 homework assignments will be to build the corresponding end points
+            issues). Your tasks throughout the homework assignments will be to build the corresponding end points
             on the back end that are called by the front end.
         </p>
 
@@ -55,7 +54,12 @@
 
         <p>
             This learning objective will guide you through building the foundation of a server that understands HTTP,
-            communicates with a database, implements a chat feature, and utilizes cookies to track user sessions.
+            communicates with a database, and implements a chat feature.
+        </p>
+
+        <p>
+            To help with the structure of your server, you will first build several classes that will be used throughout
+            the course.
         </p>
 
         <br>
@@ -143,15 +147,18 @@
         </ul>
 
         <p>
-            Something to keep in mind, for the Request, Response, and Router classes, you must <b>not access any files or call any functions that access any files</b>. 
-            The first round tests that we run on your classes do not have access to your folder structure, and thus will throw an error if you try to open any files.
+            Something to keep in mind, for the Request, Response, and Router classes, you must <b>not access any files
+            or call any functions that access any files</b>.
+            The first round tests that we run on your classes do not have access to your folder structure, and thus will
+            throw an error if you try to open any files. You should also avoid importing your other python files from
+            these class files.
         </p>
 
         <br>
         <h4>The Response Class</h4>
 
         <p>
-            Create a Response class in the util package of the starter code. Unlike the Request class, there are no
+            Complete the Response class in the util package of the starter code. Unlike the Request class, there are no
             specific instance variables that need to be set. Instead, the spec is to write specific methods (You will
             need instance variables to write these methods, but you may choose their names and they won't be accessed by
             the grader)
@@ -167,7 +174,7 @@
                         variables you'd like in this constructor in order to complete the other methods.
                     </li>
                     <li>
-                        Be careful not to use any of these method names as your variable names. For example, naming an
+                        Be careful not to use any of the method names as your variable names. For example, naming an
                         instance variable "headers" will confuse python and make it think that you're trying to call the
                         variable when you call the method
                     </li>
@@ -332,7 +339,7 @@
                     </li>
                     <li>
                         The returned bytes may contain addition headers. eg. If you want to disable MIME type sniffing
-                        for every response, this class is the place to do it
+                        for every response, this method is the place to do it
                     </li>
                 </ul>
             </li>
@@ -342,14 +349,14 @@
         <h4>The Router Class</h4>
 
         <div class="alert alert-info">
-            When importing local files from the `util` folder (e.g., `request`,
+            When importing local files from the `util` package (e.g., `request`,
             `response`, `router`), you must prefix the import with `util.`. For
             example, use `import util.request` instead of `import request`.
             Failure to do so will cause your submission to crash in Autolab,
             even if it works locally. This prefixing is not required for
             external libraries or packages.
         </div>
-        
+
         <p>
             You'll set up a Router class that will help you organize the code of your server throughout the semester. It
             is
@@ -358,7 +365,7 @@
             of a
             server before implementing your Router class.
         </p>
-        <p>After Homework 1 you are welcome to make changes to the design of your router, but you are required to use a
+        <p>After Homework 1, you are welcome to make changes to the design of your router, but you are required to use a
             router throughout all homework assignments. The organization this router provides will prove useful as your
             server code gains more complexity.
         </p>
@@ -386,7 +393,7 @@
                                     <li>The path (str) of the request</li>
                                     <li>A <em>function</em> that takes a Request object, and a TCPHandler as parameters
                                         and does not return anything. This will
-                                        be the function that handles request matching the given method and path.
+                                        be the function that handles requests matching the given method and path.
                                         The provided hello_path function is an example of this type of function along
                                         with sample usage of it in server.py
                                     </li>
@@ -428,7 +435,8 @@
                     </li>
                     <li>If there is no path matching the request, send a 404 Not Found response over the handler. You
                         may choose the message in
-                        the body of this response</li>
+                        the body of this response
+                    </li>
                     <li>If multiple routes match the request, use the route that was added first with the
                         add_route method
                     </li>
@@ -452,7 +460,6 @@
         </ul>
 
 
-        <br>
         <hr>
         <h4>Hosting Static Files</h4>
 
@@ -479,16 +486,23 @@
             to handle.
         </p>
 
+        <hr>
+
         <p>
             In addition to hosting all the files in the public directory, you will add paths for each of the pages of
             the app. For each of these pages, you will need to render an HTML template (Don't panic, this comes down to
             reading 2 files and doing 1 find and replace). There is an HTML template in "public/layout/layout.html".
             This template contains all the structure of the app including menus, navigation, metadata, imports, etc.
-            This template has one placeholder that is exactly the string <nobr>"&#123;&#123;content&#125;&#125;".</nobr> Each html
+            This template has one placeholder that is exactly the string
+            <nobr>"&#123;&#123;content&#125;&#125;".</nobr>
+            Each html
             file for a page
             will be inserted at this placeholder so the structure does not have to be copied into every file. This
-            also makes it easier to make changes to every page on the app since only template.html has to be changed to affect all pages. To render a page, for example "index.html",
-            you will read both the layout.html and index.html files, then replace <nobr>"&#123;&#123;content&#125;&#125;"</nobr> from
+            also makes it easier to make changes to every page on the app since only template.html has to be changed to
+            affect all pages. To render a page, for example "index.html",
+            you will read both the layout.html and index.html files, then replace
+            <nobr>"&#123;&#123;content&#125;&#125;"</nobr>
+            from
             the template with
             all the content of index.html to render the full page. This rendered page is what you'll send to the client
             when they request index.html.
@@ -503,9 +517,9 @@
         </ul>
 
         <p>
-            At this point, you can run your app and visit
-            "http://localhost:8080" in your browser to see the provided front end. We will add more pages in each of the
-            homework assignments using the same template.html.
+            At this point, you can run your server and visit
+            "http://localhost:8080" in your browser to see the provided front end. Throughout the course, you will
+            complete the functionality for every feature on this front end.
         </p>
 
 
@@ -528,22 +542,21 @@
         </p>
 
         <br>
-        <hr/>
         <h4>
             Chat Feature
         </h4>
 
         <div class="alert alert-info">
-            When connecting to your database, you should use the provided database.py file to ensure you connect to
+            When connecting to your database, you must use the provided database.py file to ensure you connect to
             the correct host. Your app must function properly when ran directly through server.py with a database
-            running on localhost (This is the structure in Autolab). If you are working on AO2, you must not break this
-            functionality.
+            running on localhost (This is the structure in Autolab). To earn any Application Objectives, your app must
+            also work using docker compose up.
         </div>
 
         <p>
             The front end contains a chat feature that will send specific requests to your server. To enable this
-            feature, implement the following end points. Note that you will need to use both a database and cookies to
-            complete all of these end points. All functionality must persist through a server restart, and you must
+            feature, implement the following end points. Note that you will need to use a database to
+            complete these end points. All functionality must persist through a server restart, and you must
             use a MongoDB database. During grading, there will be a MongoDB database running on localhost port 27017.
         </p>
 
@@ -591,22 +604,22 @@
 
         <p>The `updated` parameter that is sent back in the list of messages represents if the message has ever been
             updated. If it has it must be set to true. When a message is first created, this should be set to false.
-    (This will always be false until you work on AO1)</p>
+            (This will always be false until you work on AO1)</p>
 
 
         <p>Security: You must escape any HTML in the users' messages. Since your users can submit any text they want, a
             malicious user could submit HTML tags that attack other users. You cannot allow this. You must escape any
             submitted HTML so it displays as plain text instead of being rendered by the browser.</p>
 
-{#        <br>#}
-{#        <h4>Testing Procedure</h4>#}
-{##}
-{#        <ol>#}
-{#            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You#}
-{#                are allowed as many submissions as you'd like in order to complete this objective (All application#}
-{#                objectives are manually graded after the final deadline)#}
-{#            </li>#}
-{#        </ol>#}
+        {#        <br>#}
+        {#        <h4>Testing Procedure</h4>#}
+        {##}
+        {#        <ol>#}
+        {#            <li>This objective will be autograded in Autolab and you will receive feedback as soon as you submit. You#}
+        {#                are allowed as many submissions as you'd like in order to complete this objective (All application#}
+        {#                objectives are manually graded after the final deadline)#}
+        {#            </li>#}
+        {#        </ol>#}
 
         <br>
         <hr/>
@@ -643,7 +656,7 @@
             <li>**403 Forbidden**: This error is for when the user lacks permission (Users can only update their own
                 messages. Your server needs to check for this). You may choose the message for this error
             </li>
-{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
+            {#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
         </ul>
 
         <p>
@@ -654,19 +667,17 @@
 
         <p>Deletes an existing message from chat history. The frontend will send a DELETE request to your backend at
             the
-            route `/api/chats/{id}`. Listed below is the format expected.</p>
+            route `/api/chats/{id}`</p>
 
         <p>Errors:</p>
         <ul>
             <li>**403 Forbidden**: This error is for when the user lacks permission (can only delete own messages). You
-                may choose the message for this error</li>
-{#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
+                may choose the message for this error
+            </li>
+            {#            <li>**404 Not Found**: This error is for when the message with the specified ID does not exist.</li>#}
         </ul>
 
         <p>After a message is deleted by its author, it must never be sent by the GET endpoint again.</p>
-
-
-
 
 
         <br>

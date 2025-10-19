@@ -15,560 +15,593 @@
         <div></div>
     </div>
 
-    <div class="section-card card-testing hw-content">
+    <p class="section-card card-testing hw-content">
 
-        <hr/>
-        <h3>
-            Introduction
-        </h3>
-        <hr/>
-        <p>
-            You will continue to add features to your app.
-        </p>
-        <p>
-            Sample Deployment: <a href="https://312demo.nico.engineer/">https://312demo.nico.engineer/</a>
-        </p>
+    <hr/>
+    <h3>
+        Introduction
+    </h3>
+    <hr/>
+    <p>
+        You will continue to add features to your app.
+    </p>
+    <p>
+        Sample Deployment: <a href="https://312demo.nico.engineer/">https://312demo.nico.engineer/</a>
+    </p>
 
-        <p>
-            If you haven't already on HW3, please go to this line in your server.py:
-            "socketserver.TCPServer.allow_reuse_address = True" and "server = socketserver.TCPServer((host, port),
-            MyTCPHandler)".
-            Change both of these lines from <b>TCPServer</b> to <b>ThreadingTCPServer</b>.
-            This will make sure that your server can handle multiple requests at once, without blocking other requests.
-        </p>
+    {#        <p>#}
+    {#            If you haven't already on HW3, please go to this line in your server.py:#}
+    {#            "socketserver.TCPServer.allow_reuse_address = True" and "server = socketserver.TCPServer((host, port),#}
+    {#            MyTCPHandler)".#}
+    {#            Change both of these lines from <b>TCPServer</b> to <b>ThreadingTCPServer</b>.#}
+    {#            This will make sure that your server can handle multiple requests at once, without blocking other requests.#}
+    {#        </p>#}
 
-        <hr/>
-        <h3>
-            Learning Objective - WebSockets
-        </h3>
-        <hr/>
+    <hr/>
+    <h3>
+        Learning Objective - WebSockets
+    </h3>
+    <hr/>
 
-        <br>
-        <h4>Helper Method: compute_accept</h4>
+    <p>
+        Create a file named util/websockets.py containing the following functions
+    </p>
 
-        <p>
-            In a file named websockets in the util package, write a function named compute_accept that takes a WebSocket
-            key as a parameter (As a string) and returns the correct accept (As a string) according to the WebSocket
-            handshake.
-        </p>
-        <p>
-            The output must be character for character exactly what is expected. Make sure you don't have any extra
-            characters in your output (Not even white space).
-        </p>
-        <p>
-            You may use libraries to compute the SHA1 hash and Base64 encoding.
-        </p>
+    <h4>Helper Method: compute_accept</h4>
 
-
-        <br>
-        <h4>Helper Method: parse_ws_frame</h4>
-
-        Add a function named parse_ws_frame to the util.websockets file.
-        <p>
-            Add a function named parse_ws_frame to the util.websockets file that takes bytes as a parameter that
-            represents the bytes of a WebSocket frame and parses all the values of the frame. The function returns an
-            object containing the following fields (You have some freedom in how you design the class for this object as
-            long as it has the required fields).
-        </p>
-
-        <ul>
-            <li>
-                fin_bit
-                <ul>
-                    <li>
-                        An int with the value of the fin bit (Either 1 or 0)
-                    </li>
-                </ul>
-            </li>
-            <li>
-                opcode
-                <ul>
-                    <li>
-                        An int with the value of the opcode (eg. if the op code is bx1000, this field stores 8 as an
-                        int)
-                    </li>
-                </ul>
-            </li>
-            <li>
-                payload_length
-                <ul>
-                    <li>
-                        The payload length as an int. Your function must handle all 3 payload length modes
-                    </li>
-                </ul>
-            </li>
-            <li>
-                payload
-                <ul>
-                    <li>
-                        The unmasked bytes of the payload
-                    </li>
-                </ul>
-            </li>
-        </ul>
+    <p>
+        In util/websockets.py, write a function named compute_accept that takes a WebSocket
+        key as a parameter (As a string) and returns the correct accept (As a string) according to the WebSocket
+        handshake.
+    </p>
+    <p>
+        The output must be character for character exactly what is expected. Make sure you don't have any extra
+        characters in your output (Not even white space).
+    </p>
+    <p>
+        You may use libraries to compute the SHA1 hash and Base64 encoding.
+    </p>
 
 
-        <br>
-        <h4>Helper Method: generate_ws_frame</h4>
+    <br>
+    <h4>Helper Method: parse_ws_frame</h4>
 
-        Add a function named generate_ws_frame to the util.websockets file.
+    <p>
+        Add a function named parse_ws_frame to the util/websockets.py file that takes bytes as a parameter, that
+        represents the bytes of a WebSocket frame, and parses all the values of the frame. The function returns an
+        object (You'll create a class for this object, but parse_ws_frame is not a method in this class) containing
+        the following fields (You have some freedom in how you design the class for this object as
+        long as it has the required fields).
+    </p>
 
-        <p>
-            Add a function named generate_ws_frame to the util.websockets file that takes bytes as a parameter and
-            returns a properly formatted WebSocket frame (As bytes) with the input bytes as its payload. Use a fin bit
-            of 1, an op code of bx0001 for text, and no mask. You need to handle all 3 payload length modes.
-        </p>
-
-
-        <br>
-        <hr>
-        <h4>WebSocket Connections</h4>
-
-        <p>
-            With your 3 helper methods ready, you will now add WebSocket features to your app. First, add the following
-            HTML paths to your server:
-        </p>
-
-        <ul>
-            <li>"/test-websocket" - Render test-websocket.html</li>
-            <li>"/drawing-board" - Render drawing-board.html</li>
-            <li>"/direct-messaging" - Render direct-messaging.html (AO2)</li>
-            <li>"/video-call" - Render video-call.html (AO3)</li>
-            <li>"/video-call/{roomID}" - Render video-call-room.html (AO3)</li>
-        </ul>
-
-        <p>
-            The front end will initiate a WebSocket connection using the "/websocket" path. When you receive a request
-            on this path, you should go through the WS handshake to upgrade the connection.
-        </p>
-
-        <p>
-            When the connection is established, all WS message will be in the form of JSON objects and will all contain
-            a field named "messageType". This messageType will determine how to handle the message.
-        </p>
-
-        <br>
-        <hr>
-        <h4>WebSocket Echo</h4>
-
-        <p>
-            Implement an echo feature that will be used on the Test WebSocket page. For this feature, whenever you
-            receive a WS message of type "echo_client", read the message from the "text" field which is what the user
-            typed and sent. In response, send a WS message back to only the sender of type "echo_server" with a field
-            named "text" containing the exact message that was sent to your server.
-        </p>
-        <p>
-            For example, if your server receives a WS frame containing the payload:
-        </p>
-        <p>
-            {"messageType":"echo_client","text":"WebSockets are for winners"}
-        </p>
-        <p>
-            You will send a WS frame back to the sender containing the payload:
-        </p>
-        <p>
-            {"messageType":"echo_server","text":"WebSockets are for winners"}
-        </p>
-
-        <p>
-            These message can, and will during testing, be large enough to test all 3 payload length modes. This also
-            implies that you must implement buffering for the WebSocket frames you receive. Continuation frames are not
-            required for this objective.
-        </p>
-
-        <br>
-        <hr>
-        <h4>Drawing Board</h4>
-
-        <p>
-            Implement the shared drawing board from the Drawing Board page. When a user draws, the client will send WS
-            messages of type "drawing" to your server. When you receive a message of this type, you will:
-        </p>
-
-        <ul>
-            <li>
-                Broadcast the message to every user with an active WS connection. The message contents should be
-                unchanged, including the same messageType of "drawing". The front end will know how to display these
-                messages
-            </li>
-            <li>
-                Store all the information of the message in your database (This includes the fields "startX", "startY",
-                "endX", "endY", and "color")
-            </li>
-        </ul>
-
-        <p>
-            When a user first creates a WS connection, send them the drawings that have already been made (It is ok if
-            you always send this even when the user is not on the Drawing Board page). This should be sent in a WS
-            message of type "init_strokes" containing a field "strokes" that is an array of all the drawing messages
-            received by your server. This feature will allow users to see all
-            the drawings that have been made before they loaded the page since only the new drawings are broadcast. You
-            should now be able to refresh the page and still see all the drawings.
-        </p>
-        <p>
-            Example Message: {"messageType": "init_strokes", "strokes": [{"startX": 283.1, "startY": 232.7, "endX":
-            287.5, "endY": 152.2, "color": "#000000"}, ... ]}
-        </p>
-
-        <p>
-            Note that you will need a way to store all WS connections in a way that can be accessed from all connections
-            to enable broadcasting.
-        </p>
-
-        <br>
-        <hr>
-        <h4>User Lists</h4>
-
-        <p>
-            Send a message of type "active_users_list" containing a field named "users" with an array containing all the
-            authenticated users who have an active WS connection. Each user is represented as an object with a field
-            "username"
-        </p>
-        <p>
-            Example Message: {"messageType": "active_users_list", "users": [{"username": "admin"}, {"username":
-            "cse312"}]}
-        </p>
-
-        <p>
-            Broadcast this message to all WS users whenever this list changes. This includes whenever you finish a WS
-            handshake (adding a user), and whenever you see a disconnect opcode (removing a user).
-        </p>
+    <ul>
+        <li>
+            fin_bit
+            <ul>
+                <li>
+                    An int with the value of the fin bit (Either 1 or 0)
+                </li>
+            </ul>
+        </li>
+        <li>
+            opcode
+            <ul>
+                <li>
+                    An int with the value of the opcode (eg. if the op code is bx1000, this field stores 8 as an
+                    int)
+                </li>
+            </ul>
+        </li>
+        <li>
+            payload_length
+            <ul>
+                <li>
+                    The payload length as an int. Your function must handle all 3 payload length modes
+                </li>
+            </ul>
+        </li>
+        <li>
+            payload
+            <ul>
+                <li>
+                    The unmasked bytes of the payload
+                </li>
+            </ul>
+        </li>
+    </ul>
 
 
-        <br>
-        <hr>
-        <h3>
-            Application Objective 1 - Continuation Frames and Back-to-Back Messages
-        </h3>
-        <hr/>
+    <br>
+    <h4>Helper Method: generate_ws_frame</h4>
+
+    <p>
+        Add a function named generate_ws_frame to the util/websockets.py file that takes bytes as a parameter and
+        returns a properly formatted WebSocket frame (As bytes) with the input bytes as its payload. Use a fin bit
+        of 1, an op code of bx0001 for text, and no mask. You need to handle all 3 payload length modes.
+    </p>
 
 
-        <p>
-            Expand your WebSocket code to support the processing of multiple frames under the following two conditions:
-        </p>
-        <ul>
-            <li>
-                Continuation Frames
-                <ul>
-                    <li>
-                        Check the FIN bit and handle messages that are sent over multiple frames. We will test with
-                        payloads > 131000 using chrome which sends messages over this size in multiple frames
-                    </li>
-                </ul>
-            </li>
+    <br>
+    <hr>
+    <h4>WebSocket Connections</h4>
 
-            <li>
-                Back-to-Back Frames
-                <ul>
-                    <li>
-                        Your server must also handle multiple messages sent back-to-back. If another frame is sent while
-                        you are buffering, your last read from the TCP socket may contain the beginning of the next
-                        frame. Ensure that you are properly parsing these frames even when one read from the socket
-                        contains parts of multiple frames
-                    </li>
-                </ul>
-            </li>
-        </ul>
+    <p>
+        With your 3 helper methods ready, you will now add WebSocket features to your app. First, add the following
+        HTML paths to your server:
+    </p>
 
-        <p>
-            To complete this objective, your server must handle the case where multiple messages requiring continuation
-            frames are sent back-to-back.
-        </p>
+    <ul>
+        <li>"/test-websocket" - Render test-websocket.html</li>
+        <li>"/drawing-board" - Render drawing-board.html</li>
+{#        <li>"/direct-messaging" - Render direct-messaging.html (AO2)</li>#}
+        <li>"/video-call" - Render video-call.html (AO2)</li>
+        <li>"/video-call/{roomID}" - Render video-call-room.html (AO2)</li>
+    </ul>
 
-{#        <br>#}
-{#        <hr>#}
-{#        <h3>#}
-{#            Application Objective 2 - Direct Messaging (DMs)#}
-{#        </h3>#}
-{#        <hr>#}
-{##}
-{#        <p>#}
-{#            Implement DMs on the Direct Messaging page. To accomplish this, add the following functionality to your#}
-{#            server:#}
-{#        </p>#}
-{##}
-{#        <ul>#}
-{#            <li>#}
-{#                When a client sends a WS message of type "get_all_users", send them a list of all users who've#}
-{#                registered on your app#}
-{#                <ul>#}
-{#                    <li>#}
-{#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Send the user list in this format - {"messageType": "all_users_list", "users": [{"username":#}
-{#                        "admin"}, {"username": "cse312"}]}#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Note that you're returning all users whether they are currently using the app or not. Return#}
-{#                        ever registered user. This will populate the dropdown list for DMs#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#            <li>#}
-{#                When a client sends a WS message of type "select_user", which means they chose this user from the DM#}
-{#                dropdown, send them all the DM history between them and the chosen user#}
-{#                <ul>#}
-{#                    <li>#}
-{#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Send this user a WS message of type "message_history" containing all the DMs sent between these#}
-{#                        2 users sorted by age (Oldest first)#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        Message history format - {"messageType": "message_history", "messages": [{"messageType":#}
-{#                        "direct_message", "fromUser": "admin", "text": "hi"}, {"messageType": "direct_message",#}
-{#                        "fromUser": "koby", "text": "hey"}]}#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#            <li>#}
-{#                Users send message DMs as WS messages of type "direct_message"#}
-{#                <ul>#}
-{#                    <li>#}
-{#                        DM format (from client) - {"messageType":"direct_message", "targetUser":"koby", "text":"hi"}#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        When you receive a DM, store it in your database and send the message to both clients in the#}
-{#                        conversation#}
-{#                    </li>#}
-{#                    <li>#}
-{#                        DM format (from server) - {"messageType": "direct_message", "fromUser": "admin", "text": "hey"}#}
-{#                    </li>#}
-{#                </ul>#}
-{#            </li>#}
-{#        </ul>#}
-{##}
-{#        <p>#}
-{#            Security: Do not send DMs to anyone other than the 2 users who are part of the conversation.#}
-{#        </p>#}
+    <p>
+        The front end will initiate a WebSocket connection using the "/websocket" path. When you receive a request
+        on this path, you should go through the WS handshake to upgrade the connection.
+    </p>
 
-        <br>
-        <hr>
-        <h3>
-            Application Objective 2 - Video Calls with WebRTC
-        </h3>
-        <hr/>
+    <p>
+        When the connection is established, all WS message will be in the form of JSON objects and will all contain
+        a field named "messageType". This messageType will determine how to handle the message.
+    </p>
 
-        <p>
-            Build a Zoom clone. This feature will allow users to create video call "rooms" that can be joined by other
-            users. Each room can contain any subset of users, and they can all share audio and video in peer-to-peer
-            connections using WebRTC.
-        </p>
+    <br>
+    <hr>
+    <h4>WebSocket Echo</h4>
 
-        <p>
-            Add a POST endpoint at the path "/api/video-calls" that will create a new video call. The body of the
-            request will be a JSON object with a field named "name" that should be stored as the name of the room.
-            Your app will respond with the id of the room (Generated by you) in a JSON object
-            (eg. {"id":"67e42b3b0cb5bda054049243"}).
-        </p>
+    <p>
+        Implement an echo feature that will be used on the Test WebSocket page. For this feature, whenever you
+        receive a WS message of type "echo_client", read the message from the "text" field which is what the user
+        typed and sent. In response, send a WS message back to only the sender of type "echo_server" with a field
+        named "text" containing the exact message that was sent to your server.
+    </p>
+    <p>
+        For example, if your server receives a WS frame containing the payload:
+    </p>
+    <p>
+        {"messageType":"echo_client","text":"WebSockets are for winners"}
+    </p>
+    <p>
+        You will send a WS frame back to the sender containing the payload:
+    </p>
+    <p>
+        {"messageType":"echo_server","text":"WebSockets are for winners"}
+    </p>
 
-        <p>
-            To enable this feature, you'll need to support the following WS messages:
-        </p>
+    <p>
+        These message can, and will during testing, be large enough to test all 3 payload length modes. This also
+        implies that you must implement buffering for the WebSocket frames you receive. Continuation frames are not
+        required for this objective.
+    </p>
 
-        <ul>
-            <li>
-                messageType - "get_calls"
-                <ul>
-                    <li>
-                        Sent by the client. This is a request for a list of all the calls so the Video Call page can
-                        populate all the available calls
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "call_list"
-                <ul>
-                    <li>
-                        Sent by your server in response to a get_calls message. This is a list of every available call
-                        in a JSON object with the fields "id" and "name"
-                    </li>
-                    <li>
-                        Example message - {"messageType": "call_list", "calls": [{"id": "67e426f9042e96b4cfaa70f2",
-                        "name": "meeting"}, ... ]}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "join_call"
-                <ul>
-                    <li>
-                        Sent by the client when they join a video call. Contains the id of the room being joined
-                    </li>
-                    <li>
-                        Example message - {"messageType":"join_call", "callId":"67e426f9042e96b4cfaa70f2"}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "call_info"
-                <ul>
-                    <li>
-                        Sent by your server when a user joins a call. Contains the name of the room
-                    </li>
-                    <li>
-                        Example message - {"messageType":"call_info", "name":"meeting"}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "existing_participants"
-                <ul>
-                    <li>
-                        Sent by your server to let the users of a room know who else is on the call. Send this to a user
-                        when they join the room in reaction to the "join_call" message. Their frontend will then send
-                        messages to start all the required webRTC connections
-                    </li>
-                    <li>
-                        Example message - {"messageType": "existing_participants", "participants": [{"socketId":
-                        "febd4d3a-9e61-4a95-8e52-37ba64e2674c", "username": "admin"}, ... ]}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "user_joined"
-                <ul>
-                    <li>
-                        Sent by your server when a user joins the room. Broadcast this to all users in the room each
-                        time a user joins
-                    </li>
-                    <li>
-                        Example message - {"messageType": "user_joined", "socketId":
-                        "0a8e1a10-7f20-4797-bd3e-628735f91216", "username": "jesse"}
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "offer", "answer", and "ice_candidate"
-                <ul>
-                    <li>
-                        Sent by the client. Each of these message types contain the corresponding webRTC information to
-                        establish a connection. Each of these messages will contain a "socketId" field. You should
-                        forward the message to the user matching this socket id with a "socketId" field populated with
-                        the sender's socket id and a "username" field containing the senders username (The recipient
-                        doesn't need to know their own socket id/username, but they do need to know the sender)
-                    </li>
-                </ul>
-            </li>
-            <li>
-                messageType - "user_left"
-                <ul>
-                    <li>
-                        Sent by your server to all users in a call when one of them disconnects their WS. Must
-                        contain their "socketId" in a field
-                    </li>
-                </ul>
-            </li>
-        </ul>
+    <br>
+    <hr>
+    <h4>Drawing Board</h4>
+
+    <p>
+        Implement the shared drawing board from the Drawing Board page. When a user draws, the client will send WS
+        messages of type "drawing" to your server. When you receive a message of this type, you will:
+    </p>
+
+    <ul>
+        <li>
+            Broadcast the message to every user with an active WS connection, including the sender. The message contents
+            should be
+            unchanged, including the same messageType of "drawing". The front end will know how to display these
+            messages
+        </li>
+        <li>
+            Store all the information of the message in your database (This includes the fields "startX", "startY",
+            "endX", "endY", and "color")
+        </li>
+    </ul>
+
+    <p>
+        When a user first creates a WS connection, send them the drawings that have already been made (It is ok if
+        you always send this even when the user is not on the Drawing Board page). This should be sent in a WS
+        message of type "init_strokes" containing a field "strokes" that is an array of all the drawing messages
+        received by your server. This feature will allow users to see all
+        the drawings that have been made before they loaded the page since only the new drawings are broadcast. You
+        should now be able to refresh the page and still see all the drawings.
+    </p>
+    <p>
+        Example Message: {"messageType": "init_strokes", "strokes": [{"startX": 283.1, "startY": 232.7, "endX":
+        287.5, "endY": 152.2, "color": "#000000"}, ... ]}
+    </p>
+
+    <p>
+        Note that you will need a way to store all WS connections in a way that can be accessed from all connections
+        to enable broadcasting. This can be done by storing their TCPHandlers in a shared data structure. It's
+        recommended that you also store their usernames in this data structure.
+    </p>
+
+    <br>
+    <hr>
+    <h4>User Lists</h4>
+
+    <p>
+        Send a message of type "active_users_list" containing a field named "users" with an array containing all the
+        authenticated users who have an active WS connection. Each user is represented as an object with a field
+        "username"
+    </p>
+    <p>
+        Example Message: {"messageType": "active_users_list", "users": [{"username": "admin"}, {"username":
+        "cse312"}]}
+    </p>
+
+    <p>
+        Broadcast this message to all WS users whenever this list changes. This includes whenever you finish a WS
+        handshake (adding a user), and whenever you see a disconnect opcode (removing a user).
+    </p>
 
 
-        <br>
-        <hr>
-        <h3>Grading</h3>
-        <hr>
-        <p>Each objective will be scored on a 0-3 scale as follows:</p>
-
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3 (Complete)</td>
-                <td>Clearly correct</td>
-            </tr>
-            <tr>
-                <td>2 (Complete)</td>
-                <td>Mostly correct, but with some minor issues
-                </td>
-            <tr>
-                <td>1 (Incomplete)</td>
-                <td>Not all features outlined in this document are functional, but an honest attempt was made to
-                    complete the objective
-                </td>
-            <tr>
-                <td>0.3 (Incomplete)</td>
-                <td>The objective would earn a 3, but a security risk was found while testing</td>
-            <tr>
-                <td>0.2 (Incomplete)</td>
-                <td>The objective would earn a 2, but a security risk was found while testing</td>
-            <tr>
-                <td>0.1 (Incomplete)</td>
-                <td>The objective would earn a 1, but a security risk was found while testing</td>
-            <tr>
-                <td>0 (Incomplete)</td>
-                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
-        </table>
-        <br>
-        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
-            is meant to give you more feedback on your work.</p>
-
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3</td>
-                <td>Objective Complete</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>
-                    Objective Complete
-                </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-        </table>
-        <br>
-        <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
-
-        <br>
-        <hr>
-        <h3>Security Essay</h3>
-        <br>
-        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
-            the
-            objective by submitting an essay about the security issue you exposed. These essays must:</p>
-
-        <ul>
-            <li>Be at least 1000 words in length</li>
-            <li>Explain the security issue from your submission with specific details about your code</li>
-            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
-            </li>
-            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
-                in
-                production code with live users
-            </li>
-        </ul>
+    <br>
+    <hr>
+    <h3>
+        Application Objective 1 - Continuation Frames and Back-to-Back Messages
+    </h3>
+    <hr/>
 
 
-        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
-            incomplete.</p>
+    <p>
+        Expand your WebSocket code to support the processing of multiple frames under the following two conditions:
+    </p>
+    <ul>
+        <li>
+            Continuation Frames
+            <ul>
+                <li>
+                    Check the FIN bit and handle messages that are sent over multiple frames. We will test with
+                    payloads > 131000 using chrome which sends messages over this size in multiple frames
+                </li>
+            </ul>
+        </li>
 
-        <p>Due Date: Security essays are due 1-week after grades are released.</p>
+        <li>
+            Back-to-Back Frames
+            <ul>
+                <li>
+                    Your server must also handle multiple messages sent back-to-back. If another frame is sent while
+                    you are buffering, your last read from the TCP socket may contain the beginning of the next
+                    frame. Ensure that you are properly parsing these frames even when one read from the socket
+                    contains parts of multiple frames
+                </li>
+            </ul>
+        </li>
+    </ul>
 
-        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
-            of
-            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
-            for
-            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
-            course
-            staff.</p>
+    <p>
+        To complete this objective, your server must handle the case where multiple messages requiring continuation
+        frames are sent back-to-back.
+    </p>
 
-        <p>When you don't have to write an essay:</p>
-        <ul>
-            <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
-                secure
-            </li>
-            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
-            </li>
-        </ul>
+    {#        <br>#}
+    {#        <hr>#}
+    {#        <h3>#}
+    {#            Application Objective 2 - Direct Messaging (DMs)#}
+    {#        </h3>#}
+    {#        <hr>#}
+    {##}
+    {#        <p>#}
+    {#            Implement DMs on the Direct Messaging page. To accomplish this, add the following functionality to your#}
+    {#            server:#}
+    {#        </p>#}
+    {##}
+    {#        <ul>#}
+    {#            <li>#}
+    {#                When a client sends a WS message of type "get_all_users", send them a list of all users who've#}
+    {#                registered on your app#}
+    {#                <ul>#}
+    {#                    <li>#}
+    {#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        Send the user list in this format - {"messageType": "all_users_list", "users": [{"username":#}
+    {#                        "admin"}, {"username": "cse312"}]}#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        Note that you're returning all users whether they are currently using the app or not. Return#}
+    {#                        ever registered user. This will populate the dropdown list for DMs#}
+    {#                    </li>#}
+    {#                </ul>#}
+    {#            </li>#}
+    {#            <li>#}
+    {#                When a client sends a WS message of type "select_user", which means they chose this user from the DM#}
+    {#                dropdown, send them all the DM history between them and the chosen user#}
+    {#                <ul>#}
+    {#                    <li>#}
+    {#                        You'll receive a message in this format - {"messageType":"select_user","targetUser":"koby"}#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        Send this user a WS message of type "message_history" containing all the DMs sent between these#}
+    {#                        2 users sorted by age (Oldest first)#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        Message history format - {"messageType": "message_history", "messages": [{"messageType":#}
+    {#                        "direct_message", "fromUser": "admin", "text": "hi"}, {"messageType": "direct_message",#}
+    {#                        "fromUser": "koby", "text": "hey"}]}#}
+    {#                    </li>#}
+    {#                </ul>#}
+    {#            </li>#}
+    {#            <li>#}
+    {#                Users send message DMs as WS messages of type "direct_message"#}
+    {#                <ul>#}
+    {#                    <li>#}
+    {#                        DM format (from client) - {"messageType":"direct_message", "targetUser":"koby", "text":"hi"}#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        When you receive a DM, store it in your database and send the message to both clients in the#}
+    {#                        conversation#}
+    {#                    </li>#}
+    {#                    <li>#}
+    {#                        DM format (from server) - {"messageType": "direct_message", "fromUser": "admin", "text": "hey"}#}
+    {#                    </li>#}
+    {#                </ul>#}
+    {#            </li>#}
+    {#        </ul>#}
+    {##}
+    {#        <p>#}
+    {#            Security: Do not send DMs to anyone other than the 2 users who are part of the conversation.#}
+    {#        </p>#}
+
+    <br>
+    <hr>
+    <h3>
+        Application Objective 2 - Video Calls with WebRTC
+    </h3>
+    <hr/>
+
+    <p>
+        Build a Zoom clone. This feature will allow users to create video call "rooms" that can be joined by other
+        users. Each room can contain any subset of users, and they can all share audio and video in peer-to-peer
+        connections using WebRTC.
+    </p>
+
+    <p>
+        Add a POST endpoint at the path "/api/video-calls" that will create a new video call. The body of the
+        request will be a JSON object with a field named "name" that should be stored as the name of the room.
+        Your app will respond with the id of the room (Generated by you) in a JSON object
+        (eg. {"id":"67e42b3b0cb5bda054049243"}).
+    </p>
+
+    <p>
+        To enable this feature, you'll need to support the following WS messages:
+    </p>
+
+    <ul>
+        <li>
+            messageType - "get_calls"
+            <ul>
+                <li>
+                    Sent by the client. This is a request for a list of all the calls so the Video Call page can
+                    populate all the available calls
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "call_list"
+            <ul>
+                <li>
+                    Sent by your server in response to a get_calls message. This is a list of every available call
+                    in a JSON object with the fields "id" and "name"
+                </li>
+                <li>
+                    Example message - {"messageType": "call_list", "calls": [{"id": "67e426f9042e96b4cfaa70f2",
+                    "name": "meeting"}, ... ]}
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "join_call"
+            <ul>
+                <li>
+                    Sent by the client when they join a video call. Contains the id of the room being joined
+                </li>
+                <li>
+                    Example message - {"messageType":"join_call", "callId":"67e426f9042e96b4cfaa70f2"}
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "call_info"
+            <ul>
+                <li>
+                    Sent by your server when a user joins a call. Contains the name of the room
+                </li>
+                <li>
+                    Example message - {"messageType":"call_info", "name":"meeting"}
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "existing_participants"
+            <ul>
+                <li>
+                    Sent by your server to let the users of a room know who else is on the call. Send this to a user
+                    when they join the room in reaction to the "join_call" message. Their frontend will then send
+                    messages to start all the required webRTC connections
+                </li>
+                <li>
+                    Example message - {"messageType": "existing_participants", "participants": [{"socketId":
+                    "febd4d3a-9e61-4a95-8e52-37ba64e2674c", "username": "admin"}, ... ]}
+                </li>
+                <li>
+                    The socketID will be used by your server in other message types. You can/should pull these ids
+                    from the existing connections instead of generating your own. However, as long as you're consistent,
+                    can identify the correct TCP socket, and use unique ids, any values will work.
+                </li>
+{#                FUTURE: Do socketIDs need to be exposed to the front end? Why not use username and remove this
+                          from the API. This requires a front end change so it can't be done mid-semester'#}
+            </ul>
+        </li>
+        <li>
+            messageType - "user_joined"
+            <ul>
+                <li>
+                    Sent by your server when a user joins the room. Broadcast this to all users in the room each
+                    time a user joins
+                </li>
+                <li>
+                    Example message - {"messageType": "user_joined", "socketId":
+                    "0a8e1a10-7f20-4797-bd3e-628735f91216", "username": "jesse"}
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "offer", "answer", and "ice_candidate"
+            <ul>
+                <li>
+                    Sent by the client. Each of these message types contain the corresponding webRTC information to
+                    establish a connection. Each of these messages will contain a "socketId" field. You should
+                    forward the message to the user matching this socket id with a "socketId" field populated with
+                    the sender's socket id and a "username" field containing the senders username (The recipient
+                    doesn't need to know their own socket id/username, but they do need to know the sender)
+                </li>
+            </ul>
+        </li>
+        <li>
+            messageType - "user_left"
+            <ul>
+                <li>
+                    Sent by your server to all users in a call when one of them disconnects their WS. Must
+                    contain their "socketId" in a field
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <br>
+    <hr>
+    <h3>Submission</h3>
+    <hr>
+    <p>Submit all files for your server to Autolab in a .zip file</p>
+
+    <p>
+        If you used any external libraries, be sure to add them to your requirements.txt. Autolab will install all
+        dependencies in this file, and no other dependencies, before starting your server.
+    </p>
+
+    <div class="alert alert-info">
+        It is strongly recommended that you download and test your submission after submitting. To do this, download
+        your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
+        run
+        docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
+        simulates exactly what the TAs will do during grading.
+        <br><br>
+        If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
+        Objective even if your code functions properly when running server.py
+    </div>
+
+
+    <br>
+    <hr>
+    <h3>Grading</h3>
+    <hr>
+    <p>Each objective will be scored on a 0-3 scale as follows:</p>
+
+    <table class="table table-bordered table-skinny">
+        <tr>
+            <td>3 (Complete)</td>
+            <td>Clearly correct</td>
+        </tr>
+        <tr>
+            <td>2 (Complete)</td>
+            <td>Mostly correct, but with some minor issues
+            </td>
+        <tr>
+            <td>1 (Incomplete)</td>
+            <td>Not all features outlined in this document are functional, but an honest attempt was made to
+                complete the objective
+            </td>
+        <tr>
+            <td>0.3 (Incomplete)</td>
+            <td>The objective would earn a 3, but a security risk was found while testing</td>
+        <tr>
+            <td>0.2 (Incomplete)</td>
+            <td>The objective would earn a 2, but a security risk was found while testing</td>
+        <tr>
+            <td>0.1 (Incomplete)</td>
+            <td>The objective would earn a 1, but a security risk was found while testing</td>
+        <tr>
+            <td>0 (Incomplete)</td>
+            <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
+    </table>
+    <br>
+    <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
+        is meant to give you more feedback on your work.</p>
+
+    <table class="table table-bordered table-skinny">
+        <tr>
+            <td>3</td>
+            <td>Objective Complete</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>
+                Objective Complete
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>
+                Objective Not Complete
+            </td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>
+                Objective Not Complete
+            </td>
+        </tr>
+    </table>
+    <br>
+    <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
+
+    <br>
+    <hr>
+    <h3>Security Essay</h3>
+    <br>
+    <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
+        the
+        objective by submitting an essay about the security issue you exposed. These essays must:</p>
+
+    <ul>
+        <li>Be at least 1000 words in length</li>
+        <li>Explain the security issue from your submission with specific details about your code</li>
+        <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+        </li>
+        <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+            in
+            production code with live users
+        </li>
+    </ul>
+
+
+    <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
+        incomplete.</p>
+
+    <p>Due Date: Security essays are due 1-week after grades are released.</p>
+
+    <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
+        of
+        the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+        for
+        scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+        course
+        staff.</p>
+
+    <p>When you don't have to write an essay:</p>
+    <ul>
+        <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
+            secure
+        </li>
+        <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
+        </li>
+    </ul>
 
 
     </div>
