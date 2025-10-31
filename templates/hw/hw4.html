@@ -15,7 +15,7 @@
         <div></div>
     </div>
 
-    <p class="section-card card-testing hw-content">
+    <div class="section-card card-testing hw-content">
 
     <hr/>
     <h3>
@@ -87,7 +87,7 @@
             opcode
             <ul>
                 <li>
-                    An int with the value of the opcode (eg. if the op code is bx1000, this field stores 8 as an
+                    An int with the value of the opcode (eg. if the op code is 0b1000, this field stores 8 as an
                     int)
                 </li>
             </ul>
@@ -117,7 +117,7 @@
     <p>
         Add a function named generate_ws_frame to the util/websockets.py file that takes bytes as a parameter and
         returns a properly formatted WebSocket frame (As bytes) with the input bytes as its payload. Use a fin bit
-        of 1, an op code of bx0001 for text, and no mask. You need to handle all 3 payload length modes.
+        of 1, an op code of 0b0001 for text, and no mask. You need to handle all 3 payload length modes.
     </p>
 
 
