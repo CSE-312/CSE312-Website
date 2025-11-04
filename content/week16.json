@@ -5,6 +5,14 @@
   "recitation": "No Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "December 8",
+      "time": "9:00 AM",
+      "assignment": "Homework 5",
+      "deadline_type": "ao"
+    },
+    {
       "lecture": "break.json",
       "day": "Monday",
       "date": "December 8"
