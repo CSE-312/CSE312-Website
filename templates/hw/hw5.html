@@ -9,8 +9,6 @@
 
 {% block task %}
 
-
-
     <div class="card-header section-testing">
         <div></div>
     </div>
@@ -19,84 +17,134 @@
 
         <hr/>
         <h3>
-            Introduction
-        </h3>
-        <hr/>
-        <p>
-            You will continue to add features to your app
-        </p>
-
-        <hr/>
-        <h3>
             Learning Objective - HTTPS with Nginx
         </h3>
         <hr/>
         <p>
-            Setup your app to listen for HTTPS requests on port 443 using a self-signed certificate and nginx running in a separate docker container. The app must function properly. More specifically:
+            Set up your app to listen for HTTPS requests on port 443 using a self-signed certificate and nginx
+            running in a separate docker container. All features from the previous learning objectives must still be
+            functional (With some reasonable exceptions. For example, it's ok if guest chat isn't working now that
+            you have authenticated chat). You must include the following:
+        </p>
+        <ul>
+            <li>
+                Your server should listen for HTTP (Unencrypted) requests on port 80. Whenever a requests is received on
+                port 80, you should redirect the user to the same path on port 443 using HTTPS
+            </li>
+            <li>
+                Be sure to test your WebSocket features and make sure they use WSS. The front end will detect that
+                HTTPS is being used and will attempt to establish a WSS connection
+            </li>
+            <li>
+                Update your auth token cookie to include the "secure" directive
+            </li>
+        </ul>
 
-If you receive an HTTP request over port 80, it should be redirected to HTTPS over port 443
-The app should be set up to use WebSockets for the chat feature. The WebSockets should be encrypted using WSS
-Add the secure directive to your auth token cookies
-
+        <p>
+            When this objective is complete, you should be able to run your app using docker and navigate to
+            https://localhost to use your app. Since you are now using default ports, you don't have to specify the
+            port. You should also be able to visit http://localhost and see a redirect to https://localhost. When
+            visiting your app for the first time, you should expect the browser to give you a warning about using
+            a self-signed certificate.
+        </p>
+        <p>
+            You will need to generate a private key and a self-signed certificate to enable HTTPS. For this objective,
+            you may use an additional script to accomplish this. You should name this script "setup.sh" and save it in
+            the root directory of your project. If this
+            file exists, we will run it before starting your app while grading. The intent is for this script to
+            generate your encryption keys, though you have the freedom to do whatever setup you'd like in this script.
+            You may also choose to not include a script and set up your keys in your Dockerfile if you prefer. You
+            may assume this script will be executed in a *nix environment with openssl installed.
         </p>
 
         <p>
-            Testing Procedure
-Start your server with docker compose up
-Open a browser and, with the network tab open, navigate to http://localhost
-Accept any warning about a self-signed certificate
-Verify that the home page loads
-Check the network tab to verify that you received a redirect to https://localhost and that the page loaded properly over HTTPS
-Verify that WebSocket connection was made using the WSS protocol
-Register and login
-Send a message in chat and verify that the feature still works (Displays your username) over WSS
-Check the auth token cookie and verify that the secure directive was set
+            When we test your app we will:
+        </p>
+
+        <ol>
+            <li>
+                Run "setup.sh" if it exists
+            </li>
+            <li>
+                Run "docker compose up"
+            </li>
+            <li>
+                Test the features of your app at https://locahost and http://localhost
+            </li>
+        </ol>
+
+
+        <p>
+            <b>Security</b>: Do not include any private encryption keys in your submission.
         </p>
 
         <p>
-            -nginx
-            -https w/ pre-created self-signed certs
+            <b>Security</b>: Your auth token must use the secure directive.
         </p>
+
+
 
         <br>
         <hr>
         <h3>
-            Application Objective 1 - IP Rate Limiting
+            Application Objective 1 - DoS Slow Send
         </h3>
         <hr/>
 
         <p>
-            DoS Protection (IP rate limiting)
-Add very basic DoS protection to your app based on rate limiting IP addresses. Your IP protection should:
-
-Block requests from an IP address if it has made more than 50 requests within a 10 second period
-Every single request from an IP should count towards this limit (eg. Just loading your homepage requires ~5 requests that all count toward the limit)
-While an IP is blocked, respond to all requests from the IP with a 429 "Too Many Requests" response with a message explaining the issue to the user
-When an IP becomes blocked, it should remain blocked for 30 seconds
-After 30 seconds pass, requests from the IP should be handled as usual unless they hit your rate limit and become blocked again
-Testing Procedure
-Navigate to the public deployment
-Count the number of requests made to load the page
-Refresh slowly enough times to reach 70 requests, but not fast enough to trigger the rate limiter (<50 requests per 10 seconds)
-Ensure all requests are handled as expected
-Wait ~10 seconds
-Refresh quickly such that >50 requests are sent in at 10 second window
-Ensure that after the 50th request, you start seeing 429 responses and the page no longer loads
-Wait ~20 seconds
-Refresh the page and ensure that you are still blocked
-Wait another ~10 seconds
-Refresh the page and ensure that it loads
-[Hit the rate limit again on the same device] Refresh quickly such that >50 requests are sent in at 10 second window
-Ensure that after the 50th request, you start seeing 429 responses and the page no longer loads
-Within 30 seconds, on a second device with a different public IP address, navigate to the public deployment and ensure that the page loads
-Make sure the other device has a different public IP address. If you are at a residence, all your devices probably have the same public IP address. To ensure you have a different IP, you can use your phone on mobile data, or turn on a VPN
+            For this objective, you will both launch a DoS slow send attack and protect against such an attack.
         </p>
 
         <p>
-            -Forwarding real IP through nginx
-            -IP Rate limiting
-            -Testing when you're on localhost - no excuse after grading that you didn't know
+            <b>Attack</b>: In the root directory of your project, write a python script named "dos.py" that will launch
+            your slow send attack. Your attack must meet the following criteria:
         </p>
+
+        <ul>
+            <li>
+                It must be a slow send attack. Writing a script that successfully launches a different style of DoS
+                attack will not complete this objective
+            </li>
+            <li>
+                You may assume the target site is accepting HTTP requests on both port 80 and 8080 as well as HTTPS
+                requests on port 443
+            </li>
+            <li>
+                The attack is considered successful if the app experiences notable slow down (100's of milliseconds is
+                sufficient) after running dos.py a
+                single time. This slowdown should last for a significant amount (Minutes) of time while the attack
+                continues. To measure the slowdown, you can check the roundtrip times of you app running without the
+                attack and compare them to the times while your attack is running. The app doesn't have to completely
+                shut down, but you should experience <em>at least</em> several 100 milliseconds of additional roundtrip
+                time
+            </li>
+            <li>
+                The attack will be tested on a typical CSE312 HW server that has all the features you would expect,
+                including buffering, without any DoS protection
+            </li>
+        </ul>
+
+        <p>
+            <b>Countermeasure</b>: Protect against this attack. Any method of prevention is acceptable, though the
+            intended approach is to add a timeout to your buffering code. When you detect that your app has been
+            buffering for a while, close the connection. Your countermeasure must meet the following criteria:
+        </p>
+
+        <ul>
+            <li>
+                After a slow send attack is launched, your app recovers in a reasonable amount of time (seconds). It is
+                ok to experience slowdown when the attack first begins (eg. before your timeout is reached)
+            </li>
+            <li>
+                Your countermeasure must protect against this family of attacks, not just your implementation from this
+                objective (eg. We will use our own attack during grading)
+            </li>
+            <li>
+                All features must still work for users who are not launching a DoS attack on your server. Specifically,
+                make sure your WebSocket connections do not time out
+            </li>
+        </ul>
+
 
         <br>
         <hr>
@@ -106,19 +154,61 @@ Make sure the other device has a different public IP address. If you are at a re
         <hr/>
 
         <p>
-            Warning: This objective is much more substantial than the other 2 on this HW
-        </p>
-        <p>
-            -Add an auth server
-            -Use nginx to route register/login to this server
-            -Auth server issues JWTs as cookies
-            -App server verifies JWTs for auth (Shared secret or excryption keys. I prefer encryption keys. Maybe generated in Python or during compose up)
-            --must be done without talking a DB
-            -CORS may have something to say here that also needs to be handled (Probably not though since from the browsers pov, it's all 1 server, nginx)
+            Create a separate authentication (auth) server that will issue JWTs when a user logs in. This auth server
+            must run in a 4th container using docker compose. This server will handle all registration and login
+            requests for your app. When a user connects to an endpoint of your app that requires authentication, it
+            will use the self-contained JWT to verify the user. You have some freedom in your design as long as your app
+            meets the following criteria:
         </p>
 
-        Do I let them use a library for most of the work? Would need to remove the warning about this one being harder than the other 2
-        https://pyjwt.readthedocs.io/en/latest/usage.html#encoding-decoding-tokens-with-rs256-rsa
+        <ul>
+            <li>
+                Use nginx to route all authentication requests (/register, /login, /logout) to your auth server, and all
+                other requests to your app server
+            </li>
+            <li>
+                The JWT's issues by your auth server must be cryptographically signed using a private key that is only
+                accessible by the auth server. These must be different keys than the ones used by nginx for TLS
+            </li>
+            <li>
+                Your app must verify JWTs without communicating with the auth server
+            </li>
+            <li>
+                Your app must verify JWTs without a database lookup
+            </li>
+        </ul>
+
+        <p>
+            You will have to solve the problem of generating a public/private key pair, storing the private key only
+            on the auth server, and sharing the public key with your app server. There are several ways to solve this
+            problem with the intended approach being to add to your setup.sh script and handle it there. Note that you
+            call a Python script from setup.sh if you prefer to do this in Python. Alternatively, you may generate these
+            keys in your auth server and provide an endpoint for your app to ask the auth server for the public key.
+            This is the only direct communication allowed between the two servers.
+        </p>
+
+        <p>
+            You are allowed to use
+            <a href="https://pyjwt.readthedocs.io/en/latest/usage.html#encoding-decoding-tokens-with-rs256-rsa">
+                libraries</a> to sign and verify JWTs.
+        </p>
+
+        <p>
+            <b>Security</b>: Do not include any private encryption keys in your submission.
+        </p>
+
+        <p>
+            <b>Security</b>: Your JWT's must use the secure and httpOnly directives set.
+        </p>
+
+        <p>
+            <b>Security</b>: Your JWT's must be cryptographically signed in a way that they cannot be forged.
+        </p>
+
+        <p>
+            <b>Security</b>: Any private key(s) must only be known to you auth server. Not even your app server should
+            have access to this key.
+        </p>
 
 
         <br>
