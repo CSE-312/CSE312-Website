@@ -1,4 +1,10 @@
 {
   "title": "JSON Web Tokens (JWTs)",
-  "reading_list": []
+  "slides": "5_5_JWT.pdf",
+  "reading_list": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc7519",
+      "text": "RFC 7519 - JWT"
+    }
+  ]
 }
