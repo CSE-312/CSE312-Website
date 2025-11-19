@@ -83,7 +83,6 @@
         </p>
 
 
-
         <br>
         <hr>
         <h3>
@@ -165,6 +164,11 @@
             <li>
                 Use nginx to route all authentication requests (/register, /login, /logout) to your auth server, and all
                 other requests to your app server
+                <ul>
+                    You may add more paths to your auth server if you'd like, but only these 3 are required. For
+                    example, it makes sense for password changes (/api/users/settings), enabling TOTP, and GitHub OAuth
+                    to be routed to your auth server but these paths will not be tested while grading this objective
+                </ul>
             </li>
             <li>
                 The JWT's issued by your auth server must be cryptographically signed using a private key that is only
@@ -175,6 +179,16 @@
             </li>
             <li>
                 Your app must verify JWTs without a database lookup
+                <ul>
+                    <li>
+                        After the JWT is verified, you may still access the database. You just can't use the DB to
+                        verify the user's identity. It's even ok if you verify the user, then pull their profile from
+                        the DB on the very next line of code. In practice, you would have a different DB for each server
+                        and the app server would not access the auth servers DB which would contain hashed/salted
+                        passwords. For this assignment, it's ok if you use
+                        a single DB though you're welcome to separate them if you'd prefer
+                    </li>
+                </ul>
             </li>
         </ul>
 
@@ -182,7 +196,8 @@
             You will have to solve the problem of generating a public/private key pair, storing the private key only
             on the auth server, and sharing the public key with your app server. There are several ways to solve this
             problem with the intended approach being to add to your setup.sh script and handle it there. Note that you
-            call a Python script from setup.sh if you prefer to do this in Python. Alternatively, you may generate these
+            can call a Python script from setup.sh if you prefer to do this in Python. Alternatively, you may generate
+            these
             keys in your auth server and provide an endpoint for your app to ask the auth server for the public key.
             This is the only direct communication allowed between the two servers.
         </p>
@@ -198,7 +213,7 @@
         </p>
 
         <p>
-            <b>Security</b>: Your JWT's must use the secure and httpOnly directives set.
+            <b>Security</b>: Your JWT's must have the secure and httpOnly directives set.
         </p>
 
         <p>
