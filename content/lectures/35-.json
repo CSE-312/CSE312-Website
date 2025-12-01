@@ -1,5 +1,11 @@
 {
   "title": "Architecture Decisions",
   "slides": "5_5_Architecture.pdf",
-  "reading_list": []
+  "reading_list": [
+    {
+      "url": "https://docs.google.com/presentation/d/1TSO556Hs2IfvhBmWzDlIjpcmJnzJu7vUMXsKLF98zag/edit?usp=sharing",
+      "text": "Actual Slides"
+    }
+    
+  ]
 }
