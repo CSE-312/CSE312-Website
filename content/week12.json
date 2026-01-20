@@ -1,37 +1,29 @@
 {
-  "title": "Week 12: HTTPS and Deployment",
-  "theme": "hw5",
+  "title": "Week 12: WebRTC",
+  "theme": "new-test",
+  "recitation": "Yes Recitation",
   "homework": [
     {
       "title": "Homework 5: Deployment",
       "url": "hw/hw5.html",
-      "released": true
+      "released": false
     }
   ],
-  "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "23-ws_testing.json",
       "day": "Monday",
-      "date": "November 10",
-      "time": "9:00 AM",
-      "assignment": "Homework 4",
-      "deadline_type": "lo"
+      "date": "April 6"
     },
     {
-      "lecture": "29-encryption.json",
-      "day": "Monday",
-      "date": "November 10"
-    },
-    {
-      "lecture": "30-https.json",
+      "lecture": "27-webrtc1.json",
       "day": "Wednesday",
-      "date": "November 12"
+      "date": "April 8"
     },
     {
-      "lecture": "31-nginx.json",
+      "lecture": "28-webrtc2.json",
       "day": "Friday",
-      "date": "November 14"
+      "date": "April 10"
     }
   ]
 }

@@ -1,30 +1,30 @@
 {
   "title": "Week 2: Web App Basics",
-  "theme": "hw1",
+  "theme": "testing",
   "homework": [
     {
       "title": "Homework 1: HTTP",
       "url": "hw/hw1.html",
-      "released": true
+      "released": false
     }
   ],
   "recitation": "No Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_1_Class_Overview.pdf",
   "content": [
     {
-      "lecture": "break.json",
+      "lecture": "2-encodings.json",
       "day": "Monday",
-      "date": "September 1"
+      "date": "January 26"
     },
     {
       "lecture": "3-post.json",
       "day": "Wednesday",
-      "date": "September 3"
+      "date": "January 28"
     },
     {
       "lecture": "4-db.json",
       "day": "Friday",
-      "date": "September 5"
+      "date": "January 30"
     }
   ]
 }

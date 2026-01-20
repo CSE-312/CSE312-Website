@@ -1,6 +1,6 @@
 {
-  "title": "Week 13: Deployment",
-  "theme": "hw5",
+  "title": "Week 13: HTTPS and Deployment",
+  "theme": "new-test",
   "homework": [
 ],
   "recitation": "Yes Recitation",
@@ -8,25 +8,25 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "November 17",
+      "date": "April 13",
       "time": "9:00 AM",
       "assignment": "Homework 4",
-      "deadline_type": "ao"
+      "deadline_type": "lo"
     },
     {
-      "lecture": "32-.json",
+      "lecture": "29-encryption.json",
       "day": "Monday",
-      "date": "November 17"
+      "date": "April 13"
     },
     {
-      "lecture": "33-.json",
+      "lecture": "30-https.json",
       "day": "Wednesday",
-      "date": "November 19"
+      "date": "April 15"
     },
     {
-      "lecture": "34-.json",
+      "lecture": "31-nginx.json",
       "day": "Friday",
-      "date": "November 21"
+      "date": "April 17"
     }
   ]
 }

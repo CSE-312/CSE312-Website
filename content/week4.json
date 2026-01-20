@@ -1,38 +1,23 @@
 {
-  "title": "Week 4: Authentication",
-  "theme": "hw2",
-  "homework": [
-    {
-      "title": "Homework 2: Authentication",
-      "url": "hw/hw2.html",
-      "released": true
-    }
-  ],
+  "title": "Week 4: HTTP and Docker Examples",
+  "theme": "testing",
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "7_1-hw1-examples.json",
       "day": "Monday",
-      "date": "September 15",
-      "time": "9:00 AM",
-      "assignment": "Homework 1",
-      "deadline_type": "lo"
-    },
-    {
-      "lecture": "8-auth.json",
-      "day": "Monday",
-      "date": "September 15"
+      "date": "February 9"
 
     },
     {
-      "lecture": "9-auth_sessions.json",
+      "lecture": "7_2-hw1-examples.json",
       "day": "Wednesday",
-      "date": "September 17"
+      "date": "February 11"
     },
     {
-      "lecture": "10-xsrf.json",
+      "lecture": "7_3-hw1-examples.json",
       "day": "Friday",
-      "date": "September 19"
+      "date": "February 13"
     }
   ]
 }

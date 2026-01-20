@@ -1,23 +1,31 @@
 {
-  "title": "Week 15: Content",
+  "title": "Week 15: Real-World Deployment",
   "theme": "outro",
   "homework": [],
   "recitation": "Yes Recitation",
   "content": [
     {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 27",
+      "time": "9:00 AM",
+      "assignment": "Homework 5",
+      "deadline_type": "lo"
+    },
+    {
       "lecture": "35-.json",
       "day": "Monday",
-      "date": "December 1"
+      "date": "April 27"
     },
     {
       "lecture": "36-.json",
       "day": "Wednesday",
-      "date": "December 3"
+      "date": "April 29"
     },
     {
       "lecture": "37-.json",
       "day": "Friday",
-      "date": "December 5"
+      "date": "May 1"
     }
   ]
 }

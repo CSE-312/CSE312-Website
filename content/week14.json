@@ -1,0 +1,32 @@
+{
+  "title": "Week 14: Deployment",
+  "theme": "intro",
+  "homework": [
+  ],
+  "recitation": "No Recitation",
+  "content": [
+    {
+      "type": "deadline",
+      "day": "Monday",
+      "date": "April 20",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": "ao"
+    },
+    {
+      "lecture": "32-.json",
+      "day": "Monday",
+      "date": "April 20"
+    },
+    {
+      "lecture": "33-.json",
+      "day": "Wednesday",
+      "date": "April 22"
+    },
+    {
+      "lecture": "34-.json",
+      "day": "Friday",
+      "date": "April 24"
+    }
+  ]
+}

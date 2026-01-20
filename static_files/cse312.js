@@ -12,7 +12,7 @@ function bodyLoaded() {
 
 function setDarkMode(isDark) {
     // Based on https://stackoverflow.com/a/37416531
-    var darkCss = document.getElementById("darkThemeCss");
+    const darkCss = document.getElementById("darkThemeCss");
     darkCss.disabled = !isDark;
     localStorage.setItem("darkTheme", isDark)
 }
@@ -24,10 +24,10 @@ function collapse() {
         }
     }
     for (let x of document.getElementsByTagName("a")) {
-        if (x.getAttribute("data-toggle")) {
+        if (x.getAttribute("data-bs-toggle")) {
             x.addEventListener("click", function () {
-                const elem = document.getElementById(x.getAttribute("data-target").replace("#", ""));
-                if (elem.classList.contains("show")) {
+                const elem = document.getElementById(x.getAttribute("data-bs-target").replace("#", ""));
+                if (x.classList.contains("collapsed")) {
                     localStorage.setItem(elem.id, "hide");
                 } else {
                     localStorage.removeItem(elem.id);

@@ -4,17 +4,17 @@
 
 {% block header %}
     <h1>CSE312: Web Applications</h1>
-    <h2>Fall 2025</h2>
+    <h2>Spring 2026</h2>
     <a href="#current-week" target="_self">Jump to current week</a>
 {% endblock %}
 
 {% block content %}
 
     <div class="card">
-        <a data-toggle="collapse" data-target="#links">
+        <a data-bs-toggle="collapse" data-bs-target="#links">
             <div class="card-header text-white section-header">
                 <div>
-                    Links <span class="float-right"><i
+                    Links <span class="float-end"><i
                         class='far fa-caret-square-down'></i></span>
                 </div>
             </div>
@@ -24,23 +24,23 @@
             <div class="card-body">
 
 
-                <a href="https://autolab.cse.buffalo.edu/courses/cse312-f25/assessments" class="non_visual_link">
+                <a href="https://autolab.cse.buffalo.edu/courses/cse312-s26/assessments" class="non_visual_link">
                     <img src="static_files/images/autolab.svg" class="img-responsive my-social-icon" alt="Autolab"/>
                     Submit programming
                     assignments</a>
                 <br/>
 
-                <a href="https://app.tophat.com/e/625053/content/course-work/item/1395463::4a3b711e-8880-4ea6-9cd6-7738243f8f09" class="non_visual_link">
+                <a href="https://app.tophat.com/e/028159/content/course-work" class="non_visual_link">
                     <img src="static_files/images/tophat.ico" class="img-responsive my-social-icon" alt="TopHat"/>
                     Answer Lecture Questions</a>
                 <br/>
 
-                <a href="https://legacy.piazza.com/class/meizjsdanqb3hs/post/6" class="non_visual_link">
+                <a href="https://piazza.com/class/mkn1yihsoqb659/post/6" class="non_visual_link">
                     <img src="static_files/images/piazza.png" class="img-responsive my-social-icon" alt="Piazza"/> Ask
                     questions and find office
                     hours</a><br/>
 
-                <a href="https://ublearns.buffalo.edu/d2l/le/content/315765/Home?itemIdentifier=D2L.LE.Content.ContentObject.ModuleCO-4939660"
+                <a href="https://ublearns.buffalo.edu/d2l/le/content/362028/viewContent/5316434/View"
                    class="non_visual_link">
                     <img src="static_files/images/UBLearns.png" class="img-responsive my-social-icon" alt="UBLearns"/>
                     Watch this semester's lectures</a>
@@ -68,10 +68,10 @@
 
 
     <div class="card">
-        <a data-toggle="collapse" data-target="#syllabus">
+        <a data-bs-toggle="collapse" data-bs-target="#syllabus">
             <div class="card-header text-white section-header">
                 <div>
-                    Syllabus <span class="float-right"><i
+                    Syllabus <span class="float-end"><i
                         class='far fa-caret-square-down'></i></span>
                 </div>
             </div>
@@ -91,10 +91,10 @@
 
     {% for week_content in weeks %}
         <div{% if "current_week" in week_content %} id="current-week"{% endif %}>
-            <a data-toggle="collapse" data-target="#card{{ loop.index }}">
+            <a data-bs-toggle="collapse" data-bs-target="#card{{ loop.index }}">
                 <div class="card-header section-{{ week_content.theme }}">
                     <div>
-                        {{ week_content.title }} <span class="float-right"><i
+                        {{ week_content.title }} <span class="float-end"><i
                             class='far fa-caret-square-down'></i></span>
                     </div>
                 </div>

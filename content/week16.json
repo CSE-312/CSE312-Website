@@ -7,7 +7,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "December 8",
+      "date": "May 4",
       "time": "9:00 AM",
       "assignment": "Homework 5",
       "deadline_type": "ao"
@@ -15,12 +15,12 @@
     {
       "lecture": "break.json",
       "day": "Monday",
-      "date": "December 8"
+      "date": "May 4"
     },
     {
       "lecture": "final.json",
-      "day": "Friday",
-      "date": "December 12"
+      "day": "Monday",
+      "date": "May 11"
     }
   ]
 }

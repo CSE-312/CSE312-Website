@@ -1,31 +1,37 @@
 {
-  "title": "Week 7: Video",
-  "theme": "hw3",
-  "homework": [],
+  "title": "Week 7: Multipart Requests and Media Uploads",
+  "theme": "fp",
+  "homework": [
+    {
+      "title": "Homework 3: Media Uploads",
+      "url": "hw/hw3.html",
+      "released": false
+    }
+  ],
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "October 6",
+      "date": "March 2",
       "time": "9:00 AM",
       "assignment": "Homework 2",
-      "deadline_type": "ao"
+      "deadline_type": "lo"
     },
     {
-      "lecture": "17-video.json",
+      "lecture": "14-multipart.json",
       "day": "Monday",
-      "date": "October 6"
+      "date": "March 2"
     },
     {
-      "lecture": "18-abr.json",
+      "lecture": "15-buffering.json",
       "day": "Wednesday",
-      "date": "October 8"
+      "date": "March 4"
     },
     {
-      "lecture": "19-streaming.json",
+      "lecture": "16-upload_examples.json",
       "day": "Friday",
-      "date": "October 10"
+      "date": "March 6"
     }
   ]
 }

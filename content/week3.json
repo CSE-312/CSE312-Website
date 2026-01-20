@@ -1,24 +1,24 @@
 {
   "title": "Week 3: APIs and Docker",
-  "theme": "hw1",
+  "theme": "testing",
   "recitation": "Yes Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_2_HW1.pdf",
   "content": [
     {
       "lecture": "5-api.json",
       "day": "Monday",
-      "date": "September 8"
+      "date": "February 2"
 
     },
     {
       "lecture": "6-cookies.json",
       "day": "Wednesday",
-      "date": "September 10"
+      "date": "February 4"
     },
     {
       "lecture": "7-docker.json",
       "day": "Friday",
-      "date": "September 12"
+      "date": "February 6"
     }
   ]
 }

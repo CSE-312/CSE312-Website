@@ -1,7 +1,12 @@
 {
-  "title": "Week 10: Midterm",
-  "theme": "hw4",
+  "title": "Week 10: WebSockets",
+  "theme": "ds",
   "homework": [
+    {
+      "title": "Homework 4: WebSockets",
+      "url": "hw/hw4.html",
+      "released": false
+    }
   ],
   "recitation": "Yes Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_MT_REVIEW.pdf",
@@ -9,25 +14,25 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "October 27",
+      "date": "October 13",
       "time": "9:00 AM",
       "assignment": "Homework 3",
-      "deadline_type": "ao"
+      "deadline_type": "lo"
     },
     {
-      "lecture": "23-ws_testing.json",
+      "lecture": "20-ws1.json",
       "day": "Monday",
-      "date": "October 27"
+      "date": "March 23"
     },
     {
-      "lecture": "24-mid_review1.json",
+      "lecture": "21-ws2.json",
       "day": "Wednesday",
-      "date": "October 29"
+      "date": "March 25"
     },
     {
-      "lecture": "25-mid_review2.json",
+      "lecture": "22-ws3.json",
       "day": "Friday",
-      "date": "October 31"
+      "date": "March 27"
     }
   ]
 }

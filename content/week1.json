@@ -6,18 +6,13 @@
   "content": [
     {
       "lecture": "0-intro.json",
-      "day": "Monday",
-      "date": "August 25"
+      "day": "Wednesday",
+      "date": "January 21"
     },
     {
       "lecture": "1-http.json",
-      "day": "Wednesday",
-      "date": "August 27"
-    },
-    {
-      "lecture": "2-encodings.json",
       "day": "Friday",
-      "date": "August 29"
+      "date": "January 23"
     }
   ]
 }

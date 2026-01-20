@@ -8,9 +8,37 @@
     --card-subheader-color: #272727;
     --card-border-color: #5b6b80;
     --text-color: #d9d9d9; /* A little easier on the eyes than white */
+
     --link-color: #67b2e8;
     --link-hover-color: #bfccff;
+
+    /* Sync Bootstrap 5 to our colors */
+    --bs-body-bg: var(--card-background-color);
+    --bs-table-bg: var(--card-background-color);
+    --bs-body-color: var(--text-color);
+    --bs-table-color: var(--text-color);
+    --bs-emphasis-color: var(--text-color);
 }
+
+.required {
+    color: #f68289;
+}
+
+code, pre {
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: unset;
+    background-color: #353535;
+    font-family: Consolas,"Liberation Mono","Courier New",monospace;
+}
+
+.notice-me {
+    border: 2px solid #8ee3f1;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #143b43;
+}
+
 
 /* The whole page */
 body.outer {

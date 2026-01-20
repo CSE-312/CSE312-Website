@@ -1,24 +1,32 @@
 {
-  "title": "Week 11: WebRTC",
-  "theme": "hw4",
+  "title": "Week 11: Midterm",
+  "theme": "ds",
   "homework": [],
   "recitation": "Yes Recitation",
   "rec_slide_url": "static_files/rec_slides/REC_10_HW4_websockets.pdf",
   "content": [
     {
-      "lecture": "26-midterm.json",
+      "type": "deadline",
       "day": "Monday",
-      "date": "November 3"
+      "date": "March 1",
+      "time": "9:00 AM",
+      "assignment": "Homework 3",
+      "deadline_type": "ao"
     },
     {
-      "lecture": "27-webrtc1.json",
+      "lecture": "24-mid_review1.json",
+      "day": "Monday",
+      "date": "March 1"
+    },
+    {
+      "lecture": "25-mid_review2.json",
       "day": "Wednesday",
-      "date": "November 5"
+      "date": "April 1"
     },
     {
-      "lecture": "28-webrtc2.json",
+      "lecture": "26-midterm.json",
       "day": "Friday",
-      "date": "November 7"
+      "date": "April 3"
     }
   ]
 }

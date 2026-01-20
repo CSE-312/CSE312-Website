@@ -1,37 +1,30 @@
 {
-  "title": "Week 6: Multipart Requests and Media Uploads",
-  "theme": "hw3",
-  "homework": [
-    {
-      "title": "Homework 3: Media Uploads",
-      "url": "hw/hw3.html",
-      "released": true
-    }
-  ],
+  "title": "Week 6: OAuth 2.0",
+  "theme": "oop",
   "recitation": "Yes Recitation",
   "content": [
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "September 29",
+      "date": "February 23",
       "time": "9:00 AM",
-      "assignment": "Homework 2",
-      "deadline_type": "lo"
+      "assignment": "Homework 1",
+      "deadline_type": "ao"
     },
     {
-      "lecture": "14-multipart.json",
+      "lecture": "11-oauth1.json",
       "day": "Monday",
-      "date": "September 29"
+      "date": "February 23"
     },
     {
-      "lecture": "15-buffering.json",
+      "lecture": "12-oauth2.json",
       "day": "Wednesday",
-      "date": "October 1"
+      "date": "February 25"
     },
     {
-      "lecture": "16-upload_examples.json",
+      "lecture": "13-oauth3.json",
       "day": "Friday",
-      "date": "October 3"
+      "date": "February 27"
     }
   ]
 }

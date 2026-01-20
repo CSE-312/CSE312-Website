@@ -4,11 +4,11 @@
     <tr>
         <td class="date">{{ content.day }}<br/>{{ content.date }}</td>
         <td>
-            <h6 class="header">{{ content.title }}
+            <p class="header">{{ content.title }}
                 {% if content.slides %}
                     - <a href="static_files/slides/{{ content.slides }}" target="_blank">Slides</a>
                 {% endif %}
-            </h6>
+            </p>
             {% if content.reading_list %}
                 <ul class="reading">
                     {% for reading_item in content.reading_list %}
