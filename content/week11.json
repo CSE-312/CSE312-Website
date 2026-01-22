@@ -8,7 +8,7 @@
     {
       "type": "deadline",
       "day": "Monday",
-      "date": "March 1",
+      "date": "March 30",
       "time": "9:00 AM",
       "assignment": "Homework 3",
       "deadline_type": "ao"
@@ -16,7 +16,7 @@
     {
       "lecture": "24-mid_review1.json",
       "day": "Monday",
-      "date": "March 1"
+      "date": "March 30"
     },
     {
       "lecture": "25-mid_review2.json",
