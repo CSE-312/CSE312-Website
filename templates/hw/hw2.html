@@ -155,6 +155,10 @@
             (no
             salt) of each token in your database so you can verify them on subsequent requests. Remember that you do not
             hash the cookie, but you do hash what's stored in the DB</p>
+
+        <p>
+            If login is successful, send a 302 Found that redirects the user to your homepage.
+        </p>
         <p>
             If a login is not successful (eg. username doesn't exist), return a 400 response with a message of
             your choosing.
