@@ -157,7 +157,7 @@
             hash the cookie, but you do hash what's stored in the DB</p>
 
         <p>
-            If login is successful, send a 302 Found that redirects the user to your homepage.
+            If login is successful, send a 200 OK wit a message of your choice. The frontend will redirect to the homepage and this message will not be displayed.
         </p>
         <p>
             If a login is not successful (eg. username doesn't exist), return a 400 response with a message of
