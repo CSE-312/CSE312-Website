@@ -53,13 +53,9 @@
             the request. This function returns an object containing the following fields (You have some freedom in how
             you
             design the classes for the objects as long as they have the required fields. Please note that a dict with
-            these fields is not an object. You must create a class, then create objects using that class).
+            these keys is not an object. You must create a class, then create objects using that class).
         </p>
 
-        <p>
-            Note that while you'll create a class to complete this feature, the parse_multipart function itself is not
-            a method of your class.
-        </p>
 
         <ul>
             <li>
@@ -120,11 +116,11 @@
             </li>
         </ul>
 
-        {#        <p>#}
-        {#            When you are testing this, make sure your request is less than the buffer chunk size that the server is requesting.#}
-        {#            In the next part of this LO, you will be implementing buffering, which will allow you to test with larger requests.#}
-        {#            Once you complete it, go back and test your parse_multipart with larger requests (1mb+)#}
-        {#        </p>#}
+        <p>
+            Note that while you'll create a class to complete this feature, the parse_multipart function itself is not
+            a method of your class.
+        </p>
+        
 
         <br>
         <hr>
@@ -215,7 +211,7 @@
 
         <p>
             <b>Do not submit with any print statements printing out the full buffered request body.</b> 
-            If you submit to autolab with these print statements, it will crash your submission. 
+            If you submit to autolab with these print statements, it might crash your submission. 
             This is because you're printing the contents of a very large video file.
         </p>
 
@@ -269,7 +265,7 @@
         <h5>Upload videos (`POST /api/videos`)</h5>
 
         <p>
-            This endpoint with receive videos uploaded from the front end that will contain the videos title,
+            This endpoint will receive videos uploaded from the front end that will contain the videos title,
             description, and the video itself. You should parse the request and store all this information. As with
             images, the videos should be stored in files with only the filename stored in your database. Respond to
             uploads with a 200 OK containing a JSON object with a unique id that you generate for the new video.
@@ -393,7 +389,8 @@
         <p>
             Use ffmpeg to generate 5 possible thumbnail images for each video that is uploaded. These 5 thumbnails
             should be: The first frame of the video, the frame at 25% of the videos runtime, the frame at 50%, the
-            frame at 75%, and the last frame. Save all 5 frames as images and add them all to your videos data in a
+            frame at 75%, and the last frame (It is OK if the last frame is not the literal last frame of the video). 
+            Save all 5 frames as images and add them all to your videos data in a
             "thumbnails" field as an array.
         </p>
 
