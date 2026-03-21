@@ -475,16 +475,17 @@
             dependencies in this file, and no other dependencies, before starting your server.
         </p>
 
-        <div class="alert alert-info">
-            It is strongly recommended that you download and test your submission after submitting. To do this, download
-            your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
-            run
-            docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
-            simulates exactly what the TAs will do during grading.
-            <br><br>
-            If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
-            Objective even if your code functions properly when running server.py
-        </div>
+    <div class="alert alert-info">
+        It is <b>strongly recommended</b> that you download and test your submission after submitting. To do this, download
+        your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
+        run
+        "docker compose up --build --force-recreate", then navigate to localhost:8080 in your browser and test all of your features. This
+        simulates exactly what the TAs will do during grading. If you notice that your database is still populated from your prior tests, you 
+        may also want to run "docker volume prune" to clear your database and all other volumes on your machine.
+        <br><br>
+        If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
+        Objective even if your code functions properly when running server.py.
+    </div>
 
         <br>
         <hr>
@@ -503,7 +504,7 @@
                 </td>
             <tr>
                 <td>1 (Incomplete)</td>
-                <td>Not all features outlined in this document are functional, but an honest attempt was made to
+                <td>Not all features outlined in this document are functional, but an attempt was made to
                     complete the objective
                 </td>
             <tr>

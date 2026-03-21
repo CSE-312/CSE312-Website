@@ -69,9 +69,9 @@
     <p>
         Add a function named parse_ws_frame to the util/websockets.py file that takes bytes as a parameter, that
         represents the bytes of a WebSocket frame, and parses all the values of the frame. The function returns an
-        object (You'll create a class for this object, but parse_ws_frame is not a method in this class) containing
-        the following fields (You have some freedom in how you design the class for this object as
-        long as it has the required fields).
+        object (Note: You'll create a class for this object, but parse_ws_frame is not a method in this class) containing
+        the following fields, You have some freedom in how you design the class for this object as
+        long as it has the required fields.
     </p>
 
     <ul>
@@ -144,7 +144,7 @@
     </p>
 
     <p>
-        When the connection is established, all WS message will be in the form of JSON objects and will all contain
+        When the connection is established, all WS messages will be in the form of JSON objects and will all contain
         a field named "messageType". This messageType will determine how to handle the message.
     </p>
 
@@ -172,7 +172,7 @@
     </p>
 
     <p>
-        These message can, and will during testing, be large enough to test all 3 payload length modes. This also
+        These messages can, and will during testing, be large enough to test all 3 payload length modes. This also
         implies that you must implement buffering for the WebSocket frames you receive. Continuation frames are not
         required for this objective.
     </p>
@@ -213,8 +213,8 @@
     </p>
 
     <p>
-        Note that you will need a way to store all WS connections in a way that can be accessed from all connections
-        to enable broadcasting. This can be done by storing their TCPHandlers in a shared data structure. It's
+        Note that you will need to store all WS connections in a way that can be accessed from all connections
+        to enable broadcasting. This can be done by storing their TCPHandlers in a shared data structure. It is
         recommended that you also store their usernames in this data structure.
     </p>
 
@@ -486,14 +486,15 @@
     </p>
 
     <div class="alert alert-info">
-        It is strongly recommended that you download and test your submission after submitting. To do this, download
+        It is <b>strongly recommended</b> that you download and test your submission after submitting. To do this, download
         your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
         run
-        docker compose up, then navigate to localhost:8080 in your browser and test all of your features. This
-        simulates exactly what the TAs will do during grading.
+        "docker compose up --build --force-recreate", then navigate to localhost:8080 in your browser and test all of your features. This
+        simulates exactly what the TAs will do during grading. If you notice that your database is still populated from your prior tests, you 
+        may also want to run "docker volume prune" to clear your database and all other volumes on your machine.
         <br><br>
         If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
-        Objective even if your code functions properly when running server.py
+        Objective even if your code functions properly when running server.py.
     </div>
 
 
@@ -514,7 +515,7 @@
             </td>
         <tr>
             <td>1 (Incomplete)</td>
-            <td>Not all features outlined in this document are functional, but an honest attempt was made to
+            <td>Not all features outlined in this document are functional, but an attempt was made to
                 complete the objective
             </td>
         <tr>
