@@ -86,6 +86,31 @@
         <br>
         <hr>
         <h3>
+            Application Objective 1 - Static Files
+        </h3>
+        <hr/>
+
+        <p>
+            Modify your nginx configuration to host all of your static files directly through nginx. This means that nginx will respond 
+            to requests for static files without forwarding the request to your server. The static files to be hosted are anything hosted 
+            with you "starts with /public" path.
+        </p>
+
+        <p>
+            Note: Your HTML will still be hosted by your server. Since it is rendered server-side, it is not static content.
+        </p>
+        
+        <p>
+            Note: We will not test with video uploads, but your image upload feature must work correctly. Uploaded images are static 
+            and must be hosted directly by nginx. Getting image uploads working will 
+            likely be the most time-consuming part of this objective. You are expected to research ways to accomplish this and 
+            you may want to research docker volumes.
+        </p>
+
+<!-- 
+        <br>
+        <hr>
+        <h3>
             Application Objective 1 - DoS Slow Send
         </h3>
         <hr/>
@@ -142,7 +167,7 @@
                 All features must still work for users who are not launching a DoS attack on your server. Specifically,
                 make sure your WebSocket connections do not time out
             </li>
-        </ul>
+        </ul> -->
 
 
         <br>
@@ -165,9 +190,11 @@
                 Use nginx to route all authentication requests (/register, /login, /logout) to your auth server, and all
                 other requests to your app server
                 <ul>
+                    <li>
                     You may add more paths to your auth server if you'd like, but only these 3 are required. For
                     example, it makes sense for password changes (/api/users/settings), enabling TOTP, and GitHub OAuth
                     to be routed to your auth server but these paths will not be tested while grading this objective
+                    </li>
                 </ul>
             </li>
             <li>

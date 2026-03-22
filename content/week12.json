@@ -1,12 +1,12 @@
 {
   "title": "Week 12: WebRTC",
-  "theme": "new-test",
+  "theme": "ds",
   "recitation": "Yes Recitation",
   "homework": [
     {
       "title": "Homework 5: Deployment",
       "url": "hw/hw5.html",
-      "released": false
+      "released": true
     }
   ],
   "content": [
