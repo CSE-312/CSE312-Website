@@ -3,11 +3,6 @@
   "theme": "ds",
   "recitation": "Yes Recitation",
   "homework": [
-    {
-      "title": "Homework 5: Deployment",
-      "url": "hw/hw5.html",
-      "released": true
-    }
   ],
   "content": [
     {

@@ -2,6 +2,11 @@
   "title": "Week 13: HTTPS and Deployment",
   "theme": "new-test",
   "homework": [
+    {
+      "title": "Homework 5: Deployment",
+      "url": "hw/hw5.html",
+      "released": true
+    }
 ],
   "recitation": "Yes Recitation",
   "content": [
