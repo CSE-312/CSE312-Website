@@ -1,18 +1,23 @@
 {
   "title": "Week 1: HTTP",
-  "theme": "intro",
+  "theme": "testing",
   "homework": [],
   "recitation": "No Recitation",
   "content": [
     {
-      "lecture": "0-intro.json",
-      "day": "Wednesday",
-      "date": "January 21"
+      "lecture": "1_0_TCPIP",
+      "day": "Monday",
+      "date": "August 24"
     },
     {
-      "lecture": "1-http.json",
+      "lecture": "1_1_HTTP",
+      "day": "Wednesday",
+      "date": "August 26"
+    },
+    {
+      "lecture": "1_2_Encodings",
       "day": "Friday",
-      "date": "January 23"
+      "date": "August 28"
     }
   ]
 }

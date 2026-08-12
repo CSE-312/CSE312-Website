@@ -1,31 +1,31 @@
 {
-  "title": "Week 15: Real-World Deployment",
+  "title": "Week 15: Presentations",
   "theme": "outro",
   "homework": [],
-  "recitation": "(Yes Recitation - Monday/Tuesday) (No Recitation - Friday)",
+  "recitation": "Yes Recitation",
   "content": [
     {
+      "lecture": "review.json",
+      "day": "Monday",
+      "date": "November 30"
+    },
+    {
       "type": "deadline",
-      "day": "Monday",
-      "date": "April 27",
+      "day": "Tuesday",
+      "date": "December 1",
       "time": "9:00 AM",
-      "assignment": "Homework 5",
-      "deadline_type": "lo"
+      "assignment": "Project",
+      "deadline_type": ""
     },
     {
-      "lecture": "35-.json",
-      "day": "Monday",
-      "date": "April 27"
-    },
-    {
-      "lecture": "36-.json",
+      "lecture": "presentation.json",
       "day": "Wednesday",
-      "date": "April 29"
+      "date": "December 2"
     },
     {
-      "lecture": "37-.json",
+      "lecture": "presentation.json",
       "day": "Friday",
-      "date": "May 1"
+      "date": "December 4"
     }
   ]
 }

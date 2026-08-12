@@ -1,24 +1,23 @@
 {
-  "title": "Week 3: APIs and Docker",
+  "title": "Week 3: Cookies and Docker",
   "theme": "testing",
   "recitation": "Yes Recitation",
-  "rec_slide_url": "static_files/rec_slides/REC_2_HW1.pdf",
   "content": [
     {
-      "lecture": "5-api.json",
+      "lecture": "break.json",
       "day": "Monday",
-      "date": "February 2"
+      "date": "September 7"
 
     },
     {
-      "lecture": "6-cookies.json",
+      "lecture": "1_6_Cookies",
       "day": "Wednesday",
-      "date": "February 4"
+      "date": "September 9"
     },
     {
-      "lecture": "7-docker.json",
+      "lecture": "1_7_Docker",
       "day": "Friday",
-      "date": "February 6"
+      "date": "September 11"
     }
   ]
 }

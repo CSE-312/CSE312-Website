@@ -6,32 +6,24 @@
     {
       "title": "Homework 2: Authentication",
       "url": "hw/hw2.html",
-      "released": true
+      "released": false
     }
   ],
   "content": [
     {
-      "type": "deadline",
+      "lecture": "2_4_Authentication",
       "day": "Monday",
-      "date": "February 16",
-      "time": "9:00 AM",
-      "assignment": "Homework 1",
-      "deadline_type": "lo"
+      "date": "September 21"
     },
     {
-      "lecture": "8-auth.json",
-      "day": "Monday",
-      "date": "February 16"
-    },
-    {
-      "lecture": "9-auth_sessions.json",
+      "lecture": "2_5_Authentication_Tokens",
       "day": "Wednesday",
-      "date": "February 18"
+      "date": "September 23"
     },
     {
-      "lecture": "10-xsrf.json",
+      "lecture": "2_7_XSRF",
       "day": "Friday",
-      "date": "February 20"
+      "date": "September 25"
     }
   ]
 }

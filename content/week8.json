@@ -1,30 +1,30 @@
 {
-  "title": "Week 8: Video",
+  "title": "Week 8: Video Processing",
   "theme": "fp",
-  "recitation": "Yes Recitation",
+  "recitation": "No Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "break.json",
       "day": "Monday",
-      "date": "March 9",
+      "date": "October 12"
+    },
+    {
+      "type": "deadline",
+      "day": "Tuesday",
+      "date": "October 13",
       "time": "9:00 AM",
       "assignment": "Homework 2",
-      "deadline_type": "ao"
+      "deadline_type": ""
     },
     {
-      "lecture": "17-video.json",
-      "day": "Monday",
-      "date": "March 9"
-    },
-    {
-      "lecture": "18-abr.json",
+      "lecture": "hw2_quiz.json",
       "day": "Wednesday",
-      "date": "March 11"
+      "date": "October 14"
     },
     {
-      "lecture": "19-streaming.json",
+      "lecture": "3_6_Video2",
       "day": "Friday",
-      "date": "March 13"
+      "date": "October 16"
     }
   ]
 }

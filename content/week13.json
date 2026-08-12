@@ -1,37 +1,24 @@
 {
-  "title": "Week 13: HTTPS and Deployment",
-  "theme": "new-test",
+  "title": "Week 13: Encryption Theory",
+  "theme": "ds",
   "homework": [
-    {
-      "title": "Homework 5: Deployment",
-      "url": "hw/hw5.html",
-      "released": true
-    }
 ],
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "37-.json",
       "day": "Monday",
-      "date": "April 13",
-      "time": "9:00 AM",
-      "assignment": "Homework 4",
-      "deadline_type": "lo"
+      "date": "November 16"
     },
     {
-      "lecture": "29-encryption.json",
-      "day": "Monday",
-      "date": "April 13"
-    },
-    {
-      "lecture": "30-https.json",
+      "lecture": "21_Encryption",
       "day": "Wednesday",
-      "date": "April 15"
+      "date": "November 18"
     },
     {
-      "lecture": "31-nginx.json",
+      "lecture": "22_Encryption2",
       "day": "Friday",
-      "date": "April 17"
+      "date": "November 20"
     }
   ]
 }

@@ -1,24 +1,32 @@
 {
-  "title": "Week 12: WebRTC",
+  "title": "Week 12: JWTs and DoS",
   "theme": "ds",
   "recitation": "Yes Recitation",
   "homework": [
   ],
   "content": [
     {
-      "lecture": "23-ws_testing.json",
+      "lecture": "5_5_JWT",
       "day": "Monday",
-      "date": "April 6"
+      "date": "November 9"
     },
     {
-      "lecture": "27-webrtc1.json",
+      "type": "deadline",
+      "day": "Tuesday",
+      "date": "November 10",
+      "time": "9:00 AM",
+      "assignment": "Homework 4",
+      "deadline_type": ""
+    },
+    {
+      "lecture": "hw4_quiz.json",
       "day": "Wednesday",
-      "date": "April 8"
+      "date": "November 11"
     },
     {
-      "lecture": "28-webrtc2.json",
+      "lecture": "4_7_DoS",
       "day": "Friday",
-      "date": "April 10"
+      "date": "November 13"
     }
   ]
 }

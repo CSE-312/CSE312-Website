@@ -1,32 +1,24 @@
 {
-  "title": "Week 14: Deployment",
-  "theme": "new-test",
+  "title": "Week 14: Fall Break",
+  "theme": "outro",
   "homework": [
   ],
-  "recitation": "Yes Recitation",
+  "recitation": "No Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "break.json",
       "day": "Monday",
-      "date": "April 20",
-      "time": "9:00 AM",
-      "assignment": "Homework 4",
-      "deadline_type": "ao"
+      "date": "November 23"
     },
     {
-      "lecture": "32-.json",
-      "day": "Monday",
-      "date": "April 20"
-    },
-    {
-      "lecture": "33-.json",
+      "lecture": "break.json",
       "day": "Wednesday",
-      "date": "April 22"
+      "date": "November 25"
     },
     {
-      "lecture": "34-.json",
+      "lecture": "break.json",
       "day": "Friday",
-      "date": "April 24"
+      "date": "November 27"
     }
   ]
 }

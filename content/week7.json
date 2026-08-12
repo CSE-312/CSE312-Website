@@ -5,33 +5,25 @@
     {
       "title": "Homework 3: Media Uploads",
       "url": "hw/hw3.html",
-      "released": true
+      "released": false
     }
   ],
   "recitation": "Yes Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "3_1_multipart_files",
       "day": "Monday",
-      "date": "March 2",
-      "time": "9:00 AM",
-      "assignment": "Homework 2",
-      "deadline_type": "lo"
+      "date": "October 5"
     },
     {
-      "lecture": "14-multipart.json",
-      "day": "Monday",
-      "date": "March 2"
-    },
-    {
-      "lecture": "15-buffering.json",
+      "lecture": "3_5_Buffers",
       "day": "Wednesday",
-      "date": "March 4"
+      "date": "October 7"
     },
     {
-      "lecture": "16-upload_examples.json",
+      "lecture": "3_6_Video1",
       "day": "Friday",
-      "date": "March 6"
+      "date": "October 9"
     }
   ]
 }

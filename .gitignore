@@ -1,3 +1,7 @@
 venv/
 .idea/
+__pycache__/
 autolab_config.py
+.tools/
+.quarto-data/
+.quarto/

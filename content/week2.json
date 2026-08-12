@@ -1,29 +1,29 @@
 {
-  "title": "Week 2: Web App Basics",
+  "title": "Week 2: Forms and Databases",
   "theme": "testing",
   "homework": [
     {
       "title": "Homework 1: HTTP",
       "url": "hw/hw1.html",
-      "released": true
+      "released": false
     }
   ],
-  "recitation": "No Recitation",
+  "recitation": "Yes Recitation",
   "content": [
     {
-      "lecture": "2-encodings.json",
+      "lecture": "1_3_POST",
       "day": "Monday",
-      "date": "January 26"
+      "date": "August 31"
     },
     {
-      "lecture": "3-post.json",
+      "lecture": "1_4_Databases",
       "day": "Wednesday",
-      "date": "January 28"
+      "date": "September 2"
     },
     {
-      "lecture": "4-db.json",
+      "lecture": "1_5_API",
       "day": "Friday",
-      "date": "January 30"
+      "date": "September 4"
     }
   ]
 }

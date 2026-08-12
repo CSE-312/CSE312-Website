@@ -5,11 +5,14 @@ from pymongo import MongoClient
 from flask import Flask, send_from_directory, render_template, make_response, request
 from flask_socketio import SocketIO
 import os
+import yaml
 
 app = Flask(__name__)
 socket_server = SocketIO(app)
 content_directory = "content/"
 content_root = content_directory + "cse312.json"
+lectures_directory = content_directory + "lectures/"
+rendered_lectures_url = "static_files/lectures/"
 
 # mongo_client = MongoClient("mongo")
 # db = mongo_client["cse312"]
@@ -27,11 +30,7 @@ def load_content(content_filename):
                 for lecture_or_deadline in lectures_and_deadlines:
                     if "lecture" in lecture_or_deadline:
                         lecture_or_deadline["type"] = "lecture"
-                        lecture_filename = content_directory + "lectures/" + lecture_or_deadline["lecture"]
-                        print(lecture_filename)
-                        with open(lecture_filename) as lecture_file:
-                            lecture_content = json.load(lecture_file)
-                            lecture_or_deadline.update(lecture_content)
+                        lecture_or_deadline.update(load_lecture(lecture_or_deadline["lecture"]))
                 first_lesson_date_str: str = week_content.get("content")[0].get("date")
                 first_lesson_date: datetime = month_day_str_to_date(first_lesson_date_str)
                 week_number: int = get_week_number(first_lesson_date)
@@ -39,6 +38,50 @@ def load_content(content_filename):
                     week_content["current_week"] = True
                 all_content.append(week_content)
     return all_content
+
+
+def load_lecture(lecture_reference):
+    if lecture_reference.endswith(".json"):
+        with open(lectures_directory + lecture_reference) as lecture_file:
+            return json.load(lecture_file)
+    return load_quarto_lecture(lecture_reference)
+
+
+def load_quarto_lecture(lecture_name):
+    qmd_path = os.path.join(lectures_directory, lecture_name, lecture_name + ".qmd")
+    metadata = read_front_matter(qmd_path)
+
+    reading_list = []
+    for entry in metadata.get("reading-list") or []:
+        reading_list.append({"url": entry["url"], "text": entry.get("text", entry["url"])})
+
+    lecture = {
+        "title": metadata.get("title", lecture_name),
+        "reading_list": reading_list,
+    }
+    
+    if metadata.get("released", False):
+        lecture_url = rendered_lectures_url + lecture_name + "/"
+        lecture["slides_url"] = lecture_url + "slides.html"
+        lecture["page_url"] = lecture_url + "index.html"
+    else:
+        pdf_name = lecture_name + ".pdf"
+        if os.path.isfile(os.path.join("static_files", "slides", pdf_name)):
+            lecture["slides"] = pdf_name
+
+    return lecture
+
+
+def read_front_matter(qmd_path):
+    with open(qmd_path) as qmd_file:
+        if qmd_file.readline().strip() != "---":
+            return {}
+        front_matter = []
+        for line in qmd_file:
+            if line.strip() == "---":
+                break
+            front_matter.append(line)
+    return yaml.safe_load("".join(front_matter)) or {}
 
 
 def month_day_str_to_date(date_str: str) -> datetime:
@@ -78,6 +121,13 @@ def hw(hw_url):
 
 @app.route('/static_files/<path:filename>')
 def serve_static(filename):
+    path = os.path.join('static_files', filename)
+    if os.path.isdir(path):
+        filename = os.path.join(filename, 'index.html')
+    elif not os.path.isfile(path):
+        as_index = os.path.join(path, 'index.html')
+        if os.path.isfile(as_index):
+            filename = os.path.join(filename, 'index.html')
     resp = make_response(send_from_directory('static_files', filename))
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp

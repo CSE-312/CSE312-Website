@@ -1,23 +1,23 @@
 {
-  "title": "Week 4: HTTP and Docker Examples",
+  "title": "Week 4: HTTP Efficiency and Concurrency",
   "theme": "testing",
   "recitation": "Yes Recitation",
   "content": [
     {
-      "lecture": "7_1-hw1-examples.json",
+      "lecture": "1_concurrency.json",
       "day": "Monday",
-      "date": "February 9"
+      "date": "September 14"
 
     },
     {
-      "lecture": "7_2-hw1-examples.json",
+      "lecture": "1_concurrency.json",
       "day": "Wednesday",
-      "date": "February 11"
+      "date": "September 16"
     },
     {
-      "lecture": "7_3-hw1-examples.json",
+      "lecture": "1_caching.json",
       "day": "Friday",
-      "date": "February 13"
+      "date": "September 18"
     }
   ]
 }

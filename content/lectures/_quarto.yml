@@ -1,0 +1,45 @@
+project:
+  type: website
+  output-dir: ../../static_files/lectures
+  resources:
+    - "!*.json"
+website:
+  title: "CSE312 Lectures"
+  search: false
+  navbar: false
+lang: en
+filters:
+  - _theme/reading-list.lua
+format:
+  html:
+    output-file: index.html
+    theme: [cosmo, _theme/page.scss]
+    include-in-header: _theme/accessibility-header.html
+    toc: true
+    toc-depth: 2
+    anchor-sections: true
+    format-links: false
+    html-math-method: plain
+  revealjs:
+    output-file: slides.html
+    theme: [dark, _theme/slides.scss]
+    include-in-header: _theme/accessibility-header.html
+    slide-level: 2
+    slide-number: c/t
+    progress: true
+    controls: true
+    controls-layout: edges
+    navigation-mode: linear
+    center: false
+    width: 1280
+    height: 720
+    margin: 0.08
+    transition: fade
+    html-math-method: plain
+    smaller: true
+    scrollable: true
+    auto-stretch: false
+
+execute:
+  echo: false
+  warning: false

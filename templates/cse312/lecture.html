@@ -5,8 +5,14 @@
         <td class="date">{{ content.day }}<br/>{{ content.date }}</td>
         <td>
             <p class="header">{{ content.title }}
-                {% if content.slides %}
-                    - <a href="static_files/slides/{{ content.slides }}" target="_blank">Slides</a>
+                {% if content.slides_url %}
+                    - <a href="{{ content.slides_url }}" target="_blank" rel="noopener"
+                         aria-label="Slides for {{ content.title }}">Slides</a>
+                    | <a href="{{ content.page_url }}" target="_blank" rel="noopener"
+                         aria-label="Readable page for {{ content.title }}">Readable Page</a>
+                {% elif content.slides %}
+                    - <a href="static_files/slides/{{ content.slides }}" target="_blank" rel="noopener"
+                         aria-label="Slides for {{ content.title }} (PDF)">Slides</a>
                 {% endif %}
             </p>
             {% if content.reading_list %}
@@ -30,4 +36,3 @@
         </td>
     </tr>
 {%- endmacro %}
-

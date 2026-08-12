@@ -1,26 +1,18 @@
 {
-  "title": "Week 16: Final",
+  "title": "Week 16: Presentations and Final Exam",
   "theme": "outro",
   "homework": [],
   "recitation": "No Recitation",
   "content": [
     {
-      "type": "deadline",
+      "lecture": "presentation.json",
       "day": "Monday",
-      "date": "May 4",
-      "time": "9:00 AM",
-      "assignment": "Homework 5",
-      "deadline_type": "ao"
-    },
-    {
-      "lecture": "break.json",
-      "day": "Monday",
-      "date": "May 4"
+      "date": "December 7"
     },
     {
       "lecture": "final.json",
-      "day": "Monday",
-      "date": "May 11"
+      "day": "Friday",
+      "date": "December 11"
     }
   ]
 }

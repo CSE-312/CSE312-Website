@@ -1,0 +1,29 @@
+{
+  "title": "Week 9: WebSockets",
+  "theme": "new-test",
+  "homework": [
+    {
+      "title": "Homework 4: WebSockets",
+      "url": "hw/hw4.html",
+      "released": false
+    }
+  ],
+  "recitation": "Yes Recitation",
+  "content": [
+    {
+      "lecture": "3_3_WebSocket_Handshake",
+      "day": "Monday",
+      "date": "October 19"
+    },
+    {
+      "lecture": "3_4_WebSocket_Frames",
+      "day": "Wednesday",
+      "date": "October 21"
+    },
+    {
+      "lecture": "3_5_WebSocket_Buffers",
+      "day": "Friday",
+      "date": "October 23"
+    }
+  ]
+}
