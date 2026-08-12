@@ -1,0 +1,82 @@
+---
+title: "Architecture Decisions"
+subtitle: "CSE312 — Web Development"
+lang: en
+
+# TODO: one-sentence summary shown on the lecture index.
+description: ""
+
+# Merged from the lecture's old .json reading_list.
+reading-list:
+  - url: "https://docs.google.com/presentation/d/1TSO556Hs2IfvhBmWzDlIjpcmJnzJu7vUMXsKLF98zag/edit?usp=sharing"
+    text: "Actual Slides"
+
+# Flip to true after reviewing the Quarto deck; until then the
+# schedule links the original PDF instead of Slides / Readable Page.
+released: false
+---
+
+<!-- PDF page 1 -->
+## Architecture
+
+<!-- PDF page 2 -->
+## Rendering HTML
+
+<!-- PDF page 3 -->
+## HTML Templates
+
+- Problems:
+  - We want to reuse HTML across multiple pages
+  - We want to serve content that is constantly changing
+  - We want to serve different content to different users
+- Solution: HTML templates
+  - Create partial HTML files with placeholders
+  - To load a page, replace the placeholders with specific content
+
+![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
+
+<!-- PDF page 4 -->
+## Rendering HTML
+
+- Templates allow us to separate the HTML (Structure of the page) from the content that will be displayed on the page
+- Injecting content into an HTML template to form the final HTML is called rendering
+- HTML Template + data = HTML
+
+![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
+
+<!-- PDF page 5 -->
+## Rendering HTML
+
+- Architecture Decision: When/where do we render HTML?
+- Server-side
+  - Your server renders the HTML and serves completed HTML to the users
+- Client-Side
+  - Your server hosts HTML templates and data endpoints and has the client render the final HTML
+
+<!-- PDF page 6 -->
+## SPA - Single Page Application
+
+- Take client-side rendering to the extreme
+  - HTML/CSS/JS is only sent one time
+  - All content is requested later and rendered client-side
+- Give us features like “infinite scroll”
+- The page never reloads
+
+<!-- PDF page 7 -->
+## Modularization
+
+<!-- PDF page 8 -->
+## Modularization
+
+- The code for a large web app can become difficult to maintain
+  - Eg. If you have most of your code in server.py, it’s difficult to add new features and debug existing features
+- If helps to modularize your code
+  - Split it up into smaller, easier to maintain, chunks
+
+<!-- PDF page 9 -->
+## Modularization
+
+- First step to modularize a web app:
+  - Isolate the web
+- A web is just an app that is accessed using web protocols
+- DEMO

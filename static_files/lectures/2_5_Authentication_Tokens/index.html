@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Authentication Tokens and Sessions – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#authentication-tokens" id="toc-authentication-tokens" class="nav-link active" data-scroll-target="#authentication-tokens">Authentication Tokens</a></li>
+  <li><a href="#authentication-overview" id="toc-authentication-overview" class="nav-link" data-scroll-target="#authentication-overview">Authentication Overview</a></li>
+  <li><a href="#authentication" id="toc-authentication" class="nav-link" data-scroll-target="#authentication">Authentication</a></li>
+  <li><a href="#authentication-1" id="toc-authentication-1" class="nav-link" data-scroll-target="#authentication-1">Authentication</a></li>
+  <li><a href="#authentication-2" id="toc-authentication-2" class="nav-link" data-scroll-target="#authentication-2">Authentication</a></li>
+  <li><a href="#authentication-tokens-1" id="toc-authentication-tokens-1" class="nav-link" data-scroll-target="#authentication-tokens-1">Authentication Tokens</a></li>
+  <li><a href="#authentication-tokens-2" id="toc-authentication-tokens-2" class="nav-link" data-scroll-target="#authentication-tokens-2">Authentication Tokens</a></li>
+  <li><a href="#authentication-tokens-3" id="toc-authentication-tokens-3" class="nav-link" data-scroll-target="#authentication-tokens-3">Authentication Tokens</a></li>
+  <li><a href="#authentication-3" id="toc-authentication-3" class="nav-link" data-scroll-target="#authentication-3">Authentication</a></li>
+  <li><a href="#storing-authentication-tokens" id="toc-storing-authentication-tokens" class="nav-link" data-scroll-target="#storing-authentication-tokens">Storing Authentication Tokens</a></li>
+  <li><a href="#authentication-w-tokens" id="toc-authentication-w-tokens" class="nav-link" data-scroll-target="#authentication-w-tokens">Authentication w/ Tokens</a></li>
+  <li><a href="#logging-out" id="toc-logging-out" class="nav-link" data-scroll-target="#logging-out">Logging Out</a></li>
+  <li><a href="#registration-and-login" id="toc-registration-and-login" class="nav-link" data-scroll-target="#registration-and-login">Registration and Login</a></li>
+  <li><a href="#registration-and-login-1" id="toc-registration-and-login-1" class="nav-link" data-scroll-target="#registration-and-login-1">Registration and Login</a></li>
+  <li><a href="#registration-and-login-2" id="toc-registration-and-login-2" class="nav-link" data-scroll-target="#registration-and-login-2">Registration and Login</a></li>
+  <li><a href="#registration-and-login-3" id="toc-registration-and-login-3" class="nav-link" data-scroll-target="#registration-and-login-3">Registration and Login</a></li>
+  <li><a href="#registration-and-login-4" id="toc-registration-and-login-4" class="nav-link" data-scroll-target="#registration-and-login-4">Registration and Login</a></li>
+  <li><a href="#registration-and-login-5" id="toc-registration-and-login-5" class="nav-link" data-scroll-target="#registration-and-login-5">Registration and Login</a></li>
+  <li><a href="#registration-and-login-6" id="toc-registration-and-login-6" class="nav-link" data-scroll-target="#registration-and-login-6">Registration and Login</a></li>
+  <li><a href="#registration-and-login-7" id="toc-registration-and-login-7" class="nav-link" data-scroll-target="#registration-and-login-7">Registration and Login</a></li>
+  <li><a href="#registration-and-login-8" id="toc-registration-and-login-8" class="nav-link" data-scroll-target="#registration-and-login-8">Registration and Login</a></li>
+  <li><a href="#registration-and-login-9" id="toc-registration-and-login-9" class="nav-link" data-scroll-target="#registration-and-login-9">Registration and Login</a></li>
+  <li><a href="#registration-and-login-10" id="toc-registration-and-login-10" class="nav-link" data-scroll-target="#registration-and-login-10">Registration and Login</a></li>
+  <li><a href="#registration-and-login-11" id="toc-registration-and-login-11" class="nav-link" data-scroll-target="#registration-and-login-11">Registration and Login</a></li>
+  <li><a href="#registration-and-login-12" id="toc-registration-and-login-12" class="nav-link" data-scroll-target="#registration-and-login-12">Registration and Login</a></li>
+  <li><a href="#registration-and-login-13" id="toc-registration-and-login-13" class="nav-link" data-scroll-target="#registration-and-login-13">Registration and Login</a></li>
+  <li><a href="#registration-and-login-14" id="toc-registration-and-login-14" class="nav-link" data-scroll-target="#registration-and-login-14">Registration and Login</a></li>
+  <li><a href="#registration-and-login-15" id="toc-registration-and-login-15" class="nav-link" data-scroll-target="#registration-and-login-15">Registration and Login</a></li>
+  <li><a href="#registration-and-login-16" id="toc-registration-and-login-16" class="nav-link" data-scroll-target="#registration-and-login-16">Registration and Login</a></li>
+  <li><a href="#registration-and-login-17" id="toc-registration-and-login-17" class="nav-link" data-scroll-target="#registration-and-login-17">Registration and Login</a></li>
+  <li><a href="#registration-and-login-18" id="toc-registration-and-login-18" class="nav-link" data-scroll-target="#registration-and-login-18">Registration and Login</a></li>
+  <li><a href="#cookie-hijacking" id="toc-cookie-hijacking" class="nav-link" data-scroll-target="#cookie-hijacking">Cookie Hijacking</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Authentication Tokens and Sessions</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- PDF page 1 -->
+<section id="authentication-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-tokens">Authentication Tokens</h2>
+<!-- PDF page 2 -->
+</section>
+<section id="authentication-overview" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-overview">Authentication Overview</h2>
+<ul>
+<li>Registration
+<ul>
+<li>User sends username and password</li>
+<li>Validate password strength</li>
+<li>Store salted hash of the password</li>
+</ul></li>
+<li>Authentication
+<ul>
+<li>User sends username/password</li>
+<li>Retrieve the stored salted hash</li>
+<li>Salt and hash the provided password</li>
+<li>If both salted hashes are identical, the user is authenticated</li>
+</ul></li>
+</ul>
+<!-- PDF page 3 -->
+</section>
+<section id="authentication" class="level2">
+<h2 class="anchored" data-anchor-id="authentication">Authentication</h2>
+<ul>
+<li>With authentication, we want users to be able to:
+<ul>
+<li>Access their private data</li>
+<li>Make authenticated posts to the server</li>
+</ul></li>
+<li>When you take these actions on a web app:
+<ul>
+<li>The app should verify that you made the request</li>
+<li>Only serve your private data to you</li>
+<li>Do not let anyone else make posts in your name</li>
+</ul></li>
+</ul>
+<!-- PDF page 4 -->
+</section>
+<section id="authentication-1" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-1">Authentication</h2>
+<ul>
+<li>How does the server verify that you are the one who made a specific request?</li>
+<li>We only have authentication, so…
+<ul>
+<li>.. Users type their username and password with every single protected request?..</li>
+<li>Authenticate using the stored [salted hash of the] password?..</li>
+<li>No! Terrible user experience</li>
+<li>You would not use this site</li>
+</ul></li>
+</ul>
+<!-- PDF page 5 -->
+</section>
+<section id="authentication-2" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-2">Authentication</h2>
+<ul>
+<li>Insecure Idea:
+<ul>
+<li>.. Store the username/password in cookies and send them on every request?..</li>
+<li>Password is stored client-side in plain text</li>
+<li>No! Never store passwords in plain text
+<ul>
+<li>Not even client-side! Don’t do it.</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 6 -->
+</section>
+<section id="authentication-tokens-1" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-tokens-1">Authentication Tokens</h2>
+<ul>
+<li>Instead of authenticating the username/password on every request:
+<ul>
+<li>Issue an authentication token</li>
+</ul></li>
+<li>When a user is authenticated, generate a random authentication token</li>
+<li>Store this token in your database and mark the username of the account that was authenticated</li>
+<li>Set the token as a cookie for that user</li>
+<li>Whenever a request comes with that token, treat them as the user associated with that token</li>
+</ul>
+<!-- PDF page 7 -->
+</section>
+<section id="authentication-tokens-2" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-tokens-2">Authentication Tokens</h2>
+<ul>
+<li>With authentication tokens:
+<ul>
+<li>We have a login system</li>
+</ul></li>
+<li>🎉</li>
+<li>As long as the user has the authentication token as their cookie, they are logged in*
+<ul>
+<li>All their requests are authenticated by the server</li>
+</ul></li>
+</ul>
+<pre><code>*You can/should set these tokens to expire either client-side
+(cookie expiration), server-side (storing an expiration timestamp in
+your database and ignoring the token after that timestamp), or both</code></pre>
+<p><img src="assets/slide07-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 8 -->
+</section>
+<section id="authentication-tokens-3" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-tokens-3">Authentication Tokens</h2>
+<ul>
+<li>Authentication tokens need to be random
+<ul>
+<li>The token must have enough entropy that they cannot be guessed</li>
+<li>Eg. An attacker should not be able to send requests with random tokens until one matches a logged in user</li>
+</ul></li>
+<li>Generally, there should be at least 2^80 unique tokens that could be generated (80 bits of entropy)
+<ul>
+<li>More is better!</li>
+</ul></li>
+</ul>
+<!-- PDF page 9 -->
+</section>
+<section id="authentication-3" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-3">Authentication</h2>
+<ul>
+<li>Once a token is generated, set it as a cookie</li>
+<li>Now the token will be sent with all subsequent requests</li>
+<li>Use the token to lookup the user</li>
+<li>The possession of the token verifies that this user did authenticate in the past</li>
+</ul>
+<!-- PDF page 10 -->
+</section>
+<section id="storing-authentication-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="storing-authentication-tokens">Storing Authentication Tokens</h2>
+<ul>
+<li>Caution: These tokens need to be stored on the server</li>
+<li>These tokens are as sensitive as passwords!
+<ul>
+<li>Stealing a token and setting a cookie with that value grants access to an account without even needing a password</li>
+</ul></li>
+<li>Solution: Only store hashes of the tokens</li>
+<li>Do not salt these tokens
+<ul>
+<li>Salting makes DB lookups more difficult</li>
+<li>Salting not necessary since the entropy is so high</li>
+</ul></li>
+</ul>
+<!-- PDF page 11 -->
+</section>
+<section id="authentication-w-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="authentication-w-tokens">Authentication w/ Tokens</h2>
+<ul>
+<li>Check each request for a cookie with a token
+<ul>
+<li>Lookup the hash of the token in the database</li>
+<li>If the token is found, read the associated username</li>
+<li>Proceed as though this request was made by that user</li>
+</ul></li>
+<li>If the token is invalid or no cookie is set
+<ul>
+<li>Do not respect the request and return a 400-level response code:
+<ul>
+<li>401 Unauthorized - User is not logged in</li>
+<li>403 Forbidden - User in logged in, but trying to do something that they are not allowed to do</li>
+</ul></li>
+</ul></li>
+<li>Ensure all sensitive pages/features are secured this way!
+<ul>
+<li>The front end cannot be trusted (NEVER trust your users)</li>
+<li>All checks must be performed server-side</li>
+</ul></li>
+</ul>
+<!-- PDF page 12 -->
+</section>
+<section id="logging-out" class="level2">
+<h2 class="anchored" data-anchor-id="logging-out">Logging Out</h2>
+<ul>
+<li>When a user logs out:
+<ul>
+<li>Invalidate the token
+<ul>
+<li>This needs to done server-side</li>
+<li>Remove the token from your database, or mark it as revoked</li>
+<li>If you see a logged out token again, do not treat the request as authenticated</li>
+<li>If a token is stolen, this allows the user to regain control of their account</li>
+</ul></li>
+<li>Delete the cookie
+<ul>
+<li>Set it with an expiration date in the past</li>
+<li>The browser is supposed to delete the cookie</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 13 -->
+</section>
+<section id="registration-and-login" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Let’s look at the whole process of creating an account and logging in</li>
+</ul>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide13-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 14 -->
+</section>
+<section id="registration-and-login-1" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-1">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>User registers a new account</li>
+</ul>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 15 -->
+</section>
+<section id="registration-and-login-2" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-2">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Server generates a random salt</li>
+</ul>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 16 -->
+</section>
+<section id="registration-and-login-3" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-3">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Append the salt to the password and hash</li>
+</ul>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>hash</p>
+<p>f(P@$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
+<p>==</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fdd8b86b84a94b8
+5c7cb91e9e10008ec8</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 17 -->
+</section>
+<section id="registration-and-login-4" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-4">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>Discard the plain text password</li>
+<li>Store username, salt, and salted hash in DB</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<p>username</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 18 -->
+</section>
+<section id="registration-and-login-5" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-5">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>When using bcrypt, salt and hash are stored as a single value</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>bcrypt salt + hash</p>
+<pre><code>$2b$12$9IoK6aMp5snMH2Fv
+Z8rcWexyveqs8mFKojG7Jvq
+VhfRxSDmwfAZHW</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 19 -->
+</section>
+<section id="registration-and-login-6" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-6">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>User wants to login</li>
+<li>Provide username and password</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<p>0144c52c5b68f662f4529fd43093873fd</p>
+<p>username</p>
+<p>d8b86b84a94b85c7cb91e9e10008ec8</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide19-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 20 -->
+</section>
+<section id="registration-and-login-7" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-7">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>Server pulls the hash and salt for this username</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>find({“username”, “XX_UBStudent_XX”})</p>
+<p>username</p>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>salt</p>
+<p>P@$$w0rd</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>hash</p>
+<p>Server</p>
+<p>Database</p>
+<p>User/Client</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p><img src="assets/slide20-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 21 -->
+</section>
+<section id="registration-and-login-8" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-8">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>Server now has everything it needs for authentication</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<p>username</p>
+<p>0144c52c5b68f662f4529fd43093873fd</p>
+<p>d8b86b84a94b85c7cb91e9e10008ec8</p>
+<p>XX_UBStudent_XX</p>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>Server</p>
+<p>Database</p>
+<p>User/Client</p>
+<p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 22 -->
+</section>
+<section id="registration-and-login-9" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-9">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>Append the salt to the password provided at login and hash</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>username</p>
+<p>password hash</p>
+<p>XX_UBStudent_XX</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>new hash</p>
+<p>f(P@$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
+<p>==</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
+6b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>Server</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
+6b84a94b85c7cb91e9e10008ec8</code></pre>
+<p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 23 -->
+</section>
+<section id="registration-and-login-10" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-10">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>If the two hashes do not match exactly, the user is not authenticated</li>
+<li>This password is changed to be 1 char off
+<ul>
+<li>The hashes are completely different</li>
+</ul></li>
+</ul>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>username</p>
+<p>password hash</p>
+<p>XX_UBStudent_XX</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>password</p>
+<p>Pa$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>new hash</p>
+<p>f(Pa$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
+<p>==</p>
+<pre><code>296069c8595a636361af0c65acfd819178ee1
+f9ce235c554ce1a0c37598138f5</code></pre>
+<p>Server</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
+6b84a94b85c7cb91e9e10008ec8</code></pre>
+<p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 24 -->
+</section>
+<section id="registration-and-login-11" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-11">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<ul>
+<li>If the two hashes match, the user is authenticated with this username</li>
+<li>Server is done with all values related to the password</li>
+</ul>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>username</p>
+<p>password hash</p>
+<p>XX_UBStudent_XX</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>password</p>
+<p>P@$$w0rd</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>new hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hash</p>
+<p>Server</p>
+<p>Database</p>
+<p>User/Client</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 25 -->
+</section>
+<section id="registration-and-login-12" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-12">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>Generate an authentication token</li>
+<li>Store a hash of the token in your DB</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<p>username</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>XX_UBStudent_XX</p>
+<p>authentication token</p>
+<p>jixFFgT1xPhXKcLrOavlQO</p>
+<p>update XX_UBStudent_XX’s record with</p>
+<pre><code>{"hashed authentication token":
+"754b1fb1b5ab6787441bfb410a40a7b99
+29f712497fb1f57788f4a6b699e1d7b"}</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide25-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 26 -->
+</section>
+<section id="registration-and-login-13" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-13">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>Set the plain text of the token to a cookie</li>
+<li>The user is now logged in</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>Set authentication cookie</p>
+<p>jixFFgT1xPhXKcLrOavlQO</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 27 -->
+</section>
+<section id="registration-and-login-14" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-14">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>Token is sent on all subsequent requests</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<pre><code>Request containing
+authentication cookie</code></pre>
+<p>jixFFgT1xPhXKcLrOavlQO</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide27-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 28 -->
+</section>
+<section id="registration-and-login-15" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-15">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>Read the token from the cookie and hash it</li>
+<li>If the cookie does not exist, the user is not logged in</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>token to verify</p>
+<p>jixFFgT1xPhXKcLrOavlQO</p>
+<p>hash of token to verify</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b9929
+f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 29 -->
+</section>
+<section id="registration-and-login-16" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-16">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>Look up the hash in the DB</li>
+<li>If a record is returned, that’s the logged in user and the request is authenticated</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<pre><code>find({"hashed authentication token":
+"754b1fb1b5ab6787441bfb410a40a7b9
+929f712497fb1f57788f4a6b699e1d7b"})</code></pre>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide29-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 30 -->
+</section>
+<section id="registration-and-login-17" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-17">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>We now have the verified username of the requester</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 31 -->
+</section>
+<section id="registration-and-login-18" class="level2">
+<h2 class="anchored" data-anchor-id="registration-and-login-18">Registration and Login</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>username</p>
+<p>XX_UBStudent_XX</p>
+<p>salt</p>
+<ul>
+<li>We now have the verified username of the requester</li>
+</ul>
+<p>hJ33fqAwscJmp3MacoQ8uO</p>
+<p>password hash</p>
+<pre><code>0144c52c5b68f662f4529fd43093873fd
+d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
+<p>hashed authentication token</p>
+<pre><code>754b1fb1b5ab6787441bfb410a40a7b
+9929f712497fb1f57788f4a6b699e1d7b</code></pre>
+<pre><code>Response that can contain
+XX_UBStudent_XX's private data</code></pre>
+<p>Database</p>
+<p>User/Client</p>
+<p>Server</p>
+<p><img src="assets/slide31-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 32 -->
+</section>
+<section id="cookie-hijacking" class="level2">
+<h2 class="anchored" data-anchor-id="cookie-hijacking">Cookie Hijacking</h2>
+<ul>
+<li>We’re now using cookies for authentication</li>
+<li>The possession of the token verifies that this user did authenticate in the past</li>
+<li>What if someone steals your cookies?
+<ul>
+<li>They can authenticate as you without needing your password!</li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

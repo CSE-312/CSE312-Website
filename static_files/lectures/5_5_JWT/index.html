@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>JSON Web Tokens (JWTs) – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#json-web-tokens-jwts" id="toc-json-web-tokens-jwts" class="nav-link active" data-scroll-target="#json-web-tokens-jwts">JSON Web Tokens (JWTs)</a></li>
+  <li><a href="#why-jwt" id="toc-why-jwt" class="nav-link" data-scroll-target="#why-jwt">Why JWT?</a></li>
+  <li><a href="#recall-auth-tokens" id="toc-recall-auth-tokens" class="nav-link" data-scroll-target="#recall-auth-tokens">Recall Auth Tokens</a></li>
+  <li><a href="#recall-auth-tokens-1" id="toc-recall-auth-tokens-1" class="nav-link" data-scroll-target="#recall-auth-tokens-1">Recall Auth Tokens</a></li>
+  <li><a href="#recall-auth-tokens-2" id="toc-recall-auth-tokens-2" class="nav-link" data-scroll-target="#recall-auth-tokens-2">Recall Auth Tokens</a></li>
+  <li><a href="#recall-auth-tokens-3" id="toc-recall-auth-tokens-3" class="nav-link" data-scroll-target="#recall-auth-tokens-3">Recall Auth Tokens</a></li>
+  <li><a href="#auth-tokens---distributed" id="toc-auth-tokens---distributed" class="nav-link" data-scroll-target="#auth-tokens---distributed">Auth Tokens - Distributed</a></li>
+  <li><a href="#auth-tokens---distributed-1" id="toc-auth-tokens---distributed-1" class="nav-link" data-scroll-target="#auth-tokens---distributed-1">Auth Tokens - Distributed</a></li>
+  <li><a href="#introducing-jwts" id="toc-introducing-jwts" class="nav-link" data-scroll-target="#introducing-jwts">Introducing JWTs</a></li>
+  <li><a href="#jwt" id="toc-jwt" class="nav-link" data-scroll-target="#jwt">JWT</a></li>
+  <li><a href="#jwt-1" id="toc-jwt-1" class="nav-link" data-scroll-target="#jwt-1">JWT</a></li>
+  <li><a href="#jwt---structure" id="toc-jwt---structure" class="nav-link" data-scroll-target="#jwt---structure">JWT - Structure</a></li>
+  <li><a href="#jwt---structure-1" id="toc-jwt---structure-1" class="nav-link" data-scroll-target="#jwt---structure-1">JWT - Structure</a></li>
+  <li><a href="#jwt---structure-2" id="toc-jwt---structure-2" class="nav-link" data-scroll-target="#jwt---structure-2">JWT - Structure</a></li>
+  <li><a href="#jwt---usage" id="toc-jwt---usage" class="nav-link" data-scroll-target="#jwt---usage">JWT - Usage</a></li>
+  <li><a href="#jwt---verification" id="toc-jwt---verification" class="nav-link" data-scroll-target="#jwt---verification">JWT - Verification</a></li>
+  <li><a href="#jwt---verification-1" id="toc-jwt---verification-1" class="nav-link" data-scroll-target="#jwt---verification-1">JWT - Verification</a></li>
+  <li><a href="#jwt---verification-2" id="toc-jwt---verification-2" class="nav-link" data-scroll-target="#jwt---verification-2">JWT - Verification</a></li>
+  <li><a href="#jwt---verification-3" id="toc-jwt---verification-3" class="nav-link" data-scroll-target="#jwt---verification-3">JWT - Verification</a></li>
+  <li><a href="#jwt---encryption" id="toc-jwt---encryption" class="nav-link" data-scroll-target="#jwt---encryption">JWT - Encryption</a></li>
+  <li><a href="#when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" id="toc-when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="nav-link" data-scroll-target="#when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens">• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">JSON Web Tokens (JWTs)</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- PDF page 1 -->
+<section id="json-web-tokens-jwts" class="level2">
+<h2 class="anchored" data-anchor-id="json-web-tokens-jwts">JSON Web Tokens (JWTs)</h2>
+<!-- PDF page 2 -->
+</section>
+<section id="why-jwt" class="level2">
+<h2 class="anchored" data-anchor-id="why-jwt">Why JWT?</h2>
+<ul>
+<li>We’ll use JWTs for persistent authentication</li>
+<li>We currently use authentication tokens to solve the same problem</li>
+<li>Why do we need a new mechanism?</li>
+<li>What’s wrong with auth tokens?</li>
+</ul>
+<!-- PDF page 3 -->
+</section>
+<section id="recall-auth-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="recall-auth-tokens">Recall Auth Tokens</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Server issues an auth token on login</li>
+<li>Store token in database on login</li>
+<li>Lookup token in database for authentication</li>
+</ul>
+<p>Register username/password</p>
+<p>Issues auth token in cookie</p>
+<p>User/Client</p>
+<p>Auth Database</p>
+<p>Requests with auth token</p>
+<p>Server</p>
+<p>-Passwords</p>
+<p>-auth tokens</p>
+<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 4 -->
+</section>
+<section id="recall-auth-tokens-1" class="level2">
+<h2 class="anchored" data-anchor-id="recall-auth-tokens-1">Recall Auth Tokens</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>The token is opaque
+<ul>
+<li>Random meaningless bytes</li>
+</ul></li>
+<li>Database lookup is required</li>
+</ul>
+<p>Register username/password</p>
+<p>Issues auth token in cookie</p>
+<p>User/Client</p>
+<p>Auth Database</p>
+<p>Requests with auth token</p>
+<p>Server</p>
+<p>-Passwords</p>
+<p>-auth tokens</p>
+<p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 5 -->
+</section>
+<section id="recall-auth-tokens-2" class="level2">
+<h2 class="anchored" data-anchor-id="recall-auth-tokens-2">Recall Auth Tokens</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>When your app gets HUGE
+<ul>
+<li>Make it distributed</li>
+<li>Separate parts of your app onto different servers</li>
+</ul></li>
+</ul>
+<p>Register username/password</p>
+<p>Issues auth token in cookie</p>
+<p>Auth Server</p>
+<p>Auth Database</p>
+<p>-Passwords</p>
+<p>User/Client</p>
+<p>Requests with auth token</p>
+<p>-auth tokens</p>
+<p>App Server</p>
+<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 6 -->
+</section>
+<section id="recall-auth-tokens-3" class="level2">
+<h2 class="anchored" data-anchor-id="recall-auth-tokens-3">Recall Auth Tokens</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>App server needs to verify the auth token</li>
+</ul>
+<p>Register username/password</p>
+<p>Issues auth token in cookie</p>
+<p>Auth Server</p>
+<p>Auth Database</p>
+<p>-Passwords</p>
+<p>User/Client</p>
+<p>Requests with auth token</p>
+<p>-auth tokens</p>
+<p>App Server</p>
+<p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 7 -->
+</section>
+<section id="auth-tokens---distributed" class="level2">
+<h2 class="anchored" data-anchor-id="auth-tokens---distributed">Auth Tokens - Distributed</h2>
+<ul>
+<li>App server needs to verify the auth token</li>
+<li>Option 1: Shared DB
+<ul>
+<li>App server connects to the same DB as the auth server to lookup the auth token</li>
+<li>Advantage: Code is simple. Same thing we’ve been doing</li>
+<li>Disadvantage: Slow and complex architecture
+<ul>
+<li>DB must support multiple servers</li>
+<li>App must connect to the shared DB on every authenticated request</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 8 -->
+</section>
+<section id="auth-tokens---distributed-1" class="level2">
+<h2 class="anchored" data-anchor-id="auth-tokens---distributed-1">Auth Tokens - Distributed</h2>
+<ul>
+<li>App server needs to verify the auth token</li>
+<li>Option 2: Server-Server Communication
+<ul>
+<li>App server sends a request to the auth server to verify the token</li>
+<li>Advantage: Avoids a shared DB</li>
+<li>Disadvantage: Slow
+<ul>
+<li>Every authenticated requests requires the app server, auth server, and the auth DB</li>
+<li>Might as well have a monolith app (It’s effectively not distributed)</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 9 -->
+</section>
+<section id="introducing-jwts" class="level2">
+<h2 class="anchored" data-anchor-id="introducing-jwts">Introducing JWTs</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Instead of auth token
+<ul>
+<li>Issue a self-contained JWT</li>
+</ul></li>
+</ul>
+<p>Register username/password</p>
+<p>Issues JWT in cookie</p>
+<p>Auth Server</p>
+<p>Auth Database</p>
+<p>-Passwords</p>
+<p>User/Client</p>
+<p>Requests with JWT</p>
+<p>App Server</p>
+<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 10 -->
+</section>
+<section id="jwt" class="level2">
+<h2 class="anchored" data-anchor-id="jwt">JWT</h2>
+<ul>
+<li>JWTs are tokens that are designed to be self- contained
+<ul>
+<li>Contain all information needed for authentication/ authorization</li>
+<li>No need to talk to the DB or the auth server</li>
+<li>Auth server doesn’t even need to store JWTs</li>
+</ul></li>
+<li>App server receives a request containing a JWT
+<ul>
+<li>Verify the token locally</li>
+</ul></li>
+</ul>
+<!-- PDF page 11 -->
+</section>
+<section id="jwt-1" class="level2">
+<h2 class="anchored" data-anchor-id="jwt-1">JWT</h2>
+<ul>
+<li>JSON Web Tokens
+<ul>
+<li>Often pronounced “jot”</li>
+</ul></li>
+<li>JSON
+<ul>
+<li>Contains a payload that must be a JSON object</li>
+</ul></li>
+<li>Web
+<ul>
+<li>Encoded using url-safe characters</li>
+<li>Can be used in HTTP headers</li>
+</ul></li>
+<li>Tokens
+<ul>
+<li>Typically used for authentication/authorization</li>
+<li>Can be used to solve any problem that wants tokens</li>
+</ul></li>
+</ul>
+<!-- PDF page 12 -->
+</section>
+<section id="jwt---structure" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---structure">JWT - Structure</h2>
+<ul>
+<li>A JWT is composed of three parts</li>
+<li>Headers
+<ul>
+<li>Specifies the type of token, and algorithm used for signing</li>
+</ul></li>
+<li>Claims
+<ul>
+<li>The payload of the token</li>
+<li>Can contain the identity of the user (Authentication) and any scopes they can access (Authorization)</li>
+</ul></li>
+<li>Signature
+<ul>
+<li>The signature of the token using the algorithm specified in the headers</li>
+</ul></li>
+</ul>
+<!-- PDF page 13 -->
+</section>
+<section id="jwt---structure-1" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---structure-1">JWT - Structure</h2>
+<ul>
+<li>Each of the three parts are Base64URL encoded</li>
+<li>Base64
+<ul>
+<li>Maps 3 bytes of arbitrary data into 4 ASCII characters</li>
+<li>64 characters: a-z, A-Z, 0-1, ‘+’, ‘/’</li>
+<li>If length%3 != 0, pad with ‘=’</li>
+<li>Not suitable for the web</li>
+</ul></li>
+<li>Base64URL
+<ul>
+<li>Replace ‘+’ and ‘/’ with ‘-’ and ’_’</li>
+<li>Omit the padding</li>
+<li>This avoids all url reserved characters</li>
+</ul></li>
+</ul>
+<!-- PDF page 14 -->
+</section>
+<section id="jwt---structure-2" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---structure-2">JWT - Structure</h2>
+<ul>
+<li>Three Base64URL-encoded parts are separated by ‘.’</li>
+<li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0…</li>
+<li></li>
+<li>This token looks opaque
+<ul>
+<li>It is not!!</li>
+</ul></li>
+<li>Base64URL is not a hashing algorithm!</li>
+<li>Base64URL is not encryption!</li>
+<li>Your JWTs are effectively plain-text</li>
+<li>This token has the claim: {“username”: “Alice”}</li>
+</ul>
+<!-- PDF page 15 -->
+</section>
+<section id="jwt---usage" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---usage">JWT - Usage</h2>
+<ul>
+<li>JWTs are effectively plain text</li>
+<li>Everyone with access to the token can see the claims</li>
+<li>Anyone can generate their own tokens with any claims they choose
+<ul>
+<li>Trivial to impersonate other users</li>
+</ul></li>
+<li>Need to verify that the auth server issued the token
+<ul>
+<li>Sign it!</li>
+</ul></li>
+</ul>
+<!-- PDF page 16 -->
+</section>
+<section id="jwt---verification" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---verification">JWT - Verification</h2>
+<ul>
+<li>The issuer (Auth server) will cryptographically sign the JWTs it issues</li>
+<li>Apps will verify this signature</li>
+<li>Attackers cannot forge the signatures</li>
+<li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc</li>
+</ul>
+<!-- PDF page 17 -->
+</section>
+<section id="jwt---verification-1" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---verification-1">JWT - Verification</h2>
+<ul>
+<li>Public/Private key
+<ul>
+<li>In CSE312, we’ll prefer to sign tokens with a private RSA key using the RS256 algorithm</li>
+<li>This algorithm computes a SHA256 hash of the headers and claims of the token</li>
+<li>Sign this hash using the auth server’s private key</li>
+<li>The Base64URL encoding of this signature is the 3rd part of the token</li>
+</ul></li>
+<li>App server has the auth servers public key
+<ul>
+<li>Use the public key to verify the signature</li>
+</ul></li>
+</ul>
+<!-- PDF page 18 -->
+</section>
+<section id="jwt---verification-2" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---verification-2">JWT - Verification</h2>
+<ul>
+<li>Public/Private key
+<ul>
+<li>Attackers can generate JWTs to with valid headers and claims</li>
+<li>Attacks cannot forge the signature</li>
+</ul></li>
+<li>If the signature is not valid, do not accept the token</li>
+</ul>
+<!-- PDF page 19 -->
+</section>
+<section id="jwt---verification-3" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---verification-3">JWT - Verification</h2>
+<ul>
+<li>Shared Secret
+<ul>
+<li>Alternatively, all servers can control a shared secret used to both sign and verify signatures</li>
+<li>If the secret is not compromised, this is just as good a private key signatures</li>
+<li>Downside:
+<ul>
+<li>Expands your attack surface
+<ul>
+<li>Attacker who compromises any server has your shared secret</li>
+</ul></li>
+<li>Not wise if you’re issuing tokens that are verified by 3rd party servers</li>
+</ul></li>
+<li>Not allowed on HW5..</li>
+</ul></li>
+</ul>
+<!-- PDF page 20 -->
+</section>
+<section id="jwt---encryption" class="level2">
+<h2 class="anchored" data-anchor-id="jwt---encryption">JWT - Encryption</h2>
+<ul>
+<li>JWTs can optionally be encrypted to obfuscate the headers and claims</li>
+<li>I don’t have anything else to say about that</li>
+</ul>
+<p>😅</p>
+<p><img src="assets/slide20-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 21 -->
+</section>
+<section id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens">• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<p>Recall OAuth</p>
+<p>Authorization Grant</p>
+<p>Access Token and Refresh Token</p>
+<p>Authentication</p>
+<p>Refresh Token</p>
+<p>Server</p>
+<p>Access Token [and Refresh Token]</p>
+<p>API Access - Access Token Only</p>
+<p>Resource</p>
+<p>Private Data</p>
+<p>Your App / Client</p>
+<p>Server</p>
+<p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+
+
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc7519">RFC 7519 - JWT</a></li>
+</ul>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

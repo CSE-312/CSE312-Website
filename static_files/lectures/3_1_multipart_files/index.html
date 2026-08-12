@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Multipart and File Uploads – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#multipart-parsing-and-file-uploads" id="toc-multipart-parsing-and-file-uploads" class="nav-link active" data-scroll-target="#multipart-parsing-and-file-uploads">Multipart Parsing and File Uploads</a></li>
+  <li><a href="#html-forms---post" id="toc-html-forms---post" class="nav-link" data-scroll-target="#html-forms---post">HTML Forms - POST</a></li>
+  <li><a href="#html-forms---post-1" id="toc-html-forms---post-1" class="nav-link" data-scroll-target="#html-forms---post-1">HTML Forms - POST</a></li>
+  <li><a href="#html-forms---post-2" id="toc-html-forms---post-2" class="nav-link" data-scroll-target="#html-forms---post-2">HTML Forms - POST</a></li>
+  <li><a href="#html-forms---post-3" id="toc-html-forms---post-3" class="nav-link" data-scroll-target="#html-forms---post-3">HTML Forms - POST</a></li>
+  <li><a href="#html-forms---post-4" id="toc-html-forms---post-4" class="nav-link" data-scroll-target="#html-forms---post-4">HTML Forms - POST</a></li>
+  <li><a href="#html-forms---post-5" id="toc-html-forms---post-5" class="nav-link" data-scroll-target="#html-forms---post-5">HTML Forms - POST</a></li>
+  <li><a href="#file-uploads" id="toc-file-uploads" class="nav-link" data-scroll-target="#file-uploads">File Uploads</a></li>
+  <li><a href="#file-uploads-1" id="toc-file-uploads-1" class="nav-link" data-scroll-target="#file-uploads-1">File Uploads</a></li>
+  <li><a href="#file-uploads-2" id="toc-file-uploads-2" class="nav-link" data-scroll-target="#file-uploads-2">File Uploads</a></li>
+  <li><a href="#parsing-multipart" id="toc-parsing-multipart" class="nav-link" data-scroll-target="#parsing-multipart">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-1" id="toc-parsing-multipart-1" class="nav-link" data-scroll-target="#parsing-multipart-1">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-2" id="toc-parsing-multipart-2" class="nav-link" data-scroll-target="#parsing-multipart-2">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-3" id="toc-parsing-multipart-3" class="nav-link" data-scroll-target="#parsing-multipart-3">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-4" id="toc-parsing-multipart-4" class="nav-link" data-scroll-target="#parsing-multipart-4">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-5" id="toc-parsing-multipart-5" class="nav-link" data-scroll-target="#parsing-multipart-5">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-6" id="toc-parsing-multipart-6" class="nav-link" data-scroll-target="#parsing-multipart-6">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-7" id="toc-parsing-multipart-7" class="nav-link" data-scroll-target="#parsing-multipart-7">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-8" id="toc-parsing-multipart-8" class="nav-link" data-scroll-target="#parsing-multipart-8">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-9" id="toc-parsing-multipart-9" class="nav-link" data-scroll-target="#parsing-multipart-9">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-10" id="toc-parsing-multipart-10" class="nav-link" data-scroll-target="#parsing-multipart-10">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-11" id="toc-parsing-multipart-11" class="nav-link" data-scroll-target="#parsing-multipart-11">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-12" id="toc-parsing-multipart-12" class="nav-link" data-scroll-target="#parsing-multipart-12">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-13" id="toc-parsing-multipart-13" class="nav-link" data-scroll-target="#parsing-multipart-13">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-14" id="toc-parsing-multipart-14" class="nav-link" data-scroll-target="#parsing-multipart-14">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-15" id="toc-parsing-multipart-15" class="nav-link" data-scroll-target="#parsing-multipart-15">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-16" id="toc-parsing-multipart-16" class="nav-link" data-scroll-target="#parsing-multipart-16">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-17" id="toc-parsing-multipart-17" class="nav-link" data-scroll-target="#parsing-multipart-17">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-18" id="toc-parsing-multipart-18" class="nav-link" data-scroll-target="#parsing-multipart-18">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-19" id="toc-parsing-multipart-19" class="nav-link" data-scroll-target="#parsing-multipart-19">Parsing Multipart</a></li>
+  <li><a href="#parsing-multipart-20" id="toc-parsing-multipart-20" class="nav-link" data-scroll-target="#parsing-multipart-20">Parsing Multipart</a></li>
+  <li><a href="#file-uploads-3" id="toc-file-uploads-3" class="nav-link" data-scroll-target="#file-uploads-3">File Uploads</a></li>
+  <li><a href="#image-uploads" id="toc-image-uploads" class="nav-link" data-scroll-target="#image-uploads">Image Uploads</a></li>
+  <li><a href="#we-now-support-file-sharing" id="toc-we-now-support-file-sharing" class="nav-link" data-scroll-target="#we-now-support-file-sharing">We Now Support File Sharing!</a></li>
+  <li><a href="#hosting-files" id="toc-hosting-files" class="nav-link" data-scroll-target="#hosting-files">Hosting Files</a></li>
+  <li><a href="#hosting-files---security" id="toc-hosting-files---security" class="nav-link" data-scroll-target="#hosting-files---security">Hosting Files - Security</a></li>
+  <li><a href="#hosting-files---security-1" id="toc-hosting-files---security-1" class="nav-link" data-scroll-target="#hosting-files---security-1">Hosting Files - Security</a></li>
+  <li><a href="#hosting-files---security-2" id="toc-hosting-files---security-2" class="nav-link" data-scroll-target="#hosting-files---security-2">Hosting Files - Security</a></li>
+  <li><a href="#hosting-files---security-3" id="toc-hosting-files---security-3" class="nav-link" data-scroll-target="#hosting-files---security-3">Hosting Files - Security</a></li>
+  <li><a href="#hosting-files---security-4" id="toc-hosting-files---security-4" class="nav-link" data-scroll-target="#hosting-files---security-4">Hosting Files - Security</a></li>
+  <li><a href="#hosting-files---security-5" id="toc-hosting-files---security-5" class="nav-link" data-scroll-target="#hosting-files---security-5">Hosting Files - Security</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Multipart and File Uploads</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- PDF page 1 -->
+<section id="multipart-parsing-and-file-uploads" class="level2">
+<h2 class="anchored" data-anchor-id="multipart-parsing-and-file-uploads">Multipart Parsing and File Uploads</h2>
+<!-- PDF page 2 -->
+</section>
+<section id="html-forms---post" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post">HTML Forms - POST</h2>
+<ul>
+<li>Last time we saw forms:
+<ul>
+<li>Submit the content of the form in the body of the POST request</li>
+</ul></li>
+</ul>
+<pre><code>&lt;form action="/form-path" method="post"&gt;
+&lt;label&gt;Enter your name: &lt;br/&gt;
+&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded</code></pre>
+<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
+&lt;input type="text" name="comment"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<p>commenter=Jesse&amp;comment=Good+morning%21</p>
+<pre><code>&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 3 -->
+</section>
+<section id="html-forms---post-1" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post-1">HTML Forms - POST</h2>
+<ul>
+<li>You can specify the encoding type for form submissions</li>
+<li>Default is url encoded (Special characters are % encoded)</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded</code></pre>
+<p>commenter=Jesse&amp;comment=Good+morning%21</p>
+<pre><code>&lt;form action="/form-path" method="post" enctype="application/x-www-form-urlencoded"&gt;
+&lt;label&gt;Enter your name: &lt;br/&gt;
+&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
+&lt;input type="text" name="comment"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 4 -->
+</section>
+<section id="html-forms---post-2" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post-2">HTML Forms - POST</h2>
+<ul>
+<li>url encoding cannot be used to upload files from a form!</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded</code></pre>
+<ul>
+<li>The browser will only send the filename, not the contents of the file</li>
+<li>We need something else for file uploads</li>
+</ul>
+<p>commenter=Jesse&amp;comment=Good+morning%21</p>
+<pre><code>&lt;form action="/form-path" method="post" enctype="application/x-www-form-urlencoded"&gt;
+&lt;label&gt;Enter your name: &lt;br/&gt;
+&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
+&lt;input type="text" name="comment"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 5 -->
+</section>
+<section id="html-forms---post-3" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post-3">HTML Forms - POST</h2>
+<ul>
+<li>Specify multipart encoding to receive each input separately in the body of the request</li>
+<li>With multipart encoding, the browser will send the contents of files</li>
+</ul>
+<pre><code>&lt;form action="/form-path" method="post" enctype="multipart/form-data"&gt;
+&lt;label&gt;Enter your name: &lt;br/&gt;
+&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
+&lt;input type="text" name="comment"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 6 -->
+</section>
+<section id="html-forms---post-4" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post-4">HTML Forms - POST</h2>
+<ul>
+<li>Our server receives a multipart form request in this format</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 252
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</code></pre>
+<pre><code>------WebKitFormBoundaryfkz9sCA6fR3CAHN4
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundaryfkz9sCA6fR3CAHN4
+Content-Disposition: form-data; name="comment"</code></pre>
+<pre><code>Good morning!
+------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</code></pre>
+<!-- PDF page 7 -->
+</section>
+<section id="html-forms---post-5" class="level2">
+<h2 class="anchored" data-anchor-id="html-forms---post-5">HTML Forms - POST</h2>
+<ul>
+<li>Content-Type specifies a string that separates each input</li>
+<li>Each input has its own headers</li>
+<li>Great for submitting different types of data in the same form
+<ul>
+<li>Required for file uploads</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 252
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</code></pre>
+<pre><code>------WebKitFormBoundaryfkz9sCA6fR3CAHN4
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundaryfkz9sCA6fR3CAHN4
+Content-Disposition: form-data; name="comment"</code></pre>
+<pre><code>Good morning!
+------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</code></pre>
+<!-- PDF page 8 -->
+</section>
+<section id="file-uploads" class="level2">
+<h2 class="anchored" data-anchor-id="file-uploads">File Uploads</h2>
+<ul>
+<li>We must use multipart/form-data to upload files
+<ul>
+<li>If not, browser only sends the filename</li>
+</ul></li>
+<li>Add an input with type “file”
+<ul>
+<li>The browser does the rest</li>
+<li>Users will be able to choose a file to send</li>
+</ul></li>
+</ul>
+<pre><code>&lt;form action="/form-path" method="post" enctype="multipart/form-data"&gt;
+&lt;label&gt;Enter your name: &lt;br/&gt;
+&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;label&gt;File: &lt;br/&gt;
+&lt;input type="file" name="upload"&gt;&lt;br/&gt;
+&lt;/label&gt;</code></pre>
+<pre><code>&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 9 -->
+</section>
+<section id="file-uploads-1" class="level2">
+<h2 class="anchored" data-anchor-id="file-uploads-1">File Uploads</h2>
+<ul>
+<li>When our server receives the file, it will appear in one of the parts of the multi-part POST request</li>
+<li>The content type will tell us the type of file</li>
+<li>The body of the part will contain all the bytes of that file
+<ul>
+<li>Can write these bytes to a new file on our server to save that file</li>
+</ul></li>
+</ul>
+<pre><code>------WebKitFormBoundarygVWEOc5JIyJ1qthO
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarygVWEOc5JIyJ1qthO
+Content-Disposition: form-data; name="upload"; filename="discord2.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarygVWEOc5JIyJ1qthO--</code></pre>
+<!-- PDF page 10 -->
+</section>
+<section id="file-uploads-2" class="level2">
+<h2 class="anchored" data-anchor-id="file-uploads-2">File Uploads</h2>
+<ul>
+<li>When receiving the bytes of a binary file, do not apply any encodings
+<ul>
+<li>When we received bytes representing text, we decoded it by interpreting the bytes as UTF-8 encoded text</li>
+<li>When receiving files, we are often interested in the raw bytes (Ex. Images, videos)</li>
+<li>The files will be encoded with algorithms other than UTF-8 (Ex. png, jpeg, mp4)</li>
+</ul></li>
+<li>Attempting to treat a binary file as a UTF-8 String will corrupt the data!</li>
+</ul>
+<!-- PDF page 11 -->
+</section>
+<section id="parsing-multipart" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart">Parsing Multipart</h2>
+<ul>
+<li>Your goal is to parse HTTP POST requests in this format
+<ul>
+<li>Without corrupting the image</li>
+</ul></li>
+<li>Let’s walk through the steps you’ll need to take</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 12 -->
+</section>
+<section id="parsing-multipart-1" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-1">Parsing Multipart</h2>
+<ul>
+<li>Identify the request using the method and path</li>
+<li>This is a post request request for form-path</li>
+<li>Based on our HTML, we know to treat this as a form submission</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 13 -->
+</section>
+<section id="parsing-multipart-2" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-2">Parsing Multipart</h2>
+<ul>
+<li>Parse the headers and read the length of the content</li>
+<li>This will be the number of bytes that need to be read from the body</li>
+<li>Follows the same protocol as your HTTP responses</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 14 -->
+</section>
+<section id="parsing-multipart-3" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-3">Parsing Multipart</h2>
+<ul>
+<li>Refer to your content length and read that many bytes from the body of the request</li>
+<li>Important: Do not attempt to parse anything until you’ve read this many bytes from the body (More details in the buffering lecture)</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 15 -->
+</section>
+<section id="parsing-multipart-4" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-4">Parsing Multipart</h2>
+<ul>
+<li>Read the type of the content to get the boundary</li>
+<li>Boundary is specified in addition to the MIME type
+<ul>
+<li>Recall that we used the same format to specify charset=utf-8</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 16 -->
+</section>
+<section id="parsing-multipart-5" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-5">Parsing Multipart</h2>
+<ul>
+<li>The body will consist of multiple parts, each separated by the boundary</li>
+<li>The browser will guarantee that the boundary is not contained in any of the data being sent</li>
+<li>This example has 2 parts</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 17 -->
+</section>
+<section id="parsing-multipart-6" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-6">Parsing Multipart</h2>
+<ul>
+<li>The parts are separated by the boundary with two leading dash characters “–”</li>
+<li>Each boundary must be at the beginning of a line</li>
+<li>The full boundary is CRLF + “–” + <code>&lt;boundary&gt;</code>
+<ul>
+<li>Except the first one which is already preceded by a CRLF from the blank line separating the headers and body</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 18 -->
+</section>
+<section id="parsing-multipart-7" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-7">Parsing Multipart</h2>
+<ul>
+<li>The end of the last boundary is marked by the full boundary plus two trailing “-” characters</li>
+<li>The last boundary is CRLF + “–” + <code>&lt;boundary&gt;</code> + “–”</li>
+<li>Can have a trailing CRLF after the last boundary that should be ignored</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 19 -->
+</section>
+<section id="parsing-multipart-8" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-8">Parsing Multipart</h2>
+<ul>
+<li>Each part of the request will follow a similar format to HTTP requests:
+<ul>
+<li>Any number of headers</li>
+<li>One blank line</li>
+<li>The content of the part</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 20 -->
+</section>
+<section id="parsing-multipart-9" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-9">Parsing Multipart</h2>
+<ul>
+<li>The headers should include a Content-Disposition
+<ul>
+<li>Provides the name of the part in quotes</li>
+<li>Name matches the name from your form</li>
+<li>For files, the original filename is provided in quotes</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 21 -->
+</section>
+<section id="parsing-multipart-10" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-10">Parsing Multipart</h2>
+<ul>
+<li>Content-Type is optional for parts</li>
+<li>If excluded, the default MIME type is text/plain</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 22 -->
+</section>
+<section id="parsing-multipart-11" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-11">Parsing Multipart</h2>
+<ul>
+<li>Content-Length is not included in the parts</li>
+<li>The purpose of Content-Length is to ensure we’ve received the full body before parsing</li>
+<li>Already read the full body using the HTTP Content-Length</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 23 -->
+</section>
+<section id="parsing-multipart-12" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-12">Parsing Multipart</h2>
+<ul>
+<li>When reading the bytes of a [non-text] file
+<ul>
+<li>Never, never, never encode the bytes as a string!</li>
+</ul></li>
+<li>But wait.. how do I parse all this stuff without making it a String?..</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 24 -->
+</section>
+<section id="parsing-multipart-13" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-13">Parsing Multipart</h2>
+<ul>
+<li>Parse in bytes!</li>
+<li>When parsing bytes that contain non-text data:
+<ul>
+<li>We’ll use byte-parsing, not String-parsing</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 25 -->
+</section>
+<section id="parsing-multipart-14" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-14">Parsing Multipart</h2>
+<ul>
+<li>You receive the request as an array of bytes</li>
+<li>Scan this array for the bytes you’re looking for</li>
+<li>Create sub-arrays to extract data</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 26 -->
+</section>
+<section id="parsing-multipart-15" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-15">Parsing Multipart</h2>
+<ul>
+<li>Example: To extract the headers you would find the first instance of the “<code>\r\n\r\n</code>” String and read everything before it</li>
+<li>Encode “<code>\r\n\r\n</code>” into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 27 -->
+</section>
+<section id="parsing-multipart-16" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-16">Parsing Multipart</h2>
+<ul>
+<li>When you have a sub-array containing only the headers
+<ul>
+<li>Decode using ASCII/UTF-8 and parse the headers</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 28 -->
+</section>
+<section id="parsing-multipart-17" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-17">Parsing Multipart</h2>
+<ul>
+<li>Use a similar approach with the boundary</li>
+<li>Encode the boundary into bytes</li>
+<li>Look for that sequence of bytes in the body</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 29 -->
+</section>
+<section id="parsing-multipart-18" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-18">Parsing Multipart</h2>
+<ul>
+<li>Repeat for each part</li>
+<li>Encode “<code>\r\n\r\n</code>” into bytes, scan the part for this sequence of bytes, read the headers</li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 30 -->
+</section>
+<section id="parsing-multipart-19" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-19">Parsing Multipart</h2>
+<ul>
+<li>If the headers for a part specify a non-text encoding
+<ul>
+<li>Handle the body of that part as raw bytes</li>
+<li>The bytes are never decoded using a text encoding</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 31 -->
+</section>
+<section id="parsing-multipart-20" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-multipart-20">Parsing Multipart</h2>
+<ul>
+<li>Once you read the raw bytes of the file/image
+<ul>
+<li>Save these bytes in a file</li>
+<li>Serve these files for users to enjoy</li>
+</ul></li>
+</ul>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 9937
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 32 -->
+</section>
+<section id="file-uploads-3" class="level2">
+<h2 class="anchored" data-anchor-id="file-uploads-3">File Uploads</h2>
+<ul>
+<li>To save a file on your server:</li>
+<li>Save the file to disk
+<ul>
+<li>Bad practice to store files in a database</li>
+<li>Generate a naming convention for your saved files
+<ul>
+<li>Do not use the user supplied filename</li>
+</ul></li>
+</ul></li>
+<li>Store the filename in your database
+<ul>
+<li>When you pull a record from the database, it will tell you which filename to use and that file can be read from disk</li>
+</ul></li>
+</ul>
+<!-- PDF page 33 -->
+</section>
+<section id="image-uploads" class="level2">
+<h2 class="anchored" data-anchor-id="image-uploads">Image Uploads</h2>
+<ul>
+<li>To host user supplied images on your site:</li>
+<li>Pull the filename from the database and use this as the src of the img element in your HTML (Using HTML templates)</li>
+<li>The browser will read the src attribute and send a request for the file path</li>
+<li>Host the bytes of the file at that path</li>
+</ul>
+<!-- PDF page 34 -->
+</section>
+<section id="we-now-support-file-sharing" class="level2">
+<h2 class="anchored" data-anchor-id="we-now-support-file-sharing">We Now Support File Sharing!</h2>
+<!-- PDF page 35 -->
+</section>
+<section id="hosting-files" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files">Hosting Files</h2>
+<ul>
+<li>We can make all uploaded files available to our users</li>
+<li>We create a url scheme to accomplish this
+<ul>
+<li>Ex. GET /public/image/cool-picture.png</li>
+<li>Ex. GET /public/image?filename=cool-picture.png</li>
+</ul></li>
+<li>Parse the request to find which image is being requested
+<ul>
+<li>Open that file and send the bytes</li>
+<li>Can send a 404 if the file doesn’t exist on the server</li>
+</ul></li>
+</ul>
+<!-- PDF page 36 -->
+</section>
+<section id="hosting-files---security" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security">Hosting Files - Security</h2>
+<ul>
+<li>You’ll have code that effectively does this:
+<ul>
+<li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
+<li>Parse the path to extract <code>&lt;filename&gt;</code></li>
+<li>Read the bytes of the file</li>
+<li>Send those bytes to the user in your HTTP response</li>
+</ul></li>
+</ul>
+<!-- PDF page 37 -->
+</section>
+<section id="hosting-files---security-1" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security-1">Hosting Files - Security</h2>
+<ul>
+<li>You’ll have code that effectively does this:
+<ul>
+<li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
+<li>Parse the path to extract <code>&lt;filename&gt;</code></li>
+<li>Read the bytes of the file</li>
+<li>Send those bytes to the user in your HTTP response</li>
+</ul></li>
+<li>… and someone makes the following request:
+<ul>
+<li>GET /public/image/~/.ssh/id_rsa</li>
+</ul></li>
+</ul>
+<!-- PDF page 38 -->
+</section>
+<section id="hosting-files---security-2" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security-2">Hosting Files - Security</h2>
+<ul>
+<li>GET /image/~/.ssh/id_rsa
+<ul>
+<li>This attacker requested your private encryption key!</li>
+</ul></li>
+<li>We cannot allow users to request arbitrary files from the server</li>
+<li>Add logic to ensure users can’t access files outside the public directories
+<ul>
+<li>Removing all “/” characters will suffice for the HW</li>
+</ul></li>
+</ul>
+<!-- PDF page 39 -->
+</section>
+<section id="hosting-files---security-3" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security-3">Hosting Files - Security</h2>
+<ul>
+<li>GET /image/~/.ssh/id_rsa
+<ul>
+<li>This attacker requested your private encryption key!</li>
+</ul></li>
+<li>Strongest defense:
+<ul>
+<li>Maintain a list of all valid files that can be requested</li>
+<li>return a 400-level response if any other file is requested</li>
+</ul></li>
+</ul>
+<!-- PDF page 40 -->
+</section>
+<section id="hosting-files---security-4" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security-4">Hosting Files - Security</h2>
+<ul>
+<li>Testing for this vulnerability</li>
+</ul>
+<p>curl –path-as-is http://localhost:8080/public/image/../../server.py</p>
+<ul>
+<li>Following the structure of the HW server, this request with ask the server for server.py</li>
+<li>Your server must not respect this request
+<ul>
+<li>Sending your server code alone is a security issue, but this is also a proof of concept that they can request arbitrary files</li>
+</ul></li>
+<li>Uses curl in the command line</li>
+<li>The browser and curl will simplify paths by default and chance the path to “/ server.py”</li>
+<li>–path-as-is prevents the path simplification</li>
+</ul>
+<!-- PDF page 41 -->
+</section>
+<section id="hosting-files---security-5" class="level2">
+<h2 class="anchored" data-anchor-id="hosting-files---security-5">Hosting Files - Security</h2>
+<ul>
+<li>Don’t forget to disable MIME type sniffing</li>
+<li>At this point an attacker can upload Javascript instead of an image
+<ul>
+<li>Don’t let the browser sniff the JS MIME type and run the attack script</li>
+</ul></li>
+</ul>
+
+
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc1521">RFC1521 - Multipart Form</a></li>
+</ul>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

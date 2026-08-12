@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Buffering HTTP Requests – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#buffers" id="toc-buffers" class="nav-link active" data-scroll-target="#buffers">Buffers</a></li>
+  <li><a href="#tcp-reminder" id="toc-tcp-reminder" class="nav-link" data-scroll-target="#tcp-reminder">TCP Reminder</a></li>
+  <li><a href="#buffering-file-uploads" id="toc-buffering-file-uploads" class="nav-link" data-scroll-target="#buffering-file-uploads">Buffering File Uploads</a></li>
+  <li><a href="#buffering-file-uploads-1" id="toc-buffering-file-uploads-1" class="nav-link" data-scroll-target="#buffering-file-uploads-1">Buffering File Uploads</a></li>
+  <li><a href="#buffering-file-uploads-2" id="toc-buffering-file-uploads-2" class="nav-link" data-scroll-target="#buffering-file-uploads-2">Buffering File Uploads</a></li>
+  <li><a href="#buffering-file-uploads-3" id="toc-buffering-file-uploads-3" class="nav-link" data-scroll-target="#buffering-file-uploads-3">Buffering File Uploads</a></li>
+  <li><a href="#buffering-file-uploads-4" id="toc-buffering-file-uploads-4" class="nav-link" data-scroll-target="#buffering-file-uploads-4">Buffering File Uploads</a></li>
+  <li><a href="#buffering-file-uploads-5" id="toc-buffering-file-uploads-5" class="nav-link" data-scroll-target="#buffering-file-uploads-5">Buffering File Uploads</a></li>
+  <li><a href="#buffers-1" id="toc-buffers-1" class="nav-link" data-scroll-target="#buffers-1">Buffers</a></li>
+  <li><a href="#buffer-questions" id="toc-buffer-questions" class="nav-link" data-scroll-target="#buffer-questions">Buffer Questions</a></li>
+  <li><a href="#buffer-answer" id="toc-buffer-answer" class="nav-link" data-scroll-target="#buffer-answer">Buffer Answer</a></li>
+  <li><a href="#buffers-2" id="toc-buffers-2" class="nav-link" data-scroll-target="#buffers-2">Buffers</a></li>
+  <li><a href="#http-buffers" id="toc-http-buffers" class="nav-link" data-scroll-target="#http-buffers">HTTP Buffers</a></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
+  <li><a href="#buffers-3" id="toc-buffers-3" class="nav-link" data-scroll-target="#buffers-3">Buffers</a></li>
+  <li><a href="#demos" id="toc-demos" class="nav-link" data-scroll-target="#demos">Demos</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Buffering HTTP Requests</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- PDF page 1 -->
+<section id="buffers" class="level2">
+<h2 class="anchored" data-anchor-id="buffers">Buffers</h2>
+<!-- PDF page 2 -->
+</section>
+<section id="tcp-reminder" class="level2">
+<h2 class="anchored" data-anchor-id="tcp-reminder">TCP Reminder</h2>
+<ul>
+<li>TCP creates a persistent connection</li>
+<li>Bytes are streamed over this connection</li>
+<li>Data can be sent and received until one side closes the connection</li>
+<li>With small GET requests
+<ul>
+<li>Read from the TCP socket once to read the entire request</li>
+</ul></li>
+</ul>
+<!-- PDF page 3 -->
+</section>
+<section id="buffering-file-uploads" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads">Buffering File Uploads</h2>
+<ul>
+<li>To read an HTTP request:
+<ul>
+<li>First, read data from the TCP socket</li>
+</ul></li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 746
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 4 -->
+</section>
+<section id="buffering-file-uploads-1" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads-1">Buffering File Uploads</h2>
+<ul>
+<li>Call the receive method with an int</li>
+<li>The value of this int is the maximum number of bytes that will be read from the TCP socket</li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 746
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="discord.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 5 -->
+</section>
+<section id="buffering-file-uploads-2" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads-2">Buffering File Uploads</h2>
+<ul>
+<li>What if we receive a fairly large POST request?
+<ul>
+<li>Might not be able to read the entire request in one read from the socket</li>
+</ul></li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 91320
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="flamingo.jpg"
+Content-Type: image/jpeg</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 6 -->
+</section>
+<section id="buffering-file-uploads-3" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads-3">Buffering File Uploads</h2>
+<ul>
+<li>What if a very large file is uploaded?</li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 1884206
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="hq_image.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 7 -->
+</section>
+<section id="buffering-file-uploads-4" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads-4">Buffering File Uploads</h2>
+<ul>
+<li>When we call receive in this example, we read at most 2048 bytes from the connection</li>
+<li>We could increase this value, but there’s no guarantee that al the bytes will be ready when we call receive</li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 1884206
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="hq_image.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 8 -->
+</section>
+<section id="buffering-file-uploads-5" class="level2">
+<h2 class="anchored" data-anchor-id="buffering-file-uploads-5">Buffering File Uploads</h2>
+<ul>
+<li>We Must read from the socket multiple times!</li>
+</ul>
+<p>received_data = self.request.recv(2048)</p>
+<pre><code>POST /form-path HTTP/1.1
+Content-Length: 1884206
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
+<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="commenter"</code></pre>
+<pre><code>Jesse
+------WebKitFormBoundarycriD3u6M0UuPR1ia
+Content-Disposition: form-data; name="upload"; filename="hq_image.png"
+Content-Type: image/png</code></pre>
+<pre><code>&lt;bytes_of_the_file&gt;
+------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<!-- PDF page 9 -->
+</section>
+<section id="buffers-1" class="level2">
+<h2 class="anchored" data-anchor-id="buffers-1">Buffers</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>TCP socket libraries will use buffers</li>
+<li>No matter your language/library you will have a method/ function that reads bytes from the socket
+<ul>
+<li>Called when there are bytes that arrive over the socket</li>
+<li>Returns some bytes of the request</li>
+</ul></li>
+</ul>
+<p>User sends data to the server</p>
+<p>User</p>
+<p>Server</p>
+<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 10 -->
+</section>
+<section id="buffer-questions" class="level2">
+<h2 class="anchored" data-anchor-id="buffer-questions">Buffer Questions</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>What happens when the user has a lot of data to send?</li>
+<li>What if the user has a slow connection?</li>
+<li>Does the socket server wait for all of the data to be received before calling your code?</li>
+<li>What if the data takes an hour to send?</li>
+<li>What if the data contains streaming video that never ends?</li>
+</ul>
+<p>User sends data to the server</p>
+<p>User</p>
+<p>Server</p>
+<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 11 -->
+</section>
+<section id="buffer-answer" class="level2">
+<h2 class="anchored" data-anchor-id="buffer-answer">Buffer Answer</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>The socket notifies your code when there is data to read - even if it’s not the entire request</li>
+<li>The socket server will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
+<ul>
+<li>For GET requests the entire request is smaller than the buffer (Safe assumption in this course)</li>
+</ul></li>
+</ul>
+<p>User sends data to the server</p>
+<p>User</p>
+<p>Server</p>
+<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 12 -->
+</section>
+<section id="buffers-2" class="level2">
+<h2 class="anchored" data-anchor-id="buffers-2">Buffers</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Now that we’re handling file uploads, we must be aware of these buffers</li>
+<li>The server will need data that persists across multiple calls that read bytes from a socket
+<ul>
+<li>Create data structures that store the bytes read from a request</li>
+<li>Combine the bytes from multiple calls to receive the entire file</li>
+</ul></li>
+</ul>
+<p>User sends data to the server</p>
+<p>User</p>
+<p>Server</p>
+<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 13 -->
+</section>
+<section id="http-buffers" class="level2">
+<h2 class="anchored" data-anchor-id="http-buffers">HTTP Buffers</h2>
+<ul>
+<li>When receiving a large HTTP request:
+<ul>
+<li>Read bytes from the socket</li>
+<li>Parse the headers</li>
+<li>Find the Content-Length header and store this value</li>
+<li>Keep reading bytes from the stream until you have read Content-Length after the first “<code>\r\n\r\n</code>”</li>
+<li>Process the request</li>
+</ul></li>
+</ul>
+<!-- PDF page 14 -->
+</section>
+<section id="assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
+<ul>
+<li>Assumptions you may make on the Homework:</li>
+<li>The first read from your buffer will contain all the headers of the HTTP
+<ul>
+<li>If you’re not currently buffering, you can safely parse the first bytes as the headers of the request (up to the first “<code>\r\n\r\n</code>”)</li>
+<li>This allows you to read the Content-Length</li>
+</ul></li>
+<li>We will test with files larger than your TCP buffer size
+<ul>
+<li>ie. Do not do this:</li>
+</ul></li>
+</ul>
+<p>received_data = self.request.recv(1048576)</p>
+<!-- PDF page 15 -->
+</section>
+<section id="buffers-3" class="level2">
+<h2 class="anchored" data-anchor-id="buffers-3">Buffers</h2>
+<ul>
+<li>Remember that the Content-Length does not include the bytes for the headers
+<ul>
+<li>ie. The total number of bytes read for one request will be larger than the Content-Length</li>
+</ul></li>
+</ul>
+<!-- PDF page 16 -->
+</section>
+<section id="demos" class="level2">
+<h2 class="anchored" data-anchor-id="demos">Demos</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DoS and DDoS – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#dos" id="toc-dos" class="nav-link active" data-scroll-target="#dos">DoS</a></li>
+  <li><a href="#denial-of-service" id="toc-denial-of-service" class="nav-link" data-scroll-target="#denial-of-service">Denial of Service</a></li>
+  <li><a href="#dos-prevention" id="toc-dos-prevention" class="nav-link" data-scroll-target="#dos-prevention">DoS Prevention</a></li>
+  <li><a href="#dos--brute-force" id="toc-dos--brute-force" class="nav-link" data-scroll-target="#dos--brute-force">DoS -Brute Force</a></li>
+  <li><a href="#dos---content-length" id="toc-dos---content-length" class="nav-link" data-scroll-target="#dos---content-length">DoS - Content-Length</a></li>
+  <li><a href="#dos---slow-send" id="toc-dos---slow-send" class="nav-link" data-scroll-target="#dos---slow-send">DoS - Slow Send</a></li>
+  <li><a href="#dos---slow-send-1" id="toc-dos---slow-send-1" class="nav-link" data-scroll-target="#dos---slow-send-1">DoS - Slow Send</a></li>
+  <li><a href="#dos---slow-read" id="toc-dos---slow-read" class="nav-link" data-scroll-target="#dos---slow-read">DoS - Slow Read</a></li>
+  <li><a href="#dos---syn-flood" id="toc-dos---syn-flood" class="nav-link" data-scroll-target="#dos---syn-flood">DoS - SYN Flood</a></li>
+  <li><a href="#dos---syn-flood-1" id="toc-dos---syn-flood-1" class="nav-link" data-scroll-target="#dos---syn-flood-1">DoS - SYN Flood</a></li>
+  <li><a href="#dos-prevention-ip-blocking" id="toc-dos-prevention-ip-blocking" class="nav-link" data-scroll-target="#dos-prevention-ip-blocking">DoS Prevention: IP Blocking</a></li>
+  <li><a href="#ddos" id="toc-ddos" class="nav-link" data-scroll-target="#ddos">DDoS</a></li>
+  <li><a href="#ddos-1" id="toc-ddos-1" class="nav-link" data-scroll-target="#ddos-1">DDoS</a></li>
+  <li><a href="#ddos-and-botnets" id="toc-ddos-and-botnets" class="nav-link" data-scroll-target="#ddos-and-botnets">DDoS and BotNets</a></li>
+  <li><a href="#ddos-and-botnets-1" id="toc-ddos-and-botnets-1" class="nav-link" data-scroll-target="#ddos-and-botnets-1">DDoS and BotNets</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DoS and DDoS</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- PDF page 1 -->
+<section id="dos" class="level2">
+<h2 class="anchored" data-anchor-id="dos">DoS</h2>
+<!-- PDF page 2 -->
+</section>
+<section id="denial-of-service" class="level2">
+<h2 class="anchored" data-anchor-id="denial-of-service">Denial of Service</h2>
+<ul>
+<li>Denial of Service (DoS) Attack
+<ul>
+<li>Prevent the server from being used by legitimate users</li>
+</ul></li>
+<li>General strategy
+<ul>
+<li>Overwhelm the server with requests</li>
+<li>The requests use all of the servers resources</li>
+<li>Anyone attempting to use the app during the attack will not get responses from their requests</li>
+</ul></li>
+<li>Discuss: How would you attack a server?</li>
+</ul>
+<!-- PDF page 3 -->
+</section>
+<section id="dos-prevention" class="level2">
+<h2 class="anchored" data-anchor-id="dos-prevention">DoS Prevention</h2>
+<ul>
+<li>Constant back-and-forth between attacks and prevention</li>
+<li>Each side continuously evolves in an attempt to counter the other</li>
+<li>Preventing DoS attacks is difficult without affecting legitimate users</li>
+</ul>
+<!-- PDF page 4 -->
+</section>
+<section id="dos--brute-force" class="level2">
+<h2 class="anchored" data-anchor-id="dos--brute-force">DoS -Brute Force</h2>
+<ul>
+<li>Brute force attack
+<ul>
+<li>Just mash refresh on the page… or</li>
+<li>Write code that will send a request
+<ul>
+<li>Call that code in a loop</li>
+</ul></li>
+</ul></li>
+<li>Very simple attack</li>
+<li>Very simple prevention
+<ul>
+<li>Write efficient code for your app</li>
+<li>The attack is effectively a load test</li>
+<li>Your app should be ready for a large number of users</li>
+</ul></li>
+</ul>
+<!-- PDF page 5 -->
+</section>
+<section id="dos---content-length" class="level2">
+<h2 class="anchored" data-anchor-id="dos---content-length">DoS - Content-Length</h2>
+<ul>
+<li>An attacker can get more sophisticated than brute force by playing with the Content-Length header</li>
+<li>How does your code buffer POST requests?
+<ul>
+<li>Read the content length</li>
+<li>Read bytes from the TCP socket until you read that many bytes</li>
+</ul></li>
+<li>How does an attacker exploit this?
+<ul>
+<li>Send a request with a Content-Length of 20</li>
+<li>Only send 19 bytes in the body</li>
+<li>Your code gets stuck in an infinite loop</li>
+<li>Send these requests in a loop to force the server to keep many connections open</li>
+</ul></li>
+</ul>
+<!-- PDF page 6 -->
+</section>
+<section id="dos---slow-send" class="level2">
+<h2 class="anchored" data-anchor-id="dos---slow-send">DoS - Slow Send</h2>
+<ul>
+<li>Next step of prevention:
+<ul>
+<li>Set a timeout in your loop</li>
+<li>If you haven’t received any bytes after a fixed amount of time, close the connection</li>
+</ul></li>
+<li>Next evolution of the attack:
+<ul>
+<li>Drip feed the content</li>
+<li>Instead of sending all the bytes right away, send them very slowly</li>
+<li>eg. Set Content-Length to 100,000, then send 10 bytes/second</li>
+<li>Prevents the timeout from activating</li>
+</ul></li>
+</ul>
+<!-- PDF page 7 -->
+</section>
+<section id="dos---slow-send-1" class="level2">
+<h2 class="anchored" data-anchor-id="dos---slow-send-1">DoS - Slow Send</h2>
+<ul>
+<li>Next evolution of the attack:
+<ul>
+<li>Send bytes very slowly</li>
+</ul></li>
+<li>Next step of prevention:
+<ul>
+<li>Set a timeout for the entire connection</li>
+<li>Prevention must distinguish between a slow send attack and a legitimate user with a slow connection</li>
+<li>Attackers evolve to accurately simulate a user with a slow connection</li>
+</ul></li>
+</ul>
+<!-- PDF page 8 -->
+</section>
+<section id="dos---slow-read" class="level2">
+<h2 class="anchored" data-anchor-id="dos---slow-read">DoS - Slow Read</h2>
+<ul>
+<li>A related attack is to read server responses very slowly</li>
+<li>Instead of reading 2048 whenever data is ready, read a few bytes/second</li>
+<li>Can take a very long time to read one response from the server
+<ul>
+<li>Server must keep this TCP connection open the whole time</li>
+</ul></li>
+</ul>
+<!-- PDF page 9 -->
+</section>
+<section id="dos---syn-flood" class="level2">
+<h2 class="anchored" data-anchor-id="dos---syn-flood">DoS - SYN Flood</h2>
+<ul>
+<li>Recall the TCP three way handshake
+<ul>
+<li>Client sends SYN</li>
+<li>Server responds with SYN + ACK</li>
+<li>Client responds with ACK</li>
+</ul></li>
+</ul>
+<p><img src="assets/slide09-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 10 -->
+</section>
+<section id="dos---syn-flood-1" class="level2">
+<h2 class="anchored" data-anchor-id="dos---syn-flood-1">DoS - SYN Flood</h2>
+<ul>
+<li>SYN Flood attack:
+<ul>
+<li>Send a SYN to the server</li>
+<li>Stop.</li>
+</ul></li>
+<li>Very cheap to send a SYN packet
+<ul>
+<li>Can send large numbers of them very quickly</li>
+<li>Server responds and waits for the ACK that never comes</li>
+<li>Server has lots of half-open connections until they time out</li>
+<li>Uses servers resources to keep these connections open</li>
+</ul></li>
+</ul>
+<p><img src="assets/slide09-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 11 -->
+</section>
+<section id="dos-prevention-ip-blocking" class="level2">
+<h2 class="anchored" data-anchor-id="dos-prevention-ip-blocking">DoS Prevention: IP Blocking</h2>
+<ul>
+<li>IP blocking
+<ul>
+<li>If you see many requests, or other suspicious behavior, from the same IP address
+<ul>
+<li>Block connections from that IP address</li>
+</ul></li>
+</ul></li>
+<li>When using nginx as a reverse proxy:
+<ul>
+<li>All requests will come from nginx (ie. localhost)</li>
+<li>Configure nginx to forward the real ip address of the client in a header</li>
+<li>Read the header in your server code to add IP blocking</li>
+</ul></li>
+</ul>
+<!-- PDF page 12 -->
+</section>
+<section id="ddos" class="level2">
+<h2 class="anchored" data-anchor-id="ddos">DDoS</h2>
+<ul>
+<li>So we block offending IP addresses
+<ul>
+<li>Game Over. Eventually block all attacker IPs..</li>
+<li>IP addresses can be spoofed..</li>
+<li>But more problematic is the DDoS attack</li>
+</ul></li>
+</ul>
+<!-- PDF page 13 -->
+</section>
+<section id="ddos-1" class="level2">
+<h2 class="anchored" data-anchor-id="ddos-1">DDoS</h2>
+<ul>
+<li>Distributed Denial of Service (DDoS)
+<ul>
+<li>Instead of using one machine to launch an attack..
+<ul>
+<li>Use as many machines as you can access</li>
+<li>Launch any/all of the previous attacks from all machines</li>
+</ul></li>
+<li>Very difficult to prevent against since it can look much more like legitimate traffic from a variety of users</li>
+</ul></li>
+</ul>
+<!-- PDF page 14 -->
+</section>
+<section id="ddos-and-botnets" class="level2">
+<h2 class="anchored" data-anchor-id="ddos-and-botnets">DDoS and BotNets</h2>
+<ul>
+<li>How does an attacker gain access to enough machines to launch a DDoS attack?
+<ul>
+<li>Using a BotNet</li>
+</ul></li>
+<li>Viruses “Back in the day”
+<ul>
+<li>Attacker infects your device with a virus</li>
+<li>The virus destroys your device and renders it unusable</li>
+<li>Do it for the lolz</li>
+<li>No real gain for the attacker</li>
+</ul></li>
+</ul>
+<!-- PDF page 15 -->
+</section>
+<section id="ddos-and-botnets-1" class="level2">
+<h2 class="anchored" data-anchor-id="ddos-and-botnets-1">DDoS and BotNets</h2>
+<ul>
+<li>Viruses in {{current_year}}
+<ul>
+<li>Attacker infects your device with a virus</li>
+<li>The virus runs silently in the background waiting for commands from the attacker</li>
+<li>Infected machines become part of the attackers BotNet</li>
+<li>The attacker can now use the resources of all these machines
+<ul>
+<li>Launch a DDoS attack from their BotNet
+<ul>
+<li>Looks even more like legitimate users since many of them are legitimate users</li>
+</ul></li>
+</ul></li>
+<li>Lucrative for the attacker
+<ul>
+<li>Can sell access to their BotNot
+<ul>
+<li>Or just mine crypto..</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

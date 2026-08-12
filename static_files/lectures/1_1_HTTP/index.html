@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="CSE312 Course Staff">
+<meta name="keywords" content="HTTP, web development, request, response, CSE312">
+<meta name="description" content="An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure.">
+
+<title>HTTP Request/Response – CSE312 Lectures</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (document.getElementById("main-content")) {
+    return;
+  }
+  var target =
+    document.querySelector(".reveal .slides") ||
+    document.getElementById("quarto-document-content") ||
+    document.querySelector("main");
+  if (target) {
+    target.id = "main-content";
+  }
+});
+</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+
+
+
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#http-overview" id="toc-http-overview" class="nav-link active" data-scroll-target="#http-overview">HTTP Overview</a></li>
+  <li><a href="#network-stack-a-simplified-view" id="toc-network-stack-a-simplified-view" class="nav-link" data-scroll-target="#network-stack-a-simplified-view">Network Stack (A simplified view)</a></li>
+  <li><a href="#http---documentation" id="toc-http---documentation" class="nav-link" data-scroll-target="#http---documentation">HTTP - Documentation</a></li>
+  <li><a href="#hypertext-transfer-protocol-http" id="toc-hypertext-transfer-protocol-http" class="nav-link" data-scroll-target="#hypertext-transfer-protocol-http">HyperText Transfer Protocol (HTTP)</a></li>
+  <li><a href="#http" id="toc-http" class="nav-link" data-scroll-target="#http">HTTP</a></li>
+  <li><a href="#web-server" id="toc-web-server" class="nav-link" data-scroll-target="#web-server">Web Server</a></li>
+  <li><a href="#loading-a-web-site" id="toc-loading-a-web-site" class="nav-link" data-scroll-target="#loading-a-web-site">Loading a Web Site</a></li>
+  <li><a href="#http-request" id="toc-http-request" class="nav-link" data-scroll-target="#http-request">HTTP Request</a></li>
+  <li><a href="#http-request-1" id="toc-http-request-1" class="nav-link" data-scroll-target="#http-request-1">HTTP Request</a></li>
+  <li><a href="#http-request-2" id="toc-http-request-2" class="nav-link" data-scroll-target="#http-request-2">HTTP Request</a></li>
+  <li><a href="#http-request-3" id="toc-http-request-3" class="nav-link" data-scroll-target="#http-request-3">HTTP Request</a></li>
+  <li><a href="#http-1" id="toc-http-1" class="nav-link" data-scroll-target="#http-1">HTTP</a></li>
+  <li><a href="#new-lines" id="toc-new-lines" class="nav-link" data-scroll-target="#new-lines">New Lines</a></li>
+  <li><a href="#http-get-request" id="toc-http-get-request" class="nav-link" data-scroll-target="#http-get-request">HTTP GET Request</a></li>
+  <li><a href="#get-request" id="toc-get-request" class="nav-link" data-scroll-target="#get-request">GET Request</a></li>
+  <li><a href="#get-request-1" id="toc-get-request-1" class="nav-link" data-scroll-target="#get-request-1">GET Request</a></li>
+  <li><a href="#the-request-line" id="toc-the-request-line" class="nav-link" data-scroll-target="#the-request-line">The Request Line</a></li>
+  <li><a href="#the-request-line-1" id="toc-the-request-line-1" class="nav-link" data-scroll-target="#the-request-line-1">The Request Line</a></li>
+  <li><a href="#headers" id="toc-headers" class="nav-link" data-scroll-target="#headers">Headers</a></li>
+  <li><a href="#http-response" id="toc-http-response" class="nav-link" data-scroll-target="#http-response">HTTP Response</a></li>
+  <li><a href="#response" id="toc-response" class="nav-link" data-scroll-target="#response">Response</a></li>
+  <li><a href="#response-1" id="toc-response-1" class="nav-link" data-scroll-target="#response-1">Response</a></li>
+  <li><a href="#status-line" id="toc-status-line" class="nav-link" data-scroll-target="#status-line">Status Line</a></li>
+  <li><a href="#response-codes" id="toc-response-codes" class="nav-link" data-scroll-target="#response-codes">Response Codes</a></li>
+  <li><a href="#response-headers" id="toc-response-headers" class="nav-link" data-scroll-target="#response-headers">Response Headers</a></li>
+  <li><a href="#blank-line" id="toc-blank-line" class="nav-link" data-scroll-target="#blank-line">Blank Line</a></li>
+  <li><a href="#body" id="toc-body" class="nav-link" data-scroll-target="#body">Body</a></li>
+  <li><a href="#not-found" id="toc-not-found" class="nav-link" data-scroll-target="#not-found">404 Not Found</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">HTTP Request/Response</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
+</div>
+
+<div>
+  <div class="description">
+    An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>CSE312 Course Staff </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+<div>
+  <div class="keywords">
+    <div class="block-title">Keywords</div>
+    <p>HTTP, web development, request, response, CSE312</p>
+  </div>
+</div>
+
+</header>
+
+
+<section id="http-overview" class="level2">
+<h2 class="anchored" data-anchor-id="http-overview">HTTP Overview</h2>
+<p><a href="slides.html">View this lecture as slides</a></p>
+</section>
+<section id="network-stack-a-simplified-view" class="level2">
+<h2 class="anchored" data-anchor-id="network-stack-a-simplified-view">Network Stack (A simplified view)</h2>
+<ul>
+<li>Enter HTTP</li>
+</ul>
+<div class="diagram-description" role="note" aria-label="Packet structure from outermost to innermost layer">
+<p><strong>Packet Structure</strong>, from the outside in:</p>
+<ol type="1">
+<li>IP Headers</li>
+<li>TCP Headers</li>
+<li>HTTP Headers</li>
+<li>Content</li>
+</ol>
+</div>
+</section>
+<section id="http---documentation" class="level2">
+<h2 class="anchored" data-anchor-id="http---documentation">HTTP - Documentation</h2>
+<ul>
+<li>HTTP/1.1 is defined by RFC2616 of the IETF
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc2616" class="uri">https://tools.ietf.org/html/rfc2616</a></li>
+<li>This is THE document for all your questions about HTTP</li>
+<li>Today we’ll discuss topics in sections 4, 5, and 6</li>
+</ul></li>
+<li>RFC
+<ul>
+<li>Request For Comments</li>
+<li>Submit an RFC for public discussion or to publish information</li>
+</ul></li>
+<li>IETF
+<ul>
+<li>Internet Engineering Task Force</li>
+<li>Adopts some RFC’s as Internet standards</li>
+</ul></li>
+</ul>
+</section>
+<section id="hypertext-transfer-protocol-http" class="level2">
+<h2 class="anchored" data-anchor-id="hypertext-transfer-protocol-http">HyperText Transfer Protocol (HTTP)</h2>
+<ul>
+<li>HTTP is an application layer protocol
+<ul>
+<li>Protocols used by our applications</li>
+<li>Protocols that are not concerned with the transmission of data</li>
+</ul></li>
+<li>[Almost] Always uses TCP for reliable communication
+<ul>
+<li>Always in this course</li>
+</ul></li>
+</ul>
+</section>
+<section id="http" class="level2">
+<h2 class="anchored" data-anchor-id="http">HTTP</h2>
+<ul>
+<li>HTTP is a protocol used to access content from a web server</li>
+<li>Protocol: An agreed upon set of rules
+<ul>
+<li>HTTP: Defines the format of messages sent to/from a web server</li>
+</ul></li>
+<li>HTTP is a Request - Response protocol
+<ul>
+<li>Client makes request to server</li>
+<li>Server returns a response</li>
+<li>Ex. Request The latest tweets from a user. Twitter server returns the tweets in its response</li>
+</ul></li>
+<li>Response may require more requests
+<ul>
+<li>Ex. Get HTML which requires CSS/JS/Images</li>
+</ul></li>
+</ul>
+</section>
+<section id="web-server" class="level2">
+<h2 class="anchored" data-anchor-id="web-server">Web Server</h2>
+<ul>
+<li>Software that “speaks” HTTP</li>
+<li>Listens for HTTP requests and responds with HTTP responses</li>
+<li>We want to host our web pages/apps on the Internet using HTTP</li>
+<li>Terminology:
+<ul>
+<li>Front End - The part of a web app that runs in the browser (HTML/CSS/JS)
+<ul>
+<li>The front end will send HTTP requests to the back end</li>
+</ul></li>
+<li>Back End - The web server and all software that does not run on the user’s machine
+<ul>
+<li>The back end will send HTTP responses to the front end</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="loading-a-web-site" class="level2">
+<h2 class="anchored" data-anchor-id="loading-a-web-site">Loading a Web Site</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+  participant Browser as Browser (Front End)
+  participant Server as Web Server (Back End)
+  Browser-&gt;&gt;Server: 1. Request HTML
+  Server-&gt;&gt;Browser: 2. Sends HTML
+  Browser-&gt;&gt;Server: 3. Request Each url in HTML
+  Server-&gt;&gt;Browser: 4. Sends Content
+  Note over Browser: 5. Browser renders all content and runs JavaScript
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The Browser and the Web Server communicate across the Network (Internet).</p>
+</section>
+<section id="http-request" class="level2">
+<h2 class="anchored" data-anchor-id="http-request">HTTP Request</h2>
+<ul>
+<li>Each HTTP request will contain the request type:
+<ul>
+<li>GET: Request information from a server</li>
+<li>POST: Send information to a server</li>
+<li>PUT: Add information to a service</li>
+<li>PATCH: Partial update of existing data</li>
+<li>DELETE: Delete information from a service</li>
+<li>HEAD: Request only the headers of a response</li>
+</ul></li>
+<li>To start, we’ll focus on GET and POST only</li>
+</ul>
+</section>
+<section id="http-request-1" class="level2">
+<h2 class="anchored" data-anchor-id="http-request-1">HTTP Request</h2>
+<ul>
+<li>HTTP GET Request
+<ul>
+<li>Used when requesting content from a server</li>
+<li>[Typically] Only contains a URL and HTTP headers</li>
+<li>When you click a link, your browser makes a GET request</li>
+<li>Requesting HTML/CSS/Javascript/Images/etc are GET requests</li>
+</ul></li>
+<li>HTTP POST Request
+<ul>
+<li>Used when sending data to a website</li>
+<li>Contains a URL and a body [And HTTP headers]</li>
+<li>When you submit a form, your browser [typically] makes a POST request</li>
+<li>The contents of the form are sent in the body of the request</li>
+</ul></li>
+</ul>
+</section>
+<section id="http-request-2" class="level2">
+<h2 class="anchored" data-anchor-id="http-request-2">HTTP Request</h2>
+<pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
+<ul>
+<li>Each request is made for a specific URL (Uniform Resource Location)
+<ul>
+<li>A URL uniquely identifies a resource and has the following parts</li>
+</ul></li>
+<li>Protocol - The protocol being used (ex. file, HTTP, HTTPS, FTP)</li>
+<li>Host - The IP address or domain name of the server
+<ul>
+<li>Used to route the request to the appropriate machine</li>
+</ul></li>
+<li>Port - The TCP port number of the host server
+<ul>
+<li>Defaults to 80/443 for HTTP/HTTPS respectively</li>
+</ul></li>
+<li>Path - Specifies the specific resource being requested from the server</li>
+</ul>
+</section>
+<section id="http-request-3" class="level2">
+<h2 class="anchored" data-anchor-id="http-request-3">HTTP Request</h2>
+<pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
+<ul>
+<li>Query String - [Optional] Contains key-value pairs set by the client</li>
+<li><a href="https://www.google.com/search?q=web+development" class="uri">https://www.google.com/search?q=web+development</a>
+<ul>
+<li>HTTPS request to Google search for the phrase “web development”</li>
+</ul></li>
+<li><a href="https://duckduckgo.com/?q=web+development&amp;ia=images" class="uri">https://duckduckgo.com/?q=web+development&amp;ia=images</a>
+<ul>
+<li>An HTTPS request to Duck Duck Go image search for the phrase “web development”</li>
+</ul></li>
+<li>Fragment - [Optional] Specifies a single value commonly used for navigation</li>
+<li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier" class="uri">https://en.wikipedia.org/wiki/Uniform_Resource_Identifier</a>
+<ul>
+<li>HTTPS Request for the URI Wikipedia page</li>
+</ul></li>
+<li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition" class="uri">https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition</a>
+<ul>
+<li>HTTPS Request for the URI Wikipedia page that will scroll to the definition of URI</li>
+</ul></li>
+</ul>
+</section>
+<section id="http-1" class="level2">
+<h2 class="anchored" data-anchor-id="http-1">HTTP</h2>
+<ul>
+<li>HTTP is a stateless protocol</li>
+<li>Each request is handled in isolation even if a client just made another request</li>
+<li>If state is desired (ex. Login), the state must be sent with each request
+<ul>
+<li>Cookies</li>
+</ul></li>
+<li>When handling an HTTP request, do not have to care who sent it</li>
+</ul>
+<p><img src="assets/slide12-1.png" class="img-fluid" alt="xkcd comic 869, &quot;Server Attention Span&quot;: a person speaks to a server, which replies to every message with an identical, indifferent response, illustrating that the server keeps no memory of previous requests."></p>
+<p><a href="https://xkcd.com/869/" class="uri">https://xkcd.com/869/</a></p>
+</section>
+<section id="new-lines" class="level2">
+<h2 class="anchored" data-anchor-id="new-lines">New Lines</h2>
+<ul>
+<li>A new line character in an HTTP request/response must be:
+<ul>
+<li>“<code>\r\n</code>”
+<ul>
+<li>Carriage return (From the days of typewriters)</li>
+<li>New line</li>
+</ul></li>
+<li>In the documentation this is referred to as a CRLF</li>
+<li>CRLF == Carriage Return Line Feed</li>
+</ul></li>
+<li>Be aware of this while parsing</li>
+<li>Use “<code>\r\n</code>” for new lines when preparing your responses</li>
+</ul>
+</section>
+<section id="http-get-request" class="level2">
+<h2 class="anchored" data-anchor-id="http-get-request">HTTP GET Request</h2>
+</section>
+<section id="get-request" class="level2">
+<h2 class="anchored" data-anchor-id="get-request">GET Request</h2>
+<ul>
+<li>We’ll use this simple request as an example</li>
+</ul>
+<pre class="http"><code>GET / HTTP/1.1
+Host: cse312.com
+Connection: keep-alive
+Accept-Language: en-US,en</code></pre>
+</section>
+<section id="get-request-1" class="level2">
+<h2 class="anchored" data-anchor-id="get-request-1">GET Request</h2>
+<ul>
+<li>More accurately, it will be this</li>
+</ul>
+<pre><code>GET / HTTP/1.1\r\nHost: cse312.com\r\nConnection: keep-alive\r\nAccept-Language: en-US,en\r\n\r\n</code></pre>
+<ul>
+<li>In the slides, we’ll render “<code>\r\n</code>” as a new line</li>
+<li>Note that there is a blank line at the end of the request</li>
+</ul>
+</section>
+<section id="the-request-line" class="level2">
+<h2 class="anchored" data-anchor-id="the-request-line">The Request Line</h2>
+<ul>
+<li>The first line of the request is always the request line</li>
+<li>The request line has 3 values separated by spaces
+<ul>
+<li>The request type (GET/POST/PUT/DELETE/etc)</li>
+<li>The path of the request (ex. “/”) - Everything after the port in the requested url</li>
+<li>The HTTP Version
+<ul>
+<li>We’ll always use HTTP/1.1 in this course</li>
+</ul></li>
+</ul></li>
+</ul>
+<pre class="http"><code>GET / HTTP/1.1
+Host: cse312.com
+Connection: keep-alive
+Accept-Language: en-US,en</code></pre>
+</section>
+<section id="the-request-line-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-request-line-1">The Request Line</h2>
+<ul>
+<li>Parse the request line by looking for the 2 space characters
+<ul>
+<li>Separate the values and check the strings</li>
+</ul></li>
+<li>Typically: When the root path “/” is requested, serve the HTML of your home page
+<ul>
+<li>By convention, web servers look for index.html to serve at the root path</li>
+</ul></li>
+<li>If the url contains a different path, it will appear in the request line</li>
+</ul>
+<p>Requesting <a href="http://cse312.com/" class="uri">http://cse312.com/</a></p>
+<pre class="http"><code>GET / HTTP/1.1
+Host: cse312.com
+Connection: keep-alive
+Accept-Language: en-US,en</code></pre>
+<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
+<pre class="http"><code>GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1
+Host: cse312.com
+Connection: keep-alive
+Accept-Language: en-US,en</code></pre>
+</section>
+<section id="headers" class="level2">
+<h2 class="anchored" data-anchor-id="headers">Headers</h2>
+<ul>
+<li>Following the request line are any number of headers</li>
+<li>HTTP Headers
+<ul>
+<li>Key-Value pairs</li>
+<li>Key and value separated by a colon “:”</li>
+</ul></li>
+<li>Each header will be on a new line (look for <code>\r\n</code>)</li>
+<li>To parse, look for the colon “:” and read the key and value
+<ul>
+<li>There is an optional space after the colon which should be removed if present <code>&lt;--</code> don’t forget to do this! Leaving in the space will cause bugs that are very difficult to detect</li>
+</ul></li>
+</ul>
+<pre class="http"><code>GET / HTTP/1.1
+Host: cse312.com
+Connection: keep-alive
+Accept-Language: en-US,en</code></pre>
+</section>
+<section id="http-response" class="level2">
+<h2 class="anchored" data-anchor-id="http-response">HTTP Response</h2>
+</section>
+<section id="response" class="level2">
+<h2 class="anchored" data-anchor-id="response">Response</h2>
+<ul>
+<li>Your web server will listen for HTTP requests over the TCP sockets and respond with HTTP responses</li>
+<li>Send a response back to the client to serve them the requested content</li>
+<li>This response will display “hello” in their browser</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="response-1" class="level2">
+<h2 class="anchored" data-anchor-id="response-1">Response</h2>
+<ul>
+<li>More accurately, this is the response</li>
+</ul>
+<pre><code>HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello</code></pre>
+</section>
+<section id="status-line" class="level2">
+<h2 class="anchored" data-anchor-id="status-line">Status Line</h2>
+<ul>
+<li>The first line of the response must be the status line</li>
+<li>Status line contains 3 values separated by spaces
+<ul>
+<li>The HTTP version</li>
+<li>The status code</li>
+<li>The status message (Reason phrase in docs)</li>
+</ul></li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="response-codes" class="level2">
+<h2 class="anchored" data-anchor-id="response-codes">Response Codes</h2>
+<ul>
+<li>Tells the browser the nature of the response
+<ul>
+<li>200-level codes: Everything went well</li>
+<li>300-level codes: Redirect the request</li>
+<li>400-level codes: Error caused by the client</li>
+<li>500-level codes: Error caused by the server</li>
+</ul></li>
+<li>Include a human readable message</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="response-headers" class="level2">
+<h2 class="anchored" data-anchor-id="response-headers">Response Headers</h2>
+<ul>
+<li>The headers in the response follow the same format as request headers</li>
+<li>Should have at least two headers
+<ul>
+<li>Content-Type - Tells the browser how to parse this content</li>
+<li>Content-Length - How many bytes should be read from the body of the response</li>
+</ul></li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="blank-line" class="level2">
+<h2 class="anchored" data-anchor-id="blank-line">Blank Line</h2>
+<ul>
+<li>There is a blank line (<code>\r\n\r\n</code>) separating the headers and the body of the response</li>
+<li>The blank line is very important
+<ul>
+<li>It tells the browser that you’re done with headers and the next bytes will be the body of the response</li>
+</ul></li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="body" class="level2">
+<h2 class="anchored" data-anchor-id="body">Body</h2>
+<ul>
+<li>After the blank line are the bytes of the body</li>
+<li>The body contains the content that is being served</li>
+<li>The number of bytes in the body exactly match the value of the Content-Length header
+<ul>
+<li>The browser will read exactly this many bytes</li>
+</ul></li>
+<li>Note: There is no required format for the body. The format depends on the type of content being served</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
+</section>
+<section id="not-found" class="level2">
+<h2 class="anchored" data-anchor-id="not-found">404 Not Found</h2>
+<ul>
+<li>If a path is requested that your server does not handle
+<ul>
+<li>Respond with a 404 Not Found</li>
+<li>Note: Spaces are allowed in your reason message</li>
+</ul></li>
+<li>The response format is the same as a 200 response
+<ul>
+<li>Include content type and length</li>
+<li>Include a body that will be displayed to the client</li>
+</ul></li>
+</ul>
+<pre class="http"><code>HTTP/1.1 404 Not Found
+Content-Type: text/plain
+Content-Length: 36
+
+The requested content does not exist</code></pre>
+
+
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP (Wikipedia)</a></li>
+<li><a href="https://tools.ietf.org/html/rfc2616">RFC2616 - HTTP 1.1</a></li>
+<li><a href="https://docs.python.org/3/library/socketserver.html">Python TCP Server</a></li>
+</ul>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

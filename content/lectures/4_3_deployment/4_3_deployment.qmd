@@ -1,0 +1,93 @@
+---
+title: "Reverse Proxy Servers - Nginx"
+subtitle: "CSE312 — Web Development"
+lang: en
+
+# TODO: one-sentence summary shown on the lecture index.
+description: ""
+
+reading-list: []
+
+# Flip to true after reviewing the Quarto deck; until then the
+# schedule links the original PDF instead of Slides / Readable Page.
+released: false
+---
+
+<!-- PDF page 1 -->
+## HTTPS with Nginx
+
+<!-- PDF page 2 -->
+## The Problem
+
+- We want to use HTTPS
+  - Encrypts all web traffic
+- Prefer not to modify your app code
+  - Makes our code more modular and portable
+  - Your HTTPS setup can change without changing your app
+- Use a reverse proxy
+
+<!-- PDF page 3 -->
+## Nginx
+
+- Nginx has many uses and is very powerful software
+- We'll use it a reverse proxy with TLS to enable HTTPS
+
+<!-- PDF page 4 -->
+## Nginx Strategy
+
+- Use Nginx to listen for HTTPS requests
+  - Nginx needs a cert and private key
+- Nginx will decrypt requests and forward them to your server as HTTP requests
+  - These unencrypted requests are sent over a local network and never touch the Internet
+- Your server sends HTTP responses to Nginx
+  - Nginx encrypts and sends the HTTPS response over the Internet
+- If Nginx gets an HTTP request (port 80) redirect the user to HTTPS (port 443)
+
+<!-- PDF page 5 -->
+## Nginx Strategy
+
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+
+HTTPS Request (port 443)
+
+HTTP Request (port 8080)
+
+HTTPS Response (port 443)
+
+HTTP Response (port 8080)
+
+Nginx
+
+Your Server
+
+The Internet
+
+Your network
+
+![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
+
+<!-- PDF page 6 -->
+## OpenSSL
+
+- OpenSSL is a very common SSL/TLS library
+  - Written in C
+  - Wrappers exist for many languages
+- Can be used for many encryption needs
+  - Generating keys
+  - Signing certs
+  - Validating certs
+- We'll use OpenSSL in the command line to generate self-signed certificates
+
+<!-- PDF page 7 -->
+## Self-Signed Certificate
+
+openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"
+
+- This command will generate a self-signed certificate and a private key
+  - Private key saves as private.key
+  - Certificate saved as cert.pem
+
+<!-- PDF page 8 -->
+## Nginx Strategy
+
+Demo
