@@ -34,11 +34,14 @@ format:
     width: 1280
     height: 720
     margin: 0.08
-    transition: fade
+    transition: none
     html-math-method: plain
     smaller: true
-    scrollable: true
-    auto-stretch: false
+    scrollable: false
+    auto-stretch: true
+    mouse-wheel: true
+    code-line-numbers: true
+
 
 execute:
   echo: false

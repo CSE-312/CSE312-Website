@@ -1,136 +1,129 @@
 ---
-title: "Course Introduction"
-subtitle: "CSE312 — Web Development"
+title: "The Internet"
+subtitle: "Networks, IP, TCP"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "An overview of IP and TCP"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://en.wikipedia.org/wiki/Internet_Protocol"
     text: "IP (Wikipedia)"
   - url: "https://en.wikipedia.org/wiki/Transmission_Control_Protocol"
     text: "TCP (Wikipedia)"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
 released: true
 ---
 
-<!-- PDF page 1 -->
-## The Internet
 
-Networks, TCP/IP
-
-<!-- PDF page 2 -->
 ## Local Area Network (LAN)
-
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Connect a small group of devices
 
-![](assets/slide02-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/1_router.png){fig-alt="A modem connected to a router showing wifi communication to a laptop"}
 
-<!-- PDF page 3 -->
 ## Internet Service Provider (ISP)
-
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Connect customers to The Internet
 
-![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
+:::: {.columns}
+::: {.column width="50%"}
+![](assets/slide03-1.jpeg){fig-alt="Diagram showing an ISP connecting 5 different customers to the Internet. The customers are government, home, large corporation, small business, and an educational institution"}
+:::
+::: {.column width="50%"}
+![](assets/slide03-2.jpeg){fig-alt="Image of utility poles in a suburban neighborhood"}
+:::
+::::
 
-<!-- PDF page 4 -->
+
 ## Tier 1 Networks
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+Tier 1 networks form the backbone of the Internet
 
-The Internet
-
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
+:::: {.columns}
+::: {.column width="33%"}
+![](assets/slide04-1.jpeg){fig-alt="Map of the CenturyLink tier 1 network covering the United States"}
+:::
+::: {.column width="34%"}
+![](assets/slide04-2.jpeg){fig-alt="Map of the Level 3 tier 1 network covering the United States"}
+:::
+::: {.column width="33%"}
+![](assets/slide04-3.jpeg){fig-alt="Map of the AT&T tier 1 network covering the United States"}
+:::
+::::
 
 <!-- PDF page 5 -->
 ## Data Centers Power Apps
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+:::: {.columns}
+::: {.column width="50%"}
+![](assets/slide05-1.jpeg){fig-alt="Ariel image of the Lockport data center"}
+:::
+::: {.column width="50%"}
+![](assets/slide05-2.jpeg){fig-alt="Inside of a data center showing dozens of racks of servers"}
+:::
+::::
 
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
 <!-- PDF page 6 -->
 ## It’s all Cables!
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+:::: {.columns}
+::: {.column width="30%"}
+![](assets/slide06-2.jpeg){fig-alt="A technician working in a room with 100's of ethernet cables"}
+:::
+::: {.column width="70%"}
+![](assets/slide06-1.png){fig-alt="Map of the earth showing cables the cross the oceans and connect continents"}
+:::
+::::
 
-![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
+## How do we use these cables?..
 
-<!-- PDF page 7 -->
-## How do we use these cables?
+# Internet Protocol
 
-<!-- PDF page 8 -->
-## Internet Protocol
-
-<!-- PDF page 9 -->
 ## Internet Protocol (IP) Address
-
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Every device has an IP Address
   - Use this address to send messages to that device
   - Ex: 172.217.12.211
 - Use DNS (Domain Name Server) to lookup IP address by domain name
 
-IP address for cse312.com?
+![](assets/slide09-diagram.jpg){fig-alt="Diagram showing a computer sending a request to a server for the IP address of CSE312.com. The server replies with 159.89.179.140"}
 
-159.89.179.140
 
-![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
-
-<!-- PDF page 10 -->
 ## Data is sent over the Internet in packets/datagrams
 
-<!-- REVIEW: mostly an image; write a text description -->
+- Each packet contains headers containing information about the packet
 
-Large messages are sent in multiple packets
+- Large messages are sent in multiple packets
 
-![](assets/slide10-1.png){fig-alt="TODO: describe this image"}
+![](assets/slide10-1.png){fig-alt="IPv4 header diagram"}
 
-<!-- PDF page 11 -->
 ## Routing Packets
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+- To route a packet through the Internet, a router will
+  1. Check the destination IP address of the packet
+  2. Send the packet to the next router on its path
+  3. Fuhgettaboutit
 
-1. Check the destination IP address of the packet
-2. Send the packet to the next router on its path
-3. Fuhgettaboutit
+![](assets/slide11-diagram.jpg){fig-alt="Routers sending a packet through the Internet between 2 devices. There are 2 different paths and only 1 was used"}
 
-![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
-
-<!-- PDF page 12 -->
 ## The Internet is Unreliable
-
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Many factors cause packets to be dropped
 
-![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/slide12-diagram.jpg){fig-alt="Same diagram as the previous slide, but with a storm severing one of the connections that was used. This packet will be lost"}
 
-<!-- PDF page 13 -->
-## Transmission Control Protocol
+# Transmission Control Protocol
 
-<!-- PDF page 14 -->
 ## Transmission Control Protocol (TCP)
 
-Makes the Internet reliable
-
+- Makes the Internet reliable
 - Detect and resend dropped packets
 - Adds port numbers to identify specific programs
 - Connect to a port number/IP address combination (TCP/IP)
   - 127.0.0.1:8080
 
-TCP 3-way Handshake
-
-![](assets/slide14-1.png){fig-alt="TODO: describe this image"}
+![](assets/slide14-1.png){fig-alt="TCP 3-way handshake"}
 
 <!-- PDF page 15 -->
 ## TCP/IP in CSE312
@@ -139,4 +132,4 @@ TCP 3-way Handshake
 - Assume TCP/IP works and that we have reliable communication over the Internet
 - Freely send and receive messages (As bytes)
 - Your code (HW) will start with HTTP
-- Much deeper TCP/IP coverage, and more, in CSE489: Modern Networking Concepts!
+- Much deeper TCP/IP coverage, and more, in CSE489: Modern Networking Concepts

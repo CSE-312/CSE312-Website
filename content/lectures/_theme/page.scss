@@ -1,9 +1,12 @@
+/*-- scss:defaults --*/
 
 $body-bg: #eef2f7 !default;
 $body-color: #152033 !default;
 $link-color: #0b4f8a !default;
 $selection-bg: #005ea2 !default;
 $font-family-sans-serif: "Source Sans Pro", "Segoe UI", system-ui, sans-serif !default;
+
+/*-- scss:rules --*/
 
 :root {
   color-scheme: light;

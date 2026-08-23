@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="An overview of IP and TCP">
 
-<title>The Internet – CSE312 Lectures</title>
+<title>XSRF – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,25 +82,32 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#local-area-network-lan" id="toc-local-area-network-lan" class="nav-link active" data-scroll-target="#local-area-network-lan">Local Area Network (LAN)</a></li>
-  <li><a href="#internet-service-provider-isp" id="toc-internet-service-provider-isp" class="nav-link" data-scroll-target="#internet-service-provider-isp">Internet Service Provider (ISP)</a></li>
-  <li><a href="#tier-1-networks" id="toc-tier-1-networks" class="nav-link" data-scroll-target="#tier-1-networks">Tier 1 Networks</a></li>
-  <li><a href="#data-centers-power-apps" id="toc-data-centers-power-apps" class="nav-link" data-scroll-target="#data-centers-power-apps">Data Centers Power Apps</a></li>
-  <li><a href="#its-all-cables" id="toc-its-all-cables" class="nav-link" data-scroll-target="#its-all-cables">It’s all Cables!</a></li>
-  <li><a href="#how-do-we-use-these-cables.." id="toc-how-do-we-use-these-cables.." class="nav-link" data-scroll-target="#how-do-we-use-these-cables..">How do we use these cables?..</a></li>
-  <li><a href="#internet-protocol" id="toc-internet-protocol" class="nav-link" data-scroll-target="#internet-protocol">Internet Protocol</a>
-  <ul class="collapse">
-  <li><a href="#internet-protocol-ip-address" id="toc-internet-protocol-ip-address" class="nav-link" data-scroll-target="#internet-protocol-ip-address">Internet Protocol (IP) Address</a></li>
-  <li><a href="#data-is-sent-over-the-internet-in-packetsdatagrams" id="toc-data-is-sent-over-the-internet-in-packetsdatagrams" class="nav-link" data-scroll-target="#data-is-sent-over-the-internet-in-packetsdatagrams">Data is sent over the Internet in packets/datagrams</a></li>
-  <li><a href="#routing-packets" id="toc-routing-packets" class="nav-link" data-scroll-target="#routing-packets">Routing Packets</a></li>
-  <li><a href="#the-internet-is-unreliable" id="toc-the-internet-is-unreliable" class="nav-link" data-scroll-target="#the-internet-is-unreliable">The Internet is Unreliable</a></li>
-  </ul></li>
-  <li><a href="#transmission-control-protocol" id="toc-transmission-control-protocol" class="nav-link" data-scroll-target="#transmission-control-protocol">Transmission Control Protocol</a>
-  <ul class="collapse">
-  <li><a href="#transmission-control-protocol-tcp" id="toc-transmission-control-protocol-tcp" class="nav-link" data-scroll-target="#transmission-control-protocol-tcp">Transmission Control Protocol (TCP)</a></li>
-  <li><a href="#tcpip-in-cse312" id="toc-tcpip-in-cse312" class="nav-link" data-scroll-target="#tcpip-in-cse312">TCP/IP in CSE312</a></li>
-  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
-  </ul></li>
+  <li><a href="#xsrf" id="toc-xsrf" class="nav-link active" data-scroll-target="#xsrf">XSRF</a></li>
+  <li><a href="#xsrf-1" id="toc-xsrf-1" class="nav-link" data-scroll-target="#xsrf-1">XSRF</a></li>
+  <li><a href="#xsrf---example" id="toc-xsrf---example" class="nav-link" data-scroll-target="#xsrf---example">XSRF - Example</a></li>
+  <li><a href="#xsrf-2" id="toc-xsrf-2" class="nav-link" data-scroll-target="#xsrf-2">XSRF</a></li>
+  <li><a href="#xsrf-3" id="toc-xsrf-3" class="nav-link" data-scroll-target="#xsrf-3">XSRF</a></li>
+  <li><a href="#xsrf-4" id="toc-xsrf-4" class="nav-link" data-scroll-target="#xsrf-4">XSRF</a></li>
+  <li><a href="#xsrf-5" id="toc-xsrf-5" class="nav-link" data-scroll-target="#xsrf-5">XSRF</a></li>
+  <li><a href="#xsrf-6" id="toc-xsrf-6" class="nav-link" data-scroll-target="#xsrf-6">XSRF</a></li>
+  <li><a href="#xsrf-7" id="toc-xsrf-7" class="nav-link" data-scroll-target="#xsrf-7">XSRF</a></li>
+  <li><a href="#xsrf-8" id="toc-xsrf-8" class="nav-link" data-scroll-target="#xsrf-8">XSRF</a></li>
+  <li><a href="#xsrf-9" id="toc-xsrf-9" class="nav-link" data-scroll-target="#xsrf-9">XSRF</a></li>
+  <li><a href="#how-do-we-protect-against-xsrf-attacks" id="toc-how-do-we-protect-against-xsrf-attacks" class="nav-link" data-scroll-target="#how-do-we-protect-against-xsrf-attacks">How do we protect against XSRF attacks?</a></li>
+  <li><a href="#referrer" id="toc-referrer" class="nav-link" data-scroll-target="#referrer">Referrer?</a></li>
+  <li><a href="#sop" id="toc-sop" class="nav-link" data-scroll-target="#sop">SOP</a></li>
+  <li><a href="#sop-1" id="toc-sop-1" class="nav-link" data-scroll-target="#sop-1">SOP</a></li>
+  <li><a href="#slide-16" id="toc-slide-16" class="nav-link" data-scroll-target="#slide-16">Slide 16</a></li>
+  <li><a href="#recall-samesite---cookie-directive" id="toc-recall-samesite---cookie-directive" class="nav-link" data-scroll-target="#recall-samesite---cookie-directive">Recall SameSite - Cookie Directive</a></li>
+  <li><a href="#sop-limitations" id="toc-sop-limitations" class="nav-link" data-scroll-target="#sop-limitations">SOP Limitations</a></li>
+  <li><a href="#slide-19" id="toc-slide-19" class="nav-link" data-scroll-target="#slide-19">Slide 19</a></li>
+  <li><a href="#xsrf---tokens" id="toc-xsrf---tokens" class="nav-link" data-scroll-target="#xsrf---tokens">XSRF - Tokens</a></li>
+  <li><a href="#xsrf---tokens-1" id="toc-xsrf---tokens-1" class="nav-link" data-scroll-target="#xsrf---tokens-1">XSRF - Tokens</a></li>
+  <li><a href="#xsrf-token" id="toc-xsrf-token" class="nav-link" data-scroll-target="#xsrf-token">XSRF Token</a></li>
+  <li><a href="#xsrf-10" id="toc-xsrf-10" class="nav-link" data-scroll-target="#xsrf-10">XSRF</a></li>
+  <li><a href="#cors" id="toc-cors" class="nav-link" data-scroll-target="#cors">CORS</a></li>
+  <li><a href="#cors-1" id="toc-cors-1" class="nav-link" data-scroll-target="#cors-1">CORS</a></li>
+  <li><a href="#slide-26" id="toc-slide-26" class="nav-link" data-scroll-target="#slide-26">Slide 26</a></li>
   </ul>
 </nav>
     </div>
@@ -110,15 +116,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Internet</h1>
-<p class="subtitle lead">Networks, IP, TCP</p>
+<h1 class="title">XSRF</h1>
+<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
-<div>
-  <div class="description">
-    An overview of IP and TCP
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
@@ -133,136 +134,400 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="local-area-network-lan" class="level2">
-<h2 class="anchored" data-anchor-id="local-area-network-lan">Local Area Network (LAN)</h2>
-<p>Connect a small group of devices</p>
-<p><img src="assets/1_router.png" class="img-fluid" alt="A modem connected to a router showing wifi communication to a laptop"></p>
+<!-- PDF page 1 -->
+<section id="xsrf" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf">XSRF</h2>
+<p>Cross-Site Request Forgery</p>
+<!-- PDF page 2 -->
 </section>
-<section id="internet-service-provider-isp" class="level2">
-<h2 class="anchored" data-anchor-id="internet-service-provider-isp">Internet Service Provider (ISP)</h2>
-<p>Connect customers to The Internet</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img src="assets/slide03-1.jpeg" class="img-fluid" alt="Diagram showing an ISP connecting 5 different customers to the Internet. The customers are government, home, large corporation, small business, and an educational institution"></p>
-</div><div class="column" style="width:50%;">
-<p><img src="assets/slide03-2.jpeg" class="img-fluid" alt="Image of utility poles in a suburban neighborhood"></p>
-</div>
-</div>
+<section id="xsrf-1" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-1">XSRF</h2>
+<ul>
+<li>Cross-Site Request Forgery</li>
+<li>A request that is sent from a different “origin”</li>
+<li>Origin:
+<ul>
+<li>The combination of protocol, host, and port</li>
+<li>If all three do not match, it is a cross-site request</li>
+</ul></li>
+<li>What’s the danger?</li>
+</ul>
+<!-- PDF page 3 -->
 </section>
-<section id="tier-1-networks" class="level2">
-<h2 class="anchored" data-anchor-id="tier-1-networks">Tier 1 Networks</h2>
-<p>Tier 1 networks form the backbone of the Internet</p>
-<div class="columns">
-<div class="column" style="width:33%;">
-<p><img src="assets/slide04-1.jpeg" class="img-fluid" alt="Map of the CenturyLink tier 1 network covering the United States"></p>
-</div><div class="column" style="width:34%;">
-<p><img src="assets/slide04-2.jpeg" class="img-fluid" alt="Map of the Level 3 tier 1 network covering the United States"></p>
-</div><div class="column" style="width:33%;">
-<p><img src="assets/slide04-3.jpeg" class="img-fluid" alt="Map of the AT&amp;T tier 1 network covering the United States"></p>
-</div>
-</div>
+<section id="xsrf---example" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf---example">XSRF - Example</h2>
+<p>Potential outcomes:</p>
+<ul>
+<li>An attack page can make a request to AutoLab
+<ul>
+<li>Requests your grades</li>
+<li>Makes a submission on your behalf</li>
+</ul></li>
+<li>Attack page makes a request to your bank and transfers your funds to the attacker’s account</li>
+<li>Attack page makes embarrassing posts on social media</li>
+</ul>
+<!-- PDF page 4 -->
+</section>
+<section id="xsrf-2" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-2">XSRF</h2>
+<ul>
+<li>We have a form that sends authenticated POST requests to our server
+<ul>
+<li>You host this app at mycoolproject.com</li>
+</ul></li>
+<li>The format of these POST requests is known (Anyone can visit and view your front end)</li>
+<li>An attacker makes their own web app</li>
+<li>The app will send a POST request to mycoolproject.com in the proper format
+<ul>
+<li>They host this app at freebitcoin.com and get someone to goto their site</li>
+<li>The site sends the POST request on behalf of the user -&gt; Hacked!</li>
+</ul></li>
+</ul>
 <!-- PDF page 5 -->
 </section>
-<section id="data-centers-power-apps" class="level2">
-<h2 class="anchored" data-anchor-id="data-centers-power-apps">Data Centers Power Apps</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img src="assets/slide05-1.jpeg" class="img-fluid" alt="Ariel image of the Lockport data center"></p>
-</div><div class="column" style="width:50%;">
-<p><img src="assets/slide05-2.jpeg" class="img-fluid" alt="Inside of a data center showing dozens of racks of servers"></p>
-</div>
-</div>
+<section id="xsrf-3" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-3">XSRF</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Client Creates an account on your app</li>
+<li>Client logs in and you issue an auth token in a cookie</li>
+<li>They enjoy your site very much and trust you with private information</li>
+</ul>
+<p>mycoolproject.com</p>
+<p>User/Client</p>
+<p>freebitcoin.com</p>
+<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 <!-- PDF page 6 -->
 </section>
-<section id="its-all-cables" class="level2">
-<h2 class="anchored" data-anchor-id="its-all-cables">It’s all Cables!</h2>
-<div class="columns">
-<div class="column" style="width:30%;">
-<p><img src="assets/slide06-2.jpeg" class="img-fluid" alt="A technician working in a room with 100's of ethernet cables"></p>
-</div><div class="column" style="width:70%;">
-<p><img src="assets/slide06-1.png" class="img-fluid" alt="Map of the earth showing cables the cross the oceans and connect continents"></p>
-</div>
-</div>
-</section>
-<section id="how-do-we-use-these-cables.." class="level2">
-<h2 class="anchored" data-anchor-id="how-do-we-use-these-cables..">How do we use these cables?..</h2>
-</section>
-<section id="internet-protocol" class="level1">
-<h1>Internet Protocol</h1>
-<section id="internet-protocol-ip-address" class="level2">
-<h2 class="anchored" data-anchor-id="internet-protocol-ip-address">Internet Protocol (IP) Address</h2>
+<section id="xsrf-4" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-4">XSRF</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
-<li>Every device has an IP Address
+<li>Client gets an email
 <ul>
-<li>Use this address to send messages to that device</li>
-<li>Ex: 172.217.12.211</li>
+<li>ALL YOUR DREAMS WILL COME TRUE!! JUST CLICK HERE!!!</li>
 </ul></li>
-<li>Use DNS (Domain Name Server) to lookup IP address by domain name</li>
+<li>Naive client clicks the link and gets the attackers HTML/CSS/Javascript</li>
 </ul>
-<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="Diagram showing a computer sending a request to a server for the IP address of CSE312.com. The server replies with 159.89.179.140"></p>
+<p>mycoolproject.com</p>
+<p>User/Client</p>
+<p>freebitcoin.com</p>
+<p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 7 -->
 </section>
-<section id="data-is-sent-over-the-internet-in-packetsdatagrams" class="level2">
-<h2 class="anchored" data-anchor-id="data-is-sent-over-the-internet-in-packetsdatagrams">Data is sent over the Internet in packets/datagrams</h2>
+<section id="xsrf-5" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-5">XSRF</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
-<li><p>Each packet contains headers containing information about the packet</p></li>
-<li><p>Large messages are sent in multiple packets</p></li>
-</ul>
-<p><img src="assets/slide10-1.png" class="img-fluid" alt="IPv4 header diagram"></p>
-</section>
-<section id="routing-packets" class="level2">
-<h2 class="anchored" data-anchor-id="routing-packets">Routing Packets</h2>
+<li>The attack site sends a cross-site request to your app</li>
+<li>The origin is freebitcoin.com</li>
+<li>The request is sent to mycoolproject.com</li>
+<li>The attacker controls this request
 <ul>
-<li>To route a packet through the Internet, a router will
-<ol type="1">
-<li>Check the destination IP address of the packet</li>
-<li>Send the packet to the next router on its path</li>
-<li>Fuhgettaboutit</li>
-</ol></li>
-</ul>
-<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="Routers sending a packet through the Internet between 2 devices. There are 2 different paths and only 1 was used"></p>
-</section>
-<section id="the-internet-is-unreliable" class="level2">
-<h2 class="anchored" data-anchor-id="the-internet-is-unreliable">The Internet is Unreliable</h2>
-<p>Many factors cause packets to be dropped</p>
-<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="Same diagram as the previous slide, but with a storm severing one of the connections that was used. This packet will be lost"></p>
-</section>
-</section>
-<section id="transmission-control-protocol" class="level1">
-<h1>Transmission Control Protocol</h1>
-<section id="transmission-control-protocol-tcp" class="level2">
-<h2 class="anchored" data-anchor-id="transmission-control-protocol-tcp">Transmission Control Protocol (TCP)</h2>
-<p>Makes the Internet reliable</p>
-<ul>
-<li>Detect and resend dropped packets</li>
-<li>Adds port numbers to identify specific programs</li>
-<li>Connect to a port number/IP address combination (TCP/IP)
-<ul>
-<li>127.0.0.1:8080</li>
+<li>Client may not even know it was sent until it’s too late</li>
 </ul></li>
 </ul>
-<p>TCP 3-way Handshake</p>
-<p><img src="assets/slide14-1.png" class="img-fluid" alt="TCP 3-way handshake"></p>
+<p>mycoolproject.com</p>
+<p>User/Client</p>
+<p>freebitcoin.com</p>
+<p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 8 -->
+</section>
+<section id="xsrf-6" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-6">XSRF</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Since the request did come from your user
+<ul>
+<li>It may contain auth cookies</li>
+<li>It may look real to your server</li>
+<li>Your server will process it as a legitimate, authenticated, request if you don’t have protections in place</li>
+</ul></li>
+</ul>
+<p>mycoolproject.com</p>
+<p>User/Client</p>
+<p>freebitcoin.com</p>
+<p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 9 -->
+</section>
+<section id="xsrf-7" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-7">XSRF</h2>
+<ul>
+<li>How to send a XSRF attack?</li>
+<li>As the src of an image
+<ul>
+<li>Can send a GET request
+<ul>
+<li>If your server uses query strings, these can be set by the attacker</li>
+</ul></li>
+<li>Easy to setup. Embed an image in an email
+<ul>
+<li>Client only has to open the email (Doesn’t even require them to click a shady link)</li>
+<li>This is why images are often blocked in email</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 10 -->
+</section>
+<section id="xsrf-8" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-8">XSRF</h2>
+<ul>
+<li>How to send a XSRF attack?</li>
+<li>Submit an HTML form
+<ul>
+<li>Get the user to navigate to your page</li>
+<li>The page automatically submits and HTML form on their behalf (They don’t have to click a button. Send it with JS)</li>
+<li>The user will be navigated to the site that was attacked</li>
+<li>Can send GET and POST requests</li>
+<li>Must follow specific encodings supported by HTML forms</li>
+<li>Attacker cannot see the response of the request (No stealing private data with this method)</li>
+</ul></li>
+</ul>
+<!-- PDF page 11 -->
+</section>
+<section id="xsrf-9" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-9">XSRF</h2>
+<ul>
+<li>How to send a XSRF attack?</li>
+<li>Make an AJAX request
+<ul>
+<li>Get the user to navigate to your page</li>
+<li>Page automatically sends an AJAX request, or several, onload</li>
+<li>Attacker has full control
+<ul>
+<li>They can read the responses and have multiple interactions with the attacked site</li>
+<li>They can use any HTTP method</li>
+<li>They can put anything in the body of the requests</li>
+</ul></li>
+</ul></li>
+</ul>
+<!-- PDF page 12 -->
+</section>
+<section id="how-do-we-protect-against-xsrf-attacks" class="level2">
+<h2 class="anchored" data-anchor-id="how-do-we-protect-against-xsrf-attacks">How do we protect against XSRF attacks?</h2>
+<!-- PDF page 13 -->
+</section>
+<section id="referrer" class="level2">
+<h2 class="anchored" data-anchor-id="referrer">Referrer?</h2>
+<ul>
+<li>Every request should have a referrer header
+<ul>
+<li>Specifies the origin of the request</li>
+</ul></li>
+<li>If the referrer doesn’t match your app
+<ul>
+<li>Deny the request</li>
+</ul></li>
+<li>Simple enough</li>
+<li>Unfortunately, the referrer can be spoofed and must not be relied upon for security reasons</li>
+</ul>
+<!-- PDF page 14 -->
+</section>
+<section id="sop" class="level2">
+<h2 class="anchored" data-anchor-id="sop">SOP</h2>
+<ul>
+<li>Same-Origin Policy (SOP)</li>
+<li>The SOP is implemented in modern browsers and blocks many cross-origin requests by default</li>
+<li>All AJAX responses are blocked by the SOP
+<ul>
+<li>This is a relief since AJAX is so powerful</li>
+</ul></li>
+</ul>
 <!-- PDF page 15 -->
 </section>
-<section id="tcpip-in-cse312" class="level2">
-<h2 class="anchored" data-anchor-id="tcpip-in-cse312">TCP/IP in CSE312</h2>
+<section id="sop-1" class="level2">
+<h2 class="anchored" data-anchor-id="sop-1">SOP</h2>
 <ul>
-<li>Use libraries to do all this for us</li>
-<li>Assume TCP/IP works and that we have reliable communication over the Internet</li>
-<li>Freely send and receive messages (As bytes)</li>
-<li>Your code (HW) will start with HTTP</li>
-<li>Much deeper TCP/IP coverage, and more, in CSE489: Modern Networking Concepts</li>
+<li>The SOP does NOT block “safe” requests</li>
+<li>Safe requests include
+<ul>
+<li>Any GET request</li>
+<li>Any request that navigates away from the origin (Including HTML Form submissions using POST)</li>
+</ul></li>
+<li>A GET request should be idempotent AND not change the state of the server
+<ul>
+<li>Your GET requests should only retrieve data since they are not protected by CORS</li>
+</ul></li>
 </ul>
+<!-- PDF page 16 -->
+</section>
+<section id="slide-16" class="level2">
+<h2 class="anchored" data-anchor-id="slide-16">Slide 16</h2>
+<!-- REVIEW: no clear title found; check the heading -->
+<p>SOP</p>
+<ul>
+<li>The SOP does NOT block “safe” requests</li>
+<li>HTML form submissions are more difficult to protect against since they can make POST requests
+<ul>
+<li>We need better protections</li>
+</ul></li>
+</ul>
+<!-- PDF page 17 -->
+</section>
+<section id="recall-samesite---cookie-directive" class="level2">
+<h2 class="anchored" data-anchor-id="recall-samesite---cookie-directive">Recall SameSite - Cookie Directive</h2>
+<ul>
+<li>SameSite
+<ul>
+<li>Determines when the cookie will be sent on 3rd party requests</li>
+<li>Lax - Cookie only sent when navigating to your page (Includes HTML form submissions)
+<ul>
+<li>Or “safe” requests including all GET requests (Except Cross-Site AJAX GET requests)</li>
+<li>The default setting if SameSite is not set</li>
+</ul></li>
+<li>Strict - The cookie is only sent on 1st party requests
+<ul>
+<li>ie. The cookie is only sent to your server</li>
+</ul></li>
+<li>None - The cookie is always sent. Requires the secure directive to also be set</li>
+</ul></li>
+<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Lax</li>
+<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Strict</li>
+<li>Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure</li>
+</ul>
+<!-- PDF page 18 -->
+</section>
+<section id="sop-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="sop-limitations">SOP Limitations</h2>
+<ul>
+<li>Since the SOP is enforced by the browser, we have limited control over its enforcement
+<ul>
+<li>What if a user has a very outdated browser that doesn’t implement the SOP?</li>
+<li>What if the user installed a plug-in that disables the SOP?</li>
+<li>What if the user is using an obscure browser that does not implement the SOP properly?</li>
+</ul></li>
+<li>The SOP will protect most users, but not 100%
+<ul>
+<li>And won’t protect any users from a GET or HTML form attack</li>
+</ul></li>
+</ul>
+<!-- PDF page 19 -->
+</section>
+<section id="slide-19" class="level2">
+<h2 class="anchored" data-anchor-id="slide-19">Slide 19</h2>
+<!-- REVIEW: no clear title found; check the heading -->
+<p>XSRF - Tokens</p>
+<ul>
+<li>Let’s add server-side protection from XSRF attacks</li>
+<li>Will work for all users and all XSRF attacks</li>
+</ul>
+<!-- PDF page 20 -->
+</section>
+<section id="xsrf---tokens" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf---tokens">XSRF - Tokens</h2>
+<ul>
+<li>On the Server:
+<ul>
+<li>Generate a long random XSRF token on page load (Attacker must not be able to guess the token)</li>
+<li>Embed this XSRF token in the page</li>
+<li>Store this XSRF token as being sent to this user</li>
+</ul></li>
+<li>In the browser:
+<ul>
+<li>XSRF token can be a hidden input on the form</li>
+<li>Send this XSRF token along with form submissions</li>
+</ul></li>
+</ul>
+<!-- PDF page 21 -->
+</section>
+<section id="xsrf---tokens-1" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf---tokens-1">XSRF - Tokens</h2>
+<ul>
+<li>Back to the Server on HTTP requests:
+<ul>
+<li>Read the XSRF token value and the auth token from the request</li>
+<li>Authenticate the user based on their auth token</li>
+<li>Verify that this XSRF token was sent to this user</li>
+</ul></li>
+<li>If the XSRF token was issues to this user
+<ul>
+<li>Accept the request as valid</li>
+</ul></li>
+<li>If the XSRF token was NOT issued to this user
+<ul>
+<li>This is an invalid request and might be a XSRF attack</li>
+</ul></li>
+</ul>
+<!-- PDF page 22 -->
+</section>
+<section id="xsrf-token" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-token">XSRF Token</h2>
+<ul>
+<li>Add a new input to your form for the token</li>
+<li>Generate and inject the token as a value using HTML templates</li>
+<li>Add the hidden attribute so the token is not displayed to the user</li>
+<li>Read the token from the request and verify</li>
+</ul>
+<pre><code>&lt;form action="/image-upload" id="image-form" method="post" enctype="multipart/form-data"&gt;
+&lt;input value="AQAAAjppCA8mhugn2UvwOTaKnVY" name="xsrf_token" hidden&gt;
+&lt;label for="form-file"&gt;Image: &lt;/label&gt;
+&lt;input id="form-file" type="file" name="upload"&gt;
+&lt;br/&gt;
+&lt;label for="image-form-name"&gt;Caption: &lt;/label&gt;
+&lt;input id="image-form-name" type="text" name="name"&gt;
+&lt;input type="submit" value="Submit"&gt;
+&lt;/form&gt;</code></pre>
+<!-- PDF page 23 -->
+</section>
+<section id="xsrf-10" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-10">XSRF</h2>
+<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
+<ul>
+<li>Now, when freebitcoin.com send their request it cannot contain your XSRF token</li>
+<li>Your server will reject the request</li>
+<li>Attacker can get their own token linked to their account
+<ul>
+<li>Since they can get a valid token for the users account, they cannot send a valid cross-site request</li>
+</ul></li>
+</ul>
+<p>mycoolproject.com</p>
+<p>User/Client</p>
+<p>freebitcoin.com</p>
+<p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<!-- PDF page 24 -->
+</section>
+<section id="cors" class="level2">
+<h2 class="anchored" data-anchor-id="cors">CORS</h2>
+<ul>
+<li>The SOP can be too restrictive is some cases
+<ul>
+<li>eg. You host an API that is consumed by other apps via AJAX</li>
+</ul></li>
+<li>Cross-Origin Resource Sharing
+<ul>
+<li>A policy that lets you relax the SOP</li>
+</ul></li>
+<li>Can explicitly allow cross-origin requests with the header:</li>
+</ul>
+<p>Access-Control-Allow-Origin: *</p>
+<!-- PDF page 25 -->
+</section>
+<section id="cors-1" class="level2">
+<h2 class="anchored" data-anchor-id="cors-1">CORS</h2>
+<ul>
+<li>The * is a wildcard that allows all cross-site requests
+<ul>
+<li>It is very dangerous and exposes you to XSRF attacks</li>
+</ul></li>
+<li>Can specify specific origins as well
+<ul>
+<li>Common if you have an app with multiple servers</li>
+</ul></li>
+</ul>
+<p>Access-Control-Allow-Origin: cse312.com</p>
+<!-- PDF page 26 -->
+</section>
+<section id="slide-26" class="level2">
+<h2 class="anchored" data-anchor-id="slide-26">Slide 26</h2>
+<!-- REVIEW: no clear title found; check the heading -->
+<p>CORS</p>
+<ul>
+<li>CORS determines which cross-origin requests are allowed and which are blocked</li>
+<li>By default, browsers will block many cross-origin requests</li>
+</ul>
+<p>Access-Control-Allow-Origin: *</p>
 
 
-</section>
-<section id="further-reading" class="level2">
-<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
-<ul>
-<li><a href="https://en.wikipedia.org/wiki/Internet_Protocol">IP (Wikipedia)</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP (Wikipedia)</a></li>
-</ul>
-</section>
 </section>
 
 </main> <!-- /main -->

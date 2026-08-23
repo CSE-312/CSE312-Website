@@ -1,3 +1,4 @@
+/*-- scss:defaults --*/
 
 $body-bg: #0a1f3d !default;
 $body-color: #e6edf5 !default;
@@ -7,6 +8,8 @@ $presentation-heading-color: #ffffff !default;
 $presentation-heading-font-weight: 650 !default;
 $code-bg: #132a4a !default;
 $code-color: #f0f6ff !default;
+
+/*-- scss:rules --*/
 
 :root {
   color-scheme: dark;
