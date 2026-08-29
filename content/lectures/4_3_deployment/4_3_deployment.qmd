@@ -13,10 +13,8 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## HTTPS with Nginx
 
-<!-- PDF page 2 -->
 ## The Problem
 
 - We want to use HTTPS
@@ -26,13 +24,11 @@ released: false
   - Your HTTPS setup can change without changing your app
 - Use a reverse proxy
 
-<!-- PDF page 3 -->
 ## Nginx
 
 - Nginx has many uses and is very powerful software
 - We'll use it a reverse proxy with TLS to enable HTTPS
 
-<!-- PDF page 4 -->
 ## Nginx Strategy
 
 - Use Nginx to listen for HTTPS requests
@@ -43,10 +39,8 @@ released: false
   - Nginx encrypts and sends the HTTPS response over the Internet
 - If Nginx gets an HTTP request (port 80) redirect the user to HTTPS (port 443)
 
-<!-- PDF page 5 -->
 ## Nginx Strategy
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 HTTPS Request (port 443)
 
@@ -66,7 +60,6 @@ Your network
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## OpenSSL
 
 - OpenSSL is a very common SSL/TLS library
@@ -78,7 +71,6 @@ Your network
   - Validating certs
 - We'll use OpenSSL in the command line to generate self-signed certificates
 
-<!-- PDF page 7 -->
 ## Self-Signed Certificate
 
 openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"
@@ -87,7 +79,6 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
   - Private key saves as private.key
   - Certificate saved as cert.pem
 
-<!-- PDF page 8 -->
 ## Nginx Strategy
 
 Demo

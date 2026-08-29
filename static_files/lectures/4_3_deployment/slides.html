@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="https-with-nginx" class="slide level2">
 <h2>HTTPS with Nginx</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="the-problem" class="slide level2">
 <h2>The Problem</h2>
@@ -172,7 +166,6 @@
 </ul></li>
 <li>Use a reverse proxy</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="nginx" class="slide level2">
 <h2>Nginx</h2>
@@ -180,7 +173,6 @@
 <li>Nginx has many uses and is very powerful software</li>
 <li>We’ll use it a reverse proxy with TLS to enable HTTPS</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="nginx-strategy" class="slide level2">
 <h2>Nginx Strategy</h2>
@@ -199,11 +191,9 @@
 </ul></li>
 <li>If Nginx gets an HTTP request (port 80) redirect the user to HTTPS (port 443)</li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="nginx-strategy-1" class="slide level2">
 <h2>Nginx Strategy</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>HTTPS Request (port 443)</p>
 <p>HTTP Request (port 8080)</p>
 <p>HTTPS Response (port 443)</p>
@@ -212,9 +202,8 @@
 <p>Your Server</p>
 <p>The Internet</p>
 <p>Your network</p>
-<p><img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
-</section>
+
+<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="openssl" class="slide level2">
 <h2>OpenSSL</h2>
 <ul>
@@ -231,7 +220,6 @@
 </ul></li>
 <li>We’ll use OpenSSL in the command line to generate self-signed certificates</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="self-signed-certificate" class="slide level2">
 <h2>Self-Signed Certificate</h2>
@@ -243,7 +231,6 @@
 <li>Certificate saved as cert.pem</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="nginx-strategy-2" class="slide level2">
 <h2>Nginx Strategy</h2>
@@ -396,7 +383,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -411,7 +398,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

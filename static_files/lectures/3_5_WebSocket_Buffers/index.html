@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -123,16 +123,12 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="websocket-buffers" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-buffers">WebSocket Buffers</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="slide-2" class="level2">
 <h2 class="anchored" data-anchor-id="slide-2">Slide 2</h2>
-<!-- REVIEW: no clear title found; check the heading -->
 <p><img src="assets/slide02-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 3 -->
 </section>
 <section id="special-cases" class="level2">
 <h2 class="anchored" data-anchor-id="special-cases">Special Cases</h2>
@@ -144,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Multiple frames being sent back-to-back messages</li>
 </ul></li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="buffering-large-frames" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-large-frames">Buffering Large Frames</h2>
@@ -165,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Process the request</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="continuation-frames" class="level2">
 <h2 class="anchored" data-anchor-id="continuation-frames">Continuation Frames</h2>
@@ -178,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide02-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="continuation-frames-1" class="level2">
 <h2 class="anchored" data-anchor-id="continuation-frames-1">Continuation Frames</h2>
@@ -190,11 +183,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide02-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
 </section>
 <section id="continuation-frames-2" class="level2">
 <h2 class="anchored" data-anchor-id="continuation-frames-2">Continuation Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Example of one message sent over 3 frames</li>
 </ul>
@@ -212,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>payload: “the sun”</p>
 <p>Message: Never look directly into the sun</p>
 <p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 8 -->
 </section>
 <section id="back-to-back-frames" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames">Back-to-back Frames</h2>
@@ -228,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>If you read &gt; payload length bytes, store the extra bytes as the start of the next frame</li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="back-to-back-frames-1" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-1">Back-to-back Frames</h2>
@@ -241,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide09-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="back-to-back-frames-2" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-2">Back-to-back Frames</h2>
@@ -266,11 +254,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<!-- PDF page 11 -->
 </section>
 <section id="back-to-back-frames-3" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-3">Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>There are 3516 bytes ready to be read from the socket</li>
 <li>And you call
@@ -287,11 +273,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
 <p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="back-to-back-frames-4" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-4">Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>If you’re not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
 <li>Since you start in the middle of the frame, you will run header parsing code on masked payload bytes
@@ -306,11 +290,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
 <p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="back-to-back-frames-5" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-5">Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When parsing the first frame:
 <ul>
@@ -326,11 +308,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
 <p><img src="assets/slide13-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 14 -->
 </section>
 <section id="back-to-back-frames-6" class="level2">
 <h2 class="anchored" data-anchor-id="back-to-back-frames-6">Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When you finish processing the first frame, start parsing the second frame with the bytes stored in the operate variable</li>
 <li>Check the payload length and buffer if needed to read the rest of the frame</li>
@@ -343,7 +323,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
 <p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 15 -->
 </section>
 <section id="demos" class="level2">
 <h2 class="anchored" data-anchor-id="demos">Demos</h2>

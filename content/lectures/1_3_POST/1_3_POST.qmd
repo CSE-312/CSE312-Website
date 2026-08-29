@@ -20,10 +20,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## HTTP POST
 
-<!-- PDF page 2 -->
 ## POST Request
 
 - A POST request, or any request containing a body, will be formatted similar to your HTTP responses
@@ -36,21 +34,18 @@ Content-Length: 5
 
 hello
 
-<!-- PDF page 3 -->
 ## POST Request
 
 - More accurately
 
 POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
 
-<!-- PDF page 4 -->
 ## POST Request
 
 - When parsing, there will be Content-Length and Content-Type headers
 
 POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
 
-<!-- PDF page 5 -->
 ## POST Request
 
 - Look for the blank line that separates the headers from the body
@@ -61,7 +56,6 @@ POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\
 
 POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
 
-<!-- PDF page 6 -->
 ## POST Request
 
 - When you read the content from the body:
@@ -70,7 +64,6 @@ POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\
 
 POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
 
-<!-- PDF page 7 -->
 ## Query String
 
 - Allow users to send information in a URL
@@ -78,7 +71,6 @@ POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\
   - User types a query in a search engine
   - Their query is sent in the URL as a query string
 
-<!-- PDF page 8 -->
 ## URL Recall
 
 Protocol://host:port/path?query_string#fragment
@@ -94,7 +86,6 @@ Protocol://host:port/path?query_string#fragment
 - https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition
   - HTTPS Request for the URI Wikipedia page that will scroll to the definition of URI
 
-<!-- PDF page 9 -->
 ## Query String Format
 
 https://duckduckgo.com/?q=web+development&ia=images
@@ -106,7 +97,6 @@ https://duckduckgo.com/?q=web+development&ia=images
 - Can only contain ASCII characters
 - Cannot contain white space
 
-<!-- PDF page 10 -->
 ## Percent Encoding
 
 - If a non-ASCII character is sent as part of a query string it must be url-encoded (or percent-encoded)
@@ -116,7 +106,6 @@ https://duckduckgo.com/?q=web+development&ia=images
 - " " <-- single space
   - %20
 
-<!-- PDF page 11 -->
 ## White Space
 
 - URLs cannot contain spaces
@@ -124,10 +113,8 @@ https://duckduckgo.com/?q=web+development&ia=images
 - Can also replace spaces with +
   - The reserved character + indicates a key mapping to multiple values
 
-<!-- PDF page 12 -->
 ## Reserved Characters
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Some ASCII characters are reserved
   - Example: ? begins a query string
@@ -179,10 +166,8 @@ $
 
 ![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## HTML Forms
 
-<!-- PDF page 14 -->
 ## Dynamic Pages
 
 - We've learned how to host static content from our servers
@@ -192,10 +177,8 @@ $
 - No longer making web sites
 - Now we're developing Web Applications
 
-<!-- PDF page 15 -->
 ## HTML Forms
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - The action attribute is the path for the form
 - The method attribute is the type of HTTP request made
@@ -222,10 +205,8 @@ $
 
 ![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 16 -->
 ## HTML Forms
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Use input elements for the user to interact with the form
 - The type attribute specifies the type of input
@@ -252,10 +233,8 @@ $
 
 ![](assets/slide16-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 17 -->
 ## HTML Forms
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Should provide a label for each input
   - Helps with accessibility (eg. Screen readers)
@@ -281,10 +260,8 @@ $
 
 ![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 18 -->
 ## HTML Forms
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - An input of type submit makes a button that will send the HTTP request when clicked
 - The value attribute is the text on the button
@@ -309,10 +286,8 @@ $
 
 ![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## HTML Forms
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - This sends a GET request containing the form data in a query string
   - Page reloads with the content of the response
@@ -339,7 +314,6 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
 
 ![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## HTTP GET Limitations
 
 - Sending form data in a query string can cause issues
@@ -349,7 +323,6 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
   - How would we upload a file? URL must be ASCII. Entire file would be % encoded
 - Enter POST requests
 
-<!-- PDF page 21 -->
 ## HTML Forms - POST
 
 - Change the method of a form to post to send the entered data in the body of a POST request
@@ -372,7 +345,6 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
 </form>
 ```
 
-<!-- PDF page 22 -->
 ## HTML Forms - POST
 
 - A request is sent to the path from the action attribute without a query string
@@ -389,10 +361,8 @@ Content-Type: application/x-www-form-urlencoded
 
 commenter=Jesse&comment=Good+morning%21
 
-<!-- PDF page 23 -->
 ## HTML Injection Attacks
 
-<!-- PDF page 24 -->
 ## HTML Injection
 
 - When hosting static pages
@@ -403,32 +373,26 @@ commenter=Jesse&comment=Good+morning%21
   - Must protect against attacks
   - Never trust your users!!
 
-<!-- PDF page 25 -->
 ## Never Trust Your Users!
 
-<!-- PDF page 26 -->
 ## Slide 26
 
-<!-- REVIEW: no clear title found; check the heading -->
 
 Never Trust Your Users!
 
 Seriously. NEVER.
 
-<!-- PDF page 27 -->
 ## Never Trust Your Users
 
 - You may want to think your users will all act in good faith
   - For most users, this may be true
 
-<!-- PDF page 28 -->
 ## Never Trust Your Users
 
 - You may want to think your users will all act in good faith
   - For most users, this may be true
 - Besides your intended users, who else can access your app?
 
-<!-- PDF page 29 -->
 ## Never Trust Your Users
 
 - You may want to think your users will all act in good faith
@@ -436,12 +400,10 @@ Seriously. NEVER.
 - Besides your intended users, who else can access your app?
   - EVERYONE!
 
-<!-- PDF page 30 -->
 ## Never Trust Your Users
 
 - Do you trust literally everyone??
 
-<!-- PDF page 31 -->
 ## HTML Injection
 
 - You are now handling user data and sending it to other users (Through chat messages)
@@ -449,7 +411,6 @@ Seriously. NEVER.
 - What happens when a user enters this in chat:
   - "`<script>`maliciousFunction()`</script>`"
 
-<!-- PDF page 32 -->
 ## HTML Injection (XSS)
 
 - "`<script>`maliciousFunction()`</script>`"
@@ -460,12 +421,10 @@ Seriously. NEVER.
   - Their browsers render the injected HTML
   - Their browsers runs the injected JS
 
-<!-- PDF page 33 -->
 ## HTML Injection
 
 - Lucky for us, Preventing this attack is very simple
 
-<!-- PDF page 34 -->
 ## HTML Injection
 
 - To prevent this attack:
@@ -476,13 +435,11 @@ Seriously. NEVER.
   - '<' -> &lt;
   - '>' -> &gt;
 
-<!-- PDF page 35 -->
 ## HTML Injection
 
 - The escaped characters &amp; &lt; &gt; will be rendered as characters by the browser
 - Browser does not treat these as HTML
 
-<!-- PDF page 36 -->
 ## HTML Injection
 
 - Replace &, <, and > with their HTML escaped characters
@@ -491,7 +448,6 @@ Seriously. NEVER.
 - &lt;script&gt;maliciousFunction()&lt;/script&gt;
   - and is rendered as a string instead of interpreted as HTML
 
-<!-- PDF page 37 -->
 ## HTML Injection
 
   - Replace &, <, and > with their HTML escaped characters
@@ -501,10 +457,8 @@ Seriously. NEVER.
 - &amp;lt;script&amp;gt;maliciousFunction()&amp;lt; /script&amp;gt;
   - Which will not render the way you intended
 
-<!-- PDF page 38 -->
 ## AJAX & Polling
 
-<!-- PDF page 39 -->
 ## User Interaction
 
 - Our goal is to add more interactivity to our site
@@ -513,14 +467,12 @@ Seriously. NEVER.
   - To send messages without a reload
   - Get new data without a reload, or any action from the user
 
-<!-- PDF page 40 -->
 ## AJAX
 
 Asynchronous JavaScript [And XML]
 
 A way to make HTTP requests using JavaScript after the page loads
 
-<!-- PDF page 41 -->
 ## AJAX - HTTP GET Request
 
 ```
@@ -528,7 +480,6 @@ var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
 if (this.readyState === 4 && this.status === 200){
 console.log(this.response);
-// Do something with the response
 }
 };
 request.open("GET", "/path");
@@ -540,7 +491,6 @@ request.send();
 - Call "open" to set the request type and path
 - Call send to make the request
 
-<!-- PDF page 42 -->
 ## AJAX - HTTP GET Request
 
 ```
@@ -548,7 +498,6 @@ var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
 if (this.readyState === 4 && this.status === 200){
 console.log(this.response);
-// Do something with the response
 }
 };
 request.open("GET", "/path");
@@ -560,7 +509,6 @@ request.send();
   - In this example, when the ready state changes to 4 and the response code is 200, the response is printed to the console
   - This is where the response would be processed
 
-<!-- PDF page 43 -->
 ## AJAX - HTTP POST Request
 
 ```
@@ -568,7 +516,6 @@ var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
 if (this.readyState === 4 && this.status === 200){
 console.log(this.response);
-// Do something with the response
 }
 };
 request.open("POST", "/path");
@@ -580,7 +527,6 @@ request.send(JSON.stringify(data));
   - Change the method to POST
   - Add the body of your request as an argument to the send method
 
-<!-- PDF page 44 -->
 ## Forms and AJAX
 
 - We have choices for the format when sending the data of the AJAX request
@@ -607,7 +553,6 @@ const formData = new FormData(formElement);
 
 ```
 const request = new XMLHttpRequest();
-// onreadystatechange removed for slide
 ```
 
 ```
@@ -616,7 +561,6 @@ request.send(formData);
 }
 ```
 
-<!-- PDF page 45 -->
 ## Encodings - JSON
 
 - Another option: Manually format the data using JSON
@@ -642,7 +586,6 @@ const data = {"message": chat.value()};
 
 ```
 const request = new XMLHttpRequest();
-// onreadystatechange removed for slide
 ```
 
 ```
@@ -651,12 +594,11 @@ request.send(JSON.stringify(data));
 }
 ```
 
-<!-- PDF page 46 -->
 ## Fetch
 
 - Fetch is an alternate way to send an asynchronous request
 - Uses promises
-  - Can await a promise (shown) or use “then”
+  - Can await a promise (shown) or use "then"
 - *Fetch is what the HW front end uses
 
 ```
@@ -683,10 +625,8 @@ body: JSON.stringify(data),
 }
 ```
 
-<!-- PDF page 47 -->
 ## Polling
 
-<!-- PDF page 48 -->
 ## Making it Live
 
 - What if someone chats after you load the page?
@@ -695,7 +635,6 @@ body: JSON.stringify(data),
 - Polling
   - Keep sending AJAX requests at fixed intervals to refresh the data
 
-<!-- PDF page 49 -->
 ## Polling
 
 setInterval(getMessages, 1000)
@@ -707,7 +646,6 @@ setInterval(getMessages, 1000)
 - This example calls getMessages() (Implementation not shown) every second
   - getMessages() will make the AJAX call to get the most recent data from the server and render it on the page
 
-<!-- PDF page 50 -->
 ## Polling
 
 setInterval(getMessages, 1000)
@@ -719,7 +657,6 @@ setInterval(getMessages, 1000)
   - Users wait up to an entire interval to get new content
   - Lowering the interval length increases server load and bandwidth
 
-<!-- PDF page 51 -->
 ## Long-Polling
 
 - Server hangs on requests (Intentionally)
@@ -732,7 +669,6 @@ setInterval(getMessages, 1000)
   - If there's no new data after ~10-20 seconds, server responds with no new data
   - Client gets the response and sends a new long-poll request
 
-<!-- PDF page 52 -->
 ## Long-Polling
 
 - End result

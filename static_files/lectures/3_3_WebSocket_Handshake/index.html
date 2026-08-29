@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -123,10 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="websockets" class="level2">
 <h2 class="anchored" data-anchor-id="websockets">WebSockets</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="ajax-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ajax-summary">AJAX Summary</h2>
@@ -142,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Must wait for a poll request</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="websockets-1" class="level2">
 <h2 class="anchored" data-anchor-id="websockets-1">WebSockets</h2>
@@ -157,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Works by keeping a TCP socket open</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="websocket-overview" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-overview">WebSocket Overview</h2>
@@ -171,7 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Client and server send WebSocket messages/frames over the TCP connection until one side closes the connection</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="websocket-handshake" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-handshake">WebSocket Handshake</h2>
@@ -183,7 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>After the handshake, client/server can both send messages over the socket</li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="websocket-handshake-1" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-handshake-1">WebSocket Handshake</h2>
@@ -202,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Sec-WebSocket-Accept: <code>&lt;accept_response&gt;</code></li>
 </ul></li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="websocket-handshake-2" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-handshake-2">WebSocket Handshake</h2>
@@ -223,7 +216,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Avoid caching</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="websocket-frames" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frames">WebSocket Frames</h2>
@@ -238,17 +230,14 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Parse these bits to read the message</li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="websocket-frame" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame">WebSocket Frame</h2>
-<!-- REVIEW: mostly an image; write a text description -->
 <ul>
 <li>https://tools.ietf.org/html/rfc6455#section-5.2</li>
 <li>We’ll see how to parse through this on Wednesday</li>
 </ul>
 <p><img src="assets/slide09-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="web-sockets---browser" class="level2">
 <h2 class="anchored" data-anchor-id="web-sockets---browser">Web Sockets - Browser</h2>
@@ -267,7 +256,6 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 11 -->
 </section>
 <section id="web-sockets---browser-1" class="level2">
 <h2 class="anchored" data-anchor-id="web-sockets---browser-1">Web Sockets - Browser</h2>
@@ -283,7 +271,6 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 12 -->
 </section>
 <section id="web-sockets---browser-2" class="level2">
 <h2 class="anchored" data-anchor-id="web-sockets---browser-2">Web Sockets - Browser</h2>
@@ -302,11 +289,9 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 13 -->
 </section>
 <section id="examples" class="level2">
 <h2 class="anchored" data-anchor-id="examples">Examples</h2>
-<!-- PDF page 14 -->
 </section>
 <section id="concurrency" class="level2">
 <h2 class="anchored" data-anchor-id="concurrency">Concurrency</h2>

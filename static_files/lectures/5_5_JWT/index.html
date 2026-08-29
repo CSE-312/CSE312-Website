@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -130,10 +130,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="json-web-tokens-jwts" class="level2">
 <h2 class="anchored" data-anchor-id="json-web-tokens-jwts">JSON Web Tokens (JWTs)</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="why-jwt" class="level2">
 <h2 class="anchored" data-anchor-id="why-jwt">Why JWT?</h2>
@@ -143,11 +141,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Why do we need a new mechanism?</li>
 <li>What’s wrong with auth tokens?</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="recall-auth-tokens" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens">Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Server issues an auth token on login</li>
 <li>Store token in database on login</li>
@@ -162,11 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>-Passwords</p>
 <p>-auth tokens</p>
 <p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 4 -->
 </section>
 <section id="recall-auth-tokens-1" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-1">Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The token is opaque
 <ul>
@@ -183,11 +177,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>-Passwords</p>
 <p>-auth tokens</p>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
 </section>
 <section id="recall-auth-tokens-2" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-2">Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When your app gets HUGE
 <ul>
@@ -205,11 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>-auth tokens</p>
 <p>App Server</p>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="recall-auth-tokens-3" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-3">Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>App server needs to verify the auth token</li>
 </ul>
@@ -223,7 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>-auth tokens</p>
 <p>App Server</p>
 <p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
 </section>
 <section id="auth-tokens---distributed" class="level2">
 <h2 class="anchored" data-anchor-id="auth-tokens---distributed">Auth Tokens - Distributed</h2>
@@ -240,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="auth-tokens---distributed-1" class="level2">
 <h2 class="anchored" data-anchor-id="auth-tokens---distributed-1">Auth Tokens - Distributed</h2>
@@ -257,11 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="introducing-jwts" class="level2">
 <h2 class="anchored" data-anchor-id="introducing-jwts">Introducing JWTs</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Instead of auth token
 <ul>
@@ -277,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Requests with JWT</p>
 <p>App Server</p>
 <p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="jwt" class="level2">
 <h2 class="anchored" data-anchor-id="jwt">JWT</h2>
@@ -293,7 +278,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Verify the token locally</li>
 </ul></li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="jwt-1" class="level2">
 <h2 class="anchored" data-anchor-id="jwt-1">JWT</h2>
@@ -317,7 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Can be used to solve any problem that wants tokens</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="jwt---structure" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---structure">JWT - Structure</h2>
@@ -337,7 +320,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The signature of the token using the algorithm specified in the headers</li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="jwt---structure-1" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---structure-1">JWT - Structure</h2>
@@ -357,14 +339,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This avoids all url reserved characters</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="jwt---structure-2" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---structure-2">JWT - Structure</h2>
 <ul>
 <li>Three Base64URL-encoded parts are separated by ‘.’</li>
 <li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0…</li>
-<li></li>
 <li>This token looks opaque
 <ul>
 <li>It is not!!</li>
@@ -374,7 +354,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Your JWTs are effectively plain-text</li>
 <li>This token has the claim: {“username”: “Alice”}</li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="jwt---usage" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---usage">JWT - Usage</h2>
@@ -390,7 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Sign it!</li>
 </ul></li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="jwt---verification" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---verification">JWT - Verification</h2>
@@ -400,7 +378,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Attackers cannot forge the signatures</li>
 <li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc</li>
 </ul>
-<!-- PDF page 17 -->
 </section>
 <section id="jwt---verification-1" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---verification-1">JWT - Verification</h2>
@@ -417,7 +394,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Use the public key to verify the signature</li>
 </ul></li>
 </ul>
-<!-- PDF page 18 -->
 </section>
 <section id="jwt---verification-2" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---verification-2">JWT - Verification</h2>
@@ -429,7 +405,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>If the signature is not valid, do not accept the token</li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="jwt---verification-3" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---verification-3">JWT - Verification</h2>
@@ -449,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Not allowed on HW5..</li>
 </ul></li>
 </ul>
-<!-- PDF page 20 -->
 </section>
 <section id="jwt---encryption" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---encryption">JWT - Encryption</h2>
@@ -459,11 +433,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>😅</p>
 <p><img src="assets/slide20-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 21 -->
 </section>
 <section id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="level2">
 <h2 class="anchored" data-anchor-id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens">• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Recall OAuth</p>
 <p>Authorization Grant</p>
 <p>Access Token and Refresh Token</p>

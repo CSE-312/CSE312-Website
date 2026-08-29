@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -124,10 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="buffers" class="level2">
 <h2 class="anchored" data-anchor-id="buffers">Buffers</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="tcp-reminder" class="level2">
 <h2 class="anchored" data-anchor-id="tcp-reminder">TCP Reminder</h2>
@@ -140,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Read from the TCP socket once to read the entire request</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="buffering-file-uploads" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads">Buffering File Uploads</h2>
@@ -162,7 +159,6 @@ Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 4 -->
 </section>
 <section id="buffering-file-uploads-1" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads-1">Buffering File Uploads</h2>
@@ -182,7 +178,6 @@ Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 5 -->
 </section>
 <section id="buffering-file-uploads-2" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads-2">Buffering File Uploads</h2>
@@ -204,7 +199,6 @@ Content-Disposition: form-data; name="upload"; filename="flamingo.jpg"
 Content-Type: image/jpeg</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 6 -->
 </section>
 <section id="buffering-file-uploads-3" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads-3">Buffering File Uploads</h2>
@@ -223,7 +217,6 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 7 -->
 </section>
 <section id="buffering-file-uploads-4" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads-4">Buffering File Uploads</h2>
@@ -243,7 +236,6 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 8 -->
 </section>
 <section id="buffering-file-uploads-5" class="level2">
 <h2 class="anchored" data-anchor-id="buffering-file-uploads-5">Buffering File Uploads</h2>
@@ -262,11 +254,9 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 9 -->
 </section>
 <section id="buffers-1" class="level2">
 <h2 class="anchored" data-anchor-id="buffers-1">Buffers</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>TCP socket libraries will use buffers</li>
 <li>No matter your language/library you will have a method/ function that reads bytes from the socket
@@ -279,11 +269,9 @@ Content-Type: image/png</code></pre>
 <p>User</p>
 <p>Server</p>
 <p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="buffer-questions" class="level2">
 <h2 class="anchored" data-anchor-id="buffer-questions">Buffer Questions</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>What happens when the user has a lot of data to send?</li>
 <li>What if the user has a slow connection?</li>
@@ -295,11 +283,9 @@ Content-Type: image/png</code></pre>
 <p>User</p>
 <p>Server</p>
 <p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
 </section>
 <section id="buffer-answer" class="level2">
 <h2 class="anchored" data-anchor-id="buffer-answer">Buffer Answer</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The socket notifies your code when there is data to read - even if it’s not the entire request</li>
 <li>The socket server will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
@@ -311,11 +297,9 @@ Content-Type: image/png</code></pre>
 <p>User</p>
 <p>Server</p>
 <p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="buffers-2" class="level2">
 <h2 class="anchored" data-anchor-id="buffers-2">Buffers</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Now that we’re handling file uploads, we must be aware of these buffers</li>
 <li>The server will need data that persists across multiple calls that read bytes from a socket
@@ -328,7 +312,6 @@ Content-Type: image/png</code></pre>
 <p>User</p>
 <p>Server</p>
 <p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="http-buffers" class="level2">
 <h2 class="anchored" data-anchor-id="http-buffers">HTTP Buffers</h2>
@@ -342,7 +325,6 @@ Content-Type: image/png</code></pre>
 <li>Process the request</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="assumptions" class="level2">
 <h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
@@ -359,7 +341,6 @@ Content-Type: image/png</code></pre>
 </ul></li>
 </ul>
 <p>received_data = self.request.recv(1048576)</p>
-<!-- PDF page 15 -->
 </section>
 <section id="buffers-3" class="level2">
 <h2 class="anchored" data-anchor-id="buffers-3">Buffers</h2>
@@ -369,7 +350,6 @@ Content-Type: image/png</code></pre>
 <li>ie. The total number of bytes read for one request will be larger than the Content-Length</li>
 </ul></li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="demos" class="level2">
 <h2 class="anchored" data-anchor-id="demos">Demos</h2>

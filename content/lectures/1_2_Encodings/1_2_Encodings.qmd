@@ -1,12 +1,9 @@
 ---
 title: "HTTP - Static Files, MIME Types, and Encodings"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Encodings and MIME types"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://en.wikipedia.org/wiki/UTF-8"
     text: "UTF-8 (Wikipedia)"
@@ -17,17 +14,13 @@ reading-list:
   - url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options"
     text: "String MIME types"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-<!-- PDF page 1 -->
-## Encodings
+# Encodings
 
 MIME types and bytes
 
-<!-- PDF page 2 -->
 ## 1's and 0's
 
 - The Internet can only transfer bits
@@ -37,16 +30,13 @@ MIME types and bytes
 - How do we know what these 1's and 0's represent in HTTP?
   - Encodings and MIME Types
 
-<!-- PDF page 3 -->
-## Encoding Text
+# Encoding Text
 
-<!-- PDF page 4 -->
 ## Text
 
 - Only 1's and 0's can travel through the Internet
   - How do we send text?
 
-<!-- PDF page 5 -->
 ## ASCII
 
 - Character encoding
@@ -56,14 +46,11 @@ MIME types and bytes
   - Numbers are mapped back to characters by the receiver
 - ASCII uses 7 bit encodings
 
-<!-- PDF page 6 -->
-## Slide 6
+## ASCII Chart
 
-<!-- REVIEW: no clear title found; check the heading -->
 
-![](assets/slide06-1.png){fig-alt="TODO: describe this image"}
+![](assets/slide06-1.png){fig-alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value"}
 
-<!-- PDF page 7 -->
 ## ASCII
 
 - As a String:
@@ -76,14 +63,12 @@ MIME types and bytes
   - 01101000 01100101 01101100 01101100 01101111
   - Send this over the Internet
 
-<!-- PDF page 8 -->
 ## HTTP Headers
 
 HTTP Headers can only contain
 
 ASCII characters
 
-<!-- PDF page 9 -->
 ## HTTP Headers
 
 - When reading HTTP headers [And request/status lines]
@@ -91,7 +76,6 @@ ASCII characters
 - The body of the request/response may be encoded differently
   - Read the headers to find the encoding for the body
 
-<!-- PDF page 10 -->
 ## Character Encodings
 
 - ASCII can only encode 128 different characters
@@ -103,7 +87,6 @@ ASCII characters
   - We need more bits!
   - Enter UTF-8
 
-<!-- PDF page 11 -->
 ## UTF-8
 
 - The modern standard for encoding text
@@ -114,7 +97,6 @@ ASCII characters
 
 ![](assets/slide11-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## UTF-8
 
 - If more bytes are needed:
@@ -125,7 +107,6 @@ ASCII characters
 
 ![](assets/slide11-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## Sending Data
 
 - When sending Strings over the Internet
@@ -137,7 +118,6 @@ ASCII characters
   - Must convert to a language-specific String
   - Decode the bytes using the proper encoding
 
-<!-- PDF page 14 -->
 ## Sending Data
 
 - Use the Python methods
@@ -146,7 +126,6 @@ ASCII characters
 - You can specify the encoding as an argument of these methods
   - Default is UTF-8 so providing no arguments will do what you want for this course
 
-<!-- PDF page 15 -->
 ## Content Length
 
 - Content-Length header must be set when there is a body to a response/request
@@ -157,17 +136,14 @@ ASCII characters
 - Any non-ASCII UTF-8 character uses >1 byte
   - Cannot use the length of the String as your Content-Length!
 
-<!-- PDF page 16 -->
 ## Content Length
 
 - To compute the content length of a UTF-8 String
   - Convert to bytes first
   - Get the length of the byte array
 
-<!-- PDF page 17 -->
 ## MIME Types
 
-<!-- PDF page 18 -->
 ## MIME Types
 
 - When an HTTP response [or request] contains a body, the body is an array of bytes
@@ -176,7 +152,6 @@ ASCII characters
   - Tells the browser how to read the body of your response
 - This is the MIME type of the data
 
-<!-- PDF page 19 -->
 ## MIME Types
 
 - MIME type
@@ -189,7 +164,6 @@ ASCII characters
   - image - Raw binary of an image file
   - video - Raw binary of a video
 
-<!-- PDF page 20 -->
 ## MIME Types
 
 - Common Type/Subtypes
@@ -202,7 +176,6 @@ ASCII characters
   - video/mp4
   - application/json
 
-<!-- PDF page 21 -->
 ## MIME Types
 
 - Optional settings can be added to the Content-Type header
@@ -213,7 +186,6 @@ ASCII characters
   - *You must use this to tell the browser that you are using utf-8
   - Don't forget to add this exactly as it appears. One character difference will break your page
 
-<!-- PDF page 22 -->
 ## MIME Type Sniffing
 
 - Modern browsers will "sniff" the proper MIME type of a response
@@ -224,7 +196,6 @@ ASCII characters
 - Set this HTTP header to tell the browser you set the correct MIME type
   - X-Content-Type-Options: nosnif
 
-<!-- PDF page 23 -->
 ## MIME Type Sniffing
 
 - X-Content-Type-Options: nosniff
@@ -233,7 +204,6 @@ ASCII characters
   - Check the headers of your response
   - Make sure this header was parsed by the browser
 
-<!-- PDF page 24 -->
 ## MIME Type Sniffing
 
 - Security concern:
@@ -246,7 +216,6 @@ ASCII characters
 - Solution:
   - X-Content-Type-Options: nosnif
 
-<!-- PDF page 25 -->
 ## MIME Types
 
 - With the proper MIME types set through a Content-Type header
@@ -254,10 +223,8 @@ ASCII characters
 - When receiving an HTTP request that contains a body
   - The Content-Type will be set to let our server know the MIME type
 
-<!-- PDF page 26 -->
 ## Sending Images
 
-<!-- PDF page 27 -->
 ## Sending Images
 
 - Sometimes we want to send data that is not text
@@ -268,7 +235,6 @@ ASCII characters
   - Content-Length is the size of the file
   - Set the Content-Type to image/`<image_type>`
 
-<!-- PDF page 28 -->
 ## Sending Images
 
 - When sending images
@@ -278,7 +244,6 @@ ASCII characters
 - An image is not encoded using UTF-8
   - The bytes will not decode properly
 
-<!-- PDF page 29 -->
 ## Sending Images
 
 - Don't overthink sending images

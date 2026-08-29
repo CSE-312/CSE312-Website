@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -140,14 +140,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="http-over-ssltls" class="level2">
 <h2 class="anchored" data-anchor-id="http-over-ssltls">HTTP over SSL/TLS</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="signed-certificates" class="level2">
 <h2 class="anchored" data-anchor-id="signed-certificates">Signed Certificates</h2>
-<!-- PDF page 3 -->
 </section>
 <section id="vulnerability" class="level2">
 <h2 class="anchored" data-anchor-id="vulnerability">Vulnerability</h2>
@@ -162,7 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>It looks like you’re talking to the server..</li>
 <li>Certificate Authorities (CA) can fix that</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="certificate-authority-ca" class="level2">
 <h2 class="anchored" data-anchor-id="certificate-authority-ca">Certificate Authority (CA)</h2>
@@ -179,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>They send you a certificate</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="certificate-authority-ca-1" class="level2">
 <h2 class="anchored" data-anchor-id="certificate-authority-ca-1">Certificate Authority (CA)</h2>
@@ -195,7 +190,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="certificate-authority-ca-2" class="level2">
 <h2 class="anchored" data-anchor-id="certificate-authority-ca-2">Certificate Authority (CA)</h2>
@@ -215,7 +209,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>If a cert cannot be verified by a root CA, it is called Self-signed and should not be trusted</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="certificate-authority-ca-3" class="level2">
 <h2 class="anchored" data-anchor-id="certificate-authority-ca-3">Certificate Authority (CA)</h2>
@@ -226,11 +219,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>There must not be any security warnings given by the browser</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="self-signed-certificates" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificates">Self-Signed Certificates</h2>
-<!-- PDF page 9 -->
 </section>
 <section id="self-signed-certificate" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate">Self-Signed Certificate</h2>
@@ -247,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>These certs cannot be verified and are therefor vulnerable to man-in-the-middle attacks</li>
 </ul></li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="openssl" class="level2">
 <h2 class="anchored" data-anchor-id="openssl">OpenSSL</h2>
@@ -265,7 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>We’ll use OpenSSL in the command line to generate self-signed certificates</li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="self-signed-certificate-1" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate-1">Self-Signed Certificate</h2>
@@ -288,7 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Generate a new key for this cert using the RSA algorithm and a 4k key size</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="self-signed-certificate-2" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate-2">Self-Signed Certificate</h2>
@@ -311,7 +299,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Do not require a password to use the private key</li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="self-signed-certificate-3" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate-3">Self-Signed Certificate</h2>
@@ -320,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Once SSL is installed (Required on Windows) you can run commands in the command line</li>
 <li>This command will generate a self-signed certificate</li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="self-signed-certificate-4" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate-4">Self-Signed Certificate</h2>
@@ -338,7 +324,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Allows you run this command in a script</li>
 </ul></li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="installing-the-certificate" class="level2">
 <h2 class="anchored" data-anchor-id="installing-the-certificate">Installing the Certificate</h2>
@@ -347,11 +332,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Could add the cert to our server code directly</li>
 <li>We’ll prefer to use a reverse proxy server</li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="https" class="level2">
 <h2 class="anchored" data-anchor-id="https">HTTPS</h2>
-<!-- PDF page 17 -->
 </section>
 <section id="https-1" class="level2">
 <h2 class="anchored" data-anchor-id="https-1">HTTPS</h2>
@@ -368,11 +351,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>I’ll only refer to the protocol as TLS after this note</li>
 </ul></li>
 </ul>
-<!-- PDF page 18 -->
 </section>
 <section id="tls" class="level2">
 <h2 class="anchored" data-anchor-id="tls">TLS</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>TLS fits between TCP and HTTP on our protocol stack</li>
 <li>All these protocols are modular
@@ -391,11 +372,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>IP</p>
 <p>IP</p>
 <p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 19 -->
 </section>
 <section id="tls-1" class="level2">
 <h2 class="anchored" data-anchor-id="tls-1">TLS</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>This allows us to continue to use TCP and HTTP</li>
 <li>We only need to add the TLS layer to our web apps to gain encryption
@@ -409,11 +388,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>TCP</p>
 <p>IP</p>
 <p><img src="assets/slide19-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 20 -->
 </section>
 <section id="communication-with-tls" class="level2">
 <h2 class="anchored" data-anchor-id="communication-with-tls">Communication with TLS</h2>
-<!-- PDF page 21 -->
 </section>
 <section id="tls-2" class="level2">
 <h2 class="anchored" data-anchor-id="tls-2">TLS</h2>
@@ -429,7 +406,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>A client could encrypt using the servers public key</li>
 <li>How does the server encrypt responses sent to the client?</li>
 </ul>
-<!-- PDF page 22 -->
 </section>
 <section id="tls-overview" class="level2">
 <h2 class="anchored" data-anchor-id="tls-overview">TLS Overview</h2>
@@ -443,7 +419,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>All communication in both directions is encrypted with this key</li>
 <li>With this goal in mind, how do a client and server securely agree on this key without an eavesdropper also knowing the key?</li>
 </ul>
-<!-- PDF page 23 -->
 </section>
 <section id="diffie-hellman-key-exchange" class="level2">
 <h2 class="anchored" data-anchor-id="diffie-hellman-key-exchange">Diffie-Hellman Key Exchange</h2>
@@ -459,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Both p and g are public</li>
 </ul>
-<!-- PDF page 24 -->
 </section>
 <section id="diffie-hellman-key-exchange-1" class="level2">
 <h2 class="anchored" data-anchor-id="diffie-hellman-key-exchange-1">Diffie-Hellman Key Exchange</h2>
@@ -474,7 +448,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Client and server cannot even share these values with each other</li>
 </ul></li>
 </ul>
-<!-- PDF page 25 -->
 </section>
 <section id="diffie-hellman-key-exchange-2" class="level2">
 <h2 class="anchored" data-anchor-id="diffie-hellman-key-exchange-2">Diffie-Hellman Key Exchange</h2>
@@ -492,7 +465,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Client now has g^{ab} mod p</li>
 </ul></li>
 </ul>
-<!-- PDF page 26 -->
 </section>
 <section id="diffie-hellman-key-exchange-3" class="level2">
 <h2 class="anchored" data-anchor-id="diffie-hellman-key-exchange-3">Diffie-Hellman Key Exchange</h2>
@@ -511,7 +483,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>And computing a or b from these values involves computing a discrete logarithm which is a cryptographic primitive</li>
 </ul>
-<!-- PDF page 27 -->
 </section>
 <section id="symmetric-key-encryption" class="level2">
 <h2 class="anchored" data-anchor-id="symmetric-key-encryption">Symmetric Key Encryption</h2>
@@ -525,7 +496,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Theoretical attacks exist, but no known practical attacks</li>
 </ul></li>
 </ul>
-<!-- PDF page 28 -->
 </section>
 <section id="tls-1.2-handshake" class="level2">
 <h2 class="anchored" data-anchor-id="tls-1.2-handshake">TLS 1.2 Handshake</h2>
@@ -547,7 +517,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>With the partial key received from the client/server, compute the rest of the symmetric key</li>
 <li>Both parties now have the symmetric key and can encrypt/decrypt all following traffic</li>
 </ul>
-<!-- PDF page 29 -->
 </section>
 <section id="forward-secrecy" class="level2">
 <h2 class="anchored" data-anchor-id="forward-secrecy">Forward Secrecy</h2>
@@ -563,7 +532,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This is called forward secrecy</li>
 </ul></li>
 </ul>
-<!-- PDF page 30 -->
 </section>
 <section id="algorithms-note" class="level2">
 <h2 class="anchored" data-anchor-id="algorithms-note">Algorithms Note</h2>
@@ -576,7 +544,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>TLS itself does not define how to exchange keys or encrypt and instead defers to the algorithms for details</li>
 </ul></li>
 </ul>
-<!-- PDF page 31 -->
 </section>
 <section id="privacy-note" class="level2">
 <h2 class="anchored" data-anchor-id="privacy-note">Privacy Note</h2>

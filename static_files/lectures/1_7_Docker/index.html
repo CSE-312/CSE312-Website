@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -182,11 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="docker-and-docker-compose" class="level2">
 <h2 class="anchored" data-anchor-id="docker-and-docker-compose">Docker and docker compose</h2>
 <p>1</p>
-<!-- PDF page 2 -->
 </section>
 <section id="vocab" class="level2">
 <h2 class="anchored" data-anchor-id="vocab">Vocab</h2>
@@ -205,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p>2</p>
-<!-- PDF page 3 -->
 </section>
 <section id="deployment-headaches" class="level2">
 <h2 class="anchored" data-anchor-id="deployment-headaches">Deployment Headaches</h2>
@@ -222,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p>3</p>
-<!-- PDF page 4 -->
 </section>
 <section id="virtual-machines" class="level2">
 <h2 class="anchored" data-anchor-id="virtual-machines">Virtual Machines</h2>
@@ -237,7 +233,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p>4</p>
-<!-- PDF page 5 -->
 </section>
 <section id="security" class="level2">
 <h2 class="anchored" data-anchor-id="security">Security</h2>
@@ -254,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p>5</p>
-<!-- PDF page 6 -->
 </section>
 <section id="security-1" class="level2">
 <h2 class="anchored" data-anchor-id="security-1">Security</h2>
@@ -268,7 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Run user code in their own VM/Container</li>
 </ul>
 <p>6</p>
-<!-- PDF page 7 -->
 </section>
 <section id="containers" class="level2">
 <h2 class="anchored" data-anchor-id="containers">Containers</h2>
@@ -276,7 +269,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Effectively, lightweight VMs</li>
 </ul>
 <p>7</p>
-<!-- PDF page 8 -->
 </section>
 <section id="docker" class="level2">
 <h2 class="anchored" data-anchor-id="docker">Docker</h2>
@@ -286,7 +278,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Install Docker in your production environment and run the same containers</li>
 </ul>
 <p>8</p>
-<!-- PDF page 9 -->
 </section>
 <section id="dockerfile" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile">Dockerfile</h2>
@@ -298,7 +289,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p>9</p>
-<!-- PDF page 10 -->
 </section>
 <section id="dockerfile-1" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-1">Dockerfile</h2>
@@ -307,30 +297,22 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
 <ul>
 <li>This Dockerfile creates an image for a node.js app</li>
 </ul>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 <section id="run-the-app" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>10</p>
-<!-- PDF page 11 -->
 <section id="dockerfile-2" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-2">Dockerfile</h2>
 <ul>
@@ -340,31 +322,23 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
 <ul>
 <li>Our Dockerfile can run Linux commands in Ubunutu</li>
 </ul>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-1" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>11</p>
-<!-- PDF page 12 -->
 <section id="dockerfile-3" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-3">Dockerfile</h2>
 <ul>
@@ -374,28 +348,20 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-2" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>12</p>
-<!-- PDF page 13 -->
 <section id="dockerfile-4" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-4">Dockerfile</h2>
 <ul>
@@ -411,28 +377,20 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-3" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>13</p>
-<!-- PDF page 14 -->
 <section id="dockerfile-5" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-5">Dockerfile</h2>
 <ul>
@@ -447,28 +405,20 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-4" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>14</p>
-<!-- PDF page 15 -->
 <section id="dockerfile-6" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-6">Dockerfile</h2>
 <ul>
@@ -478,35 +428,27 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
 <ul>
 <li>The the first “.” will refer to your apps directory</li>
 <li>We changed the home and working directory to /root</li>
 </ul>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
 <ul>
 <li>The second “.” refers to /root in the image</li>
 </ul>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-5" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>15</p>
-<!-- PDF page 16 -->
 <section id="dockerfile-7" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-7">Dockerfile</h2>
 <ul>
@@ -519,28 +461,20 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-6" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>16</p>
-<!-- PDF page 17 -->
 <section id="dockerfile-8" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-8">Dockerfile</h2>
 <ul>
@@ -549,32 +483,24 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
 <ul>
 <li>Container is meant to run in isolation</li>
 <li>To run a web app in a container, expose the port you need</li>
 </ul>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-7" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>17</p>
-<!-- PDF page 18 -->
 <section id="dockerfile-9" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-9">Dockerfile</h2>
 <ul>
@@ -586,28 +512,20 @@ EXPOSE 8000</code></pre>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
-<pre><code># Set the home directory to /root
-ENV HOME /root</code></pre>
-<pre><code># cd into the home directory
-WORKDIR /root</code></pre>
-<pre><code># Install Node
-RUN apt-get update --fix-missing
+<pre><code>ENV HOME /root</code></pre>
+<pre><code>WORKDIR /root</code></pre>
+<pre><code>RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
-<pre><code># Copy all app files into the image
-COPY . .</code></pre>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
-<pre><code># Allow port 8000 to be accessed
-# from outside the container
-EXPOSE 8000</code></pre>
+<pre><code>COPY . .</code></pre>
+<pre><code>RUN npm install</code></pre>
+<pre><code>EXPOSE 8000</code></pre>
 </section>
 </section>
 <section id="run-the-app-8" class="level1">
 <h1>Run the app</h1>
 <p>CMD node app-www.js</p>
 <p>18</p>
-<!-- PDF page 19 -->
 <section id="dockerfile-10" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-10">Dockerfile</h2>
 <ul>
@@ -622,12 +540,10 @@ WORKDIR /root</code></pre>
 <li>Search “docker <code>&lt;language&gt;</code>” to find images/tutorials for your favorite language</li>
 <li>This image starts with node installed so we can remove the node installation lines</li>
 </ul>
-<pre><code># Download dependancies
-RUN npm install</code></pre>
+<pre><code>RUN npm install</code></pre>
 <p>EXPOSE 8000</p>
 <p>CMD node app-www.js</p>
 <p>19</p>
-<!-- PDF page 20 -->
 </section>
 <section id="dockerfile-11" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-11">Dockerfile</h2>
@@ -638,12 +554,10 @@ RUN npm install</code></pre>
 <pre><code>ENV HOME /root
 WORKDIR /root</code></pre>
 <p>COPY . .</p>
-<pre><code># Download dependancies
-RUN pip3 install -r requirements.txt</code></pre>
+<pre><code>RUN pip3 install -r requirements.txt</code></pre>
 <p>EXPOSE 8000</p>
 <p>CMD python3 -u app.py</p>
 <p>20</p>
-<!-- PDF page 21 -->
 </section>
 <section id="dockerfile-12" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile-12">Dockerfile</h2>
@@ -659,12 +573,10 @@ RUN pip3 install -r requirements.txt</code></pre>
 <pre><code>ENV HOME /root
 WORKDIR /root</code></pre>
 <p>COPY . .</p>
-<pre><code># Download dependancies
-RUN pip3 install -r requirements.txt</code></pre>
+<pre><code>RUN pip3 install -r requirements.txt</code></pre>
 <p>EXPOSE 8000</p>
 <p>CMD python3 -u app.py</p>
 <p>21</p>
-<!-- PDF page 22 -->
 </section>
 <section id="running-your-app" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app">Running Your App</h2>
@@ -677,11 +589,9 @@ RUN pip3 install -r requirements.txt</code></pre>
 </ul></li>
 </ul>
 <p>22</p>
-<!-- PDF page 23 -->
 </section>
 <section id="docker-compose" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose">Docker Compose</h2>
-<!-- PDF page 24 -->
 </section>
 <section id="docker-compose-1" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-1">Docker Compose</h2>
@@ -698,7 +608,6 @@ RUN pip3 install -r requirements.txt</code></pre>
 </ul></li>
 <li>Let’s walk through a docker-compose.yml file</li>
 </ul>
-<!-- PDF page 25 -->
 </section>
 <section id="docker-compose-2" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-2">Docker Compose</h2>
@@ -714,7 +623,6 @@ ports:
 <li>Version 3[.8] is the current latest version</li>
 <li>This line is now optional</li>
 </ul>
-<!-- PDF page 26 -->
 </section>
 <section id="docker-compose-3" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-3">Docker Compose</h2>
@@ -729,7 +637,6 @@ ports:
 <li>List of all the services for docker compose to run</li>
 <li>A docker container is created for each service</li>
 </ul>
-<!-- PDF page 27 -->
 </section>
 <section id="docker-compose-4" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-4">Docker Compose</h2>
@@ -745,7 +652,6 @@ ports:
 <li>We have one service that we name “app”</li>
 <li>This name becomes the hostname when communicating between containers</li>
 </ul>
-<!-- PDF page 28 -->
 </section>
 <section id="docker-compose-5" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-5">Docker Compose</h2>
@@ -763,7 +669,6 @@ ports:
 </ul></li>
 <li>Same as the trailing ‘.’ when building an image</li>
 </ul>
-<!-- PDF page 29 -->
 </section>
 <section id="docker-compose-6" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-6">Docker Compose</h2>
@@ -778,7 +683,6 @@ ports:
 <li>Map a local port to a container port</li>
 <li>Same as using “-p 8080:8000” when running a single container</li>
 </ul>
-<!-- PDF page 30 -->
 </section>
 <section id="docker-compose-7" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-7">Docker Compose</h2>
@@ -793,11 +697,9 @@ ports:
 <li>Mapping a port allows your app [inside the container] to be accessed from your machine</li>
 <li>This line maps your local port 8080 [On your machine] to port 8000 inside your container</li>
 </ul>
-<!-- PDF page 31 -->
 </section>
 <section id="docker-compose-8" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-8">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <pre><code>version: '3'
 services:
@@ -817,7 +719,6 @@ ports:
 </ul></li>
 </ul>
 <p><img src="assets/slide31-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 32 -->
 </section>
 <section id="running-your-app-1" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app-1">Running Your App</h2>
@@ -840,7 +741,6 @@ ports:
 <li>docker compose restart</li>
 </ul></li>
 </ul>
-<!-- PDF page 33 -->
 </section>
 <section id="running-your-app-2" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app-2">Running Your App</h2>
@@ -855,7 +755,6 @@ ports:
 <li>If you don’t, you will not see your changes since you’ll be running your old code</li>
 </ul></li>
 </ul>
-<!-- PDF page 34 -->
 </section>
 <section id="docker-compose-9" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-9">Docker Compose</h2>
@@ -873,7 +772,6 @@ ports:
 <ul>
 <li>Let’s modify our docker compose configuration to run our database</li>
 </ul>
-<!-- PDF page 35 -->
 </section>
 <section id="docker-compose-10" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-10">Docker Compose</h2>
@@ -892,11 +790,9 @@ ports:
 <li>“services” is a list of all the images/ containers to create</li>
 <li>We’ll add a second service for the DB</li>
 </ul>
-<!-- PDF page 36 -->
 </section>
 <section id="docker-compose-11" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-11">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <pre><code>version: '3.3'
 services:
@@ -916,7 +812,6 @@ ports:
 </ul></li>
 </ul>
 <p><img src="assets/slide36-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 37 -->
 </section>
 <section id="docker-compose-12" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-12">Docker Compose</h2>
@@ -941,7 +836,6 @@ ports:
 </ul></li>
 <li>No Dockerfile is needed</li>
 </ul>
-<!-- PDF page 38 -->
 </section>
 <section id="docker-compose-13" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-13">Docker Compose</h2>
@@ -960,11 +854,9 @@ ports:
 <li>Use ‘environment’ to set any needed environment variables</li>
 <li>If using MySQL, set variables for your username/ password</li>
 </ul>
-<!-- PDF page 39 -->
 </section>
 <section id="docker-compose-14" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-14">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <ul>
 <li>We use an environment variable to tell our app to wait until the database is running before connecting to it</li>
@@ -989,11 +881,9 @@ RUN pip install -r requirements.txt</code></pre>
 RUN chmod +x /wait</code></pre>
 <p>CMD /wait &amp;&amp; python app.py</p>
 <p><img src="assets/slide39-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 40 -->
 </section>
 <section id="docker-compose-15" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-15">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <ul>
 <li>If the app runs before the database, it won’t be able to establish a DB connection</li>
@@ -1019,11 +909,9 @@ RUN pip install -r requirements.txt</code></pre>
 RUN chmod +x /wait</code></pre>
 <p>CMD /wait &amp;&amp; python app.py</p>
 <p><img src="assets/slide40-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 41 -->
 </section>
 <section id="docker-compose-16" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-16">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <ul>
 <li>This solution from github user “ufoscout” works well</li>
@@ -1048,7 +936,6 @@ RUN pip install -r requirements.txt</code></pre>
 RUN chmod +x /wait</code></pre>
 <p>CMD /wait &amp;&amp; python app.py</p>
 <p><img src="assets/slide41-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 42 -->
 </section>
 <section id="docker-compose-17" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-17">Docker Compose</h2>
@@ -1066,11 +953,9 @@ ports:
 <ul>
 <li>This file is used to build both images and run both containers using docker-compose</li>
 </ul>
-<!-- PDF page 43 -->
 </section>
 <section id="docker-compose-18" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-18">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <pre><code>version: '3.3'
 services:
@@ -1092,11 +977,9 @@ ports:
 </ul></li>
 </ul>
 <p><img src="assets/slide43-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 44 -->
 </section>
 <section id="docker-compose-19" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-19">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <ul>
 <li>version: ‘3.3’ services: mongo: image: mongo:4.2.5 app: build: . environment: WAIT_HOSTS: mongo:27017 ports: - ‘8080:8000’</li>
@@ -1106,11 +989,9 @@ ports:
 <p>mongo_client = MongoClient(‘localhost’)</p>
 <p>mongo_client = MongoClient(‘mongo’)</p>
 <p><img src="assets/slide44-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 45 -->
 </section>
 <section id="docker-compose-20" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-20">Docker Compose</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>docker-compose.yml</p>
 <pre><code>version: '3.3'
 services:
@@ -1129,7 +1010,6 @@ ports:
 <li>Make sure you are consistent!</li>
 </ul>
 <p><img src="assets/slide45-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 46 -->
 </section>
 <section id="running-your-app-3" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app-3">Running Your App</h2>

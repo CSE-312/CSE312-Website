@@ -24,13 +24,10 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## HTTP over SSL/TLS
 
-<!-- PDF page 2 -->
 ## Signed Certificates
 
-<!-- PDF page 3 -->
 ## Vulnerability
 
 - Man-in-the-middle attack
@@ -41,7 +38,6 @@ released: false
 - It looks like you're talking to the server..
 - Certificate Authorities (CA) can fix that
 
-<!-- PDF page 4 -->
 ## Certificate Authority (CA)
 
 - A CA is a trusted source with a known public key
@@ -52,7 +48,6 @@ released: false
   - Send them your public key (Signed with your private key)
   - They send you a certificate
 
-<!-- PDF page 5 -->
 ## Certificate Authority (CA)
 
 - Certificate includes
@@ -62,7 +57,6 @@ released: false
     - The signature uses the CA's private key so you can verify it with their pre-installed public key that this was in fact issued by the CA
     - Man-in-the-middle cannot fake this without the CA's private key!
 
-<!-- PDF page 6 -->
 ## Certificate Authority (CA)
 
 - Key chain
@@ -76,17 +70,14 @@ released: false
   - Your browser starts with it's installed DST cert to verify the chain
 - If a cert cannot be verified by a root CA, it is called Self-signed and should not be trusted
 
-<!-- PDF page 7 -->
 ## Certificate Authority (CA)
 
 - For your project:
   - You must obtain and install a valid signed certificate
   - There must not be any security warnings given by the browser
 
-<!-- PDF page 8 -->
 ## Self-Signed Certificates
 
-<!-- PDF page 9 -->
 ## Self-Signed Certificate
 
 - A CA will only sign your certificate if you control a domain name
@@ -97,7 +88,6 @@ released: false
   - When you deploy an app for real users, do not use a self- signed cert!
   - These certs cannot be verified and are therefor vulnerable to man-in-the-middle attacks
 
-<!-- PDF page 10 -->
 ## OpenSSL
 
 - OpenSSL is a very common SSL/TLS library
@@ -109,7 +99,6 @@ released: false
   - Validating certs
 - We'll use OpenSSL in the command line to generate self-signed certificates
 
-<!-- PDF page 11 -->
 ## Self-Signed Certificate
 
 openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes
@@ -123,7 +112,6 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
 - -newkey rsa:4096
   - Generate a new key for this cert using the RSA algorithm and a 4k key size
 
-<!-- PDF page 12 -->
 ## Self-Signed Certificate
 
 openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes
@@ -137,7 +125,6 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
 - -nodes
   - Do not require a password to use the private key
 
-<!-- PDF page 13 -->
 ## Self-Signed Certificate
 
 openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes
@@ -145,12 +132,11 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
 - Once SSL is installed (Required on Windows) you can run commands in the command line
 - This command will generate a self-signed certificate
 
-<!-- PDF page 14 -->
 ## Self-Signed Certificate
 
 openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"
 
-- If you run the command on the previous slides, you’ll be asked a lot of questions
+- If you run the command on the previous slides, you'll be asked a lot of questions
   - For most, you can hit enter and leave them blank
   - You must enter your country code though (eg. "us")
 - Or add -subj "/C=US"
@@ -158,17 +144,14 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
   - Required to set country code, and you can leave the rest blank
   - Allows you run this command in a script
 
-<!-- PDF page 15 -->
 ## Installing the Certificate
 
 - Now that we have a certificate, we need to use it in our server to enable TLS
 - Could add the cert to our server code directly
 - We'll prefer to use a reverse proxy server
 
-<!-- PDF page 16 -->
 ## HTTPS
 
-<!-- PDF page 17 -->
 ## HTTPS
 
 - Commonly called HTTP Secure or Secure HTTP
@@ -179,10 +162,8 @@ openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -
   - SSL (Secure Socket Layer) was renamed to TLS (Transport Layer Security) after SSL 3.0
   - I'll only refer to the protocol as TLS after this note
 
-<!-- PDF page 18 -->
 ## TLS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - TLS fits between TCP and HTTP on our protocol stack
 - All these protocols are modular
@@ -209,10 +190,8 @@ IP
 
 ![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## TLS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - This allows us to continue to use TCP and HTTP
 - We only need to add the TLS layer to our web apps to gain encryption
@@ -230,10 +209,8 @@ IP
 
 ![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## Communication with TLS
 
-<!-- PDF page 21 -->
 ## TLS
 
 - What we want:
@@ -243,7 +220,6 @@ IP
 - A client could encrypt using the servers public key
 - How does the server encrypt responses sent to the client?
 
-<!-- PDF page 22 -->
 ## TLS Overview
 
 - Client and server negotiate a TLS handshake
@@ -253,7 +229,6 @@ IP
 - All communication in both directions is encrypted with this key
 - With this goal in mind, how do a client and server securely agree on this key without an eavesdropper also knowing the key?
 
-<!-- PDF page 23 -->
 ## Diffie-Hellman Key Exchange
 
 - Client and server agree on a prime number p with a group generator g
@@ -263,7 +238,6 @@ IP
     - We say g generates the group since multiplying g by itself p times (mop p) will provide every value 1 to p-1
 - Both p and g are public
 
-<!-- PDF page 24 -->
 ## Diffie-Hellman Key Exchange
 
 - Client and server both generate a random number
@@ -272,7 +246,6 @@ IP
 - Both a and b are private
   - Client and server cannot even share these values with each other
 
-<!-- PDF page 25 -->
 ## Diffie-Hellman Key Exchange
 
 - Client computes g^a mod p
@@ -284,7 +257,6 @@ IP
   - Client raises this value to the power of a mod p
   - Client now has g^{ab} mod p
 
-<!-- PDF page 26 -->
 ## Diffie-Hellman Key Exchange
 
 - Client and server now have a shared secret g^{ab} mod p
@@ -295,7 +267,6 @@ IP
   - g^b mod p
 - And computing a or b from these values involves computing a discrete logarithm which is a cryptographic primitive
 
-<!-- PDF page 27 -->
 ## Symmetric Key Encryption
 
 - Once the Client and server have a shared symmetric key, they can encrypt all their communication with this key
@@ -305,7 +276,6 @@ IP
   - AES does not reduce to a cryptographic primitive
   - Theoretical attacks exist, but no known practical attacks
 
-<!-- PDF page 28 -->
 ## TLS 1.2 Handshake
 
 - Client Hello
@@ -319,7 +289,6 @@ IP
 - With the partial key received from the client/server, compute the rest of the symmetric key
 - Both parties now have the symmetric key and can encrypt/decrypt all following traffic
 
-<!-- PDF page 29 -->
 ## Forward Secrecy
 
 - Note that the servers keys from its certificate were only used to verify the servers identity during the key exchange
@@ -329,7 +298,6 @@ IP
   - They are still out of luck (Cannot use this private key to find the symmetric key)
   - This is called forward secrecy
 
-<!-- PDF page 30 -->
 ## Algorithms Note
 
 - RSA, Diffie-Hellman Key Exchange, and AES were mentioned as examples
@@ -338,7 +306,6 @@ IP
 - TLS is very flexible and allows for any algorithms to be used, so long as the client and server both agree which ones will be used
   - TLS itself does not define how to exchange keys or encrypt and instead defers to the algorithms for details
 
-<!-- PDF page 31 -->
 ## Privacy Note
 
 - TLS Encrypts the entire HTTP request/response using the symmetric key

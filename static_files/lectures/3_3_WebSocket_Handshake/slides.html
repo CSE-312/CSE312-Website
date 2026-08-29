@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="websockets" class="slide level2">
 <h2>WebSockets</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="ajax-summary" class="slide level2">
 <h2>AJAX Summary</h2>
@@ -172,7 +166,6 @@
 <li>Must wait for a poll request</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="websockets-1" class="slide level2">
 <h2>WebSockets</h2>
@@ -187,7 +180,6 @@
 </ul></li>
 <li>Works by keeping a TCP socket open</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="websocket-overview" class="slide level2">
 <h2>WebSocket Overview</h2>
@@ -201,7 +193,6 @@
 <li>Client and server send WebSocket messages/frames over the TCP connection until one side closes the connection</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="websocket-handshake" class="slide level2">
 <h2>WebSocket Handshake</h2>
@@ -213,7 +204,6 @@
 </ul></li>
 <li>After the handshake, client/server can both send messages over the socket</li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="websocket-handshake-1" class="slide level2">
 <h2>WebSocket Handshake</h2>
@@ -232,7 +222,6 @@
 <li>Sec-WebSocket-Accept: <code>&lt;accept_response&gt;</code></li>
 </ul></li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="websocket-handshake-2" class="slide level2">
 <h2>WebSocket Handshake</h2>
@@ -253,7 +242,6 @@
 <li>Avoid caching</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="websocket-frames" class="slide level2">
 <h2>WebSocket Frames</h2>
@@ -268,18 +256,15 @@
 </ul></li>
 <li>Parse these bits to read the message</li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="websocket-frame" class="slide level2">
 <h2>WebSocket Frame</h2>
-<!-- REVIEW: mostly an image; write a text description -->
 <ul>
 <li>https://tools.ietf.org/html/rfc6455#section-5.2</li>
 <li>We’ll see how to parse through this on Wednesday</li>
 </ul>
-<p><img data-src="assets/slide09-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
-</section>
+
+<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="web-sockets---browser" class="slide level2">
 <h2>Web Sockets - Browser</h2>
 <ul>
@@ -297,7 +282,6 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 11 -->
 </section>
 <section id="web-sockets---browser-1" class="slide level2">
 <h2>Web Sockets - Browser</h2>
@@ -313,7 +297,6 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 12 -->
 </section>
 <section id="web-sockets---browser-2" class="slide level2">
 <h2>Web Sockets - Browser</h2>
@@ -332,11 +315,9 @@ socket.send(JSON.stringify({'username': username, 'message': message}))
 <pre><code>function renderMessages(message) {
 console.log(message.data);
 }</code></pre>
-<!-- PDF page 13 -->
 </section>
 <section id="examples" class="slide level2">
 <h2>Examples</h2>
-<!-- PDF page 14 -->
 </section>
 <section id="concurrency" class="slide level2">
 <h2>Concurrency</h2>
@@ -495,7 +476,7 @@ console.log(message.data);
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -510,7 +491,7 @@ console.log(message.data);
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

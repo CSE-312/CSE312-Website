@@ -18,10 +18,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## WebSockets
 
-<!-- PDF page 2 -->
 ## AJAX Summary
 
 - Retrieve/Send data from the server after the page loads without a page reload
@@ -31,7 +29,6 @@ released: false
 - If the server has new data to send to the client
   - Must wait for a poll request
 
-<!-- PDF page 3 -->
 ## WebSockets
 
 - Two-way communication between server and client
@@ -40,7 +37,6 @@ released: false
   - Without long-polling
 - Works by keeping a TCP socket open
 
-<!-- PDF page 4 -->
 ## WebSocket Overview
 
 - WebSocket protocol:
@@ -50,7 +46,6 @@ released: false
   - Client and server keep the TCP connection open
   - Client and server send WebSocket messages/frames over the TCP connection until one side closes the connection
 
-<!-- PDF page 5 -->
 ## WebSocket Handshake
 
 - When the server receives a WebSocket HTTP request
@@ -58,7 +53,6 @@ released: false
   - These steps ensure that both client and server are speaking the same protocol
 - After the handshake, client/server can both send messages over the socket
 
-<!-- PDF page 6 -->
 ## WebSocket Handshake
 
 - Client sends an HTTP GET request to the WebSocket path
@@ -71,7 +65,6 @@ released: false
   - Upgrade: websocket
   - Sec-WebSocket-Accept: `<accept_response>`
 
-<!-- PDF page 7 -->
 ## WebSocket Handshake
 
 - The client generates a random "Sec-WebSocket-Key" for each new WebSocket connection
@@ -84,7 +77,6 @@ released: false
     - Highly unlikely this value would be returned by accident
   - Avoid caching
 
-<!-- PDF page 8 -->
 ## WebSocket Frames
 
 - Once the connection is established
@@ -93,17 +85,14 @@ released: false
   - Yes, bits! (And you thought bytes were fun!)
 - Parse these bits to read the message
 
-<!-- PDF page 9 -->
 ## WebSocket Frame
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - https://tools.ietf.org/html/rfc6455#section-5.2
 - We'll see how to parse through this on Wednesday
 
 ![](assets/slide09-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## Web Sockets - Browser
 
 - To setup a connection from the browser
@@ -127,7 +116,6 @@ console.log(message.data);
 }
 ```
 
-<!-- PDF page 11 -->
 ## Web Sockets - Browser
 
 - Set onmessage to a function that will be called whenever a message is received
@@ -150,7 +138,6 @@ console.log(message.data);
 }
 ```
 
-<!-- PDF page 12 -->
 ## Web Sockets - Browser
 
 - Call the send method to send a message to the server
@@ -174,8 +161,6 @@ console.log(message.data);
 }
 ```
 
-<!-- PDF page 13 -->
 ## Examples
 
-<!-- PDF page 14 -->
 ## Concurrency

@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,20 +149,13 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="websocket-buffers" class="slide level2">
 <h2>WebSocket Buffers</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="slide-2" class="slide level2">
 <h2>Slide 2</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<p><img data-src="assets/slide02-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 3 -->
-</section>
+
+<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="special-cases" class="slide level2">
 <h2>Special Cases</h2>
 <ul>
@@ -174,7 +166,6 @@
 <li>Multiple frames being sent back-to-back messages</li>
 </ul></li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="buffering-large-frames" class="slide level2">
 <h2>Buffering Large Frames</h2>
@@ -195,7 +186,6 @@
 <li>Process the request</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="continuation-frames" class="slide level2">
 <h2>Continuation Frames</h2>
@@ -207,9 +197,8 @@
 <li>Payload length is only the length of that frame</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide02-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
-</section>
+
+<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="continuation-frames-1" class="slide level2">
 <h2>Continuation Frames</h2>
 <ul>
@@ -219,12 +208,10 @@
 <li>Combine the payload of all frames, then process the entire message</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide02-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
-</section>
+
+<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="continuation-frames-2" class="slide level2">
 <h2>Continuation Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Example of one message sent over 3 frames</li>
 </ul>
@@ -241,9 +228,8 @@
 <p>payload length: 7</p>
 <p>payload: “the sun”</p>
 <p>Message: Never look directly into the sun</p>
-<p><img data-src="assets/slide07-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 8 -->
-</section>
+
+<img data-src="assets/slide07-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames" class="slide level2">
 <h2>Back-to-back Frames</h2>
 <ul>
@@ -258,7 +244,6 @@
 <li>If you read &gt; payload length bytes, store the extra bytes as the start of the next frame</li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="back-to-back-frames-1" class="slide level2">
 <h2>Back-to-back Frames</h2>
@@ -270,9 +255,8 @@
 <li>With this modification, every sent message should appear in chat 5 times</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide09-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
-</section>
+
+<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames-2" class="slide level2">
 <h2>Back-to-back Frames</h2>
 <ul>
@@ -296,11 +280,9 @@
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<!-- PDF page 11 -->
 </section>
 <section id="back-to-back-frames-3" class="slide level2">
 <h2>Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>There are 3516 bytes ready to be read from the socket</li>
 <li>And you call
@@ -316,12 +298,10 @@
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<p><img data-src="assets/slide11-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
-</section>
+
+<img data-src="assets/slide11-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames-4" class="slide level2">
 <h2>Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>If you’re not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
 <li>Since you start in the middle of the frame, you will run header parsing code on masked payload bytes
@@ -335,12 +315,10 @@
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<p><img data-src="assets/slide12-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
-</section>
+
+<img data-src="assets/slide12-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames-5" class="slide level2">
 <h2>Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When parsing the first frame:
 <ul>
@@ -355,12 +333,10 @@
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<p><img data-src="assets/slide13-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 14 -->
-</section>
+
+<img data-src="assets/slide13-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames-6" class="slide level2">
 <h2>Back-to-back Frames</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When you finish processing the first frame, start parsing the second frame with the bytes stored in the operate variable</li>
 <li>Check the payload length and buffer if needed to read the rest of the frame</li>
@@ -372,9 +348,8 @@
 <p>payload length: 1500</p>
 <p>fin bit: 1</p>
 <p>payload length: 2000</p>
-<p><img data-src="assets/slide14-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 15 -->
-</section>
+
+<img data-src="assets/slide14-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="demos" class="slide level2">
 <h2>Demos</h2>
 
@@ -525,7 +500,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -540,7 +515,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

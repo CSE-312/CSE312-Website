@@ -26,10 +26,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Databases
 
-<!-- PDF page 2 -->
 ## Databases
 
 - Software that stores data on disk
@@ -39,7 +37,6 @@ released: false
   - Allows us to think about our data, not how to store it
 - Provides many optimizations
 
-<!-- PDF page 3 -->
 ## Databases
 
 - We'll look at 2 different databases
@@ -49,10 +46,8 @@ released: false
 - mySQL
   - A server implementing SQL (Structured Query Language)
 
-<!-- PDF page 4 -->
 ## MongoDB
 
-<!-- PDF page 5 -->
 ## MongoDB
 
 - Runs on port 27017 (By default)
@@ -62,7 +57,6 @@ released: false
   - Insert dictionaries/objects directly
 - Each object is stored in a collection
 
-<!-- PDF page 6 -->
 ## MongoDB - Connection
 
 - Download a connection library and use it to establish a connection with MongoDB
@@ -79,7 +73,6 @@ db = mongo_client["cse312"]
 chat_collection = db["chat"]
 ```
 
-<!-- PDF page 7 -->
 ## MongoDB - Insert Data
 
 - Insert dictionaries/objects directly
@@ -88,7 +81,6 @@ chat_collection = db["chat"]
 
 chat_collection.insert_one({"username": "hartloff", "message": "hello"})
 
-<!-- PDF page 8 -->
 ## MongoDB - Security
 
 - No Mongo injection attacks
@@ -97,7 +89,6 @@ chat_collection.insert_one({"username": "hartloff", "message": "hello"})
 
 chat_collection.insert_one({"username": "hartloff", "message": "hello"})
 
-<!-- PDF page 9 -->
 ## MongoDB - Retrieve Data
 
 - Retrieve documents using find
@@ -110,10 +101,8 @@ my_data = chat_collection.find({"username": "hartloff"})
 all_data = chat_collection.find({})
 ```
 
-<!-- PDF page 10 -->
 ## MySQL
 
-<!-- PDF page 11 -->
 ## MySQL
 
 - Listens for TCP connections on port 3306 (By default)
@@ -121,7 +110,6 @@ all_data = chat_collection.find({})
 - SQL is based on tables with rows and column
   - Similar in structure to CSV except the values have types other than string
 
-<!-- PDF page 12 -->
 ## MySQL - Insert Data
 
 - If using inputs from the user, always use prepared statements
@@ -135,7 +123,6 @@ statement.setInt(2, 10)
 
 statement.execute()
 
-<!-- PDF page 13 -->
 ## MySQL - Security
 
 - Not using prepared statements?
@@ -146,7 +133,6 @@ statement.execute()
   - Even worse, they find a way to access the entire database and steal other users' data
   - SQL Injection is the most common successful attack on servers
 
-<!-- PDF page 14 -->
 ## MongoDB vs. SQL
 
 - MongoDB is unstructured
@@ -159,7 +145,6 @@ statement.execute()
     - Adding a column can be difficult
   - Fast!
 
-<!-- PDF page 15 -->
 ## MongoDB vs. SQL
 
 - Hot Take
@@ -168,28 +153,24 @@ statement.execute()
   - SQL is best once your data has a defined structure
     - Take advantage of the efficiency
 
-<!-- PDF page 16 -->
 ## MongoDB vs. SQL
 
 - For the HW
   - MongoDB is required
 
-<!-- PDF page 17 -->
 ## Running MongoDB
 
 - Choose 1:
   - Download and install MongoDB and run it on your device
   - Run MongoDB using Docker (recommended)
 
-<!-- PDF page 18 -->
 ## Running MongoDB
 
 - Download and install MongoDB and run it on your device
-- Go to Mongo’s website and follow the instructions
+- Go to Mongo's website and follow the instructions
 - Mongo will run locally on your machine and listen for connections on port 27017
-- Connect using the host “localhost”
+- Connect using the host "localhost"
 
-<!-- PDF page 19 -->
 ## Running MongoDB
 
 - Run MongoDB using Docker (recommended)
@@ -198,16 +179,14 @@ statement.execute()
   - docker run -d -p 27017:27017 mongo:latest
 - This uses docker to run mongo in a container
 
-<!-- PDF page 20 -->
 ## Running MongoDB
 
 - Run MongoDB using Docker (recommended)
 - docker run -d -p 27017:27017 mongo:latest
   - Run a container using the mongo:latest image
   - Map localhost port 27017 to port 27017 inside the container
-- Now you can connect to the DB on “localhost”
+- Now you can connect to the DB on "localhost"
 
-<!-- PDF page 21 -->
 ## Running MongoDB
 
 - Run MongoDB using Docker compose
@@ -215,7 +194,6 @@ statement.execute()
 - docker compose -f docker-compose.db- only.yml up -d
 - Same effect as the previous docker command
 
-<!-- PDF page 22 -->
 ## Running MongoDB
 
 - Run MongoDB using Docker compose
@@ -223,27 +201,23 @@ statement.execute()
 - docker compose up —build —force-recreate
   - Runs the database and your app
   - Rebuilds your app if you made changes
-  - Connects to the database on host “mongo”
-  - “—“ is two dash characters
+  - Connects to the database on host "mongo"
+  - "—" is two dash characters
 
-<!-- PDF page 23 -->
 ## Running MongoDB
 
 - However you choose to run your database:
   - Use the setup in database.py of the HW handout to connect to your DB
-  - Dynamically connects to either “localhost” or “mongo” depending on how it was started
+  - Dynamically connects to either "localhost" or "mongo" depending on how it was started
   - Lets you not have to think about the DB host that much
 
-<!-- PDF page 24 -->
 ## Running Your App
 
-- If you use any “localhost” method to run your DB:
+- If you use any "localhost" method to run your DB:
   - Run your app by running server.py
 
-<!-- PDF page 25 -->
 ## HTML Templates
 
-<!-- PDF page 26 -->
 ## HTML Templates
 
 - Instead of writing complete HTML files
@@ -252,7 +226,6 @@ statement.execute()
 - Use additional markup to add placeholders in the HTML
 - Replace the placeholders with data at runtime
 
-<!-- PDF page 27 -->
 ## HTML Templates
 
 - Example template with 3 placeholders
@@ -286,7 +259,6 @@ statement.execute()
 </html>
 ```
 
-<!-- PDF page 28 -->
 ## HTML Templates
 
 - To substitute the placeholders
@@ -320,16 +292,14 @@ statement.execute()
 </html>
 ```
 
-<!-- PDF page 29 -->
 ## HTML Templates
 
 - On the HW:
   - layout.html contains all the HTML that is shown on every page (navigation, structure, etc)
-  - layout.html has one placeholder - {{content}} - which is where you’ll insert all the HTML for the specific page that was requested
+  - layout.html has one placeholder - {{content}} - which is where you'll insert all the HTML for the specific page that was requested
   - To render a page, eg. index.html, replace {{content}} with everything read from index.html
   - Send the resulting rendered page to the client
 
-<!-- PDF page 30 -->
 ## Common Template Features
 
 - Loops
@@ -357,7 +327,6 @@ statement.execute()
 </html>
 ```
 
-<!-- PDF page 31 -->
 ## Common Template Features
 
 - Conditionals

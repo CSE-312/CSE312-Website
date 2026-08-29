@@ -22,10 +22,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Front End Development
 
-<!-- PDF page 2 -->
 ## Roadmap for Today
 
 - HTML
@@ -35,10 +33,8 @@ released: false
 - JavaScript
   - Adding dynamic functionality to the page
 
-<!-- PDF page 3 -->
 ## HTML
 
-<!-- PDF page 4 -->
 ## HTML
 
 Hyper Text Markup Language
@@ -53,10 +49,8 @@ browser how to display the text
 
 HTML is not a programming language
 
-<!-- PDF page 5 -->
 ## HTML
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 <!DOCTYPE html>
@@ -89,7 +83,6 @@ below
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## HTML - Elements
 
 ```
@@ -136,7 +129,6 @@ this page are nested inside the
 body element
 ```
 
-<!-- PDF page 7 -->
 ## HTML - Elements
 
 ```
@@ -187,7 +179,6 @@ div - A division. Typically used as
 a featureless container
 ```
 
-<!-- PDF page 8 -->
 ## HTML - Self-Closing Elements
 
 ```
@@ -215,7 +206,6 @@ br - Line break
 
 hr - horizontal rule (line)
 
-<!-- PDF page 9 -->
 ## HTML - Attributes
 
 ```
@@ -253,10 +243,9 @@ pairs
 ```
 We have an empty division with a
 property named id with a value of
-“myDiv”
+"myDiv"
 ```
 
-<!-- PDF page 10 -->
 ## HTML - Comments
 
 ```
@@ -277,21 +266,11 @@ comments
 ```
 
 ```
-<!-- Starts a comment
-```
-
-```
-<body>
-<h1>First Web Page</h1>
-<!--<p>My content</p>-->
 <div id="myDiv"></div>
 </body>
 </html>
 ```
 
---> ends a comment
-
-<!-- PDF page 11 -->
 ## HTML - Unicode
 
 ```
@@ -321,7 +300,6 @@ names
 ```
 <body>
 <h1>&#9820; &nbsp; Web Page</h1>
-<!--<p>My content</p>-->
 <div id="myDiv"></div>
 </body>
 </html>
@@ -335,7 +313,6 @@ HTML. Add extra spaces with
 &nbsp; (non-breaking space)
 ```
 
-<!-- PDF page 12 -->
 ## HTML
 
 That's HTML.
@@ -354,10 +331,8 @@ available to you
 
 https://www.w3schools.com/html/default.asp
 
-<!-- PDF page 13 -->
 ## CSS
 
-<!-- PDF page 14 -->
 ## CSS
 
 Used to add style to HTML elements
@@ -374,7 +349,6 @@ and basic organization of the page
 
 CSS is concerned with how that content is styled
 
-<!-- PDF page 15 -->
 ## CSS
 
 ```
@@ -392,7 +366,6 @@ You are encouraged to explore CSS further if you
 want to make your sites visually appealing
 ```
 
-<!-- PDF page 16 -->
 ## CSS
 
 ```
@@ -431,10 +404,8 @@ Many more properties that can be
 set
 ```
 
-<!-- PDF page 17 -->
 ## CSS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 body {
@@ -480,10 +451,8 @@ font-size: 50px;
 
 ![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 18 -->
 ## CSS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 But this sets every paragraph on
@@ -506,10 +475,8 @@ What if we want more flexibility?
 
 ![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## CSS - Classes
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 p {
@@ -549,10 +516,8 @@ color: #00ff00;
 
 ![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## CSS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 We can apply styles to different
@@ -599,10 +564,8 @@ type and class name
 
 ![](assets/slide20-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 21 -->
 ## CSS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 p {
@@ -652,10 +615,8 @@ border-style: double;
 
 ![](assets/slide21-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 22 -->
 ## CSS - Multiple Classes
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 Elements can have multiple
@@ -686,7 +647,6 @@ spaces
 
 ![](assets/slide22-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 23 -->
 ## CSS
 
 There are many more features of CSS that we won't cover
@@ -695,10 +655,8 @@ As with HTML, I recommend W3 Schools for more
 
 https://www.w3schools.com/css/default.asp
 
-<!-- PDF page 24 -->
 ## JavaScript
 
-<!-- PDF page 25 -->
 ## JavaScript
 
 We will not thoroughly cover JavaScript syntax
@@ -719,7 +677,6 @@ reference
 https://www.w3schools.com/js/default.asp
 ```
 
-<!-- PDF page 26 -->
 ## Front End JavaScript
 
 We've seen the basic building blocks for web pages in HTML and CSS
@@ -736,7 +693,6 @@ with our content
 
 To start this interaction, we need JavaScript (Specifically, ECMAScript)
 
-<!-- PDF page 27 -->
 ## Front End JavaScript
 
 HTML and CSS are not programming languages (well.. technically)
@@ -753,7 +709,6 @@ When a user visits your site their browser will:
 
 What are the security implications of this?
 
-<!-- PDF page 28 -->
 ## Front End JavaScript - Security
 
 There are restrictions to what JavaScript can do in the browser:
@@ -768,7 +723,6 @@ Vulnerabilities are still exposed/patched
 
 With that, let's see our first script
 
-<!-- PDF page 29 -->
 ## Front End JavaScript
 
 var myDiv = document.getElementById("myDiv");
@@ -781,13 +735,12 @@ the element with the provided id
 ```
 
 ```
-The element is an object with a key “innerHTML” whose value is
+The element is an object with a key "innerHTML" whose value is
 the content (between the open and close tags) of the element
 ```
 
-We’ll save this code in a file named “script.js”
+We'll save this code in a file named "script.js"
 
-<!-- PDF page 30 -->
 ## Front End JavaScript
 
 var myDiv = document.getElementById("myDiv");
@@ -800,7 +753,7 @@ myDiv.innerHTML = "Content added from JavaScript";
 ```
 
 ```
-We “import” our javascript
+We "import" our javascript
 code by adding a script
 element at the bottom of the
 body element with a src
@@ -830,19 +783,16 @@ This runs our script once the
 body is loaded
 ```
 
-<!-- PDF page 31 -->
 ## Front End JavaScript
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 The script runs when the body loads and sets the content of
-“myDiv” resulting in this page (CSS removed)
+"myDiv" resulting in this page (CSS removed)
 ```
 
 ![](assets/slide31-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 32 -->
 ## JavaScript - Events
 
 What about JS that reacts to the user?
@@ -854,7 +804,6 @@ See here for a list of events
 -https://www.w3schools.com/js/js_events_examples.asp
 ```
 
-<!-- PDF page 33 -->
 ## Front End JavaScript
 
 ```
@@ -885,7 +834,6 @@ To keep our project organized, we'll call functions that are defined in a
 separate file
 ```
 
-<!-- PDF page 34 -->
 ## Front End JavaScript
 
 ```
@@ -913,21 +861,18 @@ We can run any valid JavaScript here so what you can do is only
 limited by what you can conceive and code
 ```
 
-<!-- PDF page 35 -->
 ## Browser Console
 
 - Open the browser console to run your own JavaScript on the pages you visit
 - This is also where console.log outputs
   - Helpful for seeing the output of your JavaScript
 
-<!-- PDF page 36 -->
 ## Browser Extensions
 
 - Extensions allow additional JavaScript code to be injected into a website
 - Useful when we want to modify a site without opening the browser console and typing commands after every page load
 - Extensions automate this process
 
-<!-- PDF page 37 -->
 ## Browser Extensions
 
 - Extension have some limitations

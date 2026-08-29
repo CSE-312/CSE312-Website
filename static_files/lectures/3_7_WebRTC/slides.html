@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="webrtc" class="slide level2">
 <h2>WebRTC</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="websocket-review" class="slide level2">
 <h2>WebSocket Review</h2>
@@ -175,7 +169,6 @@
 <li>Sec-WebSocket-Accept: <code>&lt;accept_response&gt;</code></li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="websocket-review-1" class="slide level2">
 <h2>WebSocket Review</h2>
@@ -196,15 +189,12 @@
 <li>Avoid caching</li>
 </ul></li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="websocket-review-2" class="slide level2">
 <h2>WebSocket Review</h2>
-<!-- REVIEW: mostly an image; write a text description -->
 <p>https://tools.ietf.org/html/rfc6455#section-5.2</p>
-<p><img data-src="assets/slide04-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
-</section>
+
+<img data-src="assets/slide04-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="websocket-review-3" class="slide level2">
 <h2>WebSocket Review</h2>
 <ul>
@@ -219,11 +209,9 @@
 </ul></li>
 <li>Do not mask frames send by your server</li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="webrtc-1" class="slide level2">
 <h2>WebRTC</h2>
-<!-- PDF page 7 -->
 </section>
 <section id="webrtc---overview" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -239,7 +227,6 @@
 <li>Most of the WebRTC logic/code is built into your browser</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="webrtc---overview-1" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -256,7 +243,6 @@
 <li>Though your ISP can still see your data..</li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="webrtc---overview-2" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -269,7 +255,6 @@
 <li>Even a small delay will result in clients talking over each other on a voice/video call</li>
 </ul></li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="webrtc---overview-3" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -285,7 +270,6 @@
 </ul></li>
 </ul>
 <p>Other protocols are used when delays are tolerable (ie. not real-time) like YouTube Live or Twitch</p>
-<!-- PDF page 11 -->
 </section>
 <section id="webrtc---overview-4" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -301,7 +285,6 @@
 <li>Very close to using raw IP packets</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="webrtc---overview-5" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -317,7 +300,6 @@
 <li>Once the connection is established, the server’s job is done (Unless you want to pass a disconnect message)</li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="webrtc---overview-6" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -333,7 +315,6 @@
 <li>Ask the STUN server then send this info to the signaling server</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="webrtc---overview-7" class="slide level2">
 <h2>WebRTC - Overview</h2>
@@ -498,7 +479,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -513,7 +494,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

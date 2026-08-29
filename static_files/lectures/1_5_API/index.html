@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -138,10 +138,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="api" class="level2">
 <h2 class="anchored" data-anchor-id="api">API</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
@@ -156,11 +154,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>How should users interact with stored data?</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="data-1" class="level2">
 <h2 class="anchored" data-anchor-id="data-1">Data</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>How do users interact with stored data?</li>
 </ul>
@@ -168,22 +164,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Server</p>
 <p>Database</p>
 <p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 4 -->
 </section>
 <section id="data-2" class="level2">
 <h2 class="anchored" data-anchor-id="data-2">Data</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>How does our server interact with stored data?</li>
 </ul>
 <p>Server</p>
 <p>Database</p>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
 </section>
 <section id="crud" class="level2">
 <h2 class="anchored" data-anchor-id="crud">CRUD</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>CRUD is an acronym for the 4 basic operation used to control data
 <ul>
@@ -194,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="crud---create" class="level2">
 <h2 class="anchored" data-anchor-id="crud---create">CRUD - Create</h2>
@@ -203,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>INSERT INTO user (?, ?)</li>
 <li>userCollection.insert_one({“email”:“…”, “username”: “…”})</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="crud---create-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---create-1">CRUD - Create</h2>
@@ -221,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="crud---create-2" class="level2">
 <h2 class="anchored" data-anchor-id="crud---create-2">CRUD - Create</h2>
@@ -241,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="crud---retrievelist" class="level2">
 <h2 class="anchored" data-anchor-id="crud---retrievelist">CRUD - Retrieve/List</h2>
@@ -256,7 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Technically, the acronym is CRUDL when list operations are allowed</li>
 </ul></li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="crud---retrieve" class="level2">
 <h2 class="anchored" data-anchor-id="crud---retrieve">CRUD - Retrieve</h2>
@@ -265,7 +252,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>SELECT * FROM user WHERE id=3</li>
 <li>userCollection.find_one({“id”:3})</li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="crud---update" class="level2">
 <h2 class="anchored" data-anchor-id="crud---update">CRUD - Update</h2>
@@ -274,7 +260,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>UPDATE user SET email=?, username=? WHERE id=5</li>
 <li>userCollection.update_one({“id”:5}, {“$set”: {“email”:“…”, “username”:“…”}})</li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="crud---update-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---update-1">CRUD - Update</h2>
@@ -287,7 +272,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="crud---delete" class="level2">
 <h2 class="anchored" data-anchor-id="crud---delete">CRUD - Delete</h2>
@@ -296,7 +280,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>DELETE FROM user WHERE id=2</li>
 <li>userCollection.delete_one({“id”:2})</li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="crud---delete-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---delete-1">CRUD - Delete</h2>
@@ -314,18 +297,15 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>For your HW, it’s fine to “hard delete”</li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="data-3" class="level2">
 <h2 class="anchored" data-anchor-id="data-3">Data</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>How do users interact with our server?</li>
 </ul>
 <p>User/Client</p>
 <p>Server</p>
 <p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 16 -->
 </section>
 <section id="http-requests" class="level2">
 <h2 class="anchored" data-anchor-id="http-requests">HTTP Requests</h2>
@@ -351,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Delete a resource (Delete)</li>
 </ul></li>
 </ul>
-<!-- PDF page 17 -->
 </section>
 <section id="http---post-v.-patch-v.-put" class="level2">
 <h2 class="anchored" data-anchor-id="http---post-v.-patch-v.-put">HTTP - POST v. PATCH v. PUT</h2>
@@ -373,7 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Must be idempotent</li>
 </ul></li>
 </ul>
-<!-- PDF page 18 -->
 </section>
 <section id="http---idempotent" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent">HTTP - Idempotent</h2>
@@ -388,7 +366,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>f(f(x)) == f(x)</li>
 </ul></li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="http---idempotent-1" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-1">HTTP - Idempotent</h2>
@@ -400,7 +377,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Deleting a record twice has the same effect on the API as deleting the record once</li>
 </ul>
-<!-- PDF page 20 -->
 </section>
 <section id="http---idempotent-2" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-2">HTTP - Idempotent</h2>
@@ -409,7 +385,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>PUT will replace the entire record with the data of the request</li>
 <li>A second identical PUT doesn’t change anything since the record was already replaced</li>
 </ul>
-<!-- PDF page 21 -->
 </section>
 <section id="http---idempotent-3" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-3">HTTP - Idempotent</h2>
@@ -418,7 +393,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Since the server is processing the data, there is no implied idempotent property</li>
 <li>eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids</li>
 </ul>
-<!-- PDF page 22 -->
 </section>
 <section id="http---idempotent-4" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-4">HTTP - Idempotent</h2>
@@ -428,7 +402,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>There is no expectation that they must be idempotent</li>
 <li>Eg. A record that tracks a counter or how many times it’s been updated</li>
 </ul>
-<!-- PDF page 23 -->
 </section>
 <section id="restful-api" class="level2">
 <h2 class="anchored" data-anchor-id="restful-api">RESTful API</h2>
@@ -440,7 +413,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Improve reliability and scalability</li>
 </ul></li>
 </ul>
-<!-- PDF page 24 -->
 </section>
 <section id="rest-and-crud" class="level2">
 <h2 class="anchored" data-anchor-id="rest-and-crud">REST and CRUD</h2>
@@ -452,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>DELETE =&gt; Delete</li>
 </ul>
 <p><img src="assets/slide24-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 25 -->
 </section>
 <section id="restful-api-1" class="level2">
 <h2 class="anchored" data-anchor-id="restful-api-1">RESTful API</h2>
@@ -468,11 +439,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>“Let’s refactor our API to make it more RESTful”</li>
 </ul></li>
 </ul>
-<!-- PDF page 26 -->
 </section>
 <section id="rest-constraints" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints">REST Constraints</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Client-Server architecture and statelessness
 <ul>
@@ -484,7 +453,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 27 -->
 </section>
 <section id="rest-constraints-1" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-1">REST Constraints</h2>
@@ -497,11 +465,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide27-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 28 -->
 </section>
 <section id="rest-constraints-2" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-2">REST Constraints</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Layered-System
 <ul>
@@ -512,7 +478,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 29 -->
 </section>
 <section id="rest-constraints-3" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-3">REST Constraints</h2>
@@ -526,11 +491,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide27-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 30 -->
 </section>
 <section id="data-4" class="level2">
 <h2 class="anchored" data-anchor-id="data-4">Data</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Users interact with our RESTful API</li>
 <li>API requests correlate to CRUD operations</li>

@@ -1,12 +1,9 @@
 ---
 title: "HTTP Request/Response"
-subtitle: "CSE312 — Web Development"
-author: "CSE312 Course Staff"
 lang: en
-description: "An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure."
-keywords: [HTTP, web development, request, response, CSE312]
 
-# Shown on the course schedule and as the closing "Further Reading" section.
+description: "An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure."
+
 reading-list:
   - url: "https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol"
     text: "HTTP (Wikipedia)"
@@ -15,32 +12,17 @@ reading-list:
   - url: "https://docs.python.org/3/library/socketserver.html"
     text: "Python TCP Server"
 
-# Typos corrected from the source slides, so check_fidelity.py can ignore the
-# original spellings. "discus" -> "discuss" (slide 3).
-fidelity-ok: [discus]
-
-# Show Quarto Slides + Readable Page links on the course schedule.
 released: true
 ---
 
-## HTTP Overview
-
-::: {.content-visible when-format="revealjs"}
-Use the arrow keys or the on-screen controls to move between slides.
-
-[Read this lecture as a single page](index.html)
-:::
-
-::: {.content-visible unless-format="revealjs"}
-[View this lecture as slides](slides.html)
-:::
+# HTTP
 
 ## Network Stack (A simplified view)
 
 - Enter HTTP
 
-::: {.diagram-description role="note" aria-label="Packet structure from outermost to innermost layer"}
-**Packet Structure**, from the outside in:
+::: {.diagram-description role="note" aria-label="Packet structure of an HTTP packet traveling through the Internet"}
+**Packet Structure**:
 
 1. IP Headers
 2. TCP Headers
@@ -69,7 +51,8 @@ Use the arrow keys or the on-screen controls to move between slides.
 - [Almost] Always uses TCP for reliable communication
   - Always in this course
 
-## HTTP
+
+## HTTP {.unnumbered .unlisted}
 
 - HTTP is a protocol used to access content from a web server
 - Protocol: An agreed upon set of rules
@@ -94,7 +77,6 @@ Use the arrow keys or the on-screen controls to move between slides.
 
 ## Loading a Web Site
 
-::: {.content-visible unless-format="revealjs"}
 ```{mermaid}
 sequenceDiagram
   participant Browser as Browser (Front End)
@@ -107,17 +89,7 @@ sequenceDiagram
 ```
 
 The Browser and the Web Server communicate across the Network (Internet).
-:::
 
-::: {.content-visible when-format="revealjs"}
-Front End: Browser. Back End: Web Server. They communicate across the Network (Internet).
-
-1. Request HTML
-2. Sends HTML
-3. Request Each url in HTML
-4. Sends Content
-5. Browser renders all content and runs JavaScript
-:::
 
 ## HTTP Request
 
@@ -130,7 +102,7 @@ Front End: Browser. Back End: Web Server. They communicate across the Network (I
   - HEAD: Request only the headers of a response
 - To start, we'll focus on GET and POST only
 
-## HTTP Request
+## HTTP Request {.unnumbered .unlisted}
 
 - HTTP GET Request
   - Used when requesting content from a server
@@ -143,7 +115,7 @@ Front End: Browser. Back End: Web Server. They communicate across the Network (I
   - When you submit a form, your browser [typically] makes a POST request
   - The contents of the form are sent in the body of the request
 
-## HTTP Request
+## HTTP Request {.unnumbered .unlisted}
 
 ```
 Protocol://host:port/path?query_string#fragment
@@ -158,7 +130,7 @@ Protocol://host:port/path?query_string#fragment
   - Defaults to 80/443 for HTTP/HTTPS respectively
 - Path - Specifies the specific resource being requested from the server
 
-## HTTP Request
+## HTTP Request {.unnumbered .unlisted}
 
 ```
 Protocol://host:port/path?query_string#fragment
@@ -175,7 +147,7 @@ Protocol://host:port/path?query_string#fragment
 - <https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition>
   - HTTPS Request for the URI Wikipedia page that will scroll to the definition of URI
 
-## HTTP
+## HTTP is Stateless
 
 - HTTP is a stateless protocol
 - Each request is handled in isolation even if a client just made another request
@@ -190,15 +162,15 @@ Protocol://host:port/path?query_string#fragment
 ## New Lines
 
 - A new line character in an HTTP request/response must be:
-  - "`\r\n`"
+  - `\r\n`
     - Carriage return (From the days of typewriters)
     - New line
   - In the documentation this is referred to as a CRLF
   - CRLF == Carriage Return Line Feed
 - Be aware of this while parsing
-- Use "`\r\n`" for new lines when preparing your responses
+- Use `\r\n` for new lines when preparing your responses
 
-## HTTP GET Request
+# HTTP GET Request
 
 ## GET Request
 
@@ -211,7 +183,7 @@ Connection: keep-alive
 Accept-Language: en-US,en
 ```
 
-## GET Request
+## GET Request {.unnumbered .unlisted}
 
 - More accurately, it will be this
 
@@ -238,7 +210,7 @@ Connection: keep-alive
 Accept-Language: en-US,en
 ```
 
-## The Request Line
+## The Request Line {.unnumbered .unlisted}
 
 - Parse the request line by looking for the 2 space characters
   - Separate the values and check the strings
@@ -246,23 +218,35 @@ Accept-Language: en-US,en
   - By convention, web servers look for index.html to serve at the root path
 - If the url contains a different path, it will appear in the request line
 
-Requesting <http://cse312.com/>
 
+:::: {.columns}
+::: {.column width="50%"}
+Requesting <http://cse312.com/>
+:::
+::: {.column width="50%"}
+Requesting <http://cse312.com/static_files/slides/1_2_HTTP.pdf>
+:::
+::::
+
+
+:::: {.columns}
+::: {.column width="50%"}
 ```http
 GET / HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
 ```
-
-Requesting <http://cse312.com/static_files/slides/1_2_HTTP.pdf>
-
+:::
+::: {.column width="50%"}
 ```http
 GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
 ```
+:::
+::::
 
 ## Headers
 
@@ -281,7 +265,7 @@ Connection: keep-alive
 Accept-Language: en-US,en
 ```
 
-## HTTP Response
+# HTTP Response
 
 ## Response
 
@@ -297,7 +281,7 @@ Content-Length: 5
 hello
 ```
 
-## Response
+## Response {.unnumbered .unlisted}
 
 - More accurately, this is the response
 

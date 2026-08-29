@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -133,10 +133,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="authentication" class="level2">
 <h2 class="anchored" data-anchor-id="authentication">Authentication</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="user-accounts" class="level2">
 <h2 class="anchored" data-anchor-id="user-accounts">User Accounts</h2>
@@ -147,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>For many features of a web app we want to remember a user across multiple visits and verify their identity</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="user-accounts-1" class="level2">
 <h2 class="anchored" data-anchor-id="user-accounts-1">User Accounts</h2>
@@ -164,11 +161,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Serve content specific to them</li>
 </ul></li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="user-accounts-2" class="level2">
 <h2 class="anchored" data-anchor-id="user-accounts-2">User Accounts</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Registration
 <ul>
@@ -182,7 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
 </section>
 <section id="authentication-1" class="level2">
 <h2 class="anchored" data-anchor-id="authentication-1">Authentication</h2>
@@ -197,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="authentication-2" class="level2">
 <h2 class="anchored" data-anchor-id="authentication-2">Authentication</h2>
@@ -206,7 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Not even the admins of a website should know the passwords of their users</li>
 <li>We do this by hashing the passwords and storing only the hashes</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="hash-function" class="level2">
 <h2 class="anchored" data-anchor-id="hash-function">Hash Function</h2>
@@ -221,7 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Hash functions might not add any security!</li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="cryptographic-hash-function" class="level2">
 <h2 class="anchored" data-anchor-id="cryptographic-hash-function">Cryptographic Hash Function</h2>
@@ -236,7 +227,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>password</p>
 <p>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</p>
-<!-- PDF page 9 -->
 </section>
 <section id="cryptographic-hash-function-1" class="level2">
 <h2 class="anchored" data-anchor-id="cryptographic-hash-function-1">Cryptographic Hash Function</h2>
@@ -251,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>https://www.xorbin.com/tools/sha256-hash-calculator</li>
 </ul></li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="sha256" class="level2">
 <h2 class="anchored" data-anchor-id="sha256">SHA256</h2>
@@ -262,7 +251,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>Ref: opencores.org</p>
 <p><img src="assets/slide10-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
 </section>
 <section id="brute-force-attack" class="level2">
 <h2 class="anchored" data-anchor-id="brute-force-attack">Brute Force Attack</h2>
@@ -278,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>If the hashes match, you know the password</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="entropy" class="level2">
 <h2 class="anchored" data-anchor-id="entropy">Entropy</h2>
@@ -299,7 +286,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Typically consider &gt;=80 bits of entropy to be secure</li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="dictionary-attack" class="level2">
 <h2 class="anchored" data-anchor-id="dictionary-attack">Dictionary Attack</h2>
@@ -314,7 +300,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Lists of common passwords are freely available</li>
 <li>Start with these</li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="rainbow-table" class="level2">
 <h2 class="anchored" data-anchor-id="rainbow-table">Rainbow Table</h2>
@@ -329,7 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Takes a long time to compute a large table</li>
 <li>Effectively trades space for time once the table is computed</li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="salting" class="level2">
 <h2 class="anchored" data-anchor-id="salting">Salting</h2>
@@ -342,7 +326,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>The salt does not add entropy since it is stored in the clear</li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="authentication-3" class="level2">
 <h2 class="anchored" data-anchor-id="authentication-3">Authentication</h2>
@@ -355,7 +338,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Store the username/salt/hash in your database</li>
 </ul></li>
 </ul>
-<!-- PDF page 17 -->
 </section>
 <section id="authentication-4" class="level2">
 <h2 class="anchored" data-anchor-id="authentication-4">Authentication</h2>
@@ -369,7 +351,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>If this hash does not match the stored hash, the user is not logged in</li>
 </ul></li>
 </ul>
-<!-- PDF page 18 -->
 </section>
 <section id="authentication-5" class="level2">
 <h2 class="anchored" data-anchor-id="authentication-5">Authentication</h2>
@@ -378,11 +359,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Available in many different languages</li>
 <li>It is highly recommended that you use this library in your assignment</li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="redirects" class="level2">
 <h2 class="anchored" data-anchor-id="redirects">Redirects</h2>
-<!-- PDF page 20 -->
 </section>
 <section id="redirects-1" class="level2">
 <h2 class="anchored" data-anchor-id="redirects-1">Redirects</h2>
@@ -398,7 +377,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path</code></pre>
-<!-- PDF page 21 -->
 </section>
 <section id="redirects-2" class="level2">
 <h2 class="anchored" data-anchor-id="redirects-2">Redirects</h2>
@@ -412,7 +390,6 @@ Location: /new-path</code></pre>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path</code></pre>
-<!-- PDF page 22 -->
 </section>
 <section id="redirects-3" class="level2">
 <h2 class="anchored" data-anchor-id="redirects-3">Redirects</h2>
@@ -428,7 +405,6 @@ Location: /new-path</code></pre>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path</code></pre>
-<!-- PDF page 23 -->
 </section>
 <section id="redirects-4" class="level2">
 <h2 class="anchored" data-anchor-id="redirects-4">Redirects</h2>
@@ -443,7 +419,6 @@ Location: /new-path</code></pre>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: https://google.com/</code></pre>
-<!-- PDF page 24 -->
 </section>
 <section id="redirects-5" class="level2">
 <h2 class="anchored" data-anchor-id="redirects-5">Redirects</h2>

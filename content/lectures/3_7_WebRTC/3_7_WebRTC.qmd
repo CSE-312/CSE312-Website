@@ -13,10 +13,8 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## WebRTC
 
-<!-- PDF page 2 -->
 ## WebSocket Review
 
 - Client sends an HTTP GET request to the WebSocket path
@@ -29,7 +27,6 @@ released: false
   - Upgrade: websocket
   - Sec-WebSocket-Accept: `<accept_response>`
 
-<!-- PDF page 3 -->
 ## WebSocket Review
 
 - The client generates a random "Sec-WebSocket-Key" for each new WebSocket connection
@@ -42,16 +39,13 @@ released: false
     - Highly unlikely this value would be returned by accident
   - Avoid caching
 
-<!-- PDF page 4 -->
 ## WebSocket Review
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 https://tools.ietf.org/html/rfc6455#section-5.2
 
 ![](assets/slide04-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 5 -->
 ## WebSocket Review
 
 - Payload Length
@@ -61,10 +55,8 @@ https://tools.ietf.org/html/rfc6455#section-5.2
   - Unmask the payload by XORing each byte of the payload with the matching mask byte
 - Do not mask frames send by your server
 
-<!-- PDF page 6 -->
 ## WebRTC
 
-<!-- PDF page 7 -->
 ## WebRTC - Overview
 
 - Web Real Time Communication
@@ -74,7 +66,6 @@ https://tools.ietf.org/html/rfc6455#section-5.2
 - Widely adopted by major browsers
   - Most of the WebRTC logic/code is built into your browser
 
-<!-- PDF page 8 -->
 ## WebRTC - Overview
 
 - WebRTC establishes a live streaming peer-to-peer connection
@@ -85,7 +76,6 @@ https://tools.ietf.org/html/rfc6455#section-5.2
 - Excellent for anyone concerned with privacy
   - Though your ISP can still see your data..
 
-<!-- PDF page 9 -->
 ## WebRTC - Overview
 
 - WebRTC establishes a live streaming peer-to-peer connection
@@ -94,7 +84,6 @@ https://tools.ietf.org/html/rfc6455#section-5.2
   - End-to-end delay is critical!
   - Even a small delay will result in clients talking over each other on a voice/video call
 
-<!-- PDF page 10 -->
 ## WebRTC - Overview
 
 - WebRTC establishes a live streaming peer-to-peer connection
@@ -107,7 +96,6 @@ https://tools.ietf.org/html/rfc6455#section-5.2
 
 Other protocols are used when delays are tolerable (ie. not real-time) like YouTube Live or Twitch
 
-<!-- PDF page 11 -->
 ## WebRTC - Overview
 
 - WebRTC establishes a live streaming peer-to-peer connection
@@ -119,7 +107,6 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Bytes are delivered as soon as they are received
   - Very close to using raw IP packets
 
-<!-- PDF page 12 -->
 ## WebRTC - Overview
 
 - Servers are still involved
@@ -129,7 +116,6 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Passes messages between clients to help them establish a peer-to-peer connection
   - Once the connection is established, the server's job is done (Unless you want to pass a disconnect message)
 
-<!-- PDF page 13 -->
 ## WebRTC - Overview
 
 - Servers are still involved
@@ -139,7 +125,6 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Clients behind a NAT or firewall may not know their public IP/port
   - Ask the STUN server then send this info to the signaling server
 
-<!-- PDF page 14 -->
 ## WebRTC - Overview
 
 - Servers are still involved

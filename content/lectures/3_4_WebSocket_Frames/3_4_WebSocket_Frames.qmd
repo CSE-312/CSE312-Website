@@ -13,25 +13,20 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## WebSockets
 
-<!-- PDF page 2 -->
 ## WebSockets
 
 - Last time we saw how to establish a WebSocket connection
 - Today, we'll parse and send messages over the socket
 
-<!-- PDF page 3 -->
 ## WebSocket Frame
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 https://tools.ietf.org/html/rfc6455#section-5.2
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 4 -->
 ## Protocols Sidenote
 
 - Many of the protocols used in the Internet define the order and meaning of bits that are sent
@@ -40,10 +35,8 @@ https://tools.ietf.org/html/rfc6455#section-5.2
   - Receiver interprets the bits following the same protocol to extract meaning from the bits
 - Protocols enable communication using only 1's and 0's
 
-<!-- PDF page 5 -->
 ## Protocols Sidenote
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - TCP/IP protocol headers shown here
 - Routers read the IP header following this protocol to know how to route a packet
@@ -51,7 +44,6 @@ https://tools.ietf.org/html/rfc6455#section-5.2
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## WebSocket Frame
 
 - The WebSocket protocol functions the same way
@@ -61,10 +53,8 @@ https://tools.ietf.org/html/rfc6455#section-5.2
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 7 -->
 ## Network Stack
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 IP
 
@@ -76,7 +66,6 @@ WebSocket
 
 ![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 8 -->
 ## Parsing Bits
 
 - We will have to read frames at the bit level
@@ -86,7 +75,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 9 -->
 ## Parsing Bits
 
 - Bit Example - To read the opcode:
@@ -97,7 +85,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## WebSocket Frame
 
 - FIN: The finish bit
@@ -106,7 +93,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## WebSocket Frame
 
 - RSV: Reserved bits
@@ -115,7 +101,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## WebSocket Frame
 
 - opcode: Operation code
@@ -124,7 +109,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## WebSocket Frame
 
 - MASK: Mask bit
@@ -134,7 +118,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 14 -->
 ## Frame Length
 
 - The next bits will represent payload length in bytes
@@ -143,7 +126,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 15 -->
 ## Frame Length
 
 - If the length is <126 bytes
@@ -152,7 +134,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 16 -->
 ## Frame Length
 
 - If the length is >=126 and <65536 bytes
@@ -161,7 +142,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 17 -->
 ## Frame Length
 
 - If the length is >=65536 bytes
@@ -172,7 +152,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 18 -->
 ## Frame Length
 
 - To read the frame length, read the 7 bit length
@@ -182,7 +161,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## Mask and Payload
 
 - After all the length bits:
@@ -191,7 +169,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## Mask and Payload
 
 - If there is a mask, read these 4 bytes
@@ -200,7 +177,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 21 -->
 ## Mask and Payload
 
 - Each 4 bytes of the payload has been XORed with the mask by the client
@@ -210,7 +186,6 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 22 -->
 ## XOR Example
 
 - If 4 bytes of the message are:
@@ -222,17 +197,14 @@ WebSocket
 - When we receive these bits and XOR it with the mask again we get the original message bits:
   - 01001001_01000011_01010101_00100001
 
-<!-- PDF page 23 -->
 ## Mask and Payload
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - Once the payload is XORed with the mask 4 bytes at time we get the entire message
 - Then process the message
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 24 -->
 ## Sending Frames
 
 - To send a message to a client:
@@ -242,17 +214,14 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 25 -->
 ## Sending Frames
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - Do not use a mask when sending frames to a client
   - No caching concerns on server to client frames
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 26 -->
 ## Sending Frames
 
 - Example: For our purposes in the HW
@@ -261,20 +230,16 @@ WebSocket
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 27 -->
 ## Sending Frames
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - Check the length of your payload to determine how many bits are needed for the length
 - Follow the same format for payload length as the received messages
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 28 -->
 ## Sending Frames
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - MASK bit is 0 and there are not mask bytes
   - After payload length, immediately add the bytes of the payload

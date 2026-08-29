@@ -13,10 +13,8 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Buffers
 
-<!-- PDF page 2 -->
 ## TCP Reminder
 
 - TCP creates a persistent connection
@@ -25,7 +23,6 @@ released: false
 - With small GET requests
   - Read from the TCP socket once to read the entire request
 
-<!-- PDF page 3 -->
 ## Buffering File Uploads
 
 - To read an HTTP request:
@@ -56,7 +53,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 4 -->
 ## Buffering File Uploads
 
 - Call the receive method with an int
@@ -87,7 +83,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 5 -->
 ## Buffering File Uploads
 
 - What if we receive a fairly large POST request?
@@ -118,7 +113,6 @@ Content-Type: image/jpeg
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 6 -->
 ## Buffering File Uploads
 
 - What if a very large file is uploaded?
@@ -148,7 +142,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 7 -->
 ## Buffering File Uploads
 
 - When we call receive in this example, we read at most 2048 bytes from the connection
@@ -179,7 +172,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 8 -->
 ## Buffering File Uploads
 
 - We Must read from the socket multiple times!
@@ -209,10 +201,8 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 9 -->
 ## Buffers
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - TCP socket libraries will use buffers
 - No matter your language/library you will have a method/ function that reads bytes from the socket
@@ -227,10 +217,8 @@ Server
 
 ![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## Buffer Questions
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - What happens when the user has a lot of data to send?
 - What if the user has a slow connection?
@@ -246,10 +234,8 @@ Server
 
 ![](assets/slide10-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## Buffer Answer
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - The socket notifies your code when there is data to read - even if it's not the entire request
 - The socket server will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
@@ -263,10 +249,8 @@ Server
 
 ![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## Buffers
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Now that we're handling file uploads, we must be aware of these buffers
 - The server will need data that persists across multiple calls that read bytes from a socket
@@ -281,7 +265,6 @@ Server
 
 ![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## HTTP Buffers
 
 - When receiving a large HTTP request:
@@ -291,7 +274,6 @@ Server
   - Keep reading bytes from the stream until you have read Content-Length after the first "`\r\n\r\n`"
   - Process the request
 
-<!-- PDF page 14 -->
 ## Assumptions
 
 - Assumptions you may make on the Homework:
@@ -303,11 +285,9 @@ Server
 
 received_data = self.request.recv(1048576)
 
-<!-- PDF page 15 -->
 ## Buffers
 
 - Remember that the Content-Length does not include the bytes for the headers
   - ie. The total number of bytes read for one request will be larger than the Content-Length
 
-<!-- PDF page 16 -->
 ## Demos

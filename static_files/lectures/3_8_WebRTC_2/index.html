@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -133,14 +133,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="webrtc" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc">WebRTC</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="webrtc-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc-1">WebRTC</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Need to establish a real-time streaming peer-to-peer connection</li>
 <li>But how?
@@ -150,11 +147,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide02-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 3 -->
 </section>
 <section id="webrtc---connecting" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting">WebRTC - Connecting</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>One peer needs to get an offer to the other peer</li>
 <li>This is an offer to establish a connection that contains:
@@ -165,11 +160,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>webRTC-offer</p>
 <p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 4 -->
 </section>
 <section id="webrtc---connecting-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting-1">WebRTC - Connecting</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The peer responds with an answer</li>
 <li>The answer contains their audio/visual data</li>
@@ -179,11 +172,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>webRTC-offer</p>
 <p>webRTC-answer</p>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
 </section>
 <section id="webrtc-answer" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc-answer">webRTC-answer?</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>WebRTC - Connecting</p>
 <ul>
 <li>But there’s a problem</li>
@@ -191,11 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>webRTC-offer</p>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="webrtc-answer-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc-answer-1">webRTC-answer?</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>WebRTC - Connecting</p>
 <ul>
 <li>For usual web traffic with a server:
@@ -207,11 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>webRTC-offer</p>
 <p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
 </section>
 <section id="webrtc-answer-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc-answer-2">webRTC-answer?</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>WebRTC - Connecting</p>
 <ul>
 <li>For peer-to-peer traffic:
@@ -222,11 +209,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p>webRTC-offer</p>
 <p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 8 -->
 </section>
 <section id="webrtc---signalling-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server">WebRTC - Signalling Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Offer and answer are sent through a signaling server
 <ul>
@@ -241,11 +226,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>webRTC-answer</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 9 -->
 </section>
 <section id="webrtc---signalling-server-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-1">WebRTC - Signalling Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>We need a method to send these messages</li>
 <li>We’ll need a way for the server to be able to send messages to each client in real-time</li>
@@ -256,11 +239,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>webRTC-answer</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="webrtc---signalling-server-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-2">WebRTC - Signalling Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>We need a method to send these messages</li>
 <li>We’ll need a way for the server to be able to send messages to each client in real-time</li>
@@ -272,11 +253,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>webRTC-answer</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
 </section>
 <section id="webrtc---signalling-server-3" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-3">WebRTC - Signalling Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When your server receives a WebSocket frame containing an offer or answer
 <ul>
@@ -289,11 +268,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>webRTC-answer</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="webrtc---nats" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats">WebRTC - NATs</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>We have another issue..</li>
 <li>How do we know the IP address and port for each peer?</li>
@@ -310,11 +287,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>NAT</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="webrtc---nats-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats-1">WebRTC - NATs</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Devices are commonly “hidden” behind NAT routers
 <ul>
@@ -338,11 +313,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>NAT</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide13-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 14 -->
 </section>
 <section id="webrtc---nats-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats-2">WebRTC - NATs</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>With a NAT:
 <ul>
@@ -363,11 +336,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>NAT</p>
 <p>Signalling Server</p>
 <p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 15 -->
 </section>
 <section id="webrtc---stun-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---stun-server">WebRTC - STUN Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Solution: Use a STUN (Session Traversal Utilities for NAT) Server</li>
 <li>Each peer connects to a STUN server and asks for their public IP/port</li>
@@ -379,11 +350,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 16 -->
 </section>
 <section id="webrtc---ice-candidate" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---ice-candidate">WebRTC - ICE Candidate</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Each peer sends their public IP/port, and connection information, in an ICE (Interactive Connectivity Establishment) candidate message</li>
 <li>Whenever your signaling server receives an ICE candidate, forward it to the other peer</li>
@@ -396,11 +365,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 17 -->
 </section>
 <section id="webrtc---ice-candidate-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---ice-candidate-1">WebRTC - ICE Candidate</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Candidate contains:
 <ul>
@@ -419,11 +386,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 18 -->
 </section>
 <section id="webrtc---connection" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connection">WebRTC - Connection</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>And now we can establish a peer-to-peer connection!</li>
 </ul>
@@ -439,11 +404,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 19 -->
 </section>
 <section id="webrtc---summary" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary">WebRTC - Summary</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>One peer sends an offer to the other</li>
 <li>Other peer responds with an answer</li>
@@ -462,11 +425,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide19-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 20 -->
 </section>
 <section id="webrtc---summary-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary-1">WebRTC - Summary</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Once the connection is established</li>
 <li>The servers step aside and the clients stream directly to each other
@@ -479,11 +440,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide20-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 21 -->
 </section>
 <section id="webrtc---summary-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary-2">WebRTC - Summary</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Your role in all of this?
 <ul>
@@ -506,11 +465,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 22 -->
 </section>
 <section id="webrtc---restrictions" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---restrictions">WebRTC - Restrictions</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The browser will not allow WebRTC connections when connected to a site using HTTP (as opposed to HTTPS)</li>
 <li>Must have an encrypted connection to use WebRTC
@@ -530,11 +487,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>STUN Server</p>
 <p>STUN Server</p>
 <p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 23 -->
 </section>
 <section id="webrtc---restrictions-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---restrictions-1">WebRTC - Restrictions</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Sometimes a peer-to-peer connection cannot even be established
 <ul>
@@ -544,11 +499,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 24 -->
 </section>
 <section id="webrtc---turn-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---turn-server">WebRTC - TURN Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>In cases where peer-to-peer is blocked:
 <ul>
@@ -560,11 +513,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Streaming Audio/Video</p>
 <p>TURN Server</p>
 <p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 25 -->
 </section>
 <section id="webrtc---turn-server-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---turn-server-1">WebRTC - TURN Server</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>If you ask me… using a TURN server defeats the purpose of using a peer-to-peer technology</li>
 <li>… Unless you run your own TURN server!</li>

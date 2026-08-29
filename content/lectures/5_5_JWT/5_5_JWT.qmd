@@ -16,10 +16,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## JSON Web Tokens (JWTs)
 
-<!-- PDF page 2 -->
 ## Why JWT?
 
 - We'll use JWTs for persistent authentication
@@ -27,10 +25,8 @@ released: false
 - Why do we need a new mechanism?
 - What's wrong with auth tokens?
 
-<!-- PDF page 3 -->
 ## Recall Auth Tokens
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Server issues an auth token on login
 - Store token in database on login
@@ -54,10 +50,8 @@ Server
 
 ![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 4 -->
 ## Recall Auth Tokens
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - The token is opaque
   - Random meaningless bytes
@@ -81,10 +75,8 @@ Server
 
 ![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 5 -->
 ## Recall Auth Tokens
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - When your app gets HUGE
   - Make it distributed
@@ -110,10 +102,8 @@ App Server
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## Recall Auth Tokens
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - App server needs to verify the auth token
 
@@ -137,7 +127,6 @@ App Server
 
 ![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 7 -->
 ## Auth Tokens - Distributed
 
 - App server needs to verify the auth token
@@ -148,7 +137,6 @@ App Server
     - DB must support multiple servers
     - App must connect to the shared DB on every authenticated request
 
-<!-- PDF page 8 -->
 ## Auth Tokens - Distributed
 
 - App server needs to verify the auth token
@@ -159,10 +147,8 @@ App Server
     - Every authenticated requests requires the app server, auth server, and the auth DB
     - Might as well have a monolith app (It's effectively not distributed)
 
-<!-- PDF page 9 -->
 ## Introducing JWTs
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Instead of auth token
   - Issue a self-contained JWT
@@ -185,7 +171,6 @@ App Server
 
 ![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## JWT
 
 - JWTs are tokens that are designed to be self- contained
@@ -195,7 +180,6 @@ App Server
 - App server receives a request containing a JWT
   - Verify the token locally
 
-<!-- PDF page 11 -->
 ## JWT
 
 - JSON Web Tokens
@@ -209,7 +193,6 @@ App Server
   - Typically used for authentication/authorization
   - Can be used to solve any problem that wants tokens
 
-<!-- PDF page 12 -->
 ## JWT - Structure
 
 - A JWT is composed of three parts
@@ -221,7 +204,6 @@ App Server
 - Signature
   - The signature of the token using the algorithm specified in the headers
 
-<!-- PDF page 13 -->
 ## JWT - Structure
 
 - Each of the three parts are Base64URL encoded
@@ -235,12 +217,10 @@ App Server
   - Omit the padding
   - This avoids all url reserved characters
 
-<!-- PDF page 14 -->
 ## JWT - Structure
 
 - Three Base64URL-encoded parts are separated by '.'
 - eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0...
-- 
 - This token looks opaque
   - It is not!!
 - Base64URL is not a hashing algorithm!
@@ -248,7 +228,6 @@ App Server
 - Your JWTs are effectively plain-text
 - This token has the claim: {"username": "Alice"}
 
-<!-- PDF page 15 -->
 ## JWT - Usage
 
 - JWTs are effectively plain text
@@ -258,7 +237,6 @@ App Server
 - Need to verify that the auth server issued the token
   - Sign it!
 
-<!-- PDF page 16 -->
 ## JWT - Verification
 
 - The issuer (Auth server) will cryptographically sign the JWTs it issues
@@ -266,7 +244,6 @@ App Server
 - Attackers cannot forge the signatures
 - eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc
 
-<!-- PDF page 17 -->
 ## JWT - Verification
 
 - Public/Private key
@@ -277,7 +254,6 @@ App Server
 - App server has the auth servers public key
   - Use the public key to verify the signature
 
-<!-- PDF page 18 -->
 ## JWT - Verification
 
 - Public/Private key
@@ -285,7 +261,6 @@ App Server
   - Attacks cannot forge the signature
 - If the signature is not valid, do not accept the token
 
-<!-- PDF page 19 -->
 ## JWT - Verification
 
 - Shared Secret
@@ -297,7 +272,6 @@ App Server
     - Not wise if you're issuing tokens that are verified by 3rd party servers
   - Not allowed on HW5..
 
-<!-- PDF page 20 -->
 ## JWT - Encryption
 
 - JWTs can optionally be encrypted to obfuscate the headers and claims
@@ -307,10 +281,8 @@ App Server
 
 ![](assets/slide20-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 21 -->
 ## • When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Recall OAuth
 

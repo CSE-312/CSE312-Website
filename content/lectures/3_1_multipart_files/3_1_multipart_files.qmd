@@ -16,10 +16,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Multipart Parsing and File Uploads
 
-<!-- PDF page 2 -->
 ## HTML Forms - POST
 
 - Last time we saw forms:
@@ -51,7 +49,6 @@ commenter=Jesse&comment=Good+morning%21
 </form>
 ```
 
-<!-- PDF page 3 -->
 ## HTML Forms - POST
 
 - You can specify the encoding type for form submissions
@@ -83,7 +80,6 @@ commenter=Jesse&comment=Good+morning%21
 </form>
 ```
 
-<!-- PDF page 4 -->
 ## HTML Forms - POST
 
 - url encoding cannot be used to upload files from a form!
@@ -117,7 +113,6 @@ commenter=Jesse&comment=Good+morning%21
 </form>
 ```
 
-<!-- PDF page 5 -->
 ## HTML Forms - POST
 
 - Specify multipart encoding to receive each input separately in the body of the request
@@ -141,7 +136,6 @@ commenter=Jesse&comment=Good+morning%21
 </form>
 ```
 
-<!-- PDF page 6 -->
 ## HTML Forms - POST
 
 - Our server receives a multipart form request in this format
@@ -168,7 +162,6 @@ Good morning!
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4--
 ```
 
-<!-- PDF page 7 -->
 ## HTML Forms - POST
 
 - Content-Type specifies a string that separates each input
@@ -198,7 +191,6 @@ Good morning!
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4--
 ```
 
-<!-- PDF page 8 -->
 ## File Uploads
 
 - We must use multipart/form-data to upload files
@@ -225,7 +217,6 @@ Good morning!
 </form>
 ```
 
-<!-- PDF page 9 -->
 ## File Uploads
 
 - When our server receives the file, it will appear in one of the parts of the multi-part POST request
@@ -250,7 +241,6 @@ Content-Type: image/png
 ------WebKitFormBoundarygVWEOc5JIyJ1qthO--
 ```
 
-<!-- PDF page 10 -->
 ## File Uploads
 
 - When receiving the bytes of a binary file, do not apply any encodings
@@ -259,7 +249,6 @@ Content-Type: image/png
   - The files will be encoded with algorithms other than UTF-8 (Ex. png, jpeg, mp4)
 - Attempting to treat a binary file as a UTF-8 String will corrupt the data!
 
-<!-- PDF page 11 -->
 ## Parsing Multipart
 
 - Your goal is to parse HTTP POST requests in this format
@@ -289,7 +278,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 12 -->
 ## Parsing Multipart
 
 - Identify the request using the method and path
@@ -319,7 +307,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 13 -->
 ## Parsing Multipart
 
 - Parse the headers and read the length of the content
@@ -349,7 +336,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 14 -->
 ## Parsing Multipart
 
 - Refer to your content length and read that many bytes from the body of the request
@@ -378,7 +364,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 15 -->
 ## Parsing Multipart
 
 - Read the type of the content to get the boundary
@@ -408,7 +393,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 16 -->
 ## Parsing Multipart
 
 - The body will consist of multiple parts, each separated by the boundary
@@ -438,7 +422,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 17 -->
 ## Parsing Multipart
 
 - The parts are separated by the boundary with two leading dash characters "--"
@@ -469,7 +452,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 18 -->
 ## Parsing Multipart
 
 - The end of the last boundary is marked by the full boundary plus two trailing "-" characters
@@ -499,7 +481,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 19 -->
 ## Parsing Multipart
 
 - Each part of the request will follow a similar format to HTTP requests:
@@ -530,7 +511,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 20 -->
 ## Parsing Multipart
 
 - The headers should include a Content-Disposition
@@ -561,7 +541,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 21 -->
 ## Parsing Multipart
 
 - Content-Type is optional for parts
@@ -590,7 +569,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 22 -->
 ## Parsing Multipart
 
 - Content-Length is not included in the parts
@@ -620,7 +598,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 23 -->
 ## Parsing Multipart
 
 - When reading the bytes of a [non-text] file
@@ -650,7 +627,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 24 -->
 ## Parsing Multipart
 
 - Parse in bytes!
@@ -680,7 +656,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 25 -->
 ## Parsing Multipart
 
 - You receive the request as an array of bytes
@@ -710,7 +685,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 26 -->
 ## Parsing Multipart
 
 - Example: To extract the headers you would find the first instance of the "`\r\n\r\n`" String and read everything before it
@@ -739,7 +713,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 27 -->
 ## Parsing Multipart
 
 - When you have a sub-array containing only the headers
@@ -768,7 +741,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 28 -->
 ## Parsing Multipart
 
 - Use a similar approach with the boundary
@@ -798,7 +770,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 29 -->
 ## Parsing Multipart
 
 - Repeat for each part
@@ -827,7 +798,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 30 -->
 ## Parsing Multipart
 
 - If the headers for a part specify a non-text encoding
@@ -857,7 +827,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 31 -->
 ## Parsing Multipart
 
 - Once you read the raw bytes of the file/image
@@ -887,7 +856,6 @@ Content-Type: image/png
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
 
-<!-- PDF page 32 -->
 ## File Uploads
 
 - To save a file on your server:
@@ -898,7 +866,6 @@ Content-Type: image/png
 - Store the filename in your database
   - When you pull a record from the database, it will tell you which filename to use and that file can be read from disk
 
-<!-- PDF page 33 -->
 ## Image Uploads
 
 - To host user supplied images on your site:
@@ -906,10 +873,8 @@ Content-Type: image/png
 - The browser will read the src attribute and send a request for the file path
 - Host the bytes of the file at that path
 
-<!-- PDF page 34 -->
 ## We Now Support File Sharing!
 
-<!-- PDF page 35 -->
 ## Hosting Files
 
 - We can make all uploaded files available to our users
@@ -920,7 +885,6 @@ Content-Type: image/png
   - Open that file and send the bytes
   - Can send a 404 if the file doesn't exist on the server
 
-<!-- PDF page 36 -->
 ## Hosting Files - Security
 
 - You'll have code that effectively does this:
@@ -929,7 +893,6 @@ Content-Type: image/png
   - Read the bytes of the file
   - Send those bytes to the user in your HTTP response
 
-<!-- PDF page 37 -->
 ## Hosting Files - Security
 
 - You'll have code that effectively does this:
@@ -940,7 +903,6 @@ Content-Type: image/png
 - ... and someone makes the following request:
   - GET /public/image/~/.ssh/id_rsa
 
-<!-- PDF page 38 -->
 ## Hosting Files - Security
 
 - GET /image/~/.ssh/id_rsa
@@ -949,7 +911,6 @@ Content-Type: image/png
 - Add logic to ensure users can't access files outside the public directories
   - Removing all "/" characters will suffice for the HW
 
-<!-- PDF page 39 -->
 ## Hosting Files - Security
 
 - GET /image/~/.ssh/id_rsa
@@ -958,7 +919,6 @@ Content-Type: image/png
   - Maintain a list of all valid files that can be requested
   - return a 400-level response if any other file is requested
 
-<!-- PDF page 40 -->
 ## Hosting Files - Security
 
 - Testing for this vulnerability
@@ -972,7 +932,6 @@ curl --path-as-is http://localhost:8080/public/image/../../server.py
 - The browser and curl will simplify paths by default and chance the path to "/ server.py"
 - --path-as-is prevents the path simplification
 
-<!-- PDF page 41 -->
 ## Hosting Files - Security
 
 - Don't forget to disable MIME type sniffing

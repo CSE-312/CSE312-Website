@@ -9,8 +9,6 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
-  <meta name="author" content="CSE312 Course Staff">
-  <meta name="keywords" content="HTTP, web development, request, response, CSE312">
   <title>CSE312 Lectures – HTTP Request/Response</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -97,7 +95,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -113,7 +111,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -215,29 +212,23 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">HTTP Request/Response</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-CSE312 Course Staff 
-</div>
-</div>
 </div>
 
 </section>
-<section id="http-overview" class="slide level2">
-<h2>HTTP Overview</h2>
-<p>Use the arrow keys or the on-screen controls to move between slides.</p>
-<p><a href="index.html">Read this lecture as a single page</a></p>
+<section>
+<section id="http" class="title-slide slide level1 center">
+<h1>HTTP</h1>
+
 </section>
-<section id="network-stack-a-simplified-view" class="slide level2 scrollable">
+<section id="network-stack-a-simplified-view" class="slide level2">
 <h2>Network Stack (A simplified view)</h2>
 <ul>
 <li>Enter HTTP</li>
 </ul>
-<div class="diagram-description" role="note" aria-label="Packet structure from outermost to innermost layer">
-<p><strong>Packet Structure</strong>, from the outside in:</p>
+<div class="diagram-description" role="note" aria-label="Packet structure of an HTTP packet traveling through the Internet">
+<p><strong>Packet Structure</strong>:</p>
 <ol type="1">
 <li>IP Headers</li>
 <li>TCP Headers</li>
@@ -281,7 +272,7 @@ CSE312 Course Staff
 </ul></li>
 </ul>
 </section>
-<section id="http" class="slide level2">
+<section id="http-1" class="slide level2 unnumbered unlisted">
 <h2>HTTP</h2>
 <ul>
 <li>HTTP is a protocol used to access content from a web server</li>
@@ -320,16 +311,28 @@ CSE312 Course Staff
 </ul></li>
 </ul>
 </section>
-<section id="loading-a-web-site" class="slide level2 scrollable">
+<section id="loading-a-web-site" class="slide level2">
 <h2>Loading a Web Site</h2>
-<p>Front End: Browser. Back End: Web Server. They communicate across the Network (Internet).</p>
-<ol type="1">
-<li>Request HTML</li>
-<li>Sends HTML</li>
-<li>Request Each url in HTML</li>
-<li>Sends Content</li>
-<li>Browser renders all content and runs JavaScript</li>
-</ol>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+  participant Browser as Browser (Front End)
+  participant Server as Web Server (Back End)
+  Browser-&gt;&gt;Server: 1. Request HTML
+  Server-&gt;&gt;Browser: 2. Sends HTML
+  Browser-&gt;&gt;Server: 3. Request Each url in HTML
+  Server-&gt;&gt;Browser: 4. Sends Content
+  Note over Browser: 5. Browser renders all content and runs JavaScript
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The Browser and the Web Server communicate across the Network (Internet).</p>
 </section>
 <section id="http-request" class="slide level2">
 <h2>HTTP Request</h2>
@@ -346,7 +349,7 @@ CSE312 Course Staff
 <li>To start, we’ll focus on GET and POST only</li>
 </ul>
 </section>
-<section id="http-request-1" class="slide level2">
+<section id="http-request-1" class="slide level2 unnumbered unlisted">
 <h2>HTTP Request</h2>
 <ul>
 <li>HTTP GET Request
@@ -365,7 +368,7 @@ CSE312 Course Staff
 </ul></li>
 </ul>
 </section>
-<section id="http-request-2" class="slide level2">
+<section id="http-request-2" class="slide level2 unnumbered unlisted">
 <h2>HTTP Request</h2>
 <pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
 <ul>
@@ -385,7 +388,7 @@ CSE312 Course Staff
 <li>Path - Specifies the specific resource being requested from the server</li>
 </ul>
 </section>
-<section id="http-request-3" class="slide level2">
+<section id="http-request-3" class="slide level2 unnumbered unlisted">
 <h2>HTTP Request</h2>
 <pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
 <ul>
@@ -409,8 +412,8 @@ CSE312 Course Staff
 </ul></li>
 </ul>
 </section>
-<section id="http-1" class="slide level2">
-<h2>HTTP</h2>
+<section id="http-is-stateless" class="slide level2">
+<h2>HTTP is Stateless</h2>
 <ul>
 <li>HTTP is a stateless protocol</li>
 <li>Each request is handled in isolation even if a client just made another request</li>
@@ -420,15 +423,15 @@ CSE312 Course Staff
 </ul></li>
 <li>When handling an HTTP request, do not have to care who sent it</li>
 </ul>
-<p><img data-src="assets/slide12-1.png" alt="xkcd comic 869, &quot;Server Attention Span&quot;: a person speaks to a server, which replies to every message with an identical, indifferent response, illustrating that the server keeps no memory of previous requests."></p>
-<p><a href="https://xkcd.com/869/" class="uri">https://xkcd.com/869/</a></p>
+
+<img data-src="assets/slide12-1.png" alt="xkcd comic 869, &quot;Server Attention Span&quot;: a person speaks to a server, which replies to every message with an identical, indifferent response, illustrating that the server keeps no memory of previous requests." class="r-stretch"><p><a href="https://xkcd.com/869/" class="uri">https://xkcd.com/869/</a></p>
 </section>
 <section id="new-lines" class="slide level2">
 <h2>New Lines</h2>
 <ul>
 <li>A new line character in an HTTP request/response must be:
 <ul>
-<li>“<code>\r\n</code>”
+<li><code>\r\n</code>
 <ul>
 <li>Carriage return (From the days of typewriters)</li>
 <li>New line</li>
@@ -437,11 +440,13 @@ CSE312 Course Staff
 <li>CRLF == Carriage Return Line Feed</li>
 </ul></li>
 <li>Be aware of this while parsing</li>
-<li>Use “<code>\r\n</code>” for new lines when preparing your responses</li>
+<li>Use <code>\r\n</code> for new lines when preparing your responses</li>
 </ul>
-</section>
-<section id="http-get-request" class="slide level2">
-<h2>HTTP GET Request</h2>
+</section></section>
+<section>
+<section id="http-get-request" class="title-slide slide level1 center">
+<h1>HTTP GET Request</h1>
+
 </section>
 <section id="get-request" class="slide level2">
 <h2>GET Request</h2>
@@ -453,7 +458,7 @@ CSE312 Course Staff
 <span id="cb3-3"><a></a>Connection: keep-alive</span>
 <span id="cb3-4"><a></a>Accept-Language: en-US,en</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="get-request-1" class="slide level2">
+<section id="get-request-1" class="slide level2 unnumbered unlisted">
 <h2>GET Request</h2>
 <ul>
 <li>More accurately, it will be this</li>
@@ -483,7 +488,7 @@ CSE312 Course Staff
 <span id="cb5-3"><a></a>Connection: keep-alive</span>
 <span id="cb5-4"><a></a>Accept-Language: en-US,en</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="the-request-line-1" class="slide level2">
+<section id="the-request-line-1" class="slide level2 unnumbered unlisted">
 <h2>The Request Line</h2>
 <ul>
 <li>Parse the request line by looking for the 2 space characters
@@ -496,16 +501,24 @@ CSE312 Course Staff
 </ul></li>
 <li>If the url contains a different path, it will appear in the request line</li>
 </ul>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>Requesting <a href="http://cse312.com/" class="uri">http://cse312.com/</a></p>
+</div><div class="column" style="width:50%;">
+<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
+</div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>GET / HTTP/1.1</span>
 <span id="cb6-2"><a></a>Host: cse312.com</span>
 <span id="cb6-3"><a></a>Connection: keep-alive</span>
 <span id="cb6-4"><a></a>Accept-Language: en-US,en</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
+</div><div class="column" style="width:50%;">
 <div class="sourceCode" id="cb7"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a></a>GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1</span>
 <span id="cb7-2"><a></a>Host: cse312.com</span>
 <span id="cb7-3"><a></a>Connection: keep-alive</span>
 <span id="cb7-4"><a></a>Accept-Language: en-US,en</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 </section>
 <section id="headers" class="slide level2">
 <h2>Headers</h2>
@@ -526,9 +539,11 @@ CSE312 Course Staff
 <span id="cb8-2"><a></a>Host: cse312.com</span>
 <span id="cb8-3"><a></a>Connection: keep-alive</span>
 <span id="cb8-4"><a></a>Accept-Language: en-US,en</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="http-response" class="slide level2">
-<h2>HTTP Response</h2>
+</section></section>
+<section>
+<section id="http-response" class="title-slide slide level1 center">
+<h1>HTTP Response</h1>
+
 </section>
 <section id="response" class="slide level2">
 <h2>Response</h2>
@@ -543,7 +558,7 @@ CSE312 Course Staff
 <span id="cb9-4"><a></a></span>
 <span id="cb9-5"><a></a>hello</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="response-1" class="slide level2">
+<section id="response-1" class="slide level2 unnumbered unlisted">
 <h2>Response</h2>
 <ul>
 <li>More accurately, this is the response</li>
@@ -662,7 +677,7 @@ CSE312 Course Staff
 <li><a href="https://tools.ietf.org/html/rfc2616">RFC2616 - HTTP 1.1</a></li>
 <li><a href="https://docs.python.org/3/library/socketserver.html">Python TCP Server</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -808,7 +823,7 @@ CSE312 Course Staff
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -823,7 +838,7 @@ CSE312 Course Staff
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

@@ -16,17 +16,14 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Authentication
 
-<!-- PDF page 2 -->
 ## User Accounts
 
 - Everything we've built so far treats every user the same and delivers the same content to all visitors
   - Only exception was setting a cookie to count visits
 - For many features of a web app we want to remember a user across multiple visits and verify their identity
 
-<!-- PDF page 3 -->
 ## User Accounts
 
 - Registration
@@ -37,10 +34,8 @@ released: false
   - Log them into your app
   - Serve content specific to them
 
-<!-- PDF page 4 -->
 ## User Accounts
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Registration
   - Can be a simple web form
@@ -51,7 +46,6 @@ released: false
 
 ![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 5 -->
 ## Authentication
 
 - On the server
@@ -60,14 +54,12 @@ released: false
   - What if this database is compromised?
     - Perhaps by a SQL injection attack
 
-<!-- PDF page 6 -->
 ## Authentication
 
 - NEVER store passwords as plain text
 - Not even the admins of a website should know the passwords of their users
 - We do this by hashing the passwords and storing only the hashes
 
-<!-- PDF page 7 -->
 ## Hash Function
 
 - A function that converts one value into another with certain properties
@@ -76,7 +68,6 @@ released: false
   - Among other applications
 - Hash functions might not add any security!
 
-<!-- PDF page 8 -->
 ## Cryptographic Hash Function
 
 - A hash function that is meant for secure purposes
@@ -89,16 +80,14 @@ password
 
 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 
-<!-- PDF page 9 -->
 ## Cryptographic Hash Function
 
 - Only a cryptographic hash of your password is stored
 - By only storing the hash of a password:
-  - Even the admins of a site can’t read your password!
+  - Even the admins of a site can't read your password!
 - SHA256 is a commonly used cryptographic hash function
   - https://www.xorbin.com/tools/sha256-hash-calculator
 
-<!-- PDF page 10 -->
 ## SHA256
 
 - Runs input through multiple rounds of bit-level manipulation
@@ -109,7 +98,6 @@ Ref: opencores.org
 
 ![](assets/slide10-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## Brute Force Attack
 
 - Storing SHA256 hashes is not always secure!
@@ -119,20 +107,18 @@ Ref: opencores.org
   - Hash every possible password
   - If the hashes match, you know the password
 
-<!-- PDF page 12 -->
 ## Entropy
 
 - Entropy is a measure of uncertainty
   - Number of guesses required to guarantee a hash is matched
 - Examples:
   - If you know the plain text is a single lowercase letter the entropy is 26
-  - If it’s two lowercase letters, the entropy is 26^2 = 676
-  - If it’s two letters that can be upper or lower case, 52^2 = 2704
-- Tend to measure the “bits of entropy”
+  - If it's two lowercase letters, the entropy is 26^2 = 676
+  - If it's two letters that can be upper or lower case, 52^2 = 2704
+- Tend to measure the "bits of entropy"
   - The log base 2 of these values
 - Typically consider >=80 bits of entropy to be secure
 
-<!-- PDF page 13 -->
 ## Dictionary Attack
 
 -  More advanced version of the brute force attack
@@ -145,7 +131,6 @@ Ref: opencores.org
 -  Lists of common passwords are freely available
   -  Start with these
 
-<!-- PDF page 14 -->
 ## Rainbow Table
 
 - A table containing the start and end of "chains" of hashes
@@ -156,7 +141,6 @@ Ref: opencores.org
 - Takes a long time to compute a large table
 - Effectively trades space for time once the table is computed
 
-<!-- PDF page 15 -->
 ## Salting
 
 - Salt hashes to prevent attacks like rainbow tables
@@ -165,7 +149,6 @@ Ref: opencores.org
   - Nearly all hashes in the rainbow table will not use this salt
 - The salt does not add entropy since it is stored in the clear
 
-<!-- PDF page 16 -->
 ## Authentication
 
 - Registration
@@ -174,7 +157,6 @@ Ref: opencores.org
   - Append the salt to the password and compute a secure hash of this value
   - Store the username/salt/hash in your database
 
-<!-- PDF page 17 -->
 ## Authentication
 
 - Authentication
@@ -184,17 +166,14 @@ Ref: opencores.org
   - If this hash matches the stored hash, the user is verified
   - If this hash does not match the stored hash, the user is not logged in
 
-<!-- PDF page 18 -->
 ## Authentication
 
 - The bcrypt library implements hashing, salting, and other security related functions
 - Available in many different languages
 - It is highly recommended that you use this library in your assignment
 
-<!-- PDF page 19 -->
 ## Redirects
 
-<!-- PDF page 20 -->
 ## Redirects
 
 - To redirect the user to a different page:
@@ -209,7 +188,6 @@ Content-Length: 0
 Location: /new-path
 ```
 
-<!-- PDF page 21 -->
 ## Redirects
 
 - A redirect response must contain a Location header
@@ -222,7 +200,6 @@ Content-Length: 0
 Location: /new-path
 ```
 
-<!-- PDF page 22 -->
 ## Redirects
 
 - If the Location is not a full url, it will be treated as a relative path
@@ -237,7 +214,6 @@ Content-Length: 0
 Location: /new-path
 ```
 
-<!-- PDF page 23 -->
 ## Redirects
 
 - If the location is a full url, the user can be redirected to a different server
@@ -251,7 +227,6 @@ Content-Length: 0
 Location: https://google.com/
 ```
 
-<!-- PDF page 24 -->
 ## Redirects
 
 - Add a Content-Length of 0 since there are no bytes to read from the body

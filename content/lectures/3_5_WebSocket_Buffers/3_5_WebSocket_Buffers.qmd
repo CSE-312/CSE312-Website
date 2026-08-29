@@ -13,17 +13,13 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## WebSocket Buffers
 
-<!-- PDF page 2 -->
 ## Slide 2
 
-<!-- REVIEW: no clear title found; check the heading -->
 
 ![](assets/slide02-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 3 -->
 ## Special Cases
 
 - Let's talk about 3 special cases that will come up when implementing WebSockets
@@ -31,7 +27,6 @@ released: false
   - Multiple frames per message using the fin bit and continuation frames
   - Multiple frames being sent back-to-back messages
 
-<!-- PDF page 4 -->
 ## Buffering Large Frames
 
 - You will sometimes receive WebSocket frames that are large enough that they need to be buffered
@@ -44,7 +39,6 @@ released: false
     - Payload length does not include the header bytes
   - Process the request
 
-<!-- PDF page 5 -->
 ## Continuation Frames
 
 - You will sometimes receive very large messages from client that will be sent in multiple frames (>131,000 bytes in Chrome)
@@ -54,7 +48,6 @@ released: false
 
 ![](assets/slide02-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## Continuation Frames
 
 - When you read a frame with a fin bit of 0:
@@ -63,10 +56,8 @@ released: false
 
 ![](assets/slide02-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 7 -->
 ## Continuation Frames
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Example of one message sent over 3 frames
 
@@ -98,7 +89,6 @@ Message: Never look directly into the sun
 
 ![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 8 -->
 ## Back-to-back Frames
 
 - Multiple WebSocket frames can be sent back-to-back on the same connection
@@ -108,7 +98,6 @@ Message: Never look directly into the sun
   - If you read < payload length bytes, you should buffer
   - If you read > payload length bytes, store the extra bytes as the start of the next frame
 
-<!-- PDF page 9 -->
 ## Back-to-back Frames
 
 - To test for back-to-back frames:
@@ -118,7 +107,6 @@ Message: Never look directly into the sun
 
 ![](assets/slide09-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## Back-to-back Frames
 
 - Example
@@ -141,10 +129,8 @@ fin bit: 1
 
 payload length: 2000
 
-<!-- PDF page 11 -->
 ## Back-to-back Frames
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - There are 3516 bytes ready to be read from the socket
 - And you call
@@ -166,10 +152,8 @@ payload length: 2000
 
 ![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## Back-to-back Frames
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - If you're not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it
 - Since you start in the middle of the frame, you will run header parsing code on masked payload bytes
@@ -189,10 +173,8 @@ payload length: 2000
 
 ![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## Back-to-back Frames
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - When parsing the first frame:
   - Use the payload length to detect that you've read too many bytes
@@ -213,10 +195,8 @@ payload length: 2000
 
 ![](assets/slide13-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 14 -->
 ## Back-to-back Frames
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - When you finish processing the first frame, start parsing the second frame with the bytes stored in the operate variable
 - Check the payload length and buffer if needed to read the rest of the frame
@@ -236,5 +216,4 @@ payload length: 2000
 
 ![](assets/slide14-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 15 -->
 ## Demos

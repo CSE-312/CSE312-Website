@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="dos" class="slide level2">
 <h2>DoS</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="denial-of-service" class="slide level2">
 <h2>Denial of Service</h2>
@@ -173,7 +167,6 @@
 </ul></li>
 <li>Discuss: How would you attack a server?</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="dos-prevention" class="slide level2">
 <h2>DoS Prevention</h2>
@@ -182,7 +175,6 @@
 <li>Each side continuously evolves in an attempt to counter the other</li>
 <li>Preventing DoS attacks is difficult without affecting legitimate users</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="dos--brute-force" class="slide level2">
 <h2>DoS -Brute Force</h2>
@@ -203,7 +195,6 @@
 <li>Your app should be ready for a large number of users</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="dos---content-length" class="slide level2">
 <h2>DoS - Content-Length</h2>
@@ -222,7 +213,6 @@
 <li>Send these requests in a loop to force the server to keep many connections open</li>
 </ul></li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="dos---slow-send" class="slide level2">
 <h2>DoS - Slow Send</h2>
@@ -240,7 +230,6 @@
 <li>Prevents the timeout from activating</li>
 </ul></li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="dos---slow-send-1" class="slide level2">
 <h2>DoS - Slow Send</h2>
@@ -256,7 +245,6 @@
 <li>Attackers evolve to accurately simulate a user with a slow connection</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="dos---slow-read" class="slide level2">
 <h2>DoS - Slow Read</h2>
@@ -268,7 +256,6 @@
 <li>Server must keep this TCP connection open the whole time</li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="dos---syn-flood" class="slide level2">
 <h2>DoS - SYN Flood</h2>
@@ -280,9 +267,8 @@
 <li>Client responds with ACK</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide09-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
-</section>
+
+<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="dos---syn-flood-1" class="slide level2">
 <h2>DoS - SYN Flood</h2>
 <ul>
@@ -299,9 +285,8 @@
 <li>Uses servers resources to keep these connections open</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide09-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
-</section>
+
+<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="dos-prevention-ip-blocking" class="slide level2">
 <h2>DoS Prevention: IP Blocking</h2>
 <ul>
@@ -319,7 +304,6 @@
 <li>Read the header in your server code to add IP blocking</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="ddos" class="slide level2">
 <h2>DDoS</h2>
@@ -331,7 +315,6 @@
 <li>But more problematic is the DDoS attack</li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="ddos-1" class="slide level2">
 <h2>DDoS</h2>
@@ -346,7 +329,6 @@
 <li>Very difficult to prevent against since it can look much more like legitimate traffic from a variety of users</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="ddos-and-botnets" class="slide level2">
 <h2>DDoS and BotNets</h2>
@@ -363,7 +345,6 @@
 <li>No real gain for the attacker</li>
 </ul></li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="ddos-and-botnets-1" class="slide level2">
 <h2>DDoS and BotNets</h2>
@@ -537,7 +518,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -552,7 +533,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -116,10 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="https-with-nginx" class="level2">
 <h2 class="anchored" data-anchor-id="https-with-nginx">HTTPS with Nginx</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
@@ -135,7 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Use a reverse proxy</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="nginx" class="level2">
 <h2 class="anchored" data-anchor-id="nginx">Nginx</h2>
@@ -143,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Nginx has many uses and is very powerful software</li>
 <li>We’ll use it a reverse proxy with TLS to enable HTTPS</li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="nginx-strategy" class="level2">
 <h2 class="anchored" data-anchor-id="nginx-strategy">Nginx Strategy</h2>
@@ -162,11 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>If Nginx gets an HTTP request (port 80) redirect the user to HTTPS (port 443)</li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="nginx-strategy-1" class="level2">
 <h2 class="anchored" data-anchor-id="nginx-strategy-1">Nginx Strategy</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>HTTPS Request (port 443)</p>
 <p>HTTP Request (port 8080)</p>
 <p>HTTPS Response (port 443)</p>
@@ -176,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>The Internet</p>
 <p>Your network</p>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="openssl" class="level2">
 <h2 class="anchored" data-anchor-id="openssl">OpenSSL</h2>
@@ -194,7 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>We’ll use OpenSSL in the command line to generate self-signed certificates</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="self-signed-certificate" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate">Self-Signed Certificate</h2>
@@ -206,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Certificate saved as cert.pem</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="nginx-strategy-2" class="level2">
 <h2 class="anchored" data-anchor-id="nginx-strategy-2">Nginx Strategy</h2>

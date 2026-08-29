@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,17 +149,11 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="architecture" class="slide level2">
 <h2>Architecture</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="rendering-html" class="slide level2">
 <h2>Rendering HTML</h2>
-<!-- PDF page 3 -->
 </section>
 <section id="html-templates" class="slide level2">
 <h2>HTML Templates</h2>
@@ -177,9 +170,8 @@
 <li>To load a page, replace the placeholders with specific content</li>
 </ul></li>
 </ul>
-<p><img data-src="assets/slide03-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 4 -->
-</section>
+
+<img data-src="assets/slide03-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="rendering-html-1" class="slide level2">
 <h2>Rendering HTML</h2>
 <ul>
@@ -187,9 +179,8 @@
 <li>Injecting content into an HTML template to form the final HTML is called rendering</li>
 <li>HTML Template + data = HTML</li>
 </ul>
-<p><img data-src="assets/slide03-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
-</section>
+
+<img data-src="assets/slide03-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="rendering-html-2" class="slide level2">
 <h2>Rendering HTML</h2>
 <ul>
@@ -203,7 +194,6 @@
 <li>Your server hosts HTML templates and data endpoints and has the client render the final HTML</li>
 </ul></li>
 </ul>
-<!-- PDF page 6 -->
 </section>
 <section id="spa---single-page-application" class="slide level2">
 <h2>SPA - Single Page Application</h2>
@@ -216,11 +206,9 @@
 <li>Give us features like “infinite scroll”</li>
 <li>The page never reloads</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="modularization" class="slide level2">
 <h2>Modularization</h2>
-<!-- PDF page 8 -->
 </section>
 <section id="modularization-1" class="slide level2">
 <h2>Modularization</h2>
@@ -234,7 +222,6 @@
 <li>Split it up into smaller, easier to maintain, chunks</li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="modularization-2" class="slide level2">
 <h2>Modularization</h2>
@@ -400,7 +387,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -415,7 +402,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

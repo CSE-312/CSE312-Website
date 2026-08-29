@@ -18,10 +18,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Encryption
 
-<!-- PDF page 2 -->
 ## The Problem
 
 - Using HTTP, anyone with access to your packets can see everything you are doing online
@@ -31,7 +29,6 @@ released: false
   - UBIT on campus
   - Tier 1 Networks
 
-<!-- PDF page 3 -->
 ## The Problem
 
 - Using HTTP, anyone with access to your packets can see everything you are doing online
@@ -42,7 +39,6 @@ released: false
   - Tier 1 Networks
   - .. and everyone within wifi range of your device!
 
-<!-- PDF page 4 -->
 ## The Problem
 
 - Using HTTP, anyone with access to your packets can see everything you are doing online
@@ -50,7 +46,6 @@ released: false
 - Why does this include passwords? Are they not hashed?
 - --Demo--
 
-<!-- PDF page 5 -->
 ## The Problem
 
 - Using HTTP, anyone with access to your packets can see everything you are doing online
@@ -58,13 +53,11 @@ released: false
 - Passwords are sent over the Internet in plain text!
   - Hashing client-side does not add any security.
 
-<!-- PDF page 6 -->
 ## The Solution
 
 - We'll just add an S to our protocol and call it HTTPS
   - HTTP over TLS
 
-<!-- PDF page 7 -->
 ## Encryption
 
 - Hide communication from attackers/eavesdroppers
@@ -76,10 +69,8 @@ released: false
 - No one should be able to read this cypher text except the intended recipient
 - Only the intended recipient can decrypt the cyphertext and read the plaintext message
 
-<!-- PDF page 8 -->
 ## Encryption
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Meet us at the stick
 
@@ -97,7 +88,6 @@ Meet us at the stick
 
 ![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 9 -->
 ## Public Key Encryption
 
 - How do we ensure that only the intended recipient can decrypt the message?
@@ -108,7 +98,6 @@ Meet us at the stick
 - A message encrypted with the public key can only be decrypted by the corresponding private key
 - If I want to send a message to someone, I can encrypt the message with their public key
 
-<!-- PDF page 10 -->
 ## Public Key Encryption
 
 - The public and private key are inherently related
@@ -117,7 +106,6 @@ Meet us at the stick
 - Any public key encryption algorithm must have these properties [And more]
   - Math and theory will help us
 
-<!-- PDF page 11 -->
 ## Public Key Encryption - RSA
 
 - RSA - Rivest-Shamir-Adleman
@@ -127,7 +115,6 @@ Meet us at the stick
   - Encrypt with the public key
   - Decrypt with the private key
 
-<!-- PDF page 12 -->
 ## Public Key Encryption - RSA
 
 - Key Generation
@@ -140,7 +127,6 @@ Meet us at the stick
 - Keep d as the private key
 - Discard p, q, and λ(n)
 
-<!-- PDF page 13 -->
 ## Public Key Encryption - RSA
 
 - Encryption
@@ -152,7 +138,6 @@ Meet us at the stick
 - Compute m = c^d mod(n)
 - Read m
 
-<!-- PDF page 14 -->
 ## Public Key Encryption - RSA
 
 - RSA key generation gives us: m = m^(e*d) mod(n)
@@ -161,14 +146,12 @@ Meet us at the stick
   - Everyone can decrypt the message so there is no privacy
   - However, there is a guarantee that the author is legitimate (You know I'm the one who sent this message)
 
-<!-- PDF page 15 -->
 ## Public Key Encryption - RSA
 
 - What about a brute force attack?
   - Attacker has the public key
   - Keep encrypting "guesses" of the plaintext until the cyphertext matches
 
-<!-- PDF page 16 -->
 ## Public Key Encryption - RSA
 
 - What about a brute force attack?
@@ -179,13 +162,11 @@ Meet us at the stick
   - Unlike salting, padding can be kept secret and adds entropy
   - Makes encryption of even short messages secure!
 
-<!-- PDF page 17 -->
 ## Public Key Encryption - RSA
 
 - Unlike salting, padding can be kept secret and adds entropy
   - Why?
 
-<!-- PDF page 18 -->
 ## Public Key Encryption - RSA
 
 - Unlike salting, padding can be kept secret and adds entropy
@@ -195,7 +176,6 @@ Meet us at the stick
 - Hash will never be "unhashed"
   - Cannot identify/discard the salt
 
-<!-- PDF page 19 -->
 ## Public Key Encryption - RSA
 
 - Key Generation
@@ -208,7 +188,6 @@ Meet us at the stick
 - Everyone already has e and n (the public key)
 - So just factor n to get p and q, then compute the private key
 
-<!-- PDF page 20 -->
 ## Public Key Encryption - RSA
 
 Factoring is hard [We hope]
@@ -220,7 +199,6 @@ Factoring is hard [We hope]
   - Quantum computers can factor efficiently
 - We call the factoring problem a cryptographic primitive
 
-<!-- PDF page 21 -->
 ## Public Key Encryption - RSA
 
 - Encryption
@@ -231,7 +209,6 @@ Factoring is hard [We hope]
 - An attacker can read c if they are within wifi range
 - Just have to compute the discrete log_e of c mod n
 
-<!-- PDF page 22 -->
 ## Public Key Encryption - RSA
 
 Computing a Discrete Log is hard [We hope]
@@ -239,7 +216,6 @@ Computing a Discrete Log is hard [We hope]
 - There is no publicly know algorithm that can efficiently compute discrete logarithms
 - This problem is another cryptographic primitive
 
-<!-- PDF page 23 -->
 ## Public Key Encryption
 
 Demo

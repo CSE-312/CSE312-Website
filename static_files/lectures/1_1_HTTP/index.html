@@ -6,8 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="CSE312 Course Staff">
-<meta name="keywords" content="HTTP, web development, request, response, CSE312">
 <meta name="description" content="An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure.">
 
 <title>HTTP Request/Response – CSE312 Lectures</title>
@@ -38,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -88,28 +86,26 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#http-overview" id="toc-http-overview" class="nav-link active" data-scroll-target="#http-overview">HTTP Overview</a></li>
+  <li><a href="#http" id="toc-http" class="nav-link active" data-scroll-target="#http">HTTP</a>
+  <ul class="collapse">
   <li><a href="#network-stack-a-simplified-view" id="toc-network-stack-a-simplified-view" class="nav-link" data-scroll-target="#network-stack-a-simplified-view">Network Stack (A simplified view)</a></li>
   <li><a href="#http---documentation" id="toc-http---documentation" class="nav-link" data-scroll-target="#http---documentation">HTTP - Documentation</a></li>
   <li><a href="#hypertext-transfer-protocol-http" id="toc-hypertext-transfer-protocol-http" class="nav-link" data-scroll-target="#hypertext-transfer-protocol-http">HyperText Transfer Protocol (HTTP)</a></li>
-  <li><a href="#http" id="toc-http" class="nav-link" data-scroll-target="#http">HTTP</a></li>
   <li><a href="#web-server" id="toc-web-server" class="nav-link" data-scroll-target="#web-server">Web Server</a></li>
   <li><a href="#loading-a-web-site" id="toc-loading-a-web-site" class="nav-link" data-scroll-target="#loading-a-web-site">Loading a Web Site</a></li>
   <li><a href="#http-request" id="toc-http-request" class="nav-link" data-scroll-target="#http-request">HTTP Request</a></li>
-  <li><a href="#http-request-1" id="toc-http-request-1" class="nav-link" data-scroll-target="#http-request-1">HTTP Request</a></li>
-  <li><a href="#http-request-2" id="toc-http-request-2" class="nav-link" data-scroll-target="#http-request-2">HTTP Request</a></li>
-  <li><a href="#http-request-3" id="toc-http-request-3" class="nav-link" data-scroll-target="#http-request-3">HTTP Request</a></li>
-  <li><a href="#http-1" id="toc-http-1" class="nav-link" data-scroll-target="#http-1">HTTP</a></li>
+  <li><a href="#http-is-stateless" id="toc-http-is-stateless" class="nav-link" data-scroll-target="#http-is-stateless">HTTP is Stateless</a></li>
   <li><a href="#new-lines" id="toc-new-lines" class="nav-link" data-scroll-target="#new-lines">New Lines</a></li>
-  <li><a href="#http-get-request" id="toc-http-get-request" class="nav-link" data-scroll-target="#http-get-request">HTTP GET Request</a></li>
+  </ul></li>
+  <li><a href="#http-get-request" id="toc-http-get-request" class="nav-link" data-scroll-target="#http-get-request">HTTP GET Request</a>
+  <ul class="collapse">
   <li><a href="#get-request" id="toc-get-request" class="nav-link" data-scroll-target="#get-request">GET Request</a></li>
-  <li><a href="#get-request-1" id="toc-get-request-1" class="nav-link" data-scroll-target="#get-request-1">GET Request</a></li>
   <li><a href="#the-request-line" id="toc-the-request-line" class="nav-link" data-scroll-target="#the-request-line">The Request Line</a></li>
-  <li><a href="#the-request-line-1" id="toc-the-request-line-1" class="nav-link" data-scroll-target="#the-request-line-1">The Request Line</a></li>
   <li><a href="#headers" id="toc-headers" class="nav-link" data-scroll-target="#headers">Headers</a></li>
-  <li><a href="#http-response" id="toc-http-response" class="nav-link" data-scroll-target="#http-response">HTTP Response</a></li>
+  </ul></li>
+  <li><a href="#http-response" id="toc-http-response" class="nav-link" data-scroll-target="#http-response">HTTP Response</a>
+  <ul class="collapse">
   <li><a href="#response" id="toc-response" class="nav-link" data-scroll-target="#response">Response</a></li>
-  <li><a href="#response-1" id="toc-response-1" class="nav-link" data-scroll-target="#response-1">Response</a></li>
   <li><a href="#status-line" id="toc-status-line" class="nav-link" data-scroll-target="#status-line">Status Line</a></li>
   <li><a href="#response-codes" id="toc-response-codes" class="nav-link" data-scroll-target="#response-codes">Response Codes</a></li>
   <li><a href="#response-headers" id="toc-response-headers" class="nav-link" data-scroll-target="#response-headers">Response Headers</a></li>
@@ -117,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#body" id="toc-body" class="nav-link" data-scroll-target="#body">Body</a></li>
   <li><a href="#not-found" id="toc-not-found" class="nav-link" data-scroll-target="#not-found">404 Not Found</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -126,7 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">HTTP Request/Response</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
 <div>
@@ -138,39 +134,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>CSE312 Course Staff </p>
-          </div>
-  </div>
     
   
     
   </div>
   
 
-<div>
-  <div class="keywords">
-    <div class="block-title">Keywords</div>
-    <p>HTTP, web development, request, response, CSE312</p>
-  </div>
-</div>
 
 </header>
 
 
-<section id="http-overview" class="level2">
-<h2 class="anchored" data-anchor-id="http-overview">HTTP Overview</h2>
-<p><a href="slides.html">View this lecture as slides</a></p>
-</section>
+<section id="http" class="level1">
+<h1>HTTP</h1>
 <section id="network-stack-a-simplified-view" class="level2">
 <h2 class="anchored" data-anchor-id="network-stack-a-simplified-view">Network Stack (A simplified view)</h2>
 <ul>
 <li>Enter HTTP</li>
 </ul>
-<div class="diagram-description" role="note" aria-label="Packet structure from outermost to innermost layer">
-<p><strong>Packet Structure</strong>, from the outside in:</p>
+<div class="diagram-description" role="note" aria-label="Packet structure of an HTTP packet traveling through the Internet">
+<p><strong>Packet Structure</strong>:</p>
 <ol type="1">
 <li>IP Headers</li>
 <li>TCP Headers</li>
@@ -214,8 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="http" class="level2">
-<h2 class="anchored" data-anchor-id="http">HTTP</h2>
+<section id="http-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http-1">HTTP</h2>
 <ul>
 <li>HTTP is a protocol used to access content from a web server</li>
 <li>Protocol: An agreed upon set of rules
@@ -291,8 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>To start, we’ll focus on GET and POST only</li>
 </ul>
 </section>
-<section id="http-request-1" class="level2">
-<h2 class="anchored" data-anchor-id="http-request-1">HTTP Request</h2>
+<section id="http-request-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-1">HTTP Request</h2>
 <ul>
 <li>HTTP GET Request
 <ul>
@@ -310,8 +292,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="http-request-2" class="level2">
-<h2 class="anchored" data-anchor-id="http-request-2">HTTP Request</h2>
+<section id="http-request-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-2">HTTP Request</h2>
 <pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
 <ul>
 <li>Each request is made for a specific URL (Uniform Resource Location)
@@ -330,8 +312,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Path - Specifies the specific resource being requested from the server</li>
 </ul>
 </section>
-<section id="http-request-3" class="level2">
-<h2 class="anchored" data-anchor-id="http-request-3">HTTP Request</h2>
+<section id="http-request-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-3">HTTP Request</h2>
 <pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
 <ul>
 <li>Query String - [Optional] Contains key-value pairs set by the client</li>
@@ -354,8 +336,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="http-1" class="level2">
-<h2 class="anchored" data-anchor-id="http-1">HTTP</h2>
+<section id="http-is-stateless" class="level2">
+<h2 class="anchored" data-anchor-id="http-is-stateless">HTTP is Stateless</h2>
 <ul>
 <li>HTTP is a stateless protocol</li>
 <li>Each request is handled in isolation even if a client just made another request</li>
@@ -373,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>A new line character in an HTTP request/response must be:
 <ul>
-<li>“<code>\r\n</code>”
+<li><code>\r\n</code>
 <ul>
 <li>Carriage return (From the days of typewriters)</li>
 <li>New line</li>
@@ -382,12 +364,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>CRLF == Carriage Return Line Feed</li>
 </ul></li>
 <li>Be aware of this while parsing</li>
-<li>Use “<code>\r\n</code>” for new lines when preparing your responses</li>
+<li>Use <code>\r\n</code> for new lines when preparing your responses</li>
 </ul>
 </section>
-<section id="http-get-request" class="level2">
-<h2 class="anchored" data-anchor-id="http-get-request">HTTP GET Request</h2>
 </section>
+<section id="http-get-request" class="level1">
+<h1>HTTP GET Request</h1>
 <section id="get-request" class="level2">
 <h2 class="anchored" data-anchor-id="get-request">GET Request</h2>
 <ul>
@@ -398,8 +380,8 @@ Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en</code></pre>
 </section>
-<section id="get-request-1" class="level2">
-<h2 class="anchored" data-anchor-id="get-request-1">GET Request</h2>
+<section id="get-request-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="get-request-1">GET Request</h2>
 <ul>
 <li>More accurately, it will be this</li>
 </ul>
@@ -428,8 +410,8 @@ Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en</code></pre>
 </section>
-<section id="the-request-line-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-request-line-1">The Request Line</h2>
+<section id="the-request-line-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-request-line-1">The Request Line</h2>
 <ul>
 <li>Parse the request line by looking for the 2 space characters
 <ul>
@@ -441,16 +423,26 @@ Accept-Language: en-US,en</code></pre>
 </ul></li>
 <li>If the url contains a different path, it will appear in the request line</li>
 </ul>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p>Requesting <a href="http://cse312.com/" class="uri">http://cse312.com/</a></p>
+</div><div class="column" style="width:50%;">
+<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
 <pre class="http"><code>GET / HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en</code></pre>
-<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
+</div><div class="column" style="width:50%;">
 <pre class="http"><code>GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en</code></pre>
+</div>
+</div>
 </section>
 <section id="headers" class="level2">
 <h2 class="anchored" data-anchor-id="headers">Headers</h2>
@@ -472,9 +464,9 @@ Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en</code></pre>
 </section>
-<section id="http-response" class="level2">
-<h2 class="anchored" data-anchor-id="http-response">HTTP Response</h2>
 </section>
+<section id="http-response" class="level1">
+<h1>HTTP Response</h1>
 <section id="response" class="level2">
 <h2 class="anchored" data-anchor-id="response">Response</h2>
 <ul>
@@ -488,8 +480,8 @@ Content-Length: 5
 
 hello</code></pre>
 </section>
-<section id="response-1" class="level2">
-<h2 class="anchored" data-anchor-id="response-1">Response</h2>
+<section id="response-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="response-1">Response</h2>
 <ul>
 <li>More accurately, this is the response</li>
 </ul>
@@ -607,6 +599,7 @@ The requested content does not exist</code></pre>
 <li><a href="https://tools.ietf.org/html/rfc2616">RFC2616 - HTTP 1.1</a></li>
 <li><a href="https://docs.python.org/3/library/socketserver.html">Python TCP Server</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -51,7 +51,6 @@ Tier 1 networks form the backbone of the Internet
 :::
 ::::
 
-<!-- PDF page 5 -->
 ## Data Centers Power Apps
 
 :::: {.columns}
@@ -64,8 +63,7 @@ Tier 1 networks form the backbone of the Internet
 ::::
 
 
-<!-- PDF page 6 -->
-## It’s all Cables!
+## It's all Cables!
 
 :::: {.columns}
 ::: {.column width="30%"}
@@ -125,7 +123,6 @@ Many factors cause packets to be dropped
 
 ![](assets/slide14-1.png){fig-alt="TCP 3-way handshake"}
 
-<!-- PDF page 15 -->
 ## TCP/IP in CSE312
 
 - Use libraries to do all this for us

@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="json-web-tokens-jwts" class="slide level2">
 <h2>JSON Web Tokens (JWTs)</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="why-jwt" class="slide level2">
 <h2>Why JWT?</h2>
@@ -166,11 +160,9 @@
 <li>Why do we need a new mechanism?</li>
 <li>What’s wrong with auth tokens?</li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="recall-auth-tokens" class="slide level2">
 <h2>Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Server issues an auth token on login</li>
 <li>Store token in database on login</li>
@@ -184,12 +176,10 @@
 <p>Server</p>
 <p>-Passwords</p>
 <p>-auth tokens</p>
-<p><img data-src="assets/slide03-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 4 -->
-</section>
+
+<img data-src="assets/slide03-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="recall-auth-tokens-1" class="slide level2">
 <h2>Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The token is opaque
 <ul>
@@ -205,12 +195,10 @@
 <p>Server</p>
 <p>-Passwords</p>
 <p>-auth tokens</p>
-<p><img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
-</section>
+
+<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="recall-auth-tokens-2" class="slide level2">
 <h2>Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>When your app gets HUGE
 <ul>
@@ -227,12 +215,10 @@
 <p>Requests with auth token</p>
 <p>-auth tokens</p>
 <p>App Server</p>
-<p><img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
-</section>
+
+<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="recall-auth-tokens-3" class="slide level2">
 <h2>Recall Auth Tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>App server needs to verify the auth token</li>
 </ul>
@@ -245,9 +231,8 @@
 <p>Requests with auth token</p>
 <p>-auth tokens</p>
 <p>App Server</p>
-<p><img data-src="assets/slide06-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
-</section>
+
+<img data-src="assets/slide06-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="auth-tokens---distributed" class="slide level2">
 <h2>Auth Tokens - Distributed</h2>
 <ul>
@@ -263,7 +248,6 @@
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="auth-tokens---distributed-1" class="slide level2">
 <h2>Auth Tokens - Distributed</h2>
@@ -280,11 +264,9 @@
 </ul></li>
 </ul></li>
 </ul>
-<!-- PDF page 9 -->
 </section>
 <section id="introducing-jwts" class="slide level2">
 <h2>Introducing JWTs</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Instead of auth token
 <ul>
@@ -299,9 +281,8 @@
 <p>User/Client</p>
 <p>Requests with JWT</p>
 <p>App Server</p>
-<p><img data-src="assets/slide09-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
-</section>
+
+<img data-src="assets/slide09-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="jwt" class="slide level2">
 <h2>JWT</h2>
 <ul>
@@ -316,7 +297,6 @@
 <li>Verify the token locally</li>
 </ul></li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="jwt-1" class="slide level2">
 <h2>JWT</h2>
@@ -340,7 +320,6 @@
 <li>Can be used to solve any problem that wants tokens</li>
 </ul></li>
 </ul>
-<!-- PDF page 12 -->
 </section>
 <section id="jwt---structure" class="slide level2">
 <h2>JWT - Structure</h2>
@@ -360,7 +339,6 @@
 <li>The signature of the token using the algorithm specified in the headers</li>
 </ul></li>
 </ul>
-<!-- PDF page 13 -->
 </section>
 <section id="jwt---structure-1" class="slide level2">
 <h2>JWT - Structure</h2>
@@ -380,14 +358,12 @@
 <li>This avoids all url reserved characters</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="jwt---structure-2" class="slide level2">
 <h2>JWT - Structure</h2>
 <ul>
 <li>Three Base64URL-encoded parts are separated by ‘.’</li>
 <li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0…</li>
-<li></li>
 <li>This token looks opaque
 <ul>
 <li>It is not!!</li>
@@ -397,7 +373,6 @@
 <li>Your JWTs are effectively plain-text</li>
 <li>This token has the claim: {“username”: “Alice”}</li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="jwt---usage" class="slide level2">
 <h2>JWT - Usage</h2>
@@ -413,7 +388,6 @@
 <li>Sign it!</li>
 </ul></li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="jwt---verification" class="slide level2">
 <h2>JWT - Verification</h2>
@@ -423,7 +397,6 @@
 <li>Attackers cannot forge the signatures</li>
 <li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc</li>
 </ul>
-<!-- PDF page 17 -->
 </section>
 <section id="jwt---verification-1" class="slide level2">
 <h2>JWT - Verification</h2>
@@ -440,7 +413,6 @@
 <li>Use the public key to verify the signature</li>
 </ul></li>
 </ul>
-<!-- PDF page 18 -->
 </section>
 <section id="jwt---verification-2" class="slide level2">
 <h2>JWT - Verification</h2>
@@ -452,7 +424,6 @@
 </ul></li>
 <li>If the signature is not valid, do not accept the token</li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="jwt---verification-3" class="slide level2">
 <h2>JWT - Verification</h2>
@@ -472,7 +443,6 @@
 <li>Not allowed on HW5..</li>
 </ul></li>
 </ul>
-<!-- PDF page 20 -->
 </section>
 <section id="jwt---encryption" class="slide level2">
 <h2>JWT - Encryption</h2>
@@ -481,12 +451,10 @@
 <li>I don’t have anything else to say about that</li>
 </ul>
 <p>😅</p>
-<p><img data-src="assets/slide20-1.png" alt="TODO: describe this image"></p>
-<!-- PDF page 21 -->
-</section>
+
+<img data-src="assets/slide20-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="slide level2">
 <h2>• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Recall OAuth</p>
 <p>Authorization Grant</p>
 <p>Access Token and Refresh Token</p>
@@ -499,10 +467,10 @@
 <p>Private Data</p>
 <p>Your App / Client</p>
 <p>Server</p>
-<p><img data-src="assets/slide21-diagram.jpg" alt="TODO: describe this image"></p>
 
 
-</section>
+
+<img data-src="assets/slide21-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
@@ -654,7 +622,7 @@
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -669,7 +637,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

@@ -18,10 +18,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## OAuth 2.0 - Overview
 
-<!-- PDF page 2 -->
 ## Web API
 
 - Many apps have APIs that can be used to interact with user data programmatically
@@ -31,7 +29,6 @@ released: false
 - Using the API allows us to write custom programs that interact with the app
   - eg. A program that starts/stops Spotify playback when lecture ends/starts
 
-<!-- PDF page 3 -->
 ## Web API
 
 - Web APIs use endpoints
@@ -43,7 +40,6 @@ released: false
   - POST api.github.com/repos/`<owner>`/`<repo>`/issues - create an issue in the repo `<owner>`/`<repo>`
   - GET api.github.com/repos/`<owner>`/`<repo>`/issues - get all issues in the repo `<owner>`/`<repo>`
 
-<!-- PDF page 4 -->
 ## Web API
 
 - How do we securely consume an API?
@@ -55,10 +51,8 @@ released: false
   - Server verifies the user associated with the key for authorization
   - Keys can have restricted functionality and are only used for API access (Not as detrimental if compromised)
 
-<!-- PDF page 5 -->
 ## Web API
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 register/login
 
@@ -87,13 +81,11 @@ Server
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## OAuth?
 
 - This setup works well enough
 - So where does OAuth come in?
 
-<!-- PDF page 7 -->
 ## The Problem
 
 - A user enjoys an app (eg. GitHub) that has a web API
@@ -105,18 +97,16 @@ Server
 
 ![](assets/slide07-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 8 -->
 ## The Problem
 
 In general, you want to write an app that uses a 3rd
 
-party API to create/access/modify your users’ private
+party API to create/access/modify your users' private
 
 data
 
 How do we do this securely?
 
-<!-- PDF page 9 -->
 ## A BAD Attempt
 
 - Never do this!!
@@ -126,23 +116,20 @@ How do we do this securely?
   - We did a lot of work hashing/salting to make sure we can't know passwords
 - This would require us to store plaintext passwords so we can reuse them each time a user wants to access the API through our app
 
-<!-- PDF page 10 -->
 ## Another BAD Attempt
 
 - Never do this!!
 - ..Have the user give you their API key
 - Not nearly as bad as storing their password
-- But, there’s a lack of accountability
+- But, there's a lack of accountability
   - API accessing made by our app will look like they come from the user
   - Rouge apps can abuse your key without detection
 - API key rate limiting will count against the user when we use the key
   - User gets denied access if your app overuses the key
   - Bigger problem if the API charges $ per access
 
-<!-- PDF page 11 -->
 ## • Our app asks the user for their API key
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Simple Overview [BAD Attempt]:
 
@@ -160,10 +147,8 @@ User / Resource Owner
 
 ![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## • Our app asks the user for their API key • User visits the API and obtains an API key for their account
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Simple Overview [BAD Attempt]:
 
@@ -185,10 +170,8 @@ User / Resource Owner
 
 ![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## • Our app asks the user for their API key • User visits the API and obtains an API key for their account • User hands their key over to us
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Simple Overview [BAD Attempt]:
 
@@ -212,10 +195,8 @@ User / Resource Owner
 
 ![](assets/slide13-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 14 -->
 ## • Our app asks the user for their API key • User visits the API and obtains an API key for their account • User hands their key over to us • We use this key to access the API for them (Or login using this service)
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Simple Overview [BAD Attempt]:
 
@@ -243,10 +224,8 @@ User / Resource Owner
 
 ![](assets/slide14-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 15 -->
 ## • The API has no idea that the user allowed your app to use this • The app using the key looks the same as the user using the
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Security issue - Lack of accountability of the client
 
@@ -278,10 +257,8 @@ User / Resource Owner
 
 ![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 16 -->
 ## • Your server is responsible for handling the API key • If the key is compromised, attackers requests look
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Security issue - No compromise detection
 
@@ -311,10 +288,8 @@ User / Resource Owner
 
 ![](assets/slide16-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 17 -->
 ## • The user has to handle their own API key • Key can be compromised at this point • Never trust your users. Not even with their own security
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 Security issue - Never trust your users
 
@@ -342,7 +317,6 @@ User / Resource Owner
 
 ![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 18 -->
 ## OAuth 2.0
 
 - OAuth 2.0 (Open Authorization 2.0)
@@ -353,7 +327,6 @@ User / Resource Owner
 - The handling of this access is secure
   - Protected from outside attackers
 
-<!-- PDF page 19 -->
 ## OAuth 2.0
 
 - OAuth 2.0 will fix the security issues with one simple fix
@@ -361,7 +334,6 @@ User / Resource Owner
   - Our app is accountable for the use, and secure handling, of the access token
   - User never handles their access token (No need to trust them)
 
-<!-- PDF page 20 -->
 ## OAuth 2.0
 
 - There are several ways to use OAuth 2.0 called flows
@@ -373,7 +345,6 @@ User / Resource Owner
   - User has access to every part of the app, including any secret information
   - Use the implicit grant flow (This is not allowed on the HW)
 
-<!-- PDF page 21 -->
 ## OAuth 2.0 - Client Registration
 
 - Before starting the authorization process with your users, you must register your app with the 3rd party API
@@ -382,10 +353,8 @@ User / Resource Owner
   - Client Secret: A high-entropy random value generated by the API. This is effectively a password that will be used to authenticate your app. [If this value cannot be kept secret, use a flow that doesn't involve a secret]
   - Redirect URI: Provided by you. This is where the API will send your users after they grant you access to the API
 
-<!-- PDF page 22 -->
 ## • We'll update our picture with the full
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 OAuth authentication code flow
 
@@ -417,10 +386,8 @@ User / Resource Owner
 
 ![](assets/slide22-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 23 -->
 ## • Let's break this down
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 5. Authorization Grant
 
@@ -450,10 +417,8 @@ User / Resource Owner
 
 ![](assets/slide23-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 24 -->
 ## • 1: Your app asks the user to obtain an authorization
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 grant allowing the app to use the API on their behalf
 
@@ -471,10 +436,8 @@ User / Resource Owner
 
 ![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 25 -->
 ## • 2. The user sends the request to • The user is authenticated by the • User is asked if they want to allow • Contains a list of scopes
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 the authentication server
 
@@ -498,10 +461,8 @@ User / Resource Owner
 
 ![](assets/slide25-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 26 -->
 ## • 3: If the user is authenticated and accepts, an • The grant contains an authorization code
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 authorization grant is sent to the user
 
@@ -523,10 +484,8 @@ User / Resource Owner
 
 ![](assets/slide26-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 27 -->
 ## • 4: Your app receives a request from the user at the • Your app now has permission from the user to
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 redirect URI containing the authorization grant
@@ -553,10 +512,8 @@ User / Resource Owner
 
 ![](assets/slide27-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 28 -->
 ## • 5: Your app will connect to the auth server and "cash in" the • This step prevents the user from ever handling their access token
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 grant for an access token
 
@@ -582,10 +539,8 @@ User / Resource Owner
 
 ![](assets/slide28-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 29 -->
 ## • 6: The auth server will verify the identity of the client
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 ```
 using a client secret and will send the access token
@@ -616,10 +571,8 @@ User / Resource Owner
 
 ![](assets/slide29-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 30 -->
 ## • 7/8: Your app can now use the access token to access the API for your user • If the user clicked "login with 3rd party", verify their identity through the API • Create an account for them based on this identity
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 5. Authorization Grant
 
@@ -649,10 +602,8 @@ User / Resource Owner
 
 ![](assets/slide30-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 31 -->
 ## OAuth 2.0 - Authorization Code Flow
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 5. Authorization Grant
 

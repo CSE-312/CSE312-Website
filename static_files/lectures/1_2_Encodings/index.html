@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Encodings and MIME types">
 
 <title>HTTP - Static Files, MIME Types, and Encodings – CSE312 Lectures</title>
 <style>
@@ -35,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,12 +83,15 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#encodings" id="toc-encodings" class="nav-link active" data-scroll-target="#encodings">Encodings</a></li>
+  <li><a href="#encodings" id="toc-encodings" class="nav-link active" data-scroll-target="#encodings">Encodings</a>
+  <ul class="collapse">
   <li><a href="#s-and-0s" id="toc-s-and-0s" class="nav-link" data-scroll-target="#s-and-0s">1’s and 0’s</a></li>
-  <li><a href="#encoding-text" id="toc-encoding-text" class="nav-link" data-scroll-target="#encoding-text">Encoding Text</a></li>
+  </ul></li>
+  <li><a href="#encoding-text" id="toc-encoding-text" class="nav-link" data-scroll-target="#encoding-text">Encoding Text</a>
+  <ul class="collapse">
   <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text">Text</a></li>
   <li><a href="#ascii" id="toc-ascii" class="nav-link" data-scroll-target="#ascii">ASCII</a></li>
-  <li><a href="#slide-6" id="toc-slide-6" class="nav-link" data-scroll-target="#slide-6">Slide 6</a></li>
+  <li><a href="#ascii-chart" id="toc-ascii-chart" class="nav-link" data-scroll-target="#ascii-chart">ASCII Chart</a></li>
   <li><a href="#ascii-1" id="toc-ascii-1" class="nav-link" data-scroll-target="#ascii-1">ASCII</a></li>
   <li><a href="#http-headers" id="toc-http-headers" class="nav-link" data-scroll-target="#http-headers">HTTP Headers</a></li>
   <li><a href="#http-headers-1" id="toc-http-headers-1" class="nav-link" data-scroll-target="#http-headers-1">HTTP Headers</a></li>
@@ -112,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#sending-images-2" id="toc-sending-images-2" class="nav-link" data-scroll-target="#sending-images-2">Sending Images</a></li>
   <li><a href="#sending-images-3" id="toc-sending-images-3" class="nav-link" data-scroll-target="#sending-images-3">Sending Images</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -121,9 +126,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">HTTP - Static Files, MIME Types, and Encodings</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Encodings and MIME types
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -138,12 +147,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
-<section id="encodings" class="level2">
-<h2 class="anchored" data-anchor-id="encodings">Encodings</h2>
+<section id="encodings" class="level1">
+<h1>Encodings</h1>
 <p>MIME types and bytes</p>
-<!-- PDF page 2 -->
-</section>
 <section id="s-and-0s" class="level2">
 <h2 class="anchored" data-anchor-id="s-and-0s">1’s and 0’s</h2>
 <ul>
@@ -158,12 +164,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Encodings and MIME Types</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
-<section id="encoding-text" class="level2">
-<h2 class="anchored" data-anchor-id="encoding-text">Encoding Text</h2>
-<!-- PDF page 4 -->
 </section>
+<section id="encoding-text" class="level1">
+<h1>Encoding Text</h1>
 <section id="text" class="level2">
 <h2 class="anchored" data-anchor-id="text">Text</h2>
 <ul>
@@ -172,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>How do we send text?</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="ascii" class="level2">
 <h2 class="anchored" data-anchor-id="ascii">ASCII</h2>
@@ -186,13 +189,10 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>ASCII uses 7 bit encodings</li>
 </ul>
-<!-- PDF page 6 -->
 </section>
-<section id="slide-6" class="level2">
-<h2 class="anchored" data-anchor-id="slide-6">Slide 6</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<p><img src="assets/slide06-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
+<section id="ascii-chart" class="level2">
+<h2 class="anchored" data-anchor-id="ascii-chart">ASCII Chart</h2>
+<p><img src="assets/slide06-1.png" class="img-fluid" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value"></p>
 </section>
 <section id="ascii-1" class="level2">
 <h2 class="anchored" data-anchor-id="ascii-1">ASCII</h2>
@@ -213,13 +213,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Send this over the Internet</li>
 </ul></li>
 </ul>
-<!-- PDF page 8 -->
 </section>
 <section id="http-headers" class="level2">
 <h2 class="anchored" data-anchor-id="http-headers">HTTP Headers</h2>
 <p>HTTP Headers can only contain</p>
 <p>ASCII characters</p>
-<!-- PDF page 9 -->
 </section>
 <section id="http-headers-1" class="level2">
 <h2 class="anchored" data-anchor-id="http-headers-1">HTTP Headers</h2>
@@ -233,7 +231,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Read the headers to find the encoding for the body</li>
 </ul></li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="character-encodings" class="level2">
 <h2 class="anchored" data-anchor-id="character-encodings">Character Encodings</h2>
@@ -253,7 +250,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Enter UTF-8</li>
 </ul></li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="utf-8" class="level2">
 <h2 class="anchored" data-anchor-id="utf-8">UTF-8</h2>
@@ -267,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="utf-8-1" class="level2">
 <h2 class="anchored" data-anchor-id="utf-8-1">UTF-8</h2>
@@ -281,7 +276,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="sending-data" class="level2">
 <h2 class="anchored" data-anchor-id="sending-data">Sending Data</h2>
@@ -299,7 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Decode the bytes using the proper encoding</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="sending-data-1" class="level2">
 <h2 class="anchored" data-anchor-id="sending-data-1">Sending Data</h2>
@@ -314,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Default is UTF-8 so providing no arguments will do what you want for this course</li>
 </ul></li>
 </ul>
-<!-- PDF page 15 -->
 </section>
 <section id="content-length" class="level2">
 <h2 class="anchored" data-anchor-id="content-length">Content Length</h2>
@@ -333,7 +325,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Cannot use the length of the String as your Content-Length!</li>
 </ul></li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="content-length-1" class="level2">
 <h2 class="anchored" data-anchor-id="content-length-1">Content Length</h2>
@@ -344,11 +335,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Get the length of the byte array</li>
 </ul></li>
 </ul>
-<!-- PDF page 17 -->
 </section>
 <section id="mime-types" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types">MIME Types</h2>
-<!-- PDF page 18 -->
 </section>
 <section id="mime-types-1" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-1">MIME Types</h2>
@@ -363,7 +352,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>This is the MIME type of the data</li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="mime-types-2" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-2">MIME Types</h2>
@@ -384,7 +372,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>video - Raw binary of a video</li>
 </ul></li>
 </ul>
-<!-- PDF page 20 -->
 </section>
 <section id="mime-types-3" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-3">MIME Types</h2>
@@ -401,7 +388,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>application/json</li>
 </ul></li>
 </ul>
-<!-- PDF page 21 -->
 </section>
 <section id="mime-types-4" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-4">MIME Types</h2>
@@ -418,7 +404,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Don’t forget to add this exactly as it appears. One character difference will break your page</li>
 </ul></li>
 </ul>
-<!-- PDF page 22 -->
 </section>
 <section id="mime-type-sniffing" class="level2">
 <h2 class="anchored" data-anchor-id="mime-type-sniffing">MIME Type Sniffing</h2>
@@ -437,7 +422,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>X-Content-Type-Options: nosnif</li>
 </ul></li>
 </ul>
-<!-- PDF page 23 -->
 </section>
 <section id="mime-type-sniffing-1" class="level2">
 <h2 class="anchored" data-anchor-id="mime-type-sniffing-1">MIME Type Sniffing</h2>
@@ -450,7 +434,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Make sure this header was parsed by the browser</li>
 </ul></li>
 </ul>
-<!-- PDF page 24 -->
 </section>
 <section id="mime-type-sniffing-2" class="level2">
 <h2 class="anchored" data-anchor-id="mime-type-sniffing-2">MIME Type Sniffing</h2>
@@ -469,7 +452,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>X-Content-Type-Options: nosnif</li>
 </ul></li>
 </ul>
-<!-- PDF page 25 -->
 </section>
 <section id="mime-types-5" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-5">MIME Types</h2>
@@ -483,11 +465,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The Content-Type will be set to let our server know the MIME type</li>
 </ul></li>
 </ul>
-<!-- PDF page 26 -->
 </section>
 <section id="sending-images" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images">Sending Images</h2>
-<!-- PDF page 27 -->
 </section>
 <section id="sending-images-1" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images-1">Sending Images</h2>
@@ -502,7 +482,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Set the Content-Type to image/<code>&lt;image_type&gt;</code></li>
 </ul></li>
 </ul>
-<!-- PDF page 28 -->
 </section>
 <section id="sending-images-2" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images-2">Sending Images</h2>
@@ -518,7 +497,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The bytes will not decode properly</li>
 </ul></li>
 </ul>
-<!-- PDF page 29 -->
 </section>
 <section id="sending-images-3" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images-3">Sending Images</h2>
@@ -545,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li><a href="https://www.iana.org/assignments/media-types/media-types.xhtml">Every MIME type</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">String MIME types</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->

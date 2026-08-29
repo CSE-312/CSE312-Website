@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -140,10 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="oauth-2.0---overview" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0---overview">OAuth 2.0 - Overview</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="web-api" class="level2">
 <h2 class="anchored" data-anchor-id="web-api">Web API</h2>
@@ -159,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>eg. A program that starts/stops Spotify playback when lecture ends/starts</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="web-api-1" class="level2">
 <h2 class="anchored" data-anchor-id="web-api-1">Web API</h2>
@@ -175,7 +172,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>GET api.github.com/repos/<code>&lt;owner&gt;</code>/<code>&lt;repo&gt;</code>/issues - get all issues in the repo <code>&lt;owner&gt;</code>/<code>&lt;repo&gt;</code></li>
 </ul></li>
 </ul>
-<!-- PDF page 4 -->
 </section>
 <section id="web-api-2" class="level2">
 <h2 class="anchored" data-anchor-id="web-api-2">Web API</h2>
@@ -193,11 +189,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Keys can have restricted functionality and are only used for API access (Not as detrimental if compromised)</li>
 </ul></li>
 </ul>
-<!-- PDF page 5 -->
 </section>
 <section id="web-api-3" class="level2">
 <h2 class="anchored" data-anchor-id="web-api-3">Web API</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>register/login</p>
 <p>auth token</p>
 <pre><code>Request API key
@@ -210,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
 -Private data</code></pre>
 <p>Server</p>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="oauth" class="level2">
 <h2 class="anchored" data-anchor-id="oauth">OAuth?</h2>
@@ -218,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This setup works well enough</li>
 <li>So where does OAuth come in?</li>
 </ul>
-<!-- PDF page 7 -->
 </section>
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
@@ -233,7 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide07-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 8 -->
 </section>
 <section id="the-problem-1" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem-1">The Problem</h2>
@@ -241,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>party API to create/access/modify your users’ private</p>
 <p>data</p>
 <p>How do we do this securely?</p>
-<!-- PDF page 9 -->
 </section>
 <section id="a-bad-attempt" class="level2">
 <h2 class="anchored" data-anchor-id="a-bad-attempt">A BAD Attempt</h2>
@@ -255,7 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>This would require us to store plaintext passwords so we can reuse them each time a user wants to access the API through our app</li>
 </ul>
-<!-- PDF page 10 -->
 </section>
 <section id="another-bad-attempt" class="level2">
 <h2 class="anchored" data-anchor-id="another-bad-attempt">Another BAD Attempt</h2>
@@ -274,11 +263,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Bigger problem if the API charges $ per access</li>
 </ul></li>
 </ul>
-<!-- PDF page 11 -->
 </section>
 <section id="our-app-asks-the-user-for-their-api-key" class="level2">
 <h2 class="anchored" data-anchor-id="our-app-asks-the-user-for-their-api-key">• Our app asks the user for their API key</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Simple Overview [BAD Attempt]:</p>
 <ol type="1">
 <li>Request API key</li>
@@ -289,11 +276,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account" class="level2">
 <h2 class="anchored" data-anchor-id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account">• Our app asks the user for their API key • User visits the API and obtains an API key for their account</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Simple Overview [BAD Attempt]:</p>
 <ol type="1">
 <li><p>Request API key</p></li>
@@ -308,11 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account-user-hands-their-key-over-to-us" class="level2">
 <h2 class="anchored" data-anchor-id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account-user-hands-their-key-over-to-us">• Our app asks the user for their API key • User visits the API and obtains an API key for their account • User hands their key over to us</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Simple Overview [BAD Attempt]:</p>
 <ol type="1">
 <li><p>Request API key</p></li>
@@ -328,11 +311,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide13-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 14 -->
 </section>
 <section id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account-user-hands-their-key-over-to-us-we-use-this-key-to-access-the-api-for-them-or-login-using-this-service" class="level2">
 <h2 class="anchored" data-anchor-id="our-app-asks-the-user-for-their-api-key-user-visits-the-api-and-obtains-an-api-key-for-their-account-user-hands-their-key-over-to-us-we-use-this-key-to-access-the-api-for-them-or-login-using-this-service">• Our app asks the user for their API key • User visits the API and obtains an API key for their account • User hands their key over to us • We use this key to access the API for them (Or login using this service)</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Simple Overview [BAD Attempt]:</p>
 <ol start="5" type="1">
 <li><p>API access</p></li>
@@ -350,11 +331,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 15 -->
 </section>
 <section id="the-api-has-no-idea-that-the-user-allowed-your-app-to-use-this-the-app-using-the-key-looks-the-same-as-the-user-using-the" class="level2">
 <h2 class="anchored" data-anchor-id="the-api-has-no-idea-that-the-user-allowed-your-app-to-use-this-the-app-using-the-key-looks-the-same-as-the-user-using-the">• The API has no idea that the user allowed your app to use this • The app using the key looks the same as the user using the</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Security issue - Lack of accountability of the client</p>
 <p>key</p>
 <p>key</p>
@@ -374,11 +353,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 16 -->
 </section>
 <section id="your-server-is-responsible-for-handling-the-api-key-if-the-key-is-compromised-attackers-requests-look" class="level2">
 <h2 class="anchored" data-anchor-id="your-server-is-responsible-for-handling-the-api-key-if-the-key-is-compromised-attackers-requests-look">• Your server is responsible for handling the API key • If the key is compromised, attackers requests look</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Security issue - No compromise detection</p>
 <p>like they come from the user</p>
 <ol start="5" type="1">
@@ -397,11 +374,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 17 -->
 </section>
 <section id="the-user-has-to-handle-their-own-api-key-key-can-be-compromised-at-this-point-never-trust-your-users.-not-even-with-their-own-security" class="level2">
 <h2 class="anchored" data-anchor-id="the-user-has-to-handle-their-own-api-key-key-can-be-compromised-at-this-point-never-trust-your-users.-not-even-with-their-own-security">• The user has to handle their own API key • Key can be compromised at this point • Never trust your users. Not even with their own security</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Security issue - Never trust your users</p>
 <ol start="5" type="1">
 <li><p>API access</p></li>
@@ -419,7 +394,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </ol>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 18 -->
 </section>
 <section id="oauth-2.0" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0">OAuth 2.0</h2>
@@ -438,7 +412,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Protected from outside attackers</li>
 </ul></li>
 </ul>
-<!-- PDF page 19 -->
 </section>
 <section id="oauth-2.0-1" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0-1">OAuth 2.0</h2>
@@ -450,7 +423,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>User never handles their access token (No need to trust them)</li>
 </ul></li>
 </ul>
-<!-- PDF page 20 -->
 </section>
 <section id="oauth-2.0-2" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0-2">OAuth 2.0</h2>
@@ -468,7 +440,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Use the implicit grant flow (This is not allowed on the HW)</li>
 </ul></li>
 </ul>
-<!-- PDF page 21 -->
 </section>
 <section id="oauth-2.0---client-registration" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0---client-registration">OAuth 2.0 - Client Registration</h2>
@@ -481,11 +452,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Redirect URI: Provided by you. This is where the API will send your users after they grant you access to the API</li>
 </ul></li>
 </ul>
-<!-- PDF page 22 -->
 </section>
 <section id="well-update-our-picture-with-the-full" class="level2">
 <h2 class="anchored" data-anchor-id="well-update-our-picture-with-the-full">• We’ll update our picture with the full</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>OAuth authentication code flow</p>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
@@ -503,11 +472,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 23 -->
 </section>
 <section id="lets-break-this-down" class="level2">
 <h2 class="anchored" data-anchor-id="lets-break-this-down">• Let’s break this down</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -524,11 +491,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 24 -->
 </section>
 <section id="your-app-asks-the-user-to-obtain-an-authorization" class="level2">
 <h2 class="anchored" data-anchor-id="your-app-asks-the-user-to-obtain-an-authorization">• 1: Your app asks the user to obtain an authorization</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>grant allowing the app to use the API on their behalf</p>
 <ol type="1">
 <li>Authorization Request</li>
@@ -539,11 +504,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 25 -->
 </section>
 <section id="the-user-sends-the-request-to-the-user-is-authenticated-by-the-user-is-asked-if-they-want-to-allow-contains-a-list-of-scopes" class="level2">
 <h2 class="anchored" data-anchor-id="the-user-sends-the-request-to-the-user-is-authenticated-by-the-user-is-asked-if-they-want-to-allow-contains-a-list-of-scopes">• 2. The user sends the request to • The user is authenticated by the • User is asked if they want to allow • Contains a list of scopes</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>the authentication server</p>
 <p>API (username/password or auth</p>
 <p>token)</p>
@@ -557,11 +520,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide25-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 26 -->
 </section>
 <section id="if-the-user-is-authenticated-and-accepts-an-the-grant-contains-an-authorization-code" class="level2">
 <h2 class="anchored" data-anchor-id="if-the-user-is-authenticated-and-accepts-an-the-grant-contains-an-authorization-code">• 3: If the user is authenticated and accepts, an • The grant contains an authorization code</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>authorization grant is sent to the user</p>
 <ol type="1">
 <li><p>Authorization Request</p></li>
@@ -574,11 +535,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 27 -->
 </section>
 <section id="your-app-receives-a-request-from-the-user-at-the-your-app-now-has-permission-from-the-user-to" class="level2">
 <h2 class="anchored" data-anchor-id="your-app-receives-a-request-from-the-user-at-the-your-app-now-has-permission-from-the-user-to">• 4: Your app receives a request from the user at the • Your app now has permission from the user to</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <pre><code>redirect URI containing the authorization grant
 access the API</code></pre>
 <ol type="1">
@@ -593,11 +552,9 @@ access the API</code></pre>
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide27-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 28 -->
 </section>
 <section id="your-app-will-connect-to-the-auth-server-and-cash-in-the-this-step-prevents-the-user-from-ever-handling-their-access-token" class="level2">
 <h2 class="anchored" data-anchor-id="your-app-will-connect-to-the-auth-server-and-cash-in-the-this-step-prevents-the-user-from-ever-handling-their-access-token">• 5: Your app will connect to the auth server and “cash in” the • This step prevents the user from ever handling their access token</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>grant for an access token</p>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
@@ -612,11 +569,9 @@ access the API</code></pre>
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 29 -->
 </section>
 <section id="the-auth-server-will-verify-the-identity-of-the-client" class="level2">
 <h2 class="anchored" data-anchor-id="the-auth-server-will-verify-the-identity-of-the-client">• 6: The auth server will verify the identity of the client</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <pre><code>using a client secret and will send the access token
 directly to your app</code></pre>
 <ol start="5" type="1">
@@ -633,11 +588,9 @@ directly to your app</code></pre>
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide29-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 30 -->
 </section>
 <section id="your-app-can-now-use-the-access-token-to-access-the-api-for-your-user-if-the-user-clicked-login-with-3rd-party-verify-their-identity-through-the-api-create-an-account-for-them-based-on-this-identity" class="level2">
 <h2 class="anchored" data-anchor-id="your-app-can-now-use-the-access-token-to-access-the-api-for-your-user-if-the-user-clicked-login-with-3rd-party-verify-their-identity-through-the-api-create-an-account-for-them-based-on-this-identity">• 7/8: Your app can now use the access token to access the API for your user • If the user clicked “login with 3rd party”, verify their identity through the API • Create an account for them based on this identity</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -654,11 +607,9 @@ directly to your app</code></pre>
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 31 -->
 </section>
 <section id="oauth-2.0---authorization-code-flow" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>

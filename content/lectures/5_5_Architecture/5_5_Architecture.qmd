@@ -16,13 +16,10 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Architecture
 
-<!-- PDF page 2 -->
 ## Rendering HTML
 
-<!-- PDF page 3 -->
 ## HTML Templates
 
 - Problems:
@@ -35,7 +32,6 @@ released: false
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 4 -->
 ## Rendering HTML
 
 - Templates allow us to separate the HTML (Structure of the page) from the content that will be displayed on the page
@@ -44,7 +40,6 @@ released: false
 
 ![](assets/slide03-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 5 -->
 ## Rendering HTML
 
 - Architecture Decision: When/where do we render HTML?
@@ -53,27 +48,23 @@ released: false
 - Client-Side
   - Your server hosts HTML templates and data endpoints and has the client render the final HTML
 
-<!-- PDF page 6 -->
 ## SPA - Single Page Application
 
 - Take client-side rendering to the extreme
   - HTML/CSS/JS is only sent one time
   - All content is requested later and rendered client-side
-- Give us features like “infinite scroll”
+- Give us features like "infinite scroll"
 - The page never reloads
 
-<!-- PDF page 7 -->
 ## Modularization
 
-<!-- PDF page 8 -->
 ## Modularization
 
 - The code for a large web app can become difficult to maintain
-  - Eg. If you have most of your code in server.py, it’s difficult to add new features and debug existing features
+  - Eg. If you have most of your code in server.py, it's difficult to add new features and debug existing features
 - If helps to modularize your code
   - Split it up into smaller, easier to maintain, chunks
 
-<!-- PDF page 9 -->
 ## Modularization
 
 - First step to modularize a web app:

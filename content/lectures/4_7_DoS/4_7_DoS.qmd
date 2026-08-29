@@ -13,10 +13,8 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## DoS
 
-<!-- PDF page 2 -->
 ## Denial of Service
 
 - Denial of Service (DoS) Attack
@@ -27,14 +25,12 @@ released: false
   - Anyone attempting to use the app during the attack will not get responses from their requests
 - Discuss: How would you attack a server?
 
-<!-- PDF page 3 -->
 ## DoS Prevention
 
 - Constant back-and-forth between attacks and prevention
 - Each side continuously evolves in an attempt to counter the other
 - Preventing DoS attacks is difficult without affecting legitimate users
 
-<!-- PDF page 4 -->
 ## DoS -Brute Force
 
 - Brute force attack
@@ -47,7 +43,6 @@ released: false
   - The attack is effectively a load test
   - Your app should be ready for a large number of users
 
-<!-- PDF page 5 -->
 ## DoS - Content-Length
 
 - An attacker can get more sophisticated than brute force by playing with the Content-Length header
@@ -60,7 +55,6 @@ released: false
   - Your code gets stuck in an infinite loop
   - Send these requests in a loop to force the server to keep many connections open
 
-<!-- PDF page 6 -->
 ## DoS - Slow Send
 
 - Next step of prevention:
@@ -72,7 +66,6 @@ released: false
   - eg. Set Content-Length to 100,000, then send 10 bytes/second
   - Prevents the timeout from activating
 
-<!-- PDF page 7 -->
 ## DoS - Slow Send
 
 - Next evolution of the attack:
@@ -82,7 +75,6 @@ released: false
   - Prevention must distinguish between a slow send attack and a legitimate user with a slow connection
   - Attackers evolve to accurately simulate a user with a slow connection
 
-<!-- PDF page 8 -->
 ## DoS - Slow Read
 
 - A related attack is to read server responses very slowly
@@ -90,7 +82,6 @@ released: false
 - Can take a very long time to read one response from the server
   - Server must keep this TCP connection open the whole time
 
-<!-- PDF page 9 -->
 ## DoS - SYN Flood
 
 - Recall the TCP three way handshake
@@ -100,7 +91,6 @@ released: false
 
 ![](assets/slide09-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## DoS - SYN Flood
 
 - SYN Flood attack:
@@ -114,7 +104,6 @@ released: false
 
 ![](assets/slide09-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## DoS Prevention: IP Blocking
 
 - IP blocking
@@ -125,7 +114,6 @@ released: false
   - Configure nginx to forward the real ip address of the client in a header
   - Read the header in your server code to add IP blocking
 
-<!-- PDF page 12 -->
 ## DDoS
 
 - So we block offending IP addresses
@@ -133,7 +121,6 @@ released: false
   - IP addresses can be spoofed..
   - But more problematic is the DDoS attack
 
-<!-- PDF page 13 -->
 ## DDoS
 
 - Distributed Denial of Service (DDoS)
@@ -142,7 +129,6 @@ released: false
     - Launch any/all of the previous attacks from all machines
   - Very difficult to prevent against since it can look much more like legitimate traffic from a variety of users
 
-<!-- PDF page 14 -->
 ## DDoS and BotNets
 
 - How does an attacker gain access to enough machines to launch a DDoS attack?
@@ -153,7 +139,6 @@ released: false
   - Do it for the lolz
   - No real gain for the attacker
 
-<!-- PDF page 15 -->
 ## DDoS and BotNets
 
 - Viruses in {{current_year}}

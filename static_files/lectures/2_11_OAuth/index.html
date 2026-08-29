@@ -35,7 +35,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3b44b8b2b341f9e0980ba73a69236046.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -137,14 +137,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<!-- PDF page 1 -->
 <section id="oauth-2.0---extras" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0---extras">OAuth 2.0 - Extras</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="oauth-2.0---authorization-code-flow" class="level2">
 <h2 class="anchored" data-anchor-id="oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -161,16 +158,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide02-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 3 -->
 </section>
 <section id="xsrf-and-state" class="level2">
 <h2 class="anchored" data-anchor-id="xsrf-and-state">XSRF and State</h2>
-<!-- PDF page 4 -->
 </section>
 <section id="slide-4" class="level2">
 <h2 class="anchored" data-anchor-id="slide-4">Slide 4</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF - Cross-Site Request Forgery</p>
 <ul>
 <li>An attacker initiates their own authorization request with their credentials
@@ -189,11 +182,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 5 -->
 </section>
 <section id="the-attacker-receives-a-legitimate-authorization-grant-this-code-is-linked-to-the-attackers-account-in-the-api" class="level2">
 <h2 class="anchored" data-anchor-id="the-attacker-receives-a-legitimate-authorization-grant-this-code-is-linked-to-the-attackers-account-in-the-api">• The attacker receives a legitimate Authorization grant • This code is linked to the attackers account in the API</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF - Cross-Site Request Forgery</p>
 <p>containing a legitimate code</p>
 <ol start="2" type="1">
@@ -206,11 +197,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 6 -->
 </section>
 <section id="xsrf---cross-site-request-forgery" class="level2">
 <h2 class="anchored" data-anchor-id="xsrf---cross-site-request-forgery">XSRF - Cross-Site Request Forgery</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The attacker launches an XSRF attack by getting the user to click any link controlled by the attacker</li>
 <li>Respond with a 302 to send them to your app with a properly formatted query string with the authorization code
@@ -228,11 +217,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 7 -->
 </section>
 <section id="user-is-redirected-to-your-app-this-makes-the-link-seem-legitimate-since-they-never-see-the-attackers-your-app-sees-an-authorization-code-and-does-its-thing" class="level2">
 <h2 class="anchored" data-anchor-id="user-is-redirected-to-your-app-this-makes-the-link-seem-legitimate-since-they-never-see-the-attackers-your-app-sees-an-authorization-code-and-does-its-thing">• User is redirected to your app • This makes the link seem legitimate since they never see the attacker’s • Your app sees an authorization code and does its thing</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF - Cross-Site Request Forgery</p>
 <p>content</p>
 <ol start="4" type="1">
@@ -245,12 +232,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 8 -->
 </section>
 <section id="slide-8" class="level2">
 <h2 class="anchored" data-anchor-id="slide-8">Slide 8</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF - Cross-Site Request Forgery</p>
 <ul>
 <li>Your app trades the code in for an access token</li>
@@ -271,12 +255,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 9 -->
 </section>
 <section id="slide-9" class="level2">
 <h2 class="anchored" data-anchor-id="slide-9">Slide 9</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF - Cross-Site Request Forgery</p>
 <ul>
 <li>When the user uses your app, API accesses are made on behalf of the attacker (The access token is linked to the attacker)
@@ -296,11 +277,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
 </section>
 <section id="to-prevent-this-attack-generate-a-state-value-and-add-it-to-the-the-state-value-is-linked-to-the-user-initiating-the-request-rfc-suggest-using-a-hash-of-their-state-token-eg.-session-token" class="level2">
 <h2 class="anchored" data-anchor-id="to-prevent-this-attack-generate-a-state-value-and-add-it-to-the-the-state-value-is-linked-to-the-user-initiating-the-request-rfc-suggest-using-a-hash-of-their-state-token-eg.-session-token">• To prevent this attack, generate a “state” value and add it to the • The state value is linked to the user initiating the request • RFC suggest using a hash of their state token (eg. Session token)</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF Prevention - State</p>
 <p>query string</p>
 <ol type="1">
@@ -312,11 +291,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
 </section>
 <section id="if-a-state-is-present-the-api-sends-it-back-in-addition-to-the-authorization-code-your-app-verifies-that-its-the-same-state-that-was-given-to-this-user" class="level2">
 <h2 class="anchored" data-anchor-id="if-a-state-is-present-the-api-sends-it-back-in-addition-to-the-authorization-code-your-app-verifies-that-its-the-same-state-that-was-given-to-this-user">• If a state is present: • The API sends it back in addition to the authorization code • Your app verifies that it’s the same state that was given to this user</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF Prevention - State</p>
 <p>in the authorization request</p>
 <ol start="4" type="1">
@@ -328,11 +305,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
 </section>
 <section id="during-an-attack-the-authorization-grant-will-contain-the-attackers-state-or-a-value-that-was-guessedgenerated-by-the-attack-important-to-have-enough-entropy-that-the-attacker-cannot-guess-the" class="level2">
 <h2 class="anchored" data-anchor-id="during-an-attack-the-authorization-grant-will-contain-the-attackers-state-or-a-value-that-was-guessedgenerated-by-the-attack-important-to-have-enough-entropy-that-the-attacker-cannot-guess-the">• During an attack, the authorization grant will contain the attacker’s state • Or a value that was guessed/generated by the attack • Important to have enough entropy that the attacker cannot guess the</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>XSRF Prevention - State</p>
 <p>user’s state</p>
 <ol start="4" type="1">
@@ -346,16 +321,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p>Attacker</p>
 <p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
 </section>
 <section id="refresh-tokens" class="level2">
 <h2 class="anchored" data-anchor-id="refresh-tokens">Refresh Tokens</h2>
-<!-- PDF page 14 -->
 </section>
 <section id="slide-14" class="level2">
 <h2 class="anchored" data-anchor-id="slide-14">Slide 14</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Refresh Tokens</p>
 <ul>
 <li>Very common for the API to issue a refresh token in addition to the access token</li>
@@ -371,11 +342,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>User / Resource Owner</p>
 <p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 15 -->
 </section>
 <section id="refresh-tokens-if-the-authentication-server-and-resource-server-are-a-single-server---refresh-authentication-server-handles-all-token-generation-and-authentication-resource-server-only-sees-the-access-token-and-hosts-the-protected-resources" class="level2">
 <h2 class="anchored" data-anchor-id="refresh-tokens-if-the-authentication-server-and-resource-server-are-a-single-server---refresh-authentication-server-handles-all-token-generation-and-authentication-resource-server-only-sees-the-access-token-and-hosts-the-protected-resources">Refresh Tokens • If the authentication server and resource server are a single server -&gt; refresh • Authentication server handles all token generation and authentication • Resource server only sees the access token and hosts the protected resources</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>tokens don’t make much sense</p>
 <p>Authorization Grant</p>
 <p>Access Token and Refresh Token</p>
@@ -389,12 +358,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>Server</p>
 <p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 16 -->
 </section>
 <section id="slide-16" class="level2">
 <h2 class="anchored" data-anchor-id="slide-16">Slide 16</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Refresh Tokens - Advantages (Security)</p>
 <ul>
 <li>The access token is used often and is sent to the resource server on each request</li>
@@ -413,12 +379,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>Server</p>
 <p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 17 -->
 </section>
 <section id="slide-17" class="level2">
 <h2 class="anchored" data-anchor-id="slide-17">Slide 17</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Refresh Tokens - Advantages (Performance)</p>
 <ul>
 <li>The access token must be verified on every request with the resource server</li>
@@ -440,12 +403,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>Server</p>
 <p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 18 -->
 </section>
 <section id="slide-18" class="level2">
 <h2 class="anchored" data-anchor-id="slide-18">Slide 18</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Refresh Tokens - Advantages (Performance)</p>
 <ul>
 <li>A faster method is to make access token self contained and verifiable without the auth server</li>
@@ -464,11 +424,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Your App / Client</p>
 <p>Server</p>
 <p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 19 -->
 </section>
 <section id="compromised-tokens" class="level2">
 <h2 class="anchored" data-anchor-id="compromised-tokens">Compromised Tokens</h2>
-<!-- PDF page 20 -->
 </section>
 <section id="compromised-access-token" class="level2">
 <h2 class="anchored" data-anchor-id="compromised-access-token">Compromised Access Token</h2>
@@ -484,7 +442,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Access tokens are short-lived to limit the amount of time a compromised token can be used</li>
 </ul></li>
 </ul>
-<!-- PDF page 21 -->
 </section>
 <section id="compromised-refresh-token" class="level2">
 <h2 class="anchored" data-anchor-id="compromised-refresh-token">Compromised Refresh Token</h2>
@@ -503,7 +460,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The API can revoke a refresh token at any time since the auth server is involved, including DB lookup of your client account, each time a refresh token is used</li>
 </ul></li>
 </ul>
-<!-- PDF page 22 -->
 </section>
 <section id="compromised-client-secret" class="level2">
 <h2 class="anchored" data-anchor-id="compromised-client-secret">Compromised Client Secret</h2>
@@ -521,16 +477,12 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <p><img src="assets/slide22-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 23 -->
 </section>
 <section id="alternate-flows" class="level2">
 <h2 class="anchored" data-anchor-id="alternate-flows">Alternate Flows</h2>
-<!-- PDF page 24 -->
 </section>
 <section id="slide-24" class="level2">
 <h2 class="anchored" data-anchor-id="slide-24">Slide 24</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Client Flow</p>
 <ul>
 <li>A simplified flow used for a client to access the API on its own behalf</li>
@@ -551,12 +503,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Resource Server</p>
 <p>Your App / Client</p>
 <p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 25 -->
 </section>
 <section id="slide-25" class="level2">
 <h2 class="anchored" data-anchor-id="slide-25">Slide 25</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Implicit/Device Flow</p>
 <ul>
 <li>Similar to Client flow in its simplicity</li>
@@ -579,12 +528,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Running your app</p>
 <p>without a server</p>
 <p><img src="assets/slide25-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 26 -->
 </section>
 <section id="slide-26" class="level2">
 <h2 class="anchored" data-anchor-id="slide-26">Slide 26</h2>
-<!-- REVIEW: no clear title found; check the heading -->
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <p>Implicit Flow</p>
 <ul>
 <li>This flow should not be used when there is a server that can keep a secret
@@ -606,7 +552,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Running your app</p>
 <p>without a server</p>
 <p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<!-- PDF page 27 -->
 </section>
 <section id="pkce" class="level2">
 <h2 class="anchored" data-anchor-id="pkce">PKCE</h2>
@@ -625,7 +570,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This would be the access token when using the implicit flow and it would be game over</li>
 </ul></li>
 </ul>
-<!-- PDF page 28 -->
 </section>
 <section id="pkce-1" class="level2">
 <h2 class="anchored" data-anchor-id="pkce-1">PKCE</h2>

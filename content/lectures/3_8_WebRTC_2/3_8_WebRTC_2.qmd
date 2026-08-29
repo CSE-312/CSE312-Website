@@ -13,13 +13,10 @@ reading-list: []
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## WebRTC
 
-<!-- PDF page 2 -->
 ## WebRTC
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Need to establish a real-time streaming peer-to-peer connection
 - But how?
@@ -28,10 +25,8 @@ released: false
 
 ![](assets/slide02-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 3 -->
 ## WebRTC - Connecting
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - One peer needs to get an offer to the other peer
 - This is an offer to establish a connection that contains:
@@ -42,10 +37,8 @@ webRTC-offer
 
 ![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 4 -->
 ## WebRTC - Connecting
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - The peer responds with an answer
 - The answer contains their audio/visual data
@@ -58,10 +51,8 @@ webRTC-answer
 
 ![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 5 -->
 ## webRTC-answer?
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 WebRTC - Connecting
 
@@ -72,10 +63,8 @@ webRTC-offer
 
 ![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 6 -->
 ## webRTC-answer?
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 WebRTC - Connecting
 
@@ -88,10 +77,8 @@ webRTC-offer
 
 ![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 7 -->
 ## webRTC-answer?
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 WebRTC - Connecting
 
@@ -103,10 +90,8 @@ webRTC-offer
 
 ![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 8 -->
 ## WebRTC - Signalling Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Offer and answer are sent through a signaling server
   - On the HW - You are the signaling server!!
@@ -125,10 +110,8 @@ Signalling Server
 
 ![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 9 -->
 ## WebRTC - Signalling Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - We need a method to send these messages
 - We'll need a way for the server to be able to send messages to each client in real-time
@@ -145,10 +128,8 @@ Signalling Server
 
 ![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 10 -->
 ## WebRTC - Signalling Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - We need a method to send these messages
 - We'll need a way for the server to be able to send messages to each client in real-time
@@ -166,10 +147,8 @@ Signalling Server
 
 ![](assets/slide10-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## WebRTC - Signalling Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - When your server receives a WebSocket frame containing an offer or answer
   - Send the payload to the other peer over their WebSocket
@@ -186,10 +165,8 @@ Signalling Server
 
 ![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## WebRTC - NATs
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - We have another issue..
 - How do we know the IP address and port for each peer?
@@ -218,10 +195,8 @@ Signalling Server
 
 ![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 13 -->
 ## WebRTC - NATs
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Devices are commonly "hidden" behind NAT routers
   - Network Address Translation
@@ -253,10 +228,8 @@ Signalling Server
 
 ![](assets/slide13-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 14 -->
 ## WebRTC - NATs
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - With a NAT:
   - Many devices on a local network can share a single public IP address
@@ -287,10 +260,8 @@ Signalling Server
 
 ![](assets/slide14-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 15 -->
 ## WebRTC - STUN Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Solution: Use a STUN (Session Traversal Utilities for NAT) Server
 - Each peer connects to a STUN server and asks for their public IP/port
@@ -307,10 +278,8 @@ STUN Server
 
 ![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 16 -->
 ## WebRTC - ICE Candidate
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Each peer sends their public IP/port, and connection information, in an ICE (Interactive Connectivity Establishment) candidate message
 - Whenever your signaling server receives an ICE candidate, forward it to the other peer
@@ -331,10 +300,8 @@ STUN Server
 
 ![](assets/slide16-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 17 -->
 ## WebRTC - ICE Candidate
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Candidate contains:
   - Connection type - UDP, not TCP
@@ -361,10 +328,8 @@ STUN Server
 
 ![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 18 -->
 ## WebRTC - Connection
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - And now we can establish a peer-to-peer connection!
 
@@ -392,10 +357,8 @@ STUN Server
 
 ![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## WebRTC - Summary
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - One peer sends an offer to the other
 - Other peer responds with an answer
@@ -426,10 +389,8 @@ STUN Server
 
 ![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## WebRTC - Summary
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Once the connection is established
 - The servers step aside and the clients stream directly to each other
@@ -445,10 +406,8 @@ STUN Server
 
 ![](assets/slide20-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 21 -->
 ## WebRTC - Summary
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Your role in all of this?
   - Route the offer/answer/candidate messages between peers
@@ -479,10 +438,8 @@ STUN Server
 
 ![](assets/slide21-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 22 -->
 ## WebRTC - Restrictions
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - The browser will not allow WebRTC connections when connected to a site using HTTP (as opposed to HTTPS)
 - Must have an encrypted connection to use WebRTC
@@ -512,10 +469,8 @@ STUN Server
 
 ![](assets/slide22-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 23 -->
 ## WebRTC - Restrictions
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Sometimes a peer-to-peer connection cannot even be established
   - Can have restrictive firewalls
@@ -524,10 +479,8 @@ STUN Server
 
 ![](assets/slide23-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 24 -->
 ## WebRTC - TURN Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - In cases where peer-to-peer is blocked:
   - Use a TURN (Traversals Using Relays around NAT) Server
@@ -541,10 +494,8 @@ TURN Server
 
 ![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 25 -->
 ## WebRTC - TURN Server
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - If you ask me... using a TURN server defeats the purpose of using a peer-to-peer technology
 - ... Unless you run your own TURN server!

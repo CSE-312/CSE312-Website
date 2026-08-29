@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-37e7f8af91ebff69a8129c8f4665e311.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -45,7 +45,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -150,13 +149,8 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<!-- PDF page 1 -->
-</section>
 <section id="buffers" class="slide level2">
 <h2>Buffers</h2>
-<!-- PDF page 2 -->
 </section>
 <section id="tcp-reminder" class="slide level2">
 <h2>TCP Reminder</h2>
@@ -169,7 +163,6 @@
 <li>Read from the TCP socket once to read the entire request</li>
 </ul></li>
 </ul>
-<!-- PDF page 3 -->
 </section>
 <section id="buffering-file-uploads" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -191,7 +184,6 @@ Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 4 -->
 </section>
 <section id="buffering-file-uploads-1" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -211,7 +203,6 @@ Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 5 -->
 </section>
 <section id="buffering-file-uploads-2" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -233,7 +224,6 @@ Content-Disposition: form-data; name="upload"; filename="flamingo.jpg"
 Content-Type: image/jpeg</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 6 -->
 </section>
 <section id="buffering-file-uploads-3" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -252,7 +242,6 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 7 -->
 </section>
 <section id="buffering-file-uploads-4" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -272,7 +261,6 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 8 -->
 </section>
 <section id="buffering-file-uploads-5" class="slide level2">
 <h2>Buffering File Uploads</h2>
@@ -291,11 +279,9 @@ Content-Disposition: form-data; name="upload"; filename="hq_image.png"
 Content-Type: image/png</code></pre>
 <pre><code>&lt;bytes_of_the_file&gt;
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-<!-- PDF page 9 -->
 </section>
 <section id="buffers-1" class="slide level2">
 <h2>Buffers</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>TCP socket libraries will use buffers</li>
 <li>No matter your language/library you will have a method/ function that reads bytes from the socket
@@ -307,12 +293,10 @@ Content-Type: image/png</code></pre>
 <p>User sends data to the server</p>
 <p>User</p>
 <p>Server</p>
-<p><img data-src="assets/slide09-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 10 -->
-</section>
+
+<img data-src="assets/slide09-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="buffer-questions" class="slide level2">
 <h2>Buffer Questions</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>What happens when the user has a lot of data to send?</li>
 <li>What if the user has a slow connection?</li>
@@ -323,12 +307,10 @@ Content-Type: image/png</code></pre>
 <p>User sends data to the server</p>
 <p>User</p>
 <p>Server</p>
-<p><img data-src="assets/slide10-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 11 -->
-</section>
+
+<img data-src="assets/slide10-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="buffer-answer" class="slide level2">
 <h2>Buffer Answer</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>The socket notifies your code when there is data to read - even if it’s not the entire request</li>
 <li>The socket server will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
@@ -339,12 +321,10 @@ Content-Type: image/png</code></pre>
 <p>User sends data to the server</p>
 <p>User</p>
 <p>Server</p>
-<p><img data-src="assets/slide11-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 12 -->
-</section>
+
+<img data-src="assets/slide11-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="buffers-2" class="slide level2">
 <h2>Buffers</h2>
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 <ul>
 <li>Now that we’re handling file uploads, we must be aware of these buffers</li>
 <li>The server will need data that persists across multiple calls that read bytes from a socket
@@ -356,9 +336,8 @@ Content-Type: image/png</code></pre>
 <p>User sends data to the server</p>
 <p>User</p>
 <p>Server</p>
-<p><img data-src="assets/slide12-diagram.jpg" alt="TODO: describe this image"></p>
-<!-- PDF page 13 -->
-</section>
+
+<img data-src="assets/slide12-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="http-buffers" class="slide level2">
 <h2>HTTP Buffers</h2>
 <ul>
@@ -371,7 +350,6 @@ Content-Type: image/png</code></pre>
 <li>Process the request</li>
 </ul></li>
 </ul>
-<!-- PDF page 14 -->
 </section>
 <section id="assumptions" class="slide level2">
 <h2>Assumptions</h2>
@@ -388,7 +366,6 @@ Content-Type: image/png</code></pre>
 </ul></li>
 </ul>
 <p>received_data = self.request.recv(1048576)</p>
-<!-- PDF page 15 -->
 </section>
 <section id="buffers-3" class="slide level2">
 <h2>Buffers</h2>
@@ -398,7 +375,6 @@ Content-Type: image/png</code></pre>
 <li>ie. The total number of bytes read for one request will be larger than the Content-Length</li>
 </ul></li>
 </ul>
-<!-- PDF page 16 -->
 </section>
 <section id="demos" class="slide level2">
 <h2>Demos</h2>
@@ -550,7 +526,7 @@ Content-Type: image/png</code></pre>
         defaultTiming: null,
 
         // Enable slide navigation via mouse wheel
-        mouseWheel: false,
+        mouseWheel: true,
 
         // The display mode that will be used to show slides
         display: 'block',
@@ -565,7 +541,7 @@ Content-Type: image/png</code></pre>
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'fade',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

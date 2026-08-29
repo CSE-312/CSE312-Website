@@ -20,10 +20,8 @@ reading-list:
 released: false
 ---
 
-<!-- PDF page 1 -->
 ## Video - ABR
 
-<!-- PDF page 2 -->
 ## The Problem
 
 - You host a video on your web app
@@ -33,7 +31,6 @@ released: false
   - Very slow to load
   - Entire file must download even for users who will only watch for a few seconds
 
-<!-- PDF page 3 -->
 ## Chunking
 
 - Avoid the requirement of downloading the entire video before it plays
@@ -45,7 +42,6 @@ released: false
   - If the user skips around in the video, only request they chunk they skipped to
   - If the user leaves the page without finishing the video, the entire file doesn't have to be downloaded
 
-<!-- PDF page 4 -->
 ## Chunking - Range
 
 - Even mp4 videos can be chunked
@@ -58,7 +54,6 @@ released: false
   - eg. Content-Range: 10000-20000/500000
   - eg. Content-Range: 0-499999/500000 if the entire file is sent
 
-<!-- PDF page 5 -->
 ## Chunking - Range
 
 - Using the Range header can be effective in some cases, however:
@@ -67,7 +62,6 @@ released: false
   - Some browsers might not implement Range and ask for the entire file
 - We would like a more robust solution
 
-<!-- PDF page 6 -->
 ## Chunking - Multiple Files
 
 - Instead of relying on the browser asking for a specific range of bytes..
@@ -77,7 +71,6 @@ released: false
   - User only watches a few seconds -> Only need to request the first few segments
   - User skips to the middle of the video -> Request the middle segment
 
-<!-- PDF page 7 -->
 ## HLS vs MPEG-DASH
 
 - Two major protocols support the idea of breaking a video into smaller segments/chunks: HLS and MPEG-DASH
@@ -92,10 +85,8 @@ released: false
   - No support on Apple devices
   - Spec published as ISO/IEC 23009-1:2022 - Available for $245 (!)
 
-<!-- PDF page 8 -->
 ## HLS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Divide the video into multiple .ts files
   - MPEG Transport Stream files
@@ -106,7 +97,6 @@ released: false
 
 ![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 9 -->
 ## HLS - Transcoding
 
 ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8
@@ -119,10 +109,8 @@ ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8
   - Since our use case is hosting Video on Demand (VOD), we want to keep every ts file in the index
   - Setting the list size to 0 means the size is not limited
 
-<!-- PDF page 10 -->
 ## MPEG-DASH
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Divide the video into multiple files that can use a variety of formats (m4s by default in ffmpeg output which is mp4 encoded)
 - One .mpd (Media Presentation Description) index file containing tons of information in an XML format
@@ -131,16 +119,13 @@ ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8
 
 ![](assets/slide10-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 11 -->
 ## MPEG-DASH
 
-<!-- REVIEW: mostly an image; write a text description -->
 
 - Full mpd file from the example
 
 ![](assets/slide11-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 12 -->
 ## MPEG-DASH - Transcoding
 
 ffmpeg -i space.mp4 -f dash space.mpd
@@ -151,10 +136,8 @@ ffmpeg -i space.mp4 -f dash space.mpd
   - All other files follow a default naming convention
   - May want to create a new directory for each video to avoid naming conflicts
 
-<!-- PDF page 13 -->
 ## Adaptive Bit-Rate Streaming
 
-<!-- PDF page 14 -->
 ## The Problem
 
 - You host a video on your web app
@@ -167,7 +150,6 @@ ffmpeg -i space.mp4 -f dash space.mpd
   - Allows users with slow connections to enjoy your content
   - Delivers high quality to users with high-speed Internet
 
-<!-- PDF page 15 -->
 ## Adaptive Bit-Rate
 
 - Instead of hosting the a single video at a single resolution
@@ -177,7 +159,6 @@ ffmpeg -i space.mp4 -f dash space.mpd
   - Their browser adapts to the current download bandwidth available
   - Stream the highest bit rate video that fits the bandwidth
 
-<!-- PDF page 16 -->
 ## Adaptive Bit-Rate
 
 - Using HLS or MPEG-DASH
@@ -186,7 +167,6 @@ ffmpeg -i space.mp4 -f dash space.mpd
 - With the video segmented into ~2-10 second chucks
   - Easy for the browser to switch between resolutions
 
-<!-- PDF page 17 -->
 ## Adaptive Bit-Rate
 
 - The browser can adapt the requested bit-rate based on current conditions
@@ -204,10 +184,8 @@ wifi slows down
 
 wifi speeds up
 
-<!-- PDF page 18 -->
 ## Adaptive Bit-Rate - HLS
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Using HLS, m3u8 index files can be nested
 - Convert your video into multiple HLS resolutions
@@ -216,7 +194,6 @@ wifi speeds up
 
 ![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 19 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
 - The mpd file can contain multiple resolutions
@@ -227,7 +204,6 @@ wifi speeds up
 
 ![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 20 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
 - Period
@@ -237,7 +213,6 @@ wifi speeds up
 
 ![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 21 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
 - Adaptation Set
@@ -248,7 +223,6 @@ wifi speeds up
 
 ![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 22 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
 - Representation
@@ -258,7 +232,6 @@ wifi speeds up
 
 ![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 23 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
 - Representation
@@ -269,10 +242,8 @@ wifi speeds up
 
 ![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 24 -->
 ## Adaptive Bit-Rate - MPEG-DASH
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Each representation has it's own set of content files
   - eg. "chunk-stream0-0000X.m4s" and "init-stream0.m4s" are the files containing the video representation with id == 0
@@ -281,7 +252,6 @@ wifi speeds up
 
 ![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 25 -->
 ## Adaptive Bit-Rate
 
 - Your task [For AO2]:
@@ -292,7 +262,6 @@ wifi speeds up
   - You should not manually write any of these files
   - Do research to find the command(s)/flags you need to send to ffmpeg to do the job
 
-<!-- PDF page 26 -->
 ## Video Players
 
 - Most built-in video players do not support HLS or MPEG- DASH
@@ -301,10 +270,8 @@ wifi speeds up
   - Several players available (eg. dash.js)
   - Examples in the following slides will use video.js
 
-<!-- PDF page 27 -->
 ## Video Players
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - This example downloads the css and js for video.js from a CDN
 - Uses "class" and "data-setup" attributes on a video element to tell the library to do its thing
@@ -312,10 +279,8 @@ wifi speeds up
 
 ![](assets/slide27-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 28 -->
 ## Video Players
 
-<!-- REVIEW: diagram rendered whole; describe it in fig-alt -->
 
 - Your video player will now have a consistent look across all browsers
 - Don't have to worry about what formats each browser supports
@@ -323,10 +288,8 @@ wifi speeds up
 
 ![](assets/slide28-diagram.jpg){fig-alt="TODO: describe this image"}
 
-<!-- PDF page 29 -->
 ## Live Streaming
 
-<!-- PDF page 30 -->
 ## Live Streaming
 
 - We've talked about uploading and host mp4 videos using a streaming protocol
@@ -336,7 +299,6 @@ wifi speeds up
   - There will be several seconds of delay in the stream
   - Acceptable loss to gain accuracy
 
-<!-- PDF page 31 -->
 ## Live Streaming
 
 - Typical setup (eg. Twitch/YouTube Live/etc.)
@@ -345,7 +307,6 @@ wifi speeds up
   - The content of RTMP happens to be a media stream in this case
 - The server transcodes the video into a streaming format (eg. HLS/MPEG-DASH) and continually updates/ generates index files
 
-<!-- PDF page 32 -->
 ## Live Streaming
 
 - When a viewer visits a live stream
@@ -356,7 +317,6 @@ wifi speeds up
   - Serve an index file for then entire stream
   - No different than watching the stream live
 
-<!-- PDF page 33 -->
 ## Live Streaming
 
 - Since the transcoding process of the ingest server takes some time:
