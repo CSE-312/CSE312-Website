@@ -70,7 +70,7 @@
         <p>Goals:</p>
         <ul>
             <li>Host all the static files needed to load your homepage</li>
-            <li>Utilize separate modules/classes/files to organization your server code</li>
+            <li>Utilize separate modules/structs/files to organization your server code</li>
         </ul>
 
         <p>Concepts Covered:</p>
@@ -101,11 +101,11 @@
         </p>
 
         <br>
-        <h4>The Request Class</h4>
+        <h4>The Request Struct</h4>
 
         <p>
-            Create a class that will parse HTTP requests and set appropriate instance variables. This class should take a 
-            raw request as bytes and set instance variables containing the request information. These instance variables must include:
+            Create a struct that will parse HTTP requests and set appropriate instance variables. This struct should take a 
+            raw request as bytes and set fields containing the request information. These fields must include:
             <ul>
                 <li>method</li>
                 <li>path</li>
@@ -121,16 +121,16 @@
         <ul>
             <li>Headers may contain the character ':'</li>
             <li>The body of a request may contain the sequence "\r\n\r\n"</li>
-            <li>The body may contain data that is not text. If you treat the body as text, you will have to update this class in HW3 when you handle image and video uploads</li>
+            <li>The body may contain data that is not text. If you treat the body as text, you will have to update this struct in HW3 when you handle image and video uploads</li>
             <li>HTTP headers are case-insensitive so "Content-Length" and "content-length" should be treated the same</li>
         </ul>
 
 
         <br>
-        <h4>The Response Class</h4>
+        <h4>The Response Struct</h4>
 
         <p>
-            Create a class that will build HTTP responses with methods to populate the data of the response. This class must include ways to:
+            Create a struct that will build HTTP responses with methods to populate the data of the response. This struct must include ways to:
             <ul>
                 <li>Set the status code and message</li>
                 <li>Add headers</li>
@@ -140,7 +140,7 @@
                 <li>Always set the X-Content-Type-Options: nosniff header</li>
             </ul>
 
-            As with the Request class, you may way to add more functionality to this class in later objectives, including cookies.
+            As with the Request struct, you may way to add more functionality to this struct in later objectives, including cookies.
         </p>
 
         <p>Tips:</p>
@@ -152,10 +152,10 @@
 
 
         <br>
-        <h4>The Router Class</h4>
+        <h4>The Router Struct</h4>
 
         <p>
-            Create a class that will route different requests to the appropriate function. This class must include ways to:
+            Create a struct that will route different requests to the appropriate function. This struct must include ways to:
             <ul> 
                 <li>Add routes to the router containing the method, path, and function to call for that route</li>
                 <li>Route requests that do not have to match the exact path for the route (e.g. Host all files in the public directory for any 
@@ -167,10 +167,10 @@
 
         <p>Tips:</p>
         <ul>
-            <li>Your method that routes requests can take a Request object using your request class</li>
+            <li>Your method that routes requests can take a Request object using your request struct</li>
             <li>The method and path must both match for a route to be considered a match</li>
             <li>If multiple routes match the request, you must decide how to decide which route to use. The typical way to do this is to choose 
-                the route that was added first. Then to route a request, iterate through all routes in the order in which tehy were added until 
+                the route that was added first. Then to route a request, iterate through all routes in the order in which they were added until 
                 you find a match. Of no match is found, send your 404</li>
         </ul>
 
@@ -179,7 +179,7 @@
         <h3>Hosting Static Files</h3>
 
         <p>
-            This is the first task where you'll start adding functionality to your server (The three classes you've
+            This is the first task where you'll start adding functionality to your server (The three structs you've
             written will make
             it easier for you develop your server throughout the semester). Add a route to your router that will host all files in the
             public directory.
@@ -189,7 +189,7 @@
             To accomplish this task, you should add a route that will match any path starting with "/public", then
             extract the file path from the rest of the path and serve that files contents in the response. For
             example, if you receive a request for the path "/public/imgs/dog.jpg", you should read the file
-            "/public/imgs/dog.jpg" and send it in the body of a response. You must use the three support classes 
+            "/public/imgs/dog.jpg" and send it in the body of a response. You must use the three support structs 
             you've created to accomplish this.
         </p>
 
@@ -244,7 +244,7 @@
             this header for the exact spelling and syntax. If you are off by 1 character, the browser will not disable
             MIME
             type sniffing which renders your header useless and can be a security issue). It is recommended that
-            you add this header in your Response class so you'll never forget it
+            you add this header in your Response struct so you'll never forget it
         </p>
 
         <p>UTF-8: Some files contain emojis that will be displayed when the page loads. These characters must display
