@@ -194,7 +194,7 @@ ASCII characters
   - Surprises when your site doesn't work with certain versions of certain browsers
 - Best practice is to disable sniffing
 - Set this HTTP header to tell the browser you set the correct MIME type
-  - X-Content-Type-Options: nosnif
+  - X-Content-Type-Options: nosniff
 
 ## MIME Type Sniffing
 
@@ -214,7 +214,7 @@ ASCII characters
   - The browser notices something is wrong and sniffs out the MIME type of text/javascript and runs the script
   - You just got hacked!
 - Solution:
-  - X-Content-Type-Options: nosnif
+  - X-Content-Type-Options: nosniff
 
 ## MIME Types
 
