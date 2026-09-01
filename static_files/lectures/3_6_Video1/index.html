@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>How do we display a video on our page?
 <ul>
-<li>Not the same as images (Can’t use the <code>&lt;img&gt;</code> element)</li>
+<li>Not the same as images (Can't use the <code>&lt;img&gt;</code> element)</li>
 </ul></li>
 <li>Use the <code>&lt;video&gt;</code> element!</li>
 </ul>
@@ -180,8 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="displaying-video-2">Displaying Video</h2>
 <ul>
 <li>Specify the source file in a source element</li>
-<li>If the MIME type is omitted, the browser might be able to sniff the type (Don’t rely on this)</li>
-<li>This element will request “space.mp4” just like the src of an img</li>
+<li>If the MIME type is omitted, the browser might be able to sniff the type (Don't rely on this)</li>
+<li>This element will request "space.mp4" just like the src of an img</li>
 </ul>
 <pre><code>&lt;video width="400" controls autoplay muted&gt;
 &lt;source src="space.mp4" type="video/mp4"&gt;
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Browser will use the first source in the list that it supports</li>
 <li>Most browsers do not support mpd or m3u8 and will play the mp4</li>
 </ul></li>
-<li>Add text that is displayed for very old browsers that don’t support the HTML5 video element</li>
+<li>Add text that is displayed for very old browsers that don't support the HTML5 video element</li>
 </ul>
 <pre><code>&lt;video width="400" src="space.mp4" controls autoplay muted&gt;
 &lt;/video&gt;</code></pre>
@@ -248,7 +248,7 @@ Your browser does not support video playback
 <li>File extension pros:
 <ul>
 <li>Helpful for us humans to identify the type</li>
-<li>Let’s our OS recommend which program to use to open the file</li>
+<li>Let's our OS recommend which program to use to open the file</li>
 </ul></li>
 <li>File extensions cons:
 <ul>
@@ -274,9 +274,9 @@ Your browser does not support video playback
 <li>The first bytes of each file contain a signature
 <ul>
 <li>Identifies the type of the file</li>
-<li>Reliable(ish) since it’s part of the content of the file itself instead of the filename</li>
+<li>Reliable(ish) since it's part of the content of the file itself instead of the filename</li>
 </ul></li>
-<li>When the file extension can’t be trusted
+<li>When the file extension can't be trusted
 <ul>
 <li>Read the first bytes of the file</li>
 <li>Lookup the signature of these bytes</li>
@@ -285,7 +285,7 @@ Your browser does not support video playback
 <ul>
 <li>eg. JPEG images will start with
 <ul>
-<li>b’10JFIF’</li>
+<li>b'10JFIF'</li>
 </ul></li>
 </ul></li>
 <li>Find the signatures for each file type you support and determine the MIME type matching the signature</li>
@@ -313,7 +313,7 @@ Your browser does not support video playback
 <section id="media-processing-1" class="level2">
 <h2 class="anchored" data-anchor-id="media-processing-1">Media Processing</h2>
 <ul>
-<li>Process the media when it’s uploaded
+<li>Process the media when it's uploaded
 <ul>
 <li>Convert/Compress the image/video</li>
 <li>Only store and serve the converted files</li>
@@ -329,8 +329,8 @@ Your browser does not support video playback
 <section id="aspect-ratios" class="level2">
 <h2 class="anchored" data-anchor-id="aspect-ratios">Aspect Ratios</h2>
 <ul>
-<li>It’s important to preserve the original aspect ratio of the media</li>
-<li>In our examples, we’ll have a target maximum number of pixels for the height or width</li>
+<li>It's important to preserve the original aspect ratio of the media</li>
+<li>In our examples, we'll have a target maximum number of pixels for the height or width</li>
 <li>The Process:
 <ul>
 <li>Read the dimensions of the media to find the aspect ratio</li>
@@ -349,7 +349,7 @@ Your browser does not support video playback
 <ul>
 <li>Include the installation in your Dockerfile if using docker</li>
 </ul></li>
-<li>You may use any library you’d like to process videos</li>
+<li>You may use any library you'd like to process videos</li>
 </ul>
 </section>
 <section id="ffmpeg" class="level2">

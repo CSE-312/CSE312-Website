@@ -171,7 +171,7 @@
 <li>This is an offer to establish a connection that contains:
 <ul>
 <li>audio/visual codec, bitrate, etc details (How to interpret the bytes once the streaming starts)</li>
-<li>A username fragment (“ice-ufrag”) as a unique identifier</li>
+<li>A username fragment ("ice-ufrag") as a unique identifier</li>
 </ul></li>
 </ul>
 <p>webRTC-offer</p>
@@ -193,7 +193,7 @@
 <h2>webRTC-answer?</h2>
 <p>WebRTC - Connecting</p>
 <ul>
-<li>But there’s a problem</li>
+<li>But there's a problem</li>
 <li>How do we send these messages between two peers?</li>
 </ul>
 <p>webRTC-offer</p>
@@ -247,7 +247,7 @@
 <h2>WebRTC - Signalling Server</h2>
 <ul>
 <li>We need a method to send these messages</li>
-<li>We’ll need a way for the server to be able to send messages to each client in real-time</li>
+<li>We'll need a way for the server to be able to send messages to each client in real-time</li>
 </ul>
 <p>webRTC-offer</p>
 <p>webRTC-offer</p>
@@ -260,8 +260,8 @@
 <h2>WebRTC - Signalling Server</h2>
 <ul>
 <li>We need a method to send these messages</li>
-<li>We’ll need a way for the server to be able to send messages to each client in real-time</li>
-<li>Wow! It’s really convenient that we have WebSockets!</li>
+<li>We'll need a way for the server to be able to send messages to each client in real-time</li>
+<li>Wow! It's really convenient that we have WebSockets!</li>
 </ul>
 <p>webRTC-offer</p>
 <p>webRTC-offer</p>
@@ -307,7 +307,7 @@
 <section id="webrtc---nats-1" class="slide level2">
 <h2>WebRTC - NATs</h2>
 <ul>
-<li>Devices are commonly “hidden” behind NAT routers
+<li>Devices are commonly "hidden" behind NAT routers
 <ul>
 <li>Network Address Translation</li>
 </ul></li>
@@ -336,7 +336,7 @@
 <li>With a NAT:
 <ul>
 <li>Many devices on a local network can share a single public IP address</li>
-<li>Each device does not know it’s public IP/port used when it communicates to the outside world</li>
+<li>Each device does not know it's public IP/port used when it communicates to the outside world</li>
 <li>[Also the problem that port-forwarding solves]</li>
 </ul></li>
 </ul>
@@ -359,10 +359,10 @@
 <li>Solution: Use a STUN (Session Traversal Utilities for NAT) Server</li>
 <li>Each peer connects to a STUN server and asks for their public IP/port</li>
 <li>STUN server checks the origin IP/port and informs the client</li>
-<li>We’ll use Google’s free STUN server (stun2.1.google.com:19302)</li>
+<li>We'll use Google's free STUN server (stun2.1.google.com:19302)</li>
 </ul>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
 
@@ -375,8 +375,8 @@
 </ul>
 <p>webRTC-candidate</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -392,12 +392,12 @@
 <li>Username fragment - Uniquely identifies the connection</li>
 </ul></li>
 </ul>
-<p>{“candidate”:“candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/ network-id 1</p>
-<p>network-cost 10”,“sdpMid”:“0”,“sdpMLineIndex”:0}</p>
+<p>{"candidate":"candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/ network-id 1</p>
+<p>network-cost 10","sdpMid":"0","sdpMLineIndex":0}</p>
 <p>webRTC-candidate</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -414,8 +414,8 @@
 <p>webRTC-offer</p>
 <p>webRTC-answer</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -435,8 +435,8 @@
 <p>webRTC-offer</p>
 <p>webRTC-answer</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -475,8 +475,8 @@
 <p>webRTC-offer</p>
 <p>webRTC-answer</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -488,7 +488,7 @@
 <li>The browser will not allow WebRTC connections when connected to a site using HTTP (as opposed to HTTPS)</li>
 <li>Must have an encrypted connection to use WebRTC
 <ul>
-<li>*Unless connecting over localhost (Let’s us test locally)</li>
+<li>*Unless connecting over localhost (Let's us test locally)</li>
 </ul></li>
 </ul>
 <p>webRTC-offer</p>
@@ -497,8 +497,8 @@
 <p>webRTC-offer</p>
 <p>webRTC-answer</p>
 <p>webRTC-candidate</p>
-<p>What’s my IP?</p>
-<p>What’s my IP?</p>
+<p>What's my IP?</p>
+<p>What's my IP?</p>
 <p>Signalling Server</p>
 <p>STUN Server</p>
 <p>STUN Server</p>
@@ -533,8 +533,8 @@
 <section id="webrtc---turn-server-1" class="slide level2">
 <h2>WebRTC - TURN Server</h2>
 <ul>
-<li>If you ask me… using a TURN server defeats the purpose of using a peer-to-peer technology</li>
-<li>… Unless you run your own TURN server!</li>
+<li>If you ask me... using a TURN server defeats the purpose of using a peer-to-peer technology</li>
+<li>... Unless you run your own TURN server!</li>
 </ul>
 <p>Streaming Audio/Video</p>
 <p>Streaming Audio/Video</p>

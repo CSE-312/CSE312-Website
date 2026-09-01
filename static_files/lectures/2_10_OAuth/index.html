@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#oauth-2.0---details" id="toc-oauth-2.0---details" class="nav-link active" data-scroll-target="#oauth-2.0---details">OAuth 2.0 - Details</a></li>
   <li><a href="#oauth-2.0---authorization-code-flow" id="toc-oauth-2.0---authorization-code-flow" class="nav-link" data-scroll-target="#oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</a></li>
-  <li><a href="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" id="toc-well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" class="nav-link" data-scroll-target="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We’ll walk through the specific details of a user logging in with the 3rd party</a></li>
+  <li><a href="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" id="toc-well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" class="nav-link" data-scroll-target="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We'll walk through the specific details of a user logging in with the 3rd party</a></li>
   <li><a href="#slide-4" id="toc-slide-4" class="nav-link" data-scroll-target="#slide-4">Slide 4</a></li>
   <li><a href="#slide-5" id="toc-slide-5" class="nav-link" data-scroll-target="#slide-5">Slide 5</a></li>
   <li><a href="#parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect" id="toc-parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect" class="nav-link" data-scroll-target="#parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect">• Parameters: Response type, client id, scopes, redirect URI • We need to tell the user to send these 4 parameters to the API • How? Use a redirect!</a></li>
@@ -102,16 +102,16 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#slide-18" id="toc-slide-18" class="nav-link" data-scroll-target="#slide-18">Slide 18</a></li>
   <li><a href="#the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret" id="toc-the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret" class="nav-link" data-scroll-target="#the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret">• The API needs to authenticate our app during this step • Note: Steps 1-4 can all be spoofed by an attacker • We authenticate by sending the server our client secret</a></li>
   <li><a href="#slide-20" id="toc-slide-20" class="nav-link" data-scroll-target="#slide-20">Slide 20</a></li>
-  <li><a href="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" id="toc-apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" class="nav-link" data-scroll-target="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send “{client_id}:{client_secret}” base64 encoded</a></li>
+  <li><a href="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" id="toc-apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" class="nav-link" data-scroll-target="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send "{client_id}:{client_secret}" base64 encoded</a></li>
   <li><a href="#authorization-grant---authorization-header" id="toc-authorization-grant---authorization-header" class="nav-link" data-scroll-target="#authorization-grant---authorization-header">Authorization Grant - Authorization Header</a></li>
-  <li><a href="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" id="toc-authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" class="nav-link" data-scroll-target="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to “authorization_code” • Code: The value of the authorization code we’re sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</a></li>
+  <li><a href="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" id="toc-authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" class="nav-link" data-scroll-target="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to "authorization_code" • Code: The value of the authorization code we're sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</a></li>
   <li><a href="#slide-24" id="toc-slide-24" class="nav-link" data-scroll-target="#slide-24">Slide 24</a></li>
   <li><a href="#slide-25" id="toc-slide-25" class="nav-link" data-scroll-target="#slide-25">Slide 25</a></li>
   <li><a href="#slide-26" id="toc-slide-26" class="nav-link" data-scroll-target="#slide-26">Slide 26</a></li>
-  <li><a href="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" id="toc-the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" class="nav-link" data-scroll-target="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an “access_token”</a></li>
+  <li><a href="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" id="toc-the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" class="nav-link" data-scroll-target="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an "access_token"</a></li>
   <li><a href="#slide-28" id="toc-slide-28" class="nav-link" data-scroll-target="#slide-28">Slide 28</a></li>
-  <li><a href="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" id="toc-api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" class="nav-link" data-scroll-target="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can’t use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</a></li>
-  <li><a href="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" id="toc-now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" class="nav-link" data-scroll-target="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We’ll make an API request for the user’s profile information • This allows us to identify the user with a unique id (Usually email)</a></li>
+  <li><a href="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" id="toc-api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" class="nav-link" data-scroll-target="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can't use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</a></li>
+  <li><a href="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" id="toc-now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" class="nav-link" data-scroll-target="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We'll make an API request for the user's profile information • This allows us to identify the user with a unique id (Usually email)</a></li>
   <li><a href="#slide-31" id="toc-slide-31" class="nav-link" data-scroll-target="#slide-31">Slide 31</a></li>
   <li><a href="#slide-32" id="toc-slide-32" class="nav-link" data-scroll-target="#slide-32">Slide 32</a></li>
   <li><a href="#slide-33" id="toc-slide-33" class="nav-link" data-scroll-target="#slide-33">Slide 33</a></li>
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <p><img src="assets/slide02-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" class="level2">
-<h2 class="anchored" data-anchor-id="well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We’ll walk through the specific details of a user logging in with the 3rd party</h2>
+<h2 class="anchored" data-anchor-id="well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We'll walk through the specific details of a user logging in with the 3rd party</h2>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -186,8 +186,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-4">Slide 4</h2>
 <p>Authorization Request - App</p>
 <ul>
-<li>The user sends a request to our server by clicking the “login with …” button</li>
-<li>Our app will need access to the user’s account from the 3rd party API</li>
+<li>The user sends a request to our server by clicking the "login with ..." button</li>
+<li>Our app will need access to the user's account from the 3rd party API</li>
 <li>We ask the user for permission to use the API on their behalf</li>
 <li>The API will need several parameters in this request</li>
 </ul>
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-5">Slide 5</h2>
 <p>Authorization Request - Parameters</p>
 <ul>
-<li>Response type: Equal to “code” to indicate that we are requesting an authorization code</li>
+<li>Response type: Equal to "code" to indicate that we are requesting an authorization code</li>
 <li>Our client id: To identify our app</li>
 <li>scopes: A space-separated list of permissions we want from the user</li>
 <li>redirect URI: Must match the redirect URI when you registered your app</li>
@@ -260,8 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-7">Slide 7</h2>
 <p>Authorization Request - Redirect</p>
 <ul>
-<li>We respond to the “login with …” button press request with a 302 redirect</li>
-<li>The location header of the redirect is the URL of the api’s authentication server and the “/authorize” path</li>
+<li>We respond to the "login with ..." button press request with a 302 redirect</li>
+<li>The location header of the redirect is the URL of the api's authentication server and the "/authorize" path</li>
 <li>The 4 parameters are added to the query string of the request</li>
 </ul>
 <ol start="5" type="1">
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>By using a redirect, all the parameters are in the URL itself
 <ul>
-<li>They won’t be removed/blocked by the browser during redirection</li>
+<li>They won't be removed/blocked by the browser during redirection</li>
 </ul></li>
 <li>This means all values must be URL encoded, using percent-encoding</li>
 </ul>
@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-10">Slide 10</h2>
 <p>Authorization Request - API</p>
 <ul>
-<li>The API now authenticated the user’s identity and can pull their profile</li>
+<li>The API now authenticated the user's identity and can pull their profile</li>
 <li>The API knows our identity via the client id, but this is not authenticated</li>
 <li>The API knows the scopes that are being requested</li>
 </ul>
@@ -396,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-12">Slide 12</h2>
 <p>Authorization Grant - API redirect</p>
 <ul>
-<li>Assuming the user accepts, the API will respond to their “agree” button press with a redirect to our redirect URI
+<li>Assuming the user accepts, the API will respond to their "agree" button press with a redirect to our redirect URI
 <ul>
 <li>If the user does not agree, the process ends and our app does not get API access</li>
 </ul></li>
@@ -425,7 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-13">Slide 13</h2>
 <p>Authorization Grant - API redirect</p>
 <ul>
-<li>Since our response type was “code”, the redirect will contain an authorization code</li>
+<li>Since our response type was "code", the redirect will contain an authorization code</li>
 <li>The API needs to send our app information through the user just like we did in step 1
 <ul>
 <li>The API will use a 302 redirect with the code in a query string</li>
@@ -564,7 +564,7 @@ the user handled it</code></pre>
 <ul>
 <li>Recommendation: Use the requests library (This is allowed for your HW)</li>
 </ul></li>
-<li>Since we don’t have to go through the user via redirects, we can use POST requests and add parameters to the body of the requests</li>
+<li>Since we don't have to go through the user via redirects, we can use POST requests and add parameters to the body of the requests</li>
 </ul>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
@@ -613,7 +613,7 @@ the user handled it</code></pre>
 <ul>
 <li>The RFC requires both client id and client secret for authentication of our app
 <ul>
-<li>Recommends adding the secret in an “Authorization” header</li>
+<li>Recommends adding the secret in an "Authorization" header</li>
 <li>Allows the secret to be sent in the body if unable to use headers</li>
 <li>The secret cannot be sent in the URL</li>
 </ul></li>
@@ -638,7 +638,7 @@ the user handled it</code></pre>
 <p><img src="assets/slide20-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" class="level2">
-<h2 class="anchored" data-anchor-id="apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send “{client_id}:{client_secret}” base64 encoded</h2>
+<h2 class="anchored" data-anchor-id="apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send "{client_id}:{client_secret}" base64 encoded</h2>
 <p>Authorization Grant - Authorization Header</p>
 <p>using an Authorization header of type Basic</p>
 <ol start="5" type="1">
@@ -663,10 +663,10 @@ the user handled it</code></pre>
 <section id="authorization-grant---authorization-header" class="level2">
 <h2 class="anchored" data-anchor-id="authorization-grant---authorization-header">Authorization Grant - Authorization Header</h2>
 <ul>
-<li>If client_id == “abc” and client_secret == “123”</li>
-<li>“{client_id}:{client_secret}” == “abc:123”</li>
-<li>base64(“abc:123”) == “YWJjOjEyMw==” &lt;– base64 works with bytes so encode/decode before/after base64 encoding</li>
-<li>And your header is “Authorization: Basic YWJjOjEyMw==”</li>
+<li>If client_id == "abc" and client_secret == "123"</li>
+<li>"{client_id}:{client_secret}" == "abc:123"</li>
+<li>base64("abc:123") == "YWJjOjEyMw==" &lt;-- base64 works with bytes so encode/decode before/after base64 encoding</li>
+<li>And your header is "Authorization: Basic YWJjOjEyMw=="</li>
 </ul>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
@@ -688,7 +688,7 @@ the user handled it</code></pre>
 <p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" class="level2">
-<h2 class="anchored" data-anchor-id="authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to “authorization_code” • Code: The value of the authorization code we’re sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</h2>
+<h2 class="anchored" data-anchor-id="authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to "authorization_code" • Code: The value of the authorization code we're sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</h2>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -741,7 +741,7 @@ the user handled it</code></pre>
 <h2 class="anchored" data-anchor-id="slide-25">Slide 25</h2>
 <p>Authorization Grant - Final Request</p>
 <ul>
-<li>Send the final request to the “/token” endpoint of the API using a POST request
+<li>Send the final request to the "/token" endpoint of the API using a POST request
 <ul>
 <li>Authorization header for authentication</li>
 <li>Content in the body for details about the request</li>
@@ -796,7 +796,7 @@ the user handled it</code></pre>
 <p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" class="level2">
-<h2 class="anchored" data-anchor-id="the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an “access_token”</h2>
+<h2 class="anchored" data-anchor-id="the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an "access_token"</h2>
 <p>Access Token - Response</p>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
@@ -825,7 +825,7 @@ the user handled it</code></pre>
 <li>Each request must contain the access token</li>
 <li>Spotify: Access token is sent via an Authorization header of type Bearer
 <ul>
-<li>eg. If the token is “abc” Your header is “Authorization: Bearer abc”</li>
+<li>eg. If the token is "abc" Your header is "Authorization: Bearer abc"</li>
 </ul></li>
 </ul>
 <ol start="5" type="1">
@@ -848,7 +848,7 @@ the user handled it</code></pre>
 <p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" class="level2">
-<h2 class="anchored" data-anchor-id="api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can’t use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</h2>
+<h2 class="anchored" data-anchor-id="api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can't use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</h2>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -869,8 +869,8 @@ the user handled it</code></pre>
 <p><img src="assets/slide29-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" class="level2">
-<h2 class="anchored" data-anchor-id="now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We’ll make an API request for the user’s profile information • This allows us to identify the user with a unique id (Usually email)</h2>
-<p>API Access - Login with …</p>
+<h2 class="anchored" data-anchor-id="now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We'll make an API request for the user's profile information • This allows us to identify the user with a unique id (Usually email)</h2>
+<p>API Access - Login with ...</p>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>
 <li><p>Access Token</p></li>
@@ -892,11 +892,11 @@ the user handled it</code></pre>
 </section>
 <section id="slide-31" class="level2">
 <h2 class="anchored" data-anchor-id="slide-31">Slide 31</h2>
-<p>Private Data - Login with …</p>
+<p>Private Data - Login with ...</p>
 <ul>
 <li>Once we have an ID for the user verified by the 3rd party:
 <ul>
-<li>Create an account for the user with this ID (Just like the registered with your app, except you don’t store a password)</li>
+<li>Create an account for the user with this ID (Just like the registered with your app, except you don't store a password)</li>
 <li>Issue them an authentication token and set it as a cookie (Just like they logged into your app with a username/password)</li>
 </ul></li>
 </ul>
@@ -921,7 +921,7 @@ the user handled it</code></pre>
 </section>
 <section id="slide-32" class="level2">
 <h2 class="anchored" data-anchor-id="slide-32">Slide 32</h2>
-<p>Login with …</p>
+<p>Login with ...</p>
 <ul>
 <li>When a user logs in again with a 3rd party (Assuming their auth token expired)
 <ul>
@@ -950,13 +950,13 @@ the user handled it</code></pre>
 </section>
 <section id="slide-33" class="level2">
 <h2 class="anchored" data-anchor-id="slide-33">Slide 33</h2>
-<p>Login with …</p>
+<p>Login with ...</p>
 <ul>
 <li>Store their access token in their account
 <ul>
-<li>Don’t need to go through this whole process every time you need API access</li>
+<li>Don't need to go through this whole process every time you need API access</li>
 </ul></li>
-<li>Note: These token cannot be hashed since you need to send the original value to the API (Be careful! Don’t ask for more scopes than you need to limit the risk)</li>
+<li>Note: These token cannot be hashed since you need to send the original value to the API (Be careful! Don't ask for more scopes than you need to limit the risk)</li>
 </ul>
 <ol start="5" type="1">
 <li><p>Authorization Grant</p></li>

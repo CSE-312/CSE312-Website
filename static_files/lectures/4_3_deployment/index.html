@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="nginx">Nginx</h2>
 <ul>
 <li>Nginx has many uses and is very powerful software</li>
-<li>We’ll use it a reverse proxy with TLS to enable HTTPS</li>
+<li>We'll use it a reverse proxy with TLS to enable HTTPS</li>
 </ul>
 </section>
 <section id="nginx-strategy" class="level2">
@@ -185,12 +185,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Signing certs</li>
 <li>Validating certs</li>
 </ul></li>
-<li>We’ll use OpenSSL in the command line to generate self-signed certificates</li>
+<li>We'll use OpenSSL in the command line to generate self-signed certificates</li>
 </ul>
 </section>
 <section id="self-signed-certificate" class="level2">
 <h2 class="anchored" data-anchor-id="self-signed-certificate">Self-Signed Certificate</h2>
-<p>openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj “/C=US”</p>
+<p>openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"</p>
 <ul>
 <li>This command will generate a self-signed certificate and a private key
 <ul>

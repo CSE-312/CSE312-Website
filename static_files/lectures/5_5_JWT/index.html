@@ -136,10 +136,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="why-jwt" class="level2">
 <h2 class="anchored" data-anchor-id="why-jwt">Why JWT?</h2>
 <ul>
-<li>We’ll use JWTs for persistent authentication</li>
+<li>We'll use JWTs for persistent authentication</li>
 <li>We currently use authentication tokens to solve the same problem</li>
 <li>Why do we need a new mechanism?</li>
-<li>What’s wrong with auth tokens?</li>
+<li>What's wrong with auth tokens?</li>
 </ul>
 </section>
 <section id="recall-auth-tokens" class="level2">
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Option 1: Shared DB
 <ul>
 <li>App server connects to the same DB as the auth server to lookup the auth token</li>
-<li>Advantage: Code is simple. Same thing we’ve been doing</li>
+<li>Advantage: Code is simple. Same thing we've been doing</li>
 <li>Disadvantage: Slow and complex architecture
 <ul>
 <li>DB must support multiple servers</li>
@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Disadvantage: Slow
 <ul>
 <li>Every authenticated requests requires the app server, auth server, and the auth DB</li>
-<li>Might as well have a monolith app (It’s effectively not distributed)</li>
+<li>Might as well have a monolith app (It's effectively not distributed)</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Contain all information needed for authentication/ authorization</li>
 <li>No need to talk to the DB or the auth server</li>
-<li>Auth server doesn’t even need to store JWTs</li>
+<li>Auth server doesn't even need to store JWTs</li>
 </ul></li>
 <li>App server receives a request containing a JWT
 <ul>
@@ -284,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>JSON Web Tokens
 <ul>
-<li>Often pronounced “jot”</li>
+<li>Often pronounced "jot"</li>
 </ul></li>
 <li>JSON
 <ul>
@@ -328,13 +328,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Base64
 <ul>
 <li>Maps 3 bytes of arbitrary data into 4 ASCII characters</li>
-<li>64 characters: a-z, A-Z, 0-1, ‘+’, ‘/’</li>
-<li>If length%3 != 0, pad with ‘=’</li>
+<li>64 characters: a-z, A-Z, 0-1, '+', '/'</li>
+<li>If length%3 != 0, pad with '='</li>
 <li>Not suitable for the web</li>
 </ul></li>
 <li>Base64URL
 <ul>
-<li>Replace ‘+’ and ‘/’ with ‘-’ and ’_’</li>
+<li>Replace '+' and '/' with '-' and '_'</li>
 <li>Omit the padding</li>
 <li>This avoids all url reserved characters</li>
 </ul></li>
@@ -343,8 +343,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="jwt---structure-2" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---structure-2">JWT - Structure</h2>
 <ul>
-<li>Three Base64URL-encoded parts are separated by ‘.’</li>
-<li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0…</li>
+<li>Three Base64URL-encoded parts are separated by '.'</li>
+<li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0...</li>
 <li>This token looks opaque
 <ul>
 <li>It is not!!</li>
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Base64URL is not a hashing algorithm!</li>
 <li>Base64URL is not encryption!</li>
 <li>Your JWTs are effectively plain-text</li>
-<li>This token has the claim: {“username”: “Alice”}</li>
+<li>This token has the claim: {"username": "Alice"}</li>
 </ul>
 </section>
 <section id="jwt---usage" class="level2">
@@ -384,9 +384,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Public/Private key
 <ul>
-<li>In CSE312, we’ll prefer to sign tokens with a private RSA key using the RS256 algorithm</li>
+<li>In CSE312, we'll prefer to sign tokens with a private RSA key using the RS256 algorithm</li>
 <li>This algorithm computes a SHA256 hash of the headers and claims of the token</li>
-<li>Sign this hash using the auth server’s private key</li>
+<li>Sign this hash using the auth server's private key</li>
 <li>The Base64URL encoding of this signature is the 3rd part of the token</li>
 </ul></li>
 <li>App server has the auth servers public key
@@ -419,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Attacker who compromises any server has your shared secret</li>
 </ul></li>
-<li>Not wise if you’re issuing tokens that are verified by 3rd party servers</li>
+<li>Not wise if you're issuing tokens that are verified by 3rd party servers</li>
 </ul></li>
 <li>Not allowed on HW5..</li>
 </ul></li>
@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="jwt---encryption">JWT - Encryption</h2>
 <ul>
 <li>JWTs can optionally be encrypted to obfuscate the headers and claims</li>
-<li>I don’t have anything else to say about that</li>
+<li>I don't have anything else to say about that</li>
 </ul>
 <p>😅</p>
 <p><img src="assets/slide20-1.png" class="img-fluid" alt="TODO: describe this image"></p>

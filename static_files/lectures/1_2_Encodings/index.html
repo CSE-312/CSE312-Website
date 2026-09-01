@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#encodings" id="toc-encodings" class="nav-link active" data-scroll-target="#encodings">Encodings</a>
   <ul class="collapse">
-  <li><a href="#s-and-0s" id="toc-s-and-0s" class="nav-link" data-scroll-target="#s-and-0s">1’s and 0’s</a></li>
+  <li><a href="#s-and-0s" id="toc-s-and-0s" class="nav-link" data-scroll-target="#s-and-0s">1's and 0's</a></li>
   </ul></li>
   <li><a href="#encoding-text" id="toc-encoding-text" class="nav-link" data-scroll-target="#encoding-text">Encoding Text</a>
   <ul class="collapse">
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h1>Encodings</h1>
 <p>MIME types and bytes</p>
 <section id="s-and-0s" class="level2">
-<h2 class="anchored" data-anchor-id="s-and-0s">1’s and 0’s</h2>
+<h2 class="anchored" data-anchor-id="s-and-0s">1's and 0's</h2>
 <ul>
 <li>The Internet can only transfer bits
 <ul>
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Fiber: Light/Dark</li>
 </ul></li>
 <li>All data sent over the Internet must be binary</li>
-<li>How do we know what these 1’s and 0’s represent in HTTP?
+<li>How do we know what these 1's and 0's represent in HTTP?
 <ul>
 <li>Encodings and MIME Types</li>
 </ul></li>
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="text" class="level2">
 <h2 class="anchored" data-anchor-id="text">Text</h2>
 <ul>
-<li>Only 1’s and 0’s can travel through the Internet
+<li>Only 1's and 0's can travel through the Internet
 <ul>
 <li>How do we send text?</li>
 </ul></li>
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>As a String:
 <ul>
-<li>“hello”</li>
+<li>"hello"</li>
 <li>Programming language specific representation</li>
 </ul></li>
 <li>In Hex:
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>If more bytes are needed:
 <ul>
-<li>Lead with 1’s to indicate the number of bytes</li>
+<li>Lead with 1's to indicate the number of bytes</li>
 <li>Each continuation byte begins with 10</li>
 <li>Prevents decoding errors</li>
 <li>No character is a subsequence of another character</li>
@@ -344,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>When an HTTP response [or request] contains a body, the body is an array of bytes
 <ul>
-<li>There’s no restriction on the encoding used for these bytes (Cannot always assume ASCII/UTF-8)</li>
+<li>There's no restriction on the encoding used for these bytes (Cannot always assume ASCII/UTF-8)</li>
 </ul></li>
 <li>Set a Content-Type header to tell the browser what those bytes represent
 <ul>
@@ -401,20 +401,20 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>The content is HTML encoded using UTF-8</li>
 <li>*You must use this to tell the browser that you are using utf-8</li>
-<li>Don’t forget to add this exactly as it appears. One character difference will break your page</li>
+<li>Don't forget to add this exactly as it appears. One character difference will break your page</li>
 </ul></li>
 </ul>
 </section>
 <section id="mime-type-sniffing" class="level2">
 <h2 class="anchored" data-anchor-id="mime-type-sniffing">MIME Type Sniffing</h2>
 <ul>
-<li>Modern browsers will “sniff” the proper MIME type of a response
+<li>Modern browsers will "sniff" the proper MIME type of a response
 <ul>
-<li>If the MIME type is not correct, the browser will “figure it out”™ and guess what type makes the most sense</li>
+<li>If the MIME type is not correct, the browser will "figure it out"™ and guess what type makes the most sense</li>
 </ul></li>
 <li>Browsers can sometimes be wrong
 <ul>
-<li>Surprises when your site doesn’t work with certain versions of certain browsers</li>
+<li>Surprises when your site doesn't work with certain versions of certain browsers</li>
 </ul></li>
 <li>Best practice is to disable sniffing</li>
 <li>Set this HTTP header to tell the browser you set the correct MIME type
@@ -501,15 +501,15 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="sending-images-3" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images-3">Sending Images</h2>
 <ul>
-<li>Don’t overthink sending images</li>
-<li>Read the bytes of the file. That’s the body of your response
+<li>Don't overthink sending images</li>
+<li>Read the bytes of the file. That's the body of your response
 <ul>
 <li>You may have to specify that the file should be read as a byte array since text is often assumed in File IO examples</li>
 </ul></li>
 <li>Set the Content-Length to the length of the byte array</li>
 <li>Set the appropriate MIME type in Content-Type
 <ul>
-<li>Ex: to send a .png the MIME type is “image/png”</li>
+<li>Ex: to send a .png the MIME type is "image/png"</li>
 </ul></li>
 </ul>
 

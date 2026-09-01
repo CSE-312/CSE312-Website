@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>You host a video on your web app</li>
 <li>You want high quality so you host a large 1080p mp4
 <ul>
-<li>The entire file is 100’s of MB</li>
+<li>The entire file is 100's of MB</li>
 </ul></li>
 <li>Every user visiting your page has to download the entire video before playback can begin
 <ul>
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Avoid the requirement of downloading the entire video before it plays</li>
 <li>Provided a way to request short segments of the video</li>
-<li>Download one “chunk” of the video at a time
+<li>Download one "chunk" of the video at a time
 <ul>
 <li>Typically ~2-10 seconds of playback</li>
 </ul></li>
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Only a few seconds need to be downloaded before playback starts</li>
 <li>If the user skips around in the video, only request they chunk they skipped to</li>
-<li>If the user leaves the page without finishing the video, the entire file doesn’t have to be downloaded</li>
+<li>If the user leaves the page without finishing the video, the entire file doesn't have to be downloaded</li>
 </ul></li>
 </ul>
 </section>
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The browser may end a request for a large file that includes a Range header
 <ul>
 <li>The Range header specifies a range of bytes being requested</li>
-<li>eg. A request for “/video.mp4” with a header “Range: 10000-20000” is request the 9999th through 19999th bytes of video.mp4</li>
+<li>eg. A request for "/video.mp4" with a header "Range: 10000-20000" is request the 9999th through 19999th bytes of video.mp4</li>
 </ul></li>
 <li>The response code should be 206 Partial content</li>
 <li>The response should contain a Content-Range header
@@ -259,8 +259,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8</p>
 <ul>
 <li>Use ffmpeg to convert to HLS</li>
-<li>“-f hls” to specify the output format as HLS</li>
-<li>“-hls_list_size 0” to keep all ts files in the index
+<li>"-f hls" to specify the output format as HLS</li>
+<li>"-hls_list_size 0" to keep all ts files in the index
 <ul>
 <li>By deafult, ffmpeg will only keep the last 5 ts files in the index file</li>
 <li>This is good if you are live-streaming (This is the HTTP Live Streaming protocol after all)</li>
@@ -291,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>ffmpeg -i space.mp4 -f dash space.mpd</p>
 <ul>
 <li>Use ffmpeg to convert to MPEG-DASH</li>
-<li>“-f dash” to specify the output format as MPEG-DASH</li>
+<li>"-f dash" to specify the output format as MPEG-DASH</li>
 <li>Creates an mpd with the name you provide
 <ul>
 <li>All other files follow a default naming convention</li>
@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>And someone visits your site using eduroam on a bad day..
 <ul>
-<li>The video buffers, stutters, or doesn’t play at all</li>
+<li>The video buffers, stutters, or doesn't play at all</li>
 </ul></li>
 <li>We need a solution that:
 <ul>
@@ -442,9 +442,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="adaptive-bit-rate---mpeg-dash-5" class="level2">
 <h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-5">Adaptive Bit-Rate - MPEG-DASH</h2>
 <ul>
-<li>Each representation has it’s own set of content files
+<li>Each representation has it's own set of content files
 <ul>
-<li>eg. “chunk-stream0-0000X.m4s” and “init-stream0.m4s” are the files containing the video representation with id == 0</li>
+<li>eg. "chunk-stream0-0000X.m4s" and "init-stream0.m4s" are the files containing the video representation with id == 0</li>
 <li>The browser dynamically requests the specific files desired given the circumstances</li>
 <li>Your server hosts all files</li>
 </ul></li>
@@ -485,7 +485,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="video-players-1">Video Players</h2>
 <ul>
 <li>This example downloads the css and js for video.js from a CDN</li>
-<li>Uses “class” and “data-setup” attributes on a video element to tell the library to do its thing</li>
+<li>Uses "class" and "data-setup" attributes on a video element to tell the library to do its thing</li>
 <li>You now have a video player that supports both HLS and MPEG-DASH</li>
 </ul>
 <p><img src="assets/slide27-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
@@ -494,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="video-players-2">Video Players</h2>
 <ul>
 <li>Your video player will now have a consistent look across all browsers</li>
-<li>Don’t have to worry about what formats each browser supports
+<li>Don't have to worry about what formats each browser supports
 <ul>
 <li>You support any format supported by video.js</li>
 </ul></li>
@@ -507,12 +507,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="live-streaming-1" class="level2">
 <h2 class="anchored" data-anchor-id="live-streaming-1">Live Streaming</h2>
 <ul>
-<li>We’ve talked about uploading and host mp4 videos using a streaming protocol
+<li>We've talked about uploading and host mp4 videos using a streaming protocol
 <ul>
 <li>A VOD service</li>
 </ul></li>
 <li>What about live streaming?</li>
-<li>Most live streaming isn’t truly live
+<li>Most live streaming isn't truly live
 <ul>
 <li>There will be several seconds of delay in the stream</li>
 <li>Acceptable loss to gain accuracy</li>

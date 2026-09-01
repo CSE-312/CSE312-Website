@@ -161,11 +161,11 @@
 <li>Man-in-the-middle attack</li>
 <li>The first step in an HTTPS connection:
 <ul>
-<li>Client requests the server’s public key</li>
+<li>Client requests the server's public key</li>
 </ul></li>
 <li>An attacker controlling a router in one of the networks handling your packets can intercept this request and replace it with their own public key</li>
 <li>Attacker then intercepts all subsequent requests, decrypts them and responds with their responses</li>
-<li>It looks like you’re talking to the server..</li>
+<li>It looks like you're talking to the server..</li>
 <li>Certificate Authorities (CA) can fix that</li>
 </ul>
 </section>
@@ -194,8 +194,8 @@
 <li>Domain name and CA name</li>
 <li>A cryptographic signature of a hash of the certificate body
 <ul>
-<li>The signature uses the CA’s private key so you can verify it with their pre-installed public key that this was in fact issued by the CA</li>
-<li>Man-in-the-middle cannot fake this without the CA’s private key!</li>
+<li>The signature uses the CA's private key so you can verify it with their pre-installed public key that this was in fact issued by the CA</li>
+<li>Man-in-the-middle cannot fake this without the CA's private key!</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -211,10 +211,10 @@
 </ul></li>
 <li>Example key chain
 <ul>
-<li>Let’s Encrypt certificate is signed by DST Root CA</li>
-<li>Let’s Encrypt will sign your certificate</li>
-<li>Your key chain contains your public key signed by Let’s Encrypt and Let’s Encrypt’s certificate is signed by DST</li>
-<li>Your browser starts with it’s installed DST cert to verify the chain</li>
+<li>Let's Encrypt certificate is signed by DST Root CA</li>
+<li>Let's Encrypt will sign your certificate</li>
+<li>Your key chain contains your public key signed by Let's Encrypt and Let's Encrypt's certificate is signed by DST</li>
+<li>Your browser starts with it's installed DST cert to verify the chain</li>
 </ul></li>
 <li>If a cert cannot be verified by a root CA, it is called Self-signed and should not be trusted</li>
 </ul>
@@ -239,8 +239,8 @@
 <ul>
 <li>Buy a domain name and prove to the CA that you control it</li>
 </ul></li>
-<li>Cannot get a signed cert for “localhost”</li>
-<li>We’ll generate our own self-signed certificates for the HW
+<li>Cannot get a signed cert for "localhost"</li>
+<li>We'll generate our own self-signed certificates for the HW
 <ul>
 <li>For development/educational purposes only!</li>
 <li>When you deploy an app for real users, do not use a self- signed cert!</li>
@@ -262,7 +262,7 @@
 <li>Signing certs</li>
 <li>Validating certs</li>
 </ul></li>
-<li>We’ll use OpenSSL in the command line to generate self-signed certificates</li>
+<li>We'll use OpenSSL in the command line to generate self-signed certificates</li>
 </ul>
 </section>
 <section id="self-signed-certificate-1" class="slide level2">
@@ -271,7 +271,7 @@
 <ul>
 <li>This command has many options
 <ul>
-<li>You can adjust the options for your HW if you’d like</li>
+<li>You can adjust the options for your HW if you'd like</li>
 </ul></li>
 <li>req
 <ul>
@@ -293,11 +293,11 @@
 <ul>
 <li>-keyout private.key
 <ul>
-<li>Save the private key in a file named “private.key”</li>
+<li>Save the private key in a file named "private.key"</li>
 </ul></li>
 <li>-out cert.pem
 <ul>
-<li>Save the public certificate in a file named “cert.pem”</li>
+<li>Save the public certificate in a file named "cert.pem"</li>
 </ul></li>
 <li>-days 365
 <ul>
@@ -319,14 +319,14 @@
 </section>
 <section id="self-signed-certificate-4" class="slide level2">
 <h2>Self-Signed Certificate</h2>
-<p>openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj “/C=US”</p>
+<p>openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"</p>
 <ul>
-<li>If you run the command on the previous slides, you’ll be asked a lot of questions
+<li>If you run the command on the previous slides, you'll be asked a lot of questions
 <ul>
 <li>For most, you can hit enter and leave them blank</li>
-<li>You must enter your country code though (eg. “us”)</li>
+<li>You must enter your country code though (eg. "us")</li>
 </ul></li>
-<li>Or add -subj “/C=US”
+<li>Or add -subj "/C=US"
 <ul>
 <li>This lets you set your answers to all the questions</li>
 <li>Required to set country code, and you can leave the rest blank</li>
@@ -339,7 +339,7 @@
 <ul>
 <li>Now that we have a certificate, we need to use it in our server to enable TLS</li>
 <li>Could add the cert to our server code directly</li>
-<li>We’ll prefer to use a reverse proxy server</li>
+<li>We'll prefer to use a reverse proxy server</li>
 </ul>
 </section>
 <section id="https" class="slide level2">
@@ -357,7 +357,7 @@
 <li>The difference is that all our requests/responses are encrypted via SSL/TLS
 <ul>
 <li>SSL (Secure Socket Layer) was renamed to TLS (Transport Layer Security) after SSL 3.0</li>
-<li>I’ll only refer to the protocol as TLS after this note</li>
+<li>I'll only refer to the protocol as TLS after this note</li>
 </ul></li>
 </ul>
 </section>
@@ -367,7 +367,7 @@
 <li>TLS fits between TCP and HTTP on our protocol stack</li>
 <li>All these protocols are modular
 <ul>
-<li>TCP is not aware that the bytes it’s sending are encrypted</li>
+<li>TCP is not aware that the bytes it's sending are encrypted</li>
 <li>HTTP is not aware that the requests were encrypted or that the responses will be encrypted</li>
 </ul></li>
 </ul>
@@ -515,7 +515,7 @@
 </ul></li>
 <li>Server Hello
 <ul>
-<li>Here are the algorithms we’ll use for this connection</li>
+<li>Here are the algorithms we'll use for this connection</li>
 </ul></li>
 <li>Server sends its certificate</li>
 <li>Client and server both generate their part of the symmetric key based on the chosen algorithms
@@ -562,7 +562,7 @@
 <ul>
 <li>Including source/destination IP addresses!
 <ul>
-<li>They don’t know what you’re saying, but they know who you’re talking to</li>
+<li>They don't know what you're saying, but they know who you're talking to</li>
 </ul></li>
 <li>This is why VPNs are still popular even though most sites use HTTPS in current year</li>
 </ul></li>

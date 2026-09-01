@@ -146,13 +146,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="websocket-review-1" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-review-1">WebSocket Review</h2>
 <ul>
-<li>The client generates a random “Sec-WebSocket-Key” for each new WebSocket connection</li>
+<li>The client generates a random "Sec-WebSocket-Key" for each new WebSocket connection</li>
 <li>The server appends a specific GUID to this key
 <ul>
-<li>“258EAFA5-E914-47DA-95CA-C5AB0DC85B11”</li>
+<li>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</li>
 </ul></li>
 <li>Computes the SHA-1 hash</li>
-<li>“Sec-WebSocket-Accept” is the base64 encoding of the hash</li>
+<li>"Sec-WebSocket-Accept" is the base64 encoding of the hash</li>
 <li>Why?
 <ul>
 <li>Ensure client and server both implement the protocol
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Web Real Time Communication</li>
 <li>Establishes a live streaming peer-to-peer connection
 <ul>
-<li>We’ll stream video and audio to make a video chat app</li>
+<li>We'll stream video and audio to make a video chat app</li>
 </ul></li>
 <li>Stable release in 2018</li>
 <li>Widely adopted by major browsers
@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>UDP (User Datagram Protocol)
 <ul>
 <li>Meant for speed</li>
-<li>If a packet is dropped, it’s lost forever. Move on with your life</li>
+<li>If a packet is dropped, it's lost forever. Move on with your life</li>
 <li>Bytes are delivered as soon as they are received</li>
 <li>Very close to using raw IP packets</li>
 </ul></li>
@@ -264,13 +264,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Servers are still involved
 <ul>
-<li>We’ll discuss 3 types of servers that assist in WebRTC connections</li>
+<li>We'll discuss 3 types of servers that assist in WebRTC connections</li>
 </ul></li>
 <li>Signalling Server
 <ul>
-<li>This is the one you’ll implement</li>
+<li>This is the one you'll implement</li>
 <li>Passes messages between clients to help them establish a peer-to-peer connection</li>
-<li>Once the connection is established, the server’s job is done (Unless you want to pass a disconnect message)</li>
+<li>Once the connection is established, the server's job is done (Unless you want to pass a disconnect message)</li>
 </ul></li>
 </ul>
 </section>
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Servers are still involved
 <ul>
-<li>We’ll discuss 3 types of servers that assist in WebRTC connections</li>
+<li>We'll discuss 3 types of servers that assist in WebRTC connections</li>
 </ul></li>
 <li>STUN (Session Traversal Utilities for NAT) Server
 <ul>
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Servers are still involved
 <ul>
-<li>We’ll discuss 3 types of servers that assist in WebRTC connections</li>
+<li>We'll discuss 3 types of servers that assist in WebRTC connections</li>
 </ul></li>
 <li>TURN (Traversal Using Relays around NAT) Server
 <ul>

@@ -175,7 +175,7 @@
 <h2>Deployment Headaches</h2>
 <ul>
 <li>It works on my laptop!</li>
-<li>Run your code in production and it’s broken</li>
+<li>Run your code in production and it's broken</li>
 <li>Many causes
 <ul>
 <li>Different version of compiler/interpreter</li>
@@ -196,7 +196,7 @@
 <li>No more surprise deployment issues</li>
 <li>Simulating an entire machine can be inefficient
 <ul>
-<li>If you’ve ran a VM on your laptop you know how slow this can get</li>
+<li>If you've ran a VM on your laptop you know how slow this can get</li>
 </ul></li>
 </ul>
 <p>4</p>
@@ -204,15 +204,15 @@
 <section id="security" class="slide level2">
 <h2>Security</h2>
 <ul>
-<li>Can’t break out of the VM [Without sophisticated attacks]</li>
+<li>Can't break out of the VM [Without sophisticated attacks]</li>
 <li>If an attacker compromises the server, they can only access what you put in the container
 <ul>
-<li>Can’t “rm -rf /” your entire machine</li>
+<li>Can't "rm -rf /" your entire machine</li>
 <li>Patch the exploited vulnerability and rebuild the image</li>
 </ul></li>
 <li>The attacker can still cause significant damage and steal private data
 <ul>
-<li>They just can’t destroy your server box</li>
+<li>They just can't destroy your server box</li>
 </ul></li>
 </ul>
 <p>5</p>
@@ -240,7 +240,7 @@
 <section id="docker" class="slide level2">
 <h2>Docker</h2>
 <ul>
-<li>Docker is software that’s used to create containers</li>
+<li>Docker is software that's used to create containers</li>
 <li>Install Docker in your development environment to test containers</li>
 <li>Install Docker in your production environment and run the same containers</li>
 </ul>
@@ -260,7 +260,7 @@
 <section id="dockerfile-1" class="slide level2">
 <h2>Dockerfile</h2>
 <ul>
-<li>Let’s explore this sample Dockerfile</li>
+<li>Let's explore this sample Dockerfile</li>
 </ul>
 <p>FROM ubuntu:18.04</p>
 <p>RUN apt-get update</p>
@@ -343,7 +343,7 @@ RUN apt-get install -y npm</code></pre>
 </ul></li>
 <li>Use WORKDIR to change your current working directory
 <ul>
-<li>Same as “cd”</li>
+<li>Same as "cd"</li>
 </ul></li>
 </ul>
 <p>FROM ubuntu:18.04</p>
@@ -366,7 +366,7 @@ RUN apt-get install -y npm</code></pre>
 <section id="dockerfile-5" class="slide level2">
 <h2>Dockerfile</h2>
 <ul>
-<li>Since we’re starting with a fresh image of Ubuntu:
+<li>Since we're starting with a fresh image of Ubuntu:
 <ul>
 <li>Only the default software is installed</li>
 </ul></li>
@@ -396,7 +396,7 @@ RUN apt-get install -y npm</code></pre>
 <h2>Dockerfile</h2>
 <ul>
 <li>COPY all your app file into the image</li>
-<li>“.” denotes the current directory</li>
+<li>"." denotes the current directory</li>
 <li>Run docker from your apps root directory</li>
 </ul>
 <p>FROM ubuntu:18.04</p>
@@ -407,13 +407,13 @@ RUN apt-get install -y npm</code></pre>
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm</code></pre>
 <ul>
-<li>The the first “.” will refer to your apps directory</li>
+<li>The the first "." will refer to your apps directory</li>
 <li>We changed the home and working directory to /root</li>
 </ul>
 <pre><code>COPY . .</code></pre>
 <pre><code>RUN npm install</code></pre>
 <ul>
-<li>The second “.” refers to /root in the image</li>
+<li>The second "." refers to /root in the image</li>
 </ul>
 <pre><code>EXPOSE 8000</code></pre>
 </section></section>
@@ -429,7 +429,7 @@ RUN apt-get install -y npm</code></pre>
 <li>Now that your apps files are in the image, run all app specific commands</li>
 <li>Order is important
 <ul>
-<li>Don’t depend on your app files before copying them into the image</li>
+<li>Don't depend on your app files before copying them into the image</li>
 </ul></li>
 <li>Use RUN to install dependancies and perform any other required setup</li>
 </ul>
@@ -514,7 +514,7 @@ RUN apt-get install -y npm</code></pre>
 WORKDIR /root</code></pre>
 <p>COPY . .</p>
 <ul>
-<li>Search “docker <code>&lt;language&gt;</code>” to find images/tutorials for your favorite language</li>
+<li>Search "docker <code>&lt;language&gt;</code>" to find images/tutorials for your favorite language</li>
 <li>This image starts with node installed so we can remove the node installation lines</li>
 </ul>
 <pre><code>RUN npm install</code></pre>
@@ -560,8 +560,8 @@ WORKDIR /root</code></pre>
 <ul>
 <li>When preparing your app to run in a container
 <ul>
-<li>Do not use “localhost” [in your code]</li>
-<li>Use “0.0.0.0” as the host instead</li>
+<li>Do not use "localhost" [in your code]</li>
+<li>Use "0.0.0.0" as the host instead</li>
 <li>This allows your app to be accessed from outside the container</li>
 </ul></li>
 </ul>
@@ -576,14 +576,14 @@ WORKDIR /root</code></pre>
 <li>Manages building/running docker images/containers</li>
 <li>Build and run with one command
 <ul>
-<li>docker compose up –build –force-recreate</li>
+<li>docker compose up --build --force-recreate</li>
 </ul></li>
 <li>No need to use docker build and docker run</li>
 <li>Will be used to manage multiple containers
 <ul>
 <li>Separate container for your database</li>
 </ul></li>
-<li>Let’s walk through a docker-compose.yml file</li>
+<li>Let's walk through a docker-compose.yml file</li>
 </ul>
 </section>
 <section id="docker-compose-2" class="slide level2">
@@ -626,7 +626,7 @@ ports:
 - '8080:8000'</code></pre>
 <ul>
 <li>Name each service</li>
-<li>We have one service that we name “app”</li>
+<li>We have one service that we name "app"</li>
 <li>This name becomes the hostname when communicating between containers</li>
 </ul>
 </section>
@@ -640,11 +640,11 @@ build: .
 ports:
 - '8080:8000'</code></pre>
 <ul>
-<li>Use ‘build’ to specify the path to build from
+<li>Use 'build' to specify the path to build from
 <ul>
 <li>Docker compose will look in this directory for a Dockerfile and use it to build the image</li>
 </ul></li>
-<li>Same as the trailing ‘.’ when building an image</li>
+<li>Same as the trailing '.' when building an image</li>
 </ul>
 </section>
 <section id="docker-compose-6" class="slide level2">
@@ -658,7 +658,7 @@ ports:
 - '8080:8000'</code></pre>
 <ul>
 <li>Map a local port to a container port</li>
-<li>Same as using “-p 8080:8000” when running a single container</li>
+<li>Same as using "-p 8080:8000" when running a single container</li>
 </ul>
 </section>
 <section id="docker-compose-7" class="slide level2">
@@ -710,7 +710,7 @@ ports:
 </ul></li>
 <li>To rebuild and restart the containers
 <ul>
-<li>docker compose up –build –force-recreate</li>
+<li>docker compose up --build --force-recreate</li>
 <li>*This is the best command to use!</li>
 </ul></li>
 <li>To restart the container without rebuilding
@@ -724,12 +724,12 @@ ports:
 <ul>
 <li>To rebuild and restart the containers
 <ul>
-<li>docker compose up –build –force-recreate</li>
+<li>docker compose up --build --force-recreate</li>
 </ul></li>
 <li>Use this command during development</li>
 <li>Very important to rebuild your images after you change code
 <ul>
-<li>If you don’t, you will not see your changes since you’ll be running your old code</li>
+<li>If you don't, you will not see your changes since you'll be running your old code</li>
 </ul></li>
 </ul>
 </section>
@@ -747,7 +747,7 @@ WAIT_HOSTS: mongo:27017
 ports:
 - '8080:8000'</code></pre>
 <ul>
-<li>Let’s modify our docker compose configuration to run our database</li>
+<li>Let's modify our docker compose configuration to run our database</li>
 </ul>
 </section>
 <section id="docker-compose-10" class="slide level2">
@@ -764,8 +764,8 @@ WAIT_HOSTS: mongo:27017
 ports:
 - '8080:8000'</code></pre>
 <ul>
-<li>“services” is a list of all the images/ containers to create</li>
-<li>We’ll add a second service for the DB</li>
+<li>"services" is a list of all the images/ containers to create</li>
+<li>We'll add a second service for the DB</li>
 </ul>
 </section>
 <section id="docker-compose-11" class="slide level2">
@@ -804,11 +804,11 @@ WAIT_HOSTS: mongo:27017
 ports:
 - '8080:8000'</code></pre>
 <ul>
-<li>This service named ‘mongo’ uses a pre-built image
+<li>This service named 'mongo' uses a pre-built image
 <ul>
 <li>Same as having a 1-line Dockerfile:
 <ul>
-<li>“FROM mongo:4.2.5”</li>
+<li>"FROM mongo:4.2.5"</li>
 </ul></li>
 </ul></li>
 <li>No Dockerfile is needed</li>
@@ -828,7 +828,7 @@ WAIT_HOSTS: mongo:27017
 ports:
 - '8080:8000'</code></pre>
 <ul>
-<li>Use ‘environment’ to set any needed environment variables</li>
+<li>Use 'environment' to set any needed environment variables</li>
 <li>If using MySQL, set variables for your username/ password</li>
 </ul>
 </section>
@@ -863,7 +863,7 @@ RUN chmod +x /wait</code></pre>
 <h2>Docker Compose</h2>
 <p>docker-compose.yml</p>
 <ul>
-<li>If the app runs before the database, it won’t be able to establish a DB connection</li>
+<li>If the app runs before the database, it won't be able to establish a DB connection</li>
 <li>Solution: Wait for the DB to start before running the app</li>
 </ul>
 <pre><code>version: '3.3'
@@ -891,7 +891,7 @@ RUN chmod +x /wait</code></pre>
 <h2>Docker Compose</h2>
 <p>docker-compose.yml</p>
 <ul>
-<li>This solution from github user “ufoscout” works well</li>
+<li>This solution from github user "ufoscout" works well</li>
 </ul>
 <pre><code>version: '3.3'
 services:
@@ -944,8 +944,8 @@ environment:
 WAIT_HOSTS: mongo:27017
 ports:
 - '8080:8000'</code></pre>
-<p>mongo_client = MongoClient(‘localhost’)</p>
-<p>mongo_client = MongoClient(‘mongo’)</p>
+<p>mongo_client = MongoClient('localhost')</p>
+<p>mongo_client = MongoClient('mongo')</p>
 <ul>
 <li>Recall that we chose names for each service</li>
 <li>When connecting to the database in your app
@@ -959,12 +959,12 @@ ports:
 <h2>Docker Compose</h2>
 <p>docker-compose.yml</p>
 <ul>
-<li>version: ‘3.3’ services: mongo: image: mongo:4.2.5 app: build: . environment: WAIT_HOSTS: mongo:27017 ports: - ‘8080:8000’</li>
+<li>version: '3.3' services: mongo: image: mongo:4.2.5 app: build: . environment: WAIT_HOSTS: mongo:27017 ports: - '8080:8000'</li>
 <li>Use the name of the service</li>
 <li>docker-compose will resolve this hostname to the appropriate container</li>
 </ul>
-<p>mongo_client = MongoClient(‘localhost’)</p>
-<p>mongo_client = MongoClient(‘mongo’)</p>
+<p>mongo_client = MongoClient('localhost')</p>
+<p>mongo_client = MongoClient('mongo')</p>
 
 <img data-src="assets/slide44-diagram.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="docker-compose-20" class="slide level2">
@@ -980,8 +980,8 @@ environment:
 WAIT_HOSTS: mysupercooldatabase:27017
 ports:
 - '8080:8000'</code></pre>
-<p>mongo_client = MongoClient(‘localhost’)</p>
-<p>mongo_client = MongoClient(‘mysupercooldatabase’)</p>
+<p>mongo_client = MongoClient('localhost')</p>
+<p>mongo_client = MongoClient('mysupercooldatabase')</p>
 <ul>
 <li>We can name our services whatever we want</li>
 <li>Make sure you are consistent!</li>
@@ -991,7 +991,7 @@ ports:
 <section id="running-your-app-3" class="slide level2">
 <h2>Running Your App</h2>
 <ul>
-<li>docker-compose up –build –force-recreate
+<li>docker-compose up --build --force-recreate
 <ul>
 <li>Will now start both containers</li>
 <li>Use the service name as the host name to communicate across containers</li>

@@ -95,9 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#mysql-1" id="toc-mysql-1" class="nav-link" data-scroll-target="#mysql-1">MySQL</a></li>
   <li><a href="#mysql---insert-data" id="toc-mysql---insert-data" class="nav-link" data-scroll-target="#mysql---insert-data">MySQL - Insert Data</a></li>
   <li><a href="#mysql---security" id="toc-mysql---security" class="nav-link" data-scroll-target="#mysql---security">MySQL - Security</a></li>
-  <li><a href="#mongodb-vs.-sql" id="toc-mongodb-vs.-sql" class="nav-link" data-scroll-target="#mongodb-vs.-sql">MongoDB vs.&nbsp;SQL</a></li>
-  <li><a href="#mongodb-vs.-sql-1" id="toc-mongodb-vs.-sql-1" class="nav-link" data-scroll-target="#mongodb-vs.-sql-1">MongoDB vs.&nbsp;SQL</a></li>
-  <li><a href="#mongodb-vs.-sql-2" id="toc-mongodb-vs.-sql-2" class="nav-link" data-scroll-target="#mongodb-vs.-sql-2">MongoDB vs.&nbsp;SQL</a></li>
+  <li><a href="#mongodb-vs.-sql" id="toc-mongodb-vs.-sql" class="nav-link" data-scroll-target="#mongodb-vs.-sql">MongoDB vs. SQL</a></li>
+  <li><a href="#mongodb-vs.-sql-1" id="toc-mongodb-vs.-sql-1" class="nav-link" data-scroll-target="#mongodb-vs.-sql-1">MongoDB vs. SQL</a></li>
+  <li><a href="#mongodb-vs.-sql-2" id="toc-mongodb-vs.-sql-2" class="nav-link" data-scroll-target="#mongodb-vs.-sql-2">MongoDB vs. SQL</a></li>
   <li><a href="#running-mongodb" id="toc-running-mongodb" class="nav-link" data-scroll-target="#running-mongodb">Running MongoDB</a></li>
   <li><a href="#running-mongodb-1" id="toc-running-mongodb-1" class="nav-link" data-scroll-target="#running-mongodb-1">Running MongoDB</a></li>
   <li><a href="#running-mongodb-2" id="toc-running-mongodb-2" class="nav-link" data-scroll-target="#running-mongodb-2">Running MongoDB</a></li>
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="databases-2" class="level2">
 <h2 class="anchored" data-anchor-id="databases-2">Databases</h2>
 <ul>
-<li>We’ll look at 2 different databases</li>
+<li>We'll look at 2 different databases</li>
 <li>Both are pieces of software that must be downloaded, installed, ran, then connected to via TCP</li>
 <li>MongoDB
 <ul>
@@ -212,7 +212,7 @@ chat_collection = db["chat"]</code></pre>
 <li>More work to do to prepare your data for Mongo</li>
 </ul></li>
 </ul>
-<p>chat_collection.insert_one({“username”: “hartloff”, “message”: “hello”})</p>
+<p>chat_collection.insert_one({"username": "hartloff", "message": "hello"})</p>
 </section>
 <section id="mongodb---security" class="level2">
 <h2 class="anchored" data-anchor-id="mongodb---security">MongoDB - Security</h2>
@@ -221,7 +221,7 @@ chat_collection = db["chat"]</code></pre>
 <li>Mongo does not rely on parsing statements as strings</li>
 <li>Any injected code would be treated as values</li>
 </ul>
-<p>chat_collection.insert_one({“username”: “hartloff”, “message”: “hello”})</p>
+<p>chat_collection.insert_one({"username": "hartloff", "message": "hello"})</p>
 </section>
 <section id="mongodb---retrieve-data" class="level2">
 <h2 class="anchored" data-anchor-id="mongodb---retrieve-data">MongoDB - Retrieve Data</h2>
@@ -229,7 +229,7 @@ chat_collection = db["chat"]</code></pre>
 <li>Retrieve documents using find</li>
 <li>Find takes a key-value store and returns all documents with those values stored at the given keys
 <ul>
-<li>Ex. {“username”: “hartloff”} returns all documents with a username of “hartloff”</li>
+<li>Ex. {"username": "hartloff"} returns all documents with a username of "hartloff"</li>
 </ul></li>
 <li>To retrieve all documents, use an empty key- value store {}</li>
 </ul>
@@ -255,7 +255,7 @@ all_data = chat_collection.find({})</code></pre>
 <ul>
 <li>If using inputs from the user, always use prepared statements</li>
 </ul>
-<p>val statement = connection.prepareStatement(“INSERT INTO players VALUE (?, ?)”)</p>
+<p>val statement = connection.prepareStatement("INSERT INTO players VALUE (?, ?)")</p>
 <pre><code>statement.setString(1, "mario")
 statement.setInt(2, 10)</code></pre>
 <p>statement.execute()</p>
@@ -269,15 +269,15 @@ statement.setInt(2, 10)</code></pre>
 </ul></li>
 <li>If you concatenate user inputs directly into your SQL statements
 <ul>
-<li>Attacker chooses a username of “’;DROP TABLE players;”</li>
+<li>Attacker chooses a username of "';DROP TABLE players;"</li>
 <li>You lose all your data</li>
-<li>Even worse, they find a way to access the entire database and steal other users’ data</li>
+<li>Even worse, they find a way to access the entire database and steal other users' data</li>
 <li>SQL Injection is the most common successful attack on servers</li>
 </ul></li>
 </ul>
 </section>
 <section id="mongodb-vs.-sql" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-vs.-sql">MongoDB vs.&nbsp;SQL</h2>
+<h2 class="anchored" data-anchor-id="mongodb-vs.-sql">MongoDB vs. SQL</h2>
 <ul>
 <li>MongoDB is unstructured
 <ul>
@@ -287,7 +287,7 @@ statement.setInt(2, 10)</code></pre>
 <li>Ie. In a single collection the documents can have different attributes</li>
 </ul></li>
 </ul></li>
-<li>SQL is structured (That’s what the S stands for)
+<li>SQL is structured (That's what the S stands for)
 <ul>
 <li>Table columns must be pre-defined
 <ul>
@@ -299,7 +299,7 @@ statement.setInt(2, 10)</code></pre>
 </ul>
 </section>
 <section id="mongodb-vs.-sql-1" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-vs.-sql-1">MongoDB vs.&nbsp;SQL</h2>
+<h2 class="anchored" data-anchor-id="mongodb-vs.-sql-1">MongoDB vs. SQL</h2>
 <ul>
 <li>Hot Take
 <ul>
@@ -315,7 +315,7 @@ statement.setInt(2, 10)</code></pre>
 </ul>
 </section>
 <section id="mongodb-vs.-sql-2" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-vs.-sql-2">MongoDB vs.&nbsp;SQL</h2>
+<h2 class="anchored" data-anchor-id="mongodb-vs.-sql-2">MongoDB vs. SQL</h2>
 <ul>
 <li>For the HW
 <ul>
@@ -337,9 +337,9 @@ statement.setInt(2, 10)</code></pre>
 <h2 class="anchored" data-anchor-id="running-mongodb-1">Running MongoDB</h2>
 <ul>
 <li>Download and install MongoDB and run it on your device</li>
-<li>Go to Mongo’s website and follow the instructions</li>
+<li>Go to Mongo's website and follow the instructions</li>
 <li>Mongo will run locally on your machine and listen for connections on port 27017</li>
-<li>Connect using the host “localhost”</li>
+<li>Connect using the host "localhost"</li>
 </ul>
 </section>
 <section id="running-mongodb-2" class="level2">
@@ -363,7 +363,7 @@ statement.setInt(2, 10)</code></pre>
 <li>Run a container using the mongo:latest image</li>
 <li>Map localhost port 27017 to port 27017 inside the container</li>
 </ul></li>
-<li>Now you can connect to the DB on “localhost”</li>
+<li>Now you can connect to the DB on "localhost"</li>
 </ul>
 </section>
 <section id="running-mongodb-4" class="level2">
@@ -384,8 +384,8 @@ statement.setInt(2, 10)</code></pre>
 <ul>
 <li>Runs the database and your app</li>
 <li>Rebuilds your app if you made changes</li>
-<li>Connects to the database on host “mongo”</li>
-<li>“—” is two dash characters</li>
+<li>Connects to the database on host "mongo"</li>
+<li>"—" is two dash characters</li>
 </ul></li>
 </ul>
 </section>
@@ -395,7 +395,7 @@ statement.setInt(2, 10)</code></pre>
 <li>However you choose to run your database:
 <ul>
 <li>Use the setup in database.py of the HW handout to connect to your DB</li>
-<li>Dynamically connects to either “localhost” or “mongo” depending on how it was started</li>
+<li>Dynamically connects to either "localhost" or "mongo" depending on how it was started</li>
 <li>Lets you not have to think about the DB host that much</li>
 </ul></li>
 </ul>
@@ -403,7 +403,7 @@ statement.setInt(2, 10)</code></pre>
 <section id="running-your-app" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app">Running Your App</h2>
 <ul>
-<li>If you use any “localhost” method to run your DB:
+<li>If you use any "localhost" method to run your DB:
 <ul>
 <li>Run your app by running server.py</li>
 </ul></li>
@@ -419,7 +419,7 @@ statement.setInt(2, 10)</code></pre>
 <ul>
 <li>Write HTML templates</li>
 </ul></li>
-<li>An HTML template is an “incomplete” HTML file that is used to generate complete pages</li>
+<li>An HTML template is an "incomplete" HTML file that is used to generate complete pages</li>
 <li>Use additional markup to add placeholders in the HTML</li>
 <li>Replace the placeholders with data at runtime</li>
 </ul>
@@ -474,7 +474,7 @@ statement.setInt(2, 10)</code></pre>
 <li>On the HW:
 <ul>
 <li>layout.html contains all the HTML that is shown on every page (navigation, structure, etc)</li>
-<li>layout.html has one placeholder - {{content}} - which is where you’ll insert all the HTML for the specific page that was requested</li>
+<li>layout.html has one placeholder - {{content}} - which is where you'll insert all the HTML for the specific page that was requested</li>
 <li>To render a page, eg. index.html, replace {{content}} with everything read from index.html</li>
 <li>Send the resulting rendered page to the client</li>
 </ul></li>

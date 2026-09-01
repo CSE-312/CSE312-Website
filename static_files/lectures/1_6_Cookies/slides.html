@@ -182,7 +182,7 @@
 <section id="cookies-1" class="slide level2">
 <h2>Cookies</h2>
 <ul>
-<li>Cookies allow us to “remember” information about a user</li>
+<li>Cookies allow us to "remember" information about a user</li>
 <li>Cookies function through HTTP headers
 <ul>
 <li>Tell the client to set a cookie using a header in your response</li>
@@ -237,7 +237,7 @@
 <li>Send multiple Set-Cookie headers</li>
 <li>Yes, duplicate headers with the same name are allowed
 <ul>
-<li>*In this course, we won’t worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)</li>
+<li>*In this course, we won't worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)</li>
 <li>The browser must handle this when it parses our headers</li>
 </ul></li>
 </ul></li>
@@ -312,7 +312,7 @@
 <li>Note: Browser. Not tab</li>
 </ul></li>
 </ul></li>
-<li>Check your cookies in the browser console to ensure that your directives are set properly (ie. under expires, session cookies will say “session”)</li>
+<li>Check your cookies in the browser console to ensure that your directives are set properly (ie. under expires, session cookies will say "session")</li>
 </ul>
 </section>
 <section id="directives---secure" class="slide level2">
@@ -327,7 +327,7 @@
 <li>Using wifi, everyone in wifi range can read your HTTP requests</li>
 <li>They cannot read your HTTPS requests since they are encrypted</li>
 </ul></li>
-<li>If used on your HW server with HTTP, the browser won’t send these cookies</li>
+<li>If used on your HW server with HTTP, the browser won't send these cookies</li>
 </ul></li>
 <li>Set-Cookie: id=X6kAwpgW29M; Secure</li>
 </ul>
@@ -337,9 +337,9 @@
 <ul>
 <li>HttpOnly
 <ul>
-<li>Don’t let anyone read or change this cookie using JavaScript</li>
+<li>Don't let anyone read or change this cookie using JavaScript</li>
 <li>Prevents hijackers from reading/changing your cookies with a JavaScript injection attack (XSS Attack)</li>
-<li>These cookies are not returned when “document.cookie” is accessed</li>
+<li>These cookies are not returned when "document.cookie" is accessed</li>
 <li>Can still access these cookies from the browser console
 <ul>
 <li>An attacker with access to your machine has all your cookies</li>
@@ -397,7 +397,7 @@
 <ul>
 <li>So can attackers!</li>
 </ul></li>
-<li>Access cookies with “document.cookie”</li>
+<li>Access cookies with "document.cookie"</li>
 </ul>
 </section>
 <section id="tracking-user-sessions-with-cookies" class="slide level2">
@@ -405,13 +405,13 @@
 <ul>
 <li>We often want to know when multiple requests are sent by the same user
 <ul>
-<li>Eg. A chat where a user sends multiple messages that should all contain the same “username”</li>
+<li>Eg. A chat where a user sends multiple messages that should all contain the same "username"</li>
 </ul></li>
 <li>To accomplish this:
 <ul>
 <li>When they send their first message, create a profile for the user that will store all information about them in a database</li>
 <li>Generate a random token that is both stored in the database AND set as a cookie for the user</li>
-<li>Whenever you receive a request, lookup the token in your DB to retrieve the user’s profile</li>
+<li>Whenever you receive a request, lookup the token in your DB to retrieve the user's profile</li>
 </ul></li>
 </ul>
 </section>
@@ -465,10 +465,10 @@ b4c6-4636-b046-
 ac8b8d617792</code></pre>
 <ul>
 <li>In the response to the user, set a cookie containing their token</li>
-<li>Use the expires directive to make sure this is not a session cookie (Yes, it’s confusing that we overload the word session)
+<li>Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
 <ul>
-<li>It’s a session cookie in that it tracks a users session with our app</li>
-<li>It’s not a session cookie in that it is not tied to session of their browser</li>
+<li>It's a session cookie in that it tracks a users session with our app</li>
+<li>It's not a session cookie in that it is not tied to session of their browser</li>
 </ul></li>
 </ul>
 
@@ -512,7 +512,7 @@ b4c6-4636-b046-
 ac8b8d617792</code></pre>
 <ul>
 <li>The server see that there is a cookie set and looks up the token in the database to retrieve this users profile including their username</li>
-<li>When adding the chat message to the database, we know to set “Guest-r8d” as the author</li>
+<li>When adding the chat message to the database, we know to set "Guest-r8d" as the author</li>
 </ul>
 
 <img data-src="assets/slide25-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>

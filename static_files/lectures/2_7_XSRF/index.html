@@ -142,13 +142,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="xsrf-1">XSRF</h2>
 <ul>
 <li>Cross-Site Request Forgery</li>
-<li>A request that is sent from a different “origin”</li>
+<li>A request that is sent from a different "origin"</li>
 <li>Origin:
 <ul>
 <li>The combination of protocol, host, and port</li>
 <li>If all three do not match, it is a cross-site request</li>
 </ul></li>
-<li>What’s the danger?</li>
+<li>What's the danger?</li>
 </ul>
 </section>
 <section id="xsrf---example" class="level2">
@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Requests your grades</li>
 <li>Makes a submission on your behalf</li>
 </ul></li>
-<li>Attack page makes a request to your bank and transfers your funds to the attacker’s account</li>
+<li>Attack page makes a request to your bank and transfers your funds to the attacker's account</li>
 <li>Attack page makes embarrassing posts on social media</li>
 </ul>
 </section>
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The request is sent to mycoolproject.com</li>
 <li>The attacker controls this request
 <ul>
-<li>Client may not even know it was sent until it’s too late</li>
+<li>Client may not even know it was sent until it's too late</li>
 </ul></li>
 </ul>
 <p>mycoolproject.com</p>
@@ -229,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>It may contain auth cookies</li>
 <li>It may look real to your server</li>
-<li>Your server will process it as a legitimate, authenticated, request if you don’t have protections in place</li>
+<li>Your server will process it as a legitimate, authenticated, request if you don't have protections in place</li>
 </ul></li>
 </ul>
 <p>mycoolproject.com</p>
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Easy to setup. Embed an image in an email
 <ul>
-<li>Client only has to open the email (Doesn’t even require them to click a shady link)</li>
+<li>Client only has to open the email (Doesn't even require them to click a shady link)</li>
 <li>This is why images are often blocked in email</li>
 </ul></li>
 </ul></li>
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Submit an HTML form
 <ul>
 <li>Get the user to navigate to your page</li>
-<li>The page automatically submits and HTML form on their behalf (They don’t have to click a button. Send it with JS)</li>
+<li>The page automatically submits and HTML form on their behalf (They don't have to click a button. Send it with JS)</li>
 <li>The user will be navigated to the site that was attacked</li>
 <li>Can send GET and POST requests</li>
 <li>Must follow specific encodings supported by HTML forms</li>
@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Specifies the origin of the request</li>
 </ul></li>
-<li>If the referrer doesn’t match your app
+<li>If the referrer doesn't match your app
 <ul>
 <li>Deny the request</li>
 </ul></li>
@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="sop-1" class="level2">
 <h2 class="anchored" data-anchor-id="sop-1">SOP</h2>
 <ul>
-<li>The SOP does NOT block “safe” requests</li>
+<li>The SOP does NOT block "safe" requests</li>
 <li>Safe requests include
 <ul>
 <li>Any GET request</li>
@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-16">Slide 16</h2>
 <p>SOP</p>
 <ul>
-<li>The SOP does NOT block “safe” requests</li>
+<li>The SOP does NOT block "safe" requests</li>
 <li>HTML form submissions are more difficult to protect against since they can make POST requests
 <ul>
 <li>We need better protections</li>
@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Determines when the cookie will be sent on 3rd party requests</li>
 <li>Lax - Cookie only sent when navigating to your page (Includes HTML form submissions)
 <ul>
-<li>Or “safe” requests including all GET requests (Except Cross-Site AJAX GET requests)</li>
+<li>Or "safe" requests including all GET requests (Except Cross-Site AJAX GET requests)</li>
 <li>The default setting if SameSite is not set</li>
 </ul></li>
 <li>Strict - The cookie is only sent on 1st party requests
@@ -369,13 +369,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Since the SOP is enforced by the browser, we have limited control over its enforcement
 <ul>
-<li>What if a user has a very outdated browser that doesn’t implement the SOP?</li>
+<li>What if a user has a very outdated browser that doesn't implement the SOP?</li>
 <li>What if the user installed a plug-in that disables the SOP?</li>
 <li>What if the user is using an obscure browser that does not implement the SOP properly?</li>
 </ul></li>
 <li>The SOP will protect most users, but not 100%
 <ul>
-<li>And won’t protect any users from a GET or HTML form attack</li>
+<li>And won't protect any users from a GET or HTML form attack</li>
 </ul></li>
 </ul>
 </section>
@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="slide-19">Slide 19</h2>
 <p>XSRF - Tokens</p>
 <ul>
-<li>Let’s add server-side protection from XSRF attacks</li>
+<li>Let's add server-side protection from XSRF attacks</li>
 <li>Will work for all users and all XSRF attacks</li>
 </ul>
 </section>

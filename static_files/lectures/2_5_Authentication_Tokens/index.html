@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="authentication-1">Authentication</h2>
 <ul>
 <li>How does the server verify that you are the one who made a specific request?</li>
-<li>We only have authentication, so…
+<li>We only have authentication, so...
 <ul>
 <li>.. Users type their username and password with every single protected request?..</li>
 <li>Authenticate using the stored [salted hash of the] password?..</li>
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Password is stored client-side in plain text</li>
 <li>No! Never store passwords in plain text
 <ul>
-<li>Not even client-side! Don’t do it.</li>
+<li>Not even client-side! Don't do it.</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -321,7 +321,7 @@ your database and ignoring the token after that timestamp), or both</code></pre>
 <section id="registration-and-login" class="level2">
 <h2 class="anchored" data-anchor-id="registration-and-login">Registration and Login</h2>
 <ul>
-<li>Let’s look at the whole process of creating an account and logging in</li>
+<li>Let's look at the whole process of creating an account and logging in</li>
 </ul>
 <p>Database</p>
 <p>User/Client</p>
@@ -454,7 +454,7 @@ VhfRxSDmwfAZHW</code></pre>
 <p>password hash</p>
 <pre><code>0144c52c5b68f662f4529fd43093873fd
 d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>find({“username”, “XX_UBStudent_XX”})</p>
+<p>find({"username", "XX_UBStudent_XX"})</p>
 <p>username</p>
 <p>username</p>
 <p>XX_UBStudent_XX</p>
@@ -613,7 +613,7 @@ d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
 <p>XX_UBStudent_XX</p>
 <p>authentication token</p>
 <p>jixFFgT1xPhXKcLrOavlQO</p>
-<p>update XX_UBStudent_XX’s record with</p>
+<p>update XX_UBStudent_XX's record with</p>
 <pre><code>{"hashed authentication token":
 "754b1fb1b5ab6787441bfb410a40a7b99
 29f712497fb1f57788f4a6b699e1d7b"}</code></pre>
@@ -701,7 +701,7 @@ f712497fb1f57788f4a6b699e1d7b</code></pre>
 <p>salt</p>
 <ul>
 <li>Look up the hash in the DB</li>
-<li>If a record is returned, that’s the logged in user and the request is authenticated</li>
+<li>If a record is returned, that's the logged in user and the request is authenticated</li>
 </ul>
 <p>hJ33fqAwscJmp3MacoQ8uO</p>
 <pre><code>find({"hashed authentication token":
@@ -775,7 +775,7 @@ XX_UBStudent_XX's private data</code></pre>
 <section id="cookie-hijacking" class="level2">
 <h2 class="anchored" data-anchor-id="cookie-hijacking">Cookie Hijacking</h2>
 <ul>
-<li>We’re now using cookies for authentication</li>
+<li>We're now using cookies for authentication</li>
 <li>The possession of the token verifies that this user did authenticate in the past</li>
 <li>What if someone steals your cookies?
 <ul>

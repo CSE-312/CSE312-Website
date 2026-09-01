@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Create a new record</li>
 <li>INSERT INTO user (?, ?)</li>
-<li>userCollection.insert_one({“email”:“…”, “username”: “…”})</li>
+<li>userCollection.insert_one({"email":"...", "username": "..."})</li>
 </ul>
 </section>
 <section id="crud---create-1" class="level2">
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>MySQL can generate these ids for you
 <ul>
-<li>CREATE TABLE user (id int AUTO_INCREMENT, …)</li>
+<li>CREATE TABLE user (id int AUTO_INCREMENT, ...)</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -223,10 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Maintain a collection that remembers the last used id</li>
 <li>Increment the id each time a record is created</li>
 </ul></li>
-<li>Or generate your ids any other way you’d like
+<li>Or generate your ids any other way you'd like
 <ul>
-<li>Make sure the id’s are unique</li>
-<li>Id’s must be UTF-8 compatible if they will be used in a url</li>
+<li>Make sure the id's are unique</li>
+<li>Id's must be UTF-8 compatible if they will be used in a url</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Retrieve a single existing record</li>
 <li>SELECT * FROM user WHERE id=3</li>
-<li>userCollection.find_one({“id”:3})</li>
+<li>userCollection.find_one({"id":3})</li>
 </ul>
 </section>
 <section id="crud---update" class="level2">
@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Update an existing record</li>
 <li>UPDATE user SET email=?, username=? WHERE id=5</li>
-<li>userCollection.update_one({“id”:5}, {“$set”: {“email”:“…”, “username”:“…”}})</li>
+<li>userCollection.update_one({"id":5}, {"$set": {"email":"...", "username":"..."}})</li>
 </ul>
 </section>
 <section id="crud---update-1" class="level2">
@@ -278,15 +278,15 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Delete an existing record</li>
 <li>DELETE FROM user WHERE id=2</li>
-<li>userCollection.delete_one({“id”:2})</li>
+<li>userCollection.delete_one({"id":2})</li>
 </ul>
 </section>
 <section id="crud---delete-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---delete-1">CRUD - Delete</h2>
 <ul>
-<li>In practice, common to “soft delete”
+<li>In practice, common to "soft delete"
 <ul>
-<li>Don’t actually delete the data</li>
+<li>Don't actually delete the data</li>
 <li>Instead, mark it as deleted</li>
 <li>Do not allow retrieve/update operations on data marked as deleted</li>
 </ul></li>
@@ -295,7 +295,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>eg. User requests to undo an accidental delete</li>
 <li>Preserves history (Helpful for debugging)</li>
 </ul></li>
-<li>For your HW, it’s fine to “hard delete”</li>
+<li>For your HW, it's fine to "hard delete"</li>
 </ul>
 </section>
 <section id="data-3" class="level2">
@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>PUT must be idempotent</li>
 <li>PUT will replace the entire record with the data of the request</li>
-<li>A second identical PUT doesn’t change anything since the record was already replaced</li>
+<li>A second identical PUT doesn't change anything since the record was already replaced</li>
 </ul>
 </section>
 <section id="http---idempotent-3" class="level2">
@@ -400,14 +400,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>PATCH is not idempotent</li>
 <li>In practice, PATCH endpoints are usually idempotent</li>
 <li>There is no expectation that they must be idempotent</li>
-<li>Eg. A record that tracks a counter or how many times it’s been updated</li>
+<li>Eg. A record that tracks a counter or how many times it's been updated</li>
 </ul>
 </section>
 <section id="restful-api" class="level2">
 <h2 class="anchored" data-anchor-id="restful-api">RESTful API</h2>
 <ul>
 <li>REST -&gt; REpresentational State Transfer</li>
-<li>We’ll use HTTP requests to interact with API data</li>
+<li>We'll use HTTP requests to interact with API data</li>
 <li>REST is designed to simplify the way data is used
 <ul>
 <li>Improve reliability and scalability</li>
@@ -435,8 +435,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Typically measured on a spectrum
 <ul>
 <li>An API can be more/less RESTful</li>
-<li>“We could do that, but it’s not very RESTful”</li>
-<li>“Let’s refactor our API to make it more RESTful”</li>
+<li>"We could do that, but it's not very RESTful"</li>
+<li>"Let's refactor our API to make it more RESTful"</li>
 </ul></li>
 </ul>
 </section>

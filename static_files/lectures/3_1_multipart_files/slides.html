@@ -277,7 +277,7 @@ Content-Disposition: form-data; name="comment"</code></pre>
 <ul>
 <li>If not, browser only sends the filename</li>
 </ul></li>
-<li>Add an input with type “file”
+<li>Add an input with type "file"
 <ul>
 <li>The browser does the rest</li>
 <li>Users will be able to choose a file to send</li>
@@ -331,7 +331,7 @@ Content-Type: image/png</code></pre>
 <ul>
 <li>Without corrupting the image</li>
 </ul></li>
-<li>Let’s walk through the steps you’ll need to take</li>
+<li>Let's walk through the steps you'll need to take</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
 Content-Length: 9937
@@ -387,7 +387,7 @@ Content-Type: image/png</code></pre>
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Refer to your content length and read that many bytes from the body of the request</li>
-<li>Important: Do not attempt to parse anything until you’ve read this many bytes from the body (More details in the buffering lecture)</li>
+<li>Important: Do not attempt to parse anything until you've read this many bytes from the body (More details in the buffering lecture)</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
 Content-Length: 9937
@@ -444,9 +444,9 @@ Content-Type: image/png</code></pre>
 <section id="parsing-multipart-6" class="slide level2">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>The parts are separated by the boundary with two leading dash characters “–”</li>
+<li>The parts are separated by the boundary with two leading dash characters "--"</li>
 <li>Each boundary must be at the beginning of a line</li>
-<li>The full boundary is CRLF + “–” + <code>&lt;boundary&gt;</code>
+<li>The full boundary is CRLF + "--" + <code>&lt;boundary&gt;</code>
 <ul>
 <li>Except the first one which is already preceded by a CRLF from the blank line separating the headers and body</li>
 </ul></li>
@@ -466,8 +466,8 @@ Content-Type: image/png</code></pre>
 <section id="parsing-multipart-7" class="slide level2">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>The end of the last boundary is marked by the full boundary plus two trailing “-” characters</li>
-<li>The last boundary is CRLF + “–” + <code>&lt;boundary&gt;</code> + “–”</li>
+<li>The end of the last boundary is marked by the full boundary plus two trailing "-" characters</li>
+<li>The last boundary is CRLF + "--" + <code>&lt;boundary&gt;</code> + "--"</li>
 <li>Can have a trailing CRLF after the last boundary that should be ignored</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
@@ -548,7 +548,7 @@ Content-Type: image/png</code></pre>
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Content-Length is not included in the parts</li>
-<li>The purpose of Content-Length is to ensure we’ve received the full body before parsing</li>
+<li>The purpose of Content-Length is to ensure we've received the full body before parsing</li>
 <li>Already read the full body using the HTTP Content-Length</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
@@ -590,7 +590,7 @@ Content-Type: image/png</code></pre>
 <li>Parse in bytes!</li>
 <li>When parsing bytes that contain non-text data:
 <ul>
-<li>We’ll use byte-parsing, not String-parsing</li>
+<li>We'll use byte-parsing, not String-parsing</li>
 </ul></li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
@@ -609,7 +609,7 @@ Content-Type: image/png</code></pre>
 <h2>Parsing Multipart</h2>
 <ul>
 <li>You receive the request as an array of bytes</li>
-<li>Scan this array for the bytes you’re looking for</li>
+<li>Scan this array for the bytes you're looking for</li>
 <li>Create sub-arrays to extract data</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
@@ -627,8 +627,8 @@ Content-Type: image/png</code></pre>
 <section id="parsing-multipart-15" class="slide level2">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>Example: To extract the headers you would find the first instance of the “<code>\r\n\r\n</code>” String and read everything before it</li>
-<li>Encode “<code>\r\n\r\n</code>” into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence</li>
+<li>Example: To extract the headers you would find the first instance of the "<code>\r\n\r\n</code>" String and read everything before it</li>
+<li>Encode "<code>\r\n\r\n</code>" into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
 Content-Length: 9937
@@ -685,7 +685,7 @@ Content-Type: image/png</code></pre>
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Repeat for each part</li>
-<li>Encode “<code>\r\n\r\n</code>” into bytes, scan the part for this sequence of bytes, read the headers</li>
+<li>Encode "<code>\r\n\r\n</code>" into bytes, scan the part for this sequence of bytes, read the headers</li>
 </ul>
 <pre><code>POST /form-path HTTP/1.1
 Content-Length: 9937
@@ -783,14 +783,14 @@ Content-Type: image/png</code></pre>
 <li>Parse the request to find which image is being requested
 <ul>
 <li>Open that file and send the bytes</li>
-<li>Can send a 404 if the file doesn’t exist on the server</li>
+<li>Can send a 404 if the file doesn't exist on the server</li>
 </ul></li>
 </ul>
 </section>
 <section id="hosting-files---security" class="slide level2">
 <h2>Hosting Files - Security</h2>
 <ul>
-<li>You’ll have code that effectively does this:
+<li>You'll have code that effectively does this:
 <ul>
 <li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
 <li>Parse the path to extract <code>&lt;filename&gt;</code></li>
@@ -802,14 +802,14 @@ Content-Type: image/png</code></pre>
 <section id="hosting-files---security-1" class="slide level2">
 <h2>Hosting Files - Security</h2>
 <ul>
-<li>You’ll have code that effectively does this:
+<li>You'll have code that effectively does this:
 <ul>
 <li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
 <li>Parse the path to extract <code>&lt;filename&gt;</code></li>
 <li>Read the bytes of the file</li>
 <li>Send those bytes to the user in your HTTP response</li>
 </ul></li>
-<li>… and someone makes the following request:
+<li>... and someone makes the following request:
 <ul>
 <li>GET /public/image/~/.ssh/id_rsa</li>
 </ul></li>
@@ -823,9 +823,9 @@ Content-Type: image/png</code></pre>
 <li>This attacker requested your private encryption key!</li>
 </ul></li>
 <li>We cannot allow users to request arbitrary files from the server</li>
-<li>Add logic to ensure users can’t access files outside the public directories
+<li>Add logic to ensure users can't access files outside the public directories
 <ul>
-<li>Removing all “/” characters will suffice for the HW</li>
+<li>Removing all "/" characters will suffice for the HW</li>
 </ul></li>
 </ul>
 </section>
@@ -848,7 +848,7 @@ Content-Type: image/png</code></pre>
 <ul>
 <li>Testing for this vulnerability</li>
 </ul>
-<p>curl –path-as-is http://localhost:8080/public/image/../../server.py</p>
+<p>curl --path-as-is http://localhost:8080/public/image/../../server.py</p>
 <ul>
 <li>Following the structure of the HW server, this request with ask the server for server.py</li>
 <li>Your server must not respect this request
@@ -856,17 +856,17 @@ Content-Type: image/png</code></pre>
 <li>Sending your server code alone is a security issue, but this is also a proof of concept that they can request arbitrary files</li>
 </ul></li>
 <li>Uses curl in the command line</li>
-<li>The browser and curl will simplify paths by default and chance the path to “/ server.py”</li>
-<li>–path-as-is prevents the path simplification</li>
+<li>The browser and curl will simplify paths by default and chance the path to "/ server.py"</li>
+<li>--path-as-is prevents the path simplification</li>
 </ul>
 </section>
 <section id="hosting-files---security-5" class="slide level2">
 <h2>Hosting Files - Security</h2>
 <ul>
-<li>Don’t forget to disable MIME type sniffing</li>
+<li>Don't forget to disable MIME type sniffing</li>
 <li>At this point an attacker can upload Javascript instead of an image
 <ul>
-<li>Don’t let the browser sniff the JS MIME type and run the attack script</li>
+<li>Don't let the browser sniff the JS MIME type and run the attack script</li>
 </ul></li>
 </ul>
 

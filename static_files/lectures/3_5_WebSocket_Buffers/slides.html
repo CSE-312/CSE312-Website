@@ -159,7 +159,7 @@
 <section id="special-cases" class="slide level2">
 <h2>Special Cases</h2>
 <ul>
-<li>Let’s talk about 3 special cases that will come up when implementing WebSockets
+<li>Let's talk about 3 special cases that will come up when implementing WebSockets
 <ul>
 <li>Buffering large frames</li>
 <li>Multiple frames per message using the fin bit and continuation frames</li>
@@ -179,7 +179,7 @@
 <li>Read bytes from the socket</li>
 <li>Parse the headers</li>
 <li>Read the payload length from the headers</li>
-<li>Keep reading bytes from the socket until you’ve read the entire frame
+<li>Keep reading bytes from the socket until you've read the entire frame
 <ul>
 <li>Payload length does not include the header bytes</li>
 </ul></li>
@@ -220,13 +220,13 @@
 <p>Frame 3</p>
 <p>fin bit: 0</p>
 <p>payload length: 11</p>
-<p>payload: “Never look”</p>
+<p>payload: "Never look "</p>
 <p>fin bit: 0</p>
 <p>payload length: 14</p>
-<p>payload: “directly into”</p>
+<p>payload: "directly into "</p>
 <p>fin bit: 1</p>
 <p>payload length: 7</p>
-<p>payload: “the sun”</p>
+<p>payload: "the sun"</p>
 <p>Message: Never look directly into the sun</p>
 
 <img data-src="assets/slide07-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
@@ -303,7 +303,7 @@
 <section id="back-to-back-frames-4" class="slide level2">
 <h2>Back-to-back Frames</h2>
 <ul>
-<li>If you’re not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
+<li>If you're not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
 <li>Since you start in the middle of the frame, you will run header parsing code on masked payload bytes
 <ul>
 <li>You will get errors!</li>
@@ -322,7 +322,7 @@
 <ul>
 <li>When parsing the first frame:
 <ul>
-<li>Use the payload length to detect that you’ve read too many bytes</li>
+<li>Use the payload length to detect that you've read too many bytes</li>
 <li>Store the extra bytes in a separate variable</li>
 <li>Parse the first frame</li>
 </ul></li>

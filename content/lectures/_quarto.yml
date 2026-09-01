@@ -12,6 +12,7 @@ filters:
   - _theme/reading-list.lua
 format:
   html:
+    from: markdown-smart
     output-file: index.html
     theme: [cosmo, _theme/page.scss]
     include-in-header: _theme/accessibility-header.html
@@ -21,6 +22,7 @@ format:
     format-links: false
     html-math-method: plain
   revealjs:
+    from: markdown-smart
     output-file: slides.html
     theme: [dark, _theme/slides.scss]
     include-in-header: _theme/accessibility-header.html

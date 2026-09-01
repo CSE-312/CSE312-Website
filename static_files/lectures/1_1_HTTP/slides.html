@@ -244,7 +244,7 @@
 <ul>
 <li><a href="https://tools.ietf.org/html/rfc2616" class="uri">https://tools.ietf.org/html/rfc2616</a></li>
 <li>This is THE document for all your questions about HTTP</li>
-<li>Today we’ll discuss topics in sections 4, 5, and 6</li>
+<li>Today we'll discuss topics in sections 4, 5, and 6</li>
 </ul></li>
 <li>RFC
 <ul>
@@ -254,7 +254,7 @@
 <li>IETF
 <ul>
 <li>Internet Engineering Task Force</li>
-<li>Adopts some RFC’s as Internet standards</li>
+<li>Adopts some RFC's as Internet standards</li>
 </ul></li>
 </ul>
 </section>
@@ -295,7 +295,7 @@
 <section id="web-server" class="slide level2">
 <h2>Web Server</h2>
 <ul>
-<li>Software that “speaks” HTTP</li>
+<li>Software that "speaks" HTTP</li>
 <li>Listens for HTTP requests and responds with HTTP responses</li>
 <li>We want to host our web pages/apps on the Internet using HTTP</li>
 <li>Terminology:
@@ -304,7 +304,7 @@
 <ul>
 <li>The front end will send HTTP requests to the back end</li>
 </ul></li>
-<li>Back End - The web server and all software that does not run on the user’s machine
+<li>Back End - The web server and all software that does not run on the user's machine
 <ul>
 <li>The back end will send HTTP responses to the front end</li>
 </ul></li>
@@ -346,7 +346,7 @@
 <li>DELETE: Delete information from a service</li>
 <li>HEAD: Request only the headers of a response</li>
 </ul></li>
-<li>To start, we’ll focus on GET and POST only</li>
+<li>To start, we'll focus on GET and POST only</li>
 </ul>
 </section>
 <section id="http-request-1" class="slide level2 unnumbered unlisted">
@@ -395,11 +395,11 @@
 <li>Query String - [Optional] Contains key-value pairs set by the client</li>
 <li><a href="https://www.google.com/search?q=web+development" class="uri">https://www.google.com/search?q=web+development</a>
 <ul>
-<li>HTTPS request to Google search for the phrase “web development”</li>
+<li>HTTPS request to Google search for the phrase "web development"</li>
 </ul></li>
 <li><a href="https://duckduckgo.com/?q=web+development&amp;ia=images" class="uri">https://duckduckgo.com/?q=web+development&amp;ia=images</a>
 <ul>
-<li>An HTTPS request to Duck Duck Go image search for the phrase “web development”</li>
+<li>An HTTPS request to Duck Duck Go image search for the phrase "web development"</li>
 </ul></li>
 <li>Fragment - [Optional] Specifies a single value commonly used for navigation</li>
 <li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier" class="uri">https://en.wikipedia.org/wiki/Uniform_Resource_Identifier</a>
@@ -451,7 +451,7 @@
 <section id="get-request" class="slide level2">
 <h2>GET Request</h2>
 <ul>
-<li>We’ll use this simple request as an example</li>
+<li>We'll use this simple request as an example</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>GET / HTTP/1.1</span>
 <span id="cb3-2"><a></a>Host: cse312.com</span>
@@ -465,7 +465,7 @@
 </ul>
 <pre><code>GET / HTTP/1.1\r\nHost: cse312.com\r\nConnection: keep-alive\r\nAccept-Language: en-US,en\r\n\r\n</code></pre>
 <ul>
-<li>In the slides, we’ll render “<code>\r\n</code>” as a new line</li>
+<li>In the slides, we'll render "<code>\r\n</code>" as a new line</li>
 <li>Note that there is a blank line at the end of the request</li>
 </ul>
 </section>
@@ -476,10 +476,10 @@
 <li>The request line has 3 values separated by spaces
 <ul>
 <li>The request type (GET/POST/PUT/DELETE/etc)</li>
-<li>The path of the request (ex. “/”) - Everything after the port in the requested url</li>
+<li>The path of the request (ex. "/") - Everything after the port in the requested url</li>
 <li>The HTTP Version
 <ul>
-<li>We’ll always use HTTP/1.1 in this course</li>
+<li>We'll always use HTTP/1.1 in this course</li>
 </ul></li>
 </ul></li>
 </ul>
@@ -495,7 +495,7 @@
 <ul>
 <li>Separate the values and check the strings</li>
 </ul></li>
-<li>Typically: When the root path “/” is requested, serve the HTML of your home page
+<li>Typically: When the root path "/" is requested, serve the HTML of your home page
 <ul>
 <li>By convention, web servers look for index.html to serve at the root path</li>
 </ul></li>
@@ -527,12 +527,12 @@
 <li>HTTP Headers
 <ul>
 <li>Key-Value pairs</li>
-<li>Key and value separated by a colon “:”</li>
+<li>Key and value separated by a colon ":"</li>
 </ul></li>
 <li>Each header will be on a new line (look for <code>\r\n</code>)</li>
-<li>To parse, look for the colon “:” and read the key and value
+<li>To parse, look for the colon ":" and read the key and value
 <ul>
-<li>There is an optional space after the colon which should be removed if present <code>&lt;--</code> don’t forget to do this! Leaving in the space will cause bugs that are very difficult to detect</li>
+<li>There is an optional space after the colon which should be removed if present <code>&lt;--</code> don't forget to do this! Leaving in the space will cause bugs that are very difficult to detect</li>
 </ul></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>GET / HTTP/1.1</span>
@@ -550,7 +550,7 @@
 <ul>
 <li>Your web server will listen for HTTP requests over the TCP sockets and respond with HTTP responses</li>
 <li>Send a response back to the client to serve them the requested content</li>
-<li>This response will display “hello” in their browser</li>
+<li>This response will display "hello" in their browser</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>HTTP/1.1 200 OK</span>
 <span id="cb9-2"><a></a>Content-Type: text/plain</span>
@@ -622,7 +622,7 @@
 <li>There is a blank line (<code>\r\n\r\n</code>) separating the headers and the body of the response</li>
 <li>The blank line is very important
 <ul>
-<li>It tells the browser that you’re done with headers and the next bytes will be the body of the response</li>
+<li>It tells the browser that you're done with headers and the next bytes will be the body of the response</li>
 </ul></li>
 </ul>
 <div class="sourceCode" id="cb14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a></a>HTTP/1.1 200 OK</span>

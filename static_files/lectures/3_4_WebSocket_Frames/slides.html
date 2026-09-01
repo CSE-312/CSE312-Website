@@ -156,7 +156,7 @@
 <h2>WebSockets</h2>
 <ul>
 <li>Last time we saw how to establish a WebSocket connection</li>
-<li>Today, we’ll parse and send messages over the socket</li>
+<li>Today, we'll parse and send messages over the socket</li>
 </ul>
 </section>
 <section id="websocket-frame" class="slide level2">
@@ -173,7 +173,7 @@
 <li>Send the bits through the Internet</li>
 <li>Receiver interprets the bits following the same protocol to extract meaning from the bits</li>
 </ul></li>
-<li>Protocols enable communication using only 1’s and 0’s</li>
+<li>Protocols enable communication using only 1's and 0's</li>
 </ul>
 </section>
 <section id="protocols-sidenote-1" class="slide level2">
@@ -212,7 +212,7 @@
 <ul>
 <li>We will have to read frames at the bit level
 <ul>
-<li>It’s already in a byte array when we receive it</li>
+<li>It's already in a byte array when we receive it</li>
 <li>We can access any byte and extract the bits we need</li>
 <li>Helpful to recall that bytes are represented as 8-bit integer values (0-255)</li>
 </ul></li>
@@ -225,7 +225,7 @@
 <li>Bit Example - To read the opcode:
 <ul>
 <li>get the byte at index 0</li>
-<li>Bitwise AND (&amp; in most languages) this byte with a “bit mask” of 15</li>
+<li>Bitwise AND (&amp; in most languages) this byte with a "bit mask" of 15</li>
 <li>Since 15 == 00001111 as a byte this will 0 out the 4 higher order bits</li>
 <li>We now have an int from 0-15 representing the opcode</li>
 </ul></li>
@@ -382,7 +382,7 @@
 <ul>
 <li>01111011_00100010_01110101_01110011</li>
 </ul></li>
-<li>This part of the payload will be “message XOR mask”:
+<li>This part of the payload will be "message XOR mask":
 <ul>
 <li>00110010_01100001_00100000_01010010</li>
 </ul></li>

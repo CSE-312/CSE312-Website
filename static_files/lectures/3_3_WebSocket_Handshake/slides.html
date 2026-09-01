@@ -172,7 +172,7 @@
 <ul>
 <li>Two-way communication between server and client
 <ul>
-<li>Server can “push” new data to each client without being prompted by an HTTP request</li>
+<li>Server can "push" new data to each client without being prompted by an HTTP request</li>
 </ul></li>
 <li>Enables real-time [minus network delays] communication between users
 <ul>
@@ -226,13 +226,13 @@
 <section id="websocket-handshake-2" class="slide level2">
 <h2>WebSocket Handshake</h2>
 <ul>
-<li>The client generates a random “Sec-WebSocket-Key” for each new WebSocket connection</li>
+<li>The client generates a random "Sec-WebSocket-Key" for each new WebSocket connection</li>
 <li>The server appends a specific GUID to this key
 <ul>
-<li>“258EAFA5-E914-47DA-95CA-C5AB0DC85B11”</li>
+<li>"258EAFA5-E914-47DA-95CA-C5AB0DC85B11"</li>
 </ul></li>
 <li>Computes the SHA-1 hash</li>
-<li>“Sec-WebSocket-Accept” is the base64 encoding of the hash</li>
+<li>"Sec-WebSocket-Accept" is the base64 encoding of the hash</li>
 <li>Why?
 <ul>
 <li>Ensure client and server both implement the protocol
@@ -261,7 +261,7 @@
 <h2>WebSocket Frame</h2>
 <ul>
 <li>https://tools.ietf.org/html/rfc6455#section-5.2</li>
-<li>We’ll see how to parse through this on Wednesday</li>
+<li>We'll see how to parse through this on Wednesday</li>
 </ul>
 
 <img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
@@ -304,7 +304,7 @@ console.log(message.data);
 <li>Call the send method to send a message to the server</li>
 <li>Can give it a String and the WebSocket object will convert it to a frame
 <ul>
-<li>We’ll parse this frame on the server</li>
+<li>We'll parse this frame on the server</li>
 </ul></li>
 </ul>
 <pre><code>let socket = new WebSocket('ws://' + window.location.host + '/socket');

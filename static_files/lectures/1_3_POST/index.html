@@ -196,12 +196,12 @@ Content-Length: 5</code></pre>
 <ul>
 <li>Look for the blank line that separates the headers from the body
 <ul>
-<li>“<code>\r\n\r\n</code>”</li>
+<li>"<code>\r\n\r\n</code>"</li>
 </ul></li>
 <li>Read everything after this blank line</li>
-<li>Make sure you’ve read “Content-Length” number of bytes
+<li>Make sure you've read "Content-Length" number of bytes
 <ul>
-<li>It’s possible to only receive part of a request and have to read the rest from the TCP socket</li>
+<li>It's possible to only receive part of a request and have to read the rest from the TCP socket</li>
 </ul></li>
 </ul>
 <p>POST /path HTTP/1.1<code>\r\n</code>Content-Type: text/plain<code>\r\n</code>Content-Length: 5<code>\r\n\r\n</code>hello</p>
@@ -235,11 +235,11 @@ Content-Length: 5</code></pre>
 <li>Query String - [Optional] Contains key-value pairs set by the client</li>
 <li>https://www.google.com/search?q=web+development
 <ul>
-<li>HTTPS request to Google search for the phrase “web development”</li>
+<li>HTTPS request to Google search for the phrase "web development"</li>
 </ul></li>
 <li>https://duckduckgo.com/?q=web+development&amp;ia=images
 <ul>
-<li>An HTTPS request to Duck Duck Go image search for the phrase “web development”</li>
+<li>An HTTPS request to Duck Duck Go image search for the phrase "web development"</li>
 </ul></li>
 <li>Fragment - [Optional] Specifies a single value commonly used for navigation</li>
 <li>https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
@@ -275,7 +275,7 @@ Content-Length: 5</code></pre>
 <ul>
 <li>%ed%95%9c</li>
 </ul></li>
-<li>” ” &lt;– single space
+<li>" " &lt;-- single space
 <ul>
 <li>%20</li>
 </ul></li>
@@ -305,7 +305,7 @@ Content-Length: 5</code></pre>
 <p>:</p>
 <p>&amp;</p>
 <p>/</p>
-<p>’</p>
+<p>'</p>
 <p>?</p>
 <p>(</p>
 <ul>
@@ -342,16 +342,16 @@ Content-Length: 5</code></pre>
 <section id="dynamic-pages" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-pages">Dynamic Pages</h2>
 <ul>
-<li>We’ve learned how to host static content from our servers
+<li>We've learned how to host static content from our servers
 <ul>
 <li>Content does not change</li>
 </ul></li>
-<li>For the rest of the semester we’ll add dynamic features
+<li>For the rest of the semester we'll add dynamic features
 <ul>
 <li>Users can change content and interact with other users</li>
 </ul></li>
 <li>No longer making web sites</li>
-<li>Now we’re developing Web Applications</li>
+<li>Now we're developing Web Applications</li>
 </ul>
 </section>
 <section id="html-forms-1" class="level2">
@@ -570,17 +570,17 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <h2 class="anchored" data-anchor-id="html-injection-1">HTML Injection</h2>
 <ul>
 <li>You are now handling user data and sending it to other users (Through chat messages)</li>
-<li>You’re building a form that accepts user data and serves it to all other users</li>
+<li>You're building a form that accepts user data and serves it to all other users</li>
 <li>What happens when a user enters this in chat:
 <ul>
-<li>“<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>”</li>
+<li>"<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>"</li>
 </ul></li>
 </ul>
 </section>
 <section id="html-injection-xss" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-xss">HTML Injection (XSS)</h2>
 <ul>
-<li>“<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>”</li>
+<li>"<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>"</li>
 <li>This attack is called an HTML injection attack
 <ul>
 <li>This string is uploaded to your server</li>
@@ -607,9 +607,9 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <li>Escape HTML
 <ul>
 <li>Replace &amp;, &lt;, and &gt; with their HTML escaped characters</li>
-<li>‘&amp;’ -&gt; &amp;</li>
-<li>‘&lt;’ -&gt; &lt;</li>
-<li>‘&gt;’ -&gt; &gt;</li>
+<li>'&amp;' -&gt; &amp;</li>
+<li>'&lt;' -&gt; &lt;</li>
+<li>'&gt;' -&gt; &gt;</li>
 </ul></li>
 </ul>
 </section>
@@ -642,7 +642,7 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <ul>
 <li>Always escape &amp; first</li>
 </ul></li>
-<li>If &amp; is escaped last you’ll get:</li>
+<li>If &amp; is escaped last you'll get:</li>
 <li>&amp;lt;script&amp;gt;maliciousFunction()&amp;lt; /script&amp;gt;
 <ul>
 <li>Which will not render the way you intended</li>
@@ -684,7 +684,7 @@ request.send();</code></pre>
 <ul>
 <li>Use JavaScript to make an AJAX request</li>
 <li>Create an XMLHttpRequest object</li>
-<li>Call “open” to set the request type and path</li>
+<li>Call "open" to set the request type and path</li>
 <li>Call send to make the request</li>
 </ul>
 </section>
@@ -742,7 +742,7 @@ request.send(JSON.stringify(data));</code></pre>
 const formElement = document.getElementById("myForm");
 const formData = new FormData(formElement);</code></pre>
 <ul>
-<li>Add “return false” to block the page reload</li>
+<li>Add "return false" to block the page reload</li>
 <li>Or use event.preventDefault(); in the JS function</li>
 <li>Use JavaScript to read the data from the entire form</li>
 </ul>
@@ -755,7 +755,7 @@ request.send(formData);
 <h2 class="anchored" data-anchor-id="encodings---json">Encodings - JSON</h2>
 <ul>
 <li>Another option: Manually format the data using JSON</li>
-<li>Don’t use the form element</li>
+<li>Don't use the form element</li>
 <li>Create a button instead of a submit input</li>
 <li>In JavaScript, read the value of each input and create your own JSON object</li>
 </ul>
@@ -777,7 +777,7 @@ request.send(JSON.stringify(data));
 <li>Fetch is an alternate way to send an asynchronous request</li>
 <li>Uses promises
 <ul>
-<li>Can await a promise (shown) or use “then”</li>
+<li>Can await a promise (shown) or use "then"</li>
 </ul></li>
 <li>*Fetch is what the HW front end uses</li>
 </ul>
@@ -852,14 +852,14 @@ body: JSON.stringify(data),
 <li>Server hangs on requests (Intentionally)</li>
 <li>Client makes a long-poll request to get the most current data
 <ul>
-<li>If there’s new data, the server responds just like polling</li>
+<li>If there's new data, the server responds just like polling</li>
 <li>When the response is received, client makes another long- poll request</li>
 </ul></li>
-<li>If there’s no new data, the server does not send a response</li>
+<li>If there's no new data, the server does not send a response</li>
 <li>Server waits until there is new data to be sent, then responds</li>
 <li>Timeouts
 <ul>
-<li>If there’s no new data after ~10-20 seconds, server responds with no new data</li>
+<li>If there's no new data after ~10-20 seconds, server responds with no new data</li>
 <li>Client gets the response and sends a new long-poll request</li>
 </ul></li>
 </ul>
@@ -874,10 +874,10 @@ body: JSON.stringify(data),
 <li>Real-time updates!</li>
 <li>Minimal delays between users without excess server load
 <ul>
-<li>*If designed properly. This is not true if each request requires it’s own thread</li>
+<li>*If designed properly. This is not true if each request requires it's own thread</li>
 </ul></li>
 </ul></li>
-<li>We’ll reach this same goal with WebSockets
+<li>We'll reach this same goal with WebSockets
 <ul>
 <li>More modern solution</li>
 </ul></li>

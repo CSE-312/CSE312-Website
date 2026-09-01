@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="user-accounts" class="level2">
 <h2 class="anchored" data-anchor-id="user-accounts">User Accounts</h2>
 <ul>
-<li>Everything we’ve built so far treats every user the same and delivers the same content to all visitors
+<li>Everything we've built so far treats every user the same and delivers the same content to all visitors
 <ul>
 <li>Only exception was setting a cookie to count visits</li>
 </ul></li>
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Only a cryptographic hash of your password is stored</li>
 <li>By only storing the hash of a password:
 <ul>
-<li>Even the admins of a site can’t read your password!</li>
+<li>Even the admins of a site can't read your password!</li>
 </ul></li>
 <li>SHA256 is a commonly used cryptographic hash function
 <ul>
@@ -277,10 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Examples:
 <ul>
 <li>If you know the plain text is a single lowercase letter the entropy is 26</li>
-<li>If it’s two lowercase letters, the entropy is 26^2 = 676</li>
-<li>If it’s two letters that can be upper or lower case, 52^2 = 2704</li>
+<li>If it's two lowercase letters, the entropy is 26^2 = 676</li>
+<li>If it's two letters that can be upper or lower case, 52^2 = 2704</li>
 </ul></li>
-<li>Tend to measure the “bits of entropy”
+<li>Tend to measure the "bits of entropy"
 <ul>
 <li>The log base 2 of these values</li>
 </ul></li>
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="rainbow-table" class="level2">
 <h2 class="anchored" data-anchor-id="rainbow-table">Rainbow Table</h2>
 <ul>
-<li>A table containing the start and end of “chains” of hashes</li>
+<li>A table containing the start and end of "chains" of hashes</li>
 <li>Repeatedly rehash the start to reach the end</li>
 <li>To attack a hash:
 <ul>
@@ -398,8 +398,8 @@ Location: /new-path</code></pre>
 <li>New request is made with the same protocol/host/port as the original request</li>
 <li>Example:
 <ul>
-<li>First request was for “http://cse312.com:8080/old-path”</li>
-<li>Second request is “http://cse312.com:8080/new-path”</li>
+<li>First request was for "http://cse312.com:8080/old-path"</li>
+<li>Second request is "http://cse312.com:8080/new-path"</li>
 </ul></li>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
@@ -412,8 +412,8 @@ Location: /new-path</code></pre>
 <li>If the location is a full url, the user can be redirected to a different server</li>
 <li>Example:
 <ul>
-<li>First request was for “http://cse312.com:8080/old-path”</li>
-<li>Second request is “https://google.com/”</li>
+<li>First request was for "http://cse312.com:8080/old-path"</li>
+<li>Second request is "https://google.com/"</li>
 </ul></li>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
@@ -426,7 +426,7 @@ Location: https://google.com/</code></pre>
 <li>Add a Content-Length of 0 since there are no bytes to read from the body
 <ul>
 <li>This is technically optional. The lack of a Content-Length header should imply a length of 0</li>
-<li>However, this confuses Firefox.. so we’ll add the header</li>
+<li>However, this confuses Firefox.. so we'll add the header</li>
 </ul></li>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
