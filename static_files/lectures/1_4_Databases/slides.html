@@ -143,19 +143,24 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Databases and HTML Templates</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="databases" class="slide level2">
-<h2>Databases</h2>
+<section>
+<section id="databases" class="title-slide slide level1 center">
+<h1>Databases</h1>
+
 </section>
 <section id="databases-1" class="slide level2">
 <h2>Databases</h2>
 <ul>
-<li>Software that stores data on disk</li>
+<li>Software that stores data on disk
+<ul>
+<li>Download, install, and run as a separate Programming</li>
+<li>.. until we talk about Docker</li>
+</ul></li>
 <li>Runs as a server and is communicated with via TCP sockets</li>
 <li>Provides an API to store/retrieve data
 <ul>
@@ -170,18 +175,20 @@
 <ul>
 <li>We'll look at 2 different databases</li>
 <li>Both are pieces of software that must be downloaded, installed, ran, then connected to via TCP</li>
-<li>MongoDB
+<li>MongoDB (Briefly)
 <ul>
 <li>An unstructured server based on document stores</li>
 </ul></li>
-<li>mySQL
+<li>PostgreSQL
 <ul>
 <li>A server implementing SQL (Structured Query Language)</li>
 </ul></li>
 </ul>
-</section>
-<section id="mongodb" class="slide level2">
-<h2>MongoDB</h2>
+</section></section>
+<section>
+<section id="mongodb" class="title-slide slide level1 center">
+<h1>MongoDB</h1>
+
 </section>
 <section id="mongodb-1" class="slide level2">
 <h2>MongoDB</h2>
@@ -207,21 +214,6 @@
 </ul></li>
 <li>Access your collections to insert/retrieve/update/delete data</li>
 </ul>
-<p>from pymongo import MongoClient</p>
-<pre><code>mongo_client = MongoClient("localhost")
-db = mongo_client["cse312"]
-chat_collection = db["chat"]</code></pre>
-</section>
-<section id="mongodb---insert-data" class="slide level2">
-<h2>MongoDB - Insert Data</h2>
-<ul>
-<li>Insert dictionaries/objects directly</li>
-<li>For languages without a data structure comparable to dictionaries/objects
-<ul>
-<li>More work to do to prepare your data for Mongo</li>
-</ul></li>
-</ul>
-<p>chat_collection.insert_one({"username": "hartloff", "message": "hello"})</p>
 </section>
 <section id="mongodb---security" class="slide level2">
 <h2>MongoDB - Security</h2>
@@ -230,47 +222,67 @@ chat_collection = db["chat"]</code></pre>
 <li>Mongo does not rely on parsing statements as strings</li>
 <li>Any injected code would be treated as values</li>
 </ul>
-<p>chat_collection.insert_one({"username": "hartloff", "message": "hello"})</p>
+</section></section>
+<section>
+<section id="postgresql" class="title-slide slide level1 center">
+<h1>PostgreSQL</h1>
+
 </section>
-<section id="mongodb---retrieve-data" class="slide level2">
-<h2>MongoDB - Retrieve Data</h2>
+<section id="postgresql---setup" class="slide level2">
+<h2>PostgreSQL - Setup</h2>
 <ul>
-<li>Retrieve documents using find</li>
-<li>Find takes a key-value store and returns all documents with those values stored at the given keys
+<li>Download, install, run the PostgreSQL server
 <ul>
-<li>Ex. {"username": "hartloff"} returns all documents with a username of "hartloff"</li>
+<li>Listens for TCP connections on port 5432 (By default)</li>
 </ul></li>
-<li>To retrieve all documents, use an empty key- value store {}</li>
+<li>Set your password so you can connect from your server</li>
+<li>Install a library for your language that will connect to the PostgreSQL server
+<ul>
+<li><code>github.com/joho/godotenv</code></li>
+</ul></li>
+<li>Create a connection in your code</li>
+<li>When in doubt, follow the documentation</li>
 </ul>
-<pre><code>my_data = chat_collection.find({"username": "hartloff"})
-all_data = chat_collection.find({})</code></pre>
+<pre><code>db, err := sql.Open(
+  "pgx",
+  "postgres://postgres:" + os.Getenv("POSTGRES_PASSWORD") + "@localhost:5432/cse312",
+)</code></pre>
 </section>
-<section id="mysql" class="slide level2">
-<h2>MySQL</h2>
+<section id="postgresql---tables" class="slide level2">
+<h2>PostgreSQL - Tables</h2>
+<ul>
+<li>SQL is based on <strong>tables</strong> with rows and column
+<ul>
+<li>Similar in structure to CSV except the fields are typed</li>
+</ul></li>
+<li>A table must be fully defined before data is stored</li>
+<li>If creating tables on server startup, use <code>IF NOT EXISTS</code></li>
+</ul>
+<pre><code>_, err := db.Exec(`
+CREATE TABLE IF NOT EXISTS chat (
+  id SERIAL PRIMARY KEY,
+  author TEXT,
+  content TEXT,
+  updated BOOLEAN
+)
+`)</code></pre>
 </section>
-<section id="mysql-1" class="slide level2">
-<h2>MySQL</h2>
+<section id="postgresql---insert-data" class="slide level2">
+<h2>PostgreSQL - Insert Data</h2>
 <ul>
-<li>Listens for TCP connections on port 3306 (By default)</li>
-<li>Install a library for your language that will connect to the MySQL server</li>
-<li>SQL is based on tables with rows and column
+<li>Insert a record into a table using <code>INSERT INTO</code></li>
+<li>If using inputs from the user, always use prepared statements!
 <ul>
-<li>Similar in structure to CSV except the values have types other than string</li>
+<li>Use placeholders in your statement and replace the values later</li>
+<li>Prevents values from being interpreted as SQL code</li>
 </ul></li>
 </ul>
+<pre><code>_, err := db.Exec(`
+INSERT INTO chat (author, content, updated) VALUES ($1, $2, $3)
+`, "Jesse", "hello chat!", false)</code></pre>
 </section>
-<section id="mysql---insert-data" class="slide level2">
-<h2>MySQL - Insert Data</h2>
-<ul>
-<li>If using inputs from the user, always use prepared statements</li>
-</ul>
-<p>val statement = connection.prepareStatement("INSERT INTO players VALUE (?, ?)")</p>
-<pre><code>statement.setString(1, "mario")
-statement.setInt(2, 10)</code></pre>
-<p>statement.execute()</p>
-</section>
-<section id="mysql---security" class="slide level2">
-<h2>MySQL - Security</h2>
+<section id="sql---security" class="slide level2">
+<h2>SQL - Security</h2>
 <ul>
 <li>Not using prepared statements?
 <ul>
@@ -278,12 +290,28 @@ statement.setInt(2, 10)</code></pre>
 </ul></li>
 <li>If you concatenate user inputs directly into your SQL statements
 <ul>
-<li>Attacker chooses a username of "';DROP TABLE players;"</li>
+<li>Attacker chooses a username of <code>';DROP TABLE chat;</code></li>
 <li>You lose all your data</li>
 <li>Even worse, they find a way to access the entire database and steal other users' data</li>
 <li>SQL Injection is the most common successful attack on servers</li>
 </ul></li>
 </ul>
+</section>
+<section id="postgresql---retrieve-data" class="slide level2">
+<h2>PostgreSQL - Retrieve Data</h2>
+<ul>
+<li>Retrieve records from a table using <code>SELECT ... FROM</code></li>
+<li><code>SELECT * FROM table_name</code> will return all fields from every record in <code>table_name</code></li>
+</ul>
+<pre><code>records, err := db.Query("SELECT * FROM chat")
+
+for records.Next() {
+  var id int
+  var author string
+  var content string
+  var updated bool
+  records.Scan(&amp;id, &amp;author, &amp;content, &amp;updated)
+}</code></pre>
 </section>
 <section id="mongodb-vs.-sql" class="slide level2">
 <h2>MongoDB vs. SQL</h2>
@@ -322,104 +350,11 @@ statement.setInt(2, 10)</code></pre>
 </ul></li>
 </ul></li>
 </ul>
-</section>
-<section id="mongodb-vs.-sql-2" class="slide level2">
-<h2>MongoDB vs. SQL</h2>
-<ul>
-<li>For the HW
-<ul>
-<li>MongoDB is required</li>
-</ul></li>
-</ul>
-</section>
-<section id="running-mongodb" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Choose 1:
-<ul>
-<li>Download and install MongoDB and run it on your device</li>
-<li>Run MongoDB using Docker (recommended)</li>
-</ul></li>
-</ul>
-</section>
-<section id="running-mongodb-1" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Download and install MongoDB and run it on your device</li>
-<li>Go to Mongo's website and follow the instructions</li>
-<li>Mongo will run locally on your machine and listen for connections on port 27017</li>
-<li>Connect using the host "localhost"</li>
-</ul>
-</section>
-<section id="running-mongodb-2" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Run MongoDB using Docker (recommended)</li>
-<li>Install docker</li>
-<li>Run the command:
-<ul>
-<li>docker run -d -p 27017:27017 mongo:latest</li>
-</ul></li>
-<li>This uses docker to run mongo in a container</li>
-</ul>
-</section>
-<section id="running-mongodb-3" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Run MongoDB using Docker (recommended)</li>
-<li>docker run -d -p 27017:27017 mongo:latest
-<ul>
-<li>Run a container using the mongo:latest image</li>
-<li>Map localhost port 27017 to port 27017 inside the container</li>
-</ul></li>
-<li>Now you can connect to the DB on "localhost"</li>
-</ul>
-</section>
-<section id="running-mongodb-4" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Run MongoDB using Docker compose</li>
-<li>Alternatively, use the provided docker compose file from the HW handout</li>
-<li>docker compose -f docker-compose.db- only.yml up -d</li>
-<li>Same effect as the previous docker command</li>
-</ul>
-</section>
-<section id="running-mongodb-5" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>Run MongoDB using Docker compose</li>
-<li>Last option: run the full app using docker compose using the docker-compose file from the HW handout</li>
-<li>docker compose up —build —force-recreate
-<ul>
-<li>Runs the database and your app</li>
-<li>Rebuilds your app if you made changes</li>
-<li>Connects to the database on host "mongo"</li>
-<li>"—" is two dash characters</li>
-</ul></li>
-</ul>
-</section>
-<section id="running-mongodb-6" class="slide level2">
-<h2>Running MongoDB</h2>
-<ul>
-<li>However you choose to run your database:
-<ul>
-<li>Use the setup in database.py of the HW handout to connect to your DB</li>
-<li>Dynamically connects to either "localhost" or "mongo" depending on how it was started</li>
-<li>Lets you not have to think about the DB host that much</li>
-</ul></li>
-</ul>
-</section>
-<section id="running-your-app" class="slide level2">
-<h2>Running Your App</h2>
-<ul>
-<li>If you use any "localhost" method to run your DB:
-<ul>
-<li>Run your app by running server.py</li>
-</ul></li>
-</ul>
-</section>
-<section id="html-templates" class="slide level2">
-<h2>HTML Templates</h2>
+</section></section>
+<section>
+<section id="html-templates" class="title-slide slide level1 center">
+<h1>HTML Templates</h1>
+
 </section>
 <section id="html-templates-1" class="slide level2">
 <h2>HTML Templates</h2>
@@ -448,11 +383,15 @@ statement.setInt(2, 10)</code></pre>
 &lt;meta charset="UTF-8"&gt;
 &lt;title&gt;This page was generated from a template&lt;/title&gt;
 &lt;/head&gt;
-&lt;body&gt;</code></pre>
-<pre><code>&lt;h1&gt;{{title}}&lt;/h1&gt;</code></pre>
-<pre><code>&lt;p&gt;{{description}}&lt;/p&gt;</code></pre>
-<pre><code>&lt;img src="{{image_filename}}"/&gt;</code></pre>
-<pre><code>&lt;/body&gt;
+&lt;body&gt;
+
+&lt;h1&gt;{{title}}&lt;/h1&gt;
+
+&lt;p&gt;{{description}}&lt;/p&gt;
+
+&lt;img src="{{image_filename}}"/&gt;
+
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </section>
 <section id="html-templates-3" class="slide level2">
@@ -470,11 +409,15 @@ statement.setInt(2, 10)</code></pre>
 &lt;meta charset="UTF-8"&gt;
 &lt;title&gt;This page was generated from a template&lt;/title&gt;
 &lt;/head&gt;
-&lt;body&gt;</code></pre>
-<pre><code>&lt;h1&gt;{{title}}&lt;/h1&gt;</code></pre>
-<pre><code>&lt;p&gt;{{description}}&lt;/p&gt;</code></pre>
-<pre><code>&lt;img src="{{image_filename}}"/&gt;</code></pre>
-<pre><code>&lt;/body&gt;
+&lt;body&gt;
+
+&lt;h1&gt;{{title}}&lt;/h1&gt;
+
+&lt;p&gt;{{description}}&lt;/p&gt;
+
+&lt;img src="{{image_filename}}"/&gt;
+
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </section>
 <section id="html-templates-4" class="slide level2">
@@ -483,8 +426,8 @@ statement.setInt(2, 10)</code></pre>
 <li>On the HW:
 <ul>
 <li>layout.html contains all the HTML that is shown on every page (navigation, structure, etc)</li>
-<li>layout.html has one placeholder - {{content}} - which is where you'll insert all the HTML for the specific page that was requested</li>
-<li>To render a page, eg. index.html, replace {{content}} with everything read from index.html</li>
+<li>layout.html has one placeholder <code>{{content}}</code> which is where you'll insert all the HTML for the specific page that was requested</li>
+<li>To render a page, eg. index.html, replace <code>{{content}}</code> with everything read from index.html</li>
 <li>Send the resulting rendered page to the client</li>
 </ul></li>
 </ul>
@@ -504,11 +447,13 @@ statement.setInt(2, 10)</code></pre>
 &lt;meta charset="UTF-8"&gt;
 &lt;title&gt;This page was generated from a template&lt;/title&gt;
 &lt;/head&gt;
-&lt;body&gt;</code></pre>
-<pre><code>{{loop}}
+&lt;body&gt;
+
+{{loop}}
 &lt;h6&gt;{{content_from_data_structure}}&lt;/h6&gt;
-{{end_loop}}</code></pre>
-<pre><code>&lt;/body&gt;
+{{end_loop}}
+
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
 </section>
 <section id="common-template-features-1" class="slide level2">
@@ -524,13 +469,15 @@ statement.setInt(2, 10)</code></pre>
 &lt;meta charset="UTF-8"&gt;
 &lt;title&gt;This page was generated from a template&lt;/title&gt;
 &lt;/head&gt;
-&lt;body&gt;</code></pre>
-<pre><code>{{if cookie_set}}
+&lt;body&gt;
+
+{{if cookie_set}}
 &lt;h6&gt;Welcome back!&lt;/h6&gt;
 {{else}}
 &lt;h6&gt;Welcome!&lt;/h6&gt;
-{{end_if}}</code></pre>
-<pre><code>&lt;/body&gt;
+{{end_if}}
+
+&lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
 
@@ -538,14 +485,9 @@ statement.setInt(2, 10)</code></pre>
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
-<li><a href="https://www.mysql.com">MySQL</a></li>
-<li><a href="https://www.w3schools.com/sql/">SQL Tutorial</a></li>
-<li><a href="https://www.mongodb.com">MongoDB</a></li>
-<li><a href="https://www.tutorialspoint.com/mongodb/index.htm">MongoDB Tutorial</a></li>
-<li><a href="https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b">Waiting Workaround</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Web_template_system">Templating (Wikipedia)</a></li>
+<li><a href="https://www.postgresql.org/">PostgreSql</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

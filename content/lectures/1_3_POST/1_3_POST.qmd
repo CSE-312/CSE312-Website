@@ -1,12 +1,9 @@
 ---
 title: "HTTP POST, Forms, and AJAX"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Making web apps interactive with POST, Forms, and AJAX"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://www.w3schools.com/html/html_forms.asp"
     text: "HTML Forms [W3 Schools]"
@@ -15,8 +12,6 @@ reading-list:
   - url: "https://en.wikipedia.org/wiki/Query_string"
     text: "Query Strings (Wikipedia)"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
 released: false
 ---
 
