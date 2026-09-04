@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
-  <title>CSE312 Lectures – CRUD and REST API</title>
+  <title>CSE312 Lectures – HTTP - Caching</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -142,341 +142,128 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">CRUD and REST API</h1>
+  <h1 class="title">HTTP - Caching</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
 <section>
-<section id="apis" class="title-slide slide level1 center">
-<h1>API's</h1>
+<section id="caching" class="title-slide slide level1 center">
+<h1>Caching</h1>
 
 </section>
-<section id="data" class="slide level2">
-<h2>Data</h2>
+<section id="http-caching" class="slide level2">
+<h2>HTTP Caching</h2>
 <ul>
-<li>We now have a database that stores app data</li>
-<li>Users have to control data
-<ul>
-<li>Manage their profile/setting</li>
-<li>Make posts</li>
-<li>Use a shopping cart</li>
-<li>etc.</li>
-</ul></li>
-<li>How should users interact with stored data?</li>
+<li>Browser stores previous response</li>
+<li>If it's fresh, reuse it</li>
+<li>Reuse until it's stale</li>
 </ul>
-</section>
-<section id="data-1" class="slide level2">
-<h2>Data</h2>
-<ul>
-<li>How do users interact with stored data?</li>
-</ul>
-<p>User/Client</p>
-<p>Server</p>
-<p>Database</p>
+</section></section>
+<section>
+<section id="timeouts" class="title-slide slide level1 center">
+<h1>Timeouts</h1>
 
-<img data-src="assets/slide03-diagram.jpg" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly" class="r-stretch"></section>
-<section id="data-2" class="slide level2">
-<h2>Data</h2>
+</section>
+<section id="max-age" class="slide level2">
+<h2>Max Age</h2>
 <ul>
-<li>How does our server interact with stored data?</li>
+<li>Specify a max age. Once it's older, browser requests again</li>
+<li>Use <code>Cache-Control: max-age=3600</code></li>
 </ul>
-<p>Server</p>
-<p>Database</p>
+</section>
+<section id="expires" class="slide level2">
+<h2>Expires</h2>
+<ul>
+<li>Specify and exact time when the resource should become stale</li>
+<li>Use `Expires: Wed, 23 Sep 2026 15:50:00 EST</li>
+<li>max-age is preferred</li>
+<li>If both max-age and expires are used, the browser should prefer max-age</li>
+</ul>
+</section></section>
+<section>
+<section id="etag" class="title-slide slide level1 center">
+<h1>ETag</h1>
 
-<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="crud" class="slide level2">
-<h2>CRUD</h2>
+</section>
+<section id="etag-1" class="slide level2">
+<h2>ETag</h2>
 <ul>
-<li>CRUD is an acronym for the 4 basic operation used to control data
-<ul>
-<li>Create</li>
-<li>Retrive</li>
-<li>Update</li>
-<li>Delete</li>
-</ul></li>
+<li>Use an ETag</li>
 </ul>
+</section></section>
+<section>
+<section id="validation" class="title-slide slide level1 center">
+<h1>Validation</h1>
 
-<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="crud---create" class="slide level2">
-<h2>CRUD - Create</h2>
-<ul>
-<li>Create a new record</li>
-</ul>
-<pre><code>db.Exec(`
-    INSERT INTO user (email, username) VALUES ($1, $2)
-    `, email, username)</code></pre>
 </section>
-<section id="crud---create-1" class="slide level2">
-<h2>CRUD - Create</h2>
+<section id="validation-1" class="slide level2">
+<h2>Validation</h2>
 <ul>
-<li>When a record is created, it should be assigned a unique id
+<li>Client can send these headers if cache is stale
 <ul>
-<li>This id will be used to identify the created record</li>
-<li>The id is typically an auto-incrementing integer
-<ul>
-<li>First record had id==1, second has id==2, etc</li>
+<li>If-None-Match</li>
+<li>If-Modified-Since</li>
 </ul></li>
-<li>Postgres can generate these ids for you using <code>SERIAL</code></li>
+<li>Last-Modified</li>
+<li>Date</li>
+<li>Have to check the files modified timestamp and compare it to the If-Modified-Since timestamp. They will be in different formats! Possibly different time zones</li>
 </ul>
-<pre><code>db.Exec(`
-  CREATE TABLE IF NOT EXISTS user (
-      id SERIAL PRIMARY KEY,
-      email TEXT,
-      username TEXT
-  )
-  `)</code></pre></li>
-</ul>
-</section>
-<section id="crud---retrievelist" class="slide level2">
-<h2>CRUD - Retrieve/List</h2>
-<ul>
-<li>Retrieve all records from a table</li>
-<li>Retrieving all records is often called List
-<ul>
-<li>Technically, the acronym is CRUDL when list operations are allowed</li>
-</ul></li>
-</ul>
-<pre><code>SELECT * FROM user</code></pre>
-<ul>
-<li>Retrieve a single existing records</li>
-</ul>
-<pre><code>SELECT * FROM user WHERE id=$1</code></pre>
-</section>
-<section id="crud---update" class="slide level2">
-<h2>CRUD - Update</h2>
-<ul>
-<li>Update an existing record</li>
-<li>Can update all fields except the id
-<ul>
-<li>It is a unique identifier</li>
-<li>Changing will break features including links that use the old id</li>
-</ul></li>
-</ul>
-<pre><code>UPDATE user SET email=$1, username=$2 WHERE id=$3</code></pre>
-</section>
-<section id="crud---delete" class="slide level2">
-<h2>CRUD - Delete</h2>
-<ul>
-<li>Delete an existing record</li>
-<li>Record is completely removed from the table</li>
-</ul>
-<pre><code>DELETE FROM user WHERE id=$1</code></pre>
-</section>
-<section id="crud---delete-1" class="slide level2">
-<h2>CRUD - Delete</h2>
-<ul>
-<li>In practice, common to "soft delete"
-<ul>
-<li>Don't actually delete the data</li>
-<li>Instead, mark it as deleted</li>
-<li>Do not allow retrieve/update operations on data marked as deleted</li>
-</ul></li>
-<li>Soft deletion allows sys admins to perform additional operations
-<ul>
-<li>eg. User requests to undo an accidental delete</li>
-<li>Preserves history (Helpful for debugging)</li>
-</ul></li>
-<li>For your HW, it's fine to "hard delete"</li>
-</ul>
-</section>
-<section id="data-3" class="slide level2">
-<h2>Data</h2>
-<ul>
-<li>How do users interact with our server?</li>
-</ul>
-<p>User/Client</p>
-<p>Server</p>
+</section></section>
+<section>
+<section id="other" class="title-slide slide level1 center">
+<h1>other</h1>
 
-<img data-src="assets/slide15-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="http-requests-methods" class="slide level2">
-<h2>HTTP Requests Methods</h2>
+</section>
+<section id="vary" class="slide level2">
+<h2>Vary</h2>
 <ul>
-<li>GET
+<li>Vary useful</li>
+<li>Every resource is uniquely identified by it's url</li>
+<li>We sometimes want even more control over caching than just the url (resource)</li>
+<li>The Vary header specifies additional request headers that are used to identify the content</li>
+<li>If the url for 2 requests are identical, but the value of a Vary header is different, the second requests will not used the cached version</li>
+<li>Commonly used for Accept and Accept-Language headers
 <ul>
-<li>Request data from the server (Retrieve)</li>
+<li>The same resource is hosted in different file formats and languages</li>
+<li>If a different format or language is requested, do not used the cached version</li>
 </ul></li>
-<li>POST
+</ul>
+<pre><code>Vary: Accept-Language</code></pre>
+</section>
+<section id="private-cache-control" class="slide level2">
+<h2>Private Cache Control</h2>
 <ul>
-<li>Send data to the server (Create)</li>
-</ul></li>
-<li>PATCH
+<li>Cache-Control: private</li>
+<li>Ensures the cache will not be shared with other sessions</li>
+</ul>
+</section>
+<section id="caution" class="slide level2">
+<h2>Caution</h2>
 <ul>
-<li>Partially update a resource (Update)</li>
-</ul></li>
-<li>PUT
+<li>Dude I know set Max-Age: Several decades</li>
+<li>Made a change</li>
+<li>Had to email a few client who couldn't not get the change
 <ul>
-<li>Replace an existing resource (Update)</li>
-</ul></li>
-<li>DELETE
-<ul>
-<li>Delete a resource (Delete)</li>
+<li>"Can you please click these buttons to invalidate your cache"</li>
 </ul></li>
 </ul>
 </section>
-<section id="http---post-v.-patch-v.-put" class="slide level2">
-<h2>HTTP - POST v. PATCH v. PUT</h2>
+<section id="other-caching-tech" class="slide level2">
+<h2>Other Caching Tech</h2>
 <ul>
-<li>POST, PATCH, and PUT are all used to send data to the server, but with different expectations</li>
-<li>POST
-<ul>
-<li>Requires the server to process the data</li>
-<li>eg. Generating the id for a created record</li>
-</ul></li>
-<li>PATCH
-<ul>
-<li>Make a partial update to an existing record</li>
-<li>eg. Update only the content of a chat message, but not the author</li>
-</ul></li>
-<li>PUT
-<ul>
-<li>Replace an entire existing record</li>
-<li>Must be <em>idempotent</em></li>
-</ul></li>
-</ul>
-</section>
-<section id="http---idempotent" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>When multiple identical HTTP requests are sent
-<ul>
-<li>If the requests are idempotent, they will have the same effect on the server as sending a single request</li>
-</ul></li>
-<li>The additional requests will not change the data of the API</li>
-<li>In math terms, if our request is a function f
-<ul>
-<li><code>f(f(x)) == f(x)</code></li>
-<li>Including any side-effects of <code>f</code></li>
-</ul></li>
-</ul>
-</section>
-<section id="http---idempotent-1" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>GET, PUT, and DELETE are idempotent</li>
-<li>GET should not change the data/state of the API
-<ul>
-<li>Only retrieve data</li>
-</ul></li>
-<li>PUT will replace the entire record with the data of the request
-<ul>
-<li>A second identical PUT doesn't change anything since the record was already replaced</li>
-</ul></li>
-<li>Deleting a record twice has the same effect on the API as deleting the record once</li>
-</ul>
-</section>
-<section id="http---idempotent-2" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>POST is not idempotent</li>
-<li>Since the server is processing the data, there is no implied idempotent property</li>
-<li>eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids</li>
-</ul>
-</section>
-<section id="http---idempotent-3" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>PATCH is not idempotent</li>
-<li>In practice, PATCH endpoints are usually idempotent</li>
-<li>There is no expectation that they must be idempotent</li>
-<li>Eg. A record that tracks a counter of how many times it's been updated</li>
-</ul>
-</section>
-<section id="restful-api" class="slide level2">
-<h2>RESTful API</h2>
-<ul>
-<li>REST -&gt; REpresentational State Transfer</li>
-<li>We'll use HTTP requests to interact with API data</li>
-<li>REST is designed to simplify the way data is used
-<ul>
-<li>Improve reliability and scalability</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-and-crud" class="slide level2">
-<h2>REST and CRUD</h2>
-<ul>
-<li>User sends HTTP requests that correlate to CRUD operations on the data</li>
-<li>POST =&gt; Create</li>
-<li>GET =&gt; Retrieve</li>
-<li>PUT =&gt; Update</li>
-<li>DELETE =&gt; Delete</li>
-</ul>
-</section>
-<section id="restful-api-1" class="slide level2">
-<h2>RESTful API</h2>
-<ul>
-<li>REST is fairly loosely defined (No RFC)
-<ul>
-<li>Or loosely understood</li>
-</ul></li>
-<li>Typically measured on a spectrum
-<ul>
-<li>An API can be more/less RESTful</li>
-<li>"We could do that, but it's not very RESTful"</li>
-<li>"Let's refactor our API to make it more RESTful"</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Client-Server architecture and statelessness
-<ul>
-<li>Both constraints are implicit when using HTTP</li>
-</ul></li>
-<li>The use of cookies in a RESTful API would be a violation of statelessness
-<ul>
-<li>Usually accepted in practice (API tokens)</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-1" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Cacheablility
-<ul>
-<li>Each response must contain caching information</li>
-<li>Requests should be cached if possible</li>
-<li>Avoid stale data from being cached</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-2" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Layered-System
-<ul>
-<li>The API should have the ability to add additional layers between it and the client</li>
-<li>Ex: Client interacts with a load balancer that delegates to many instances of your API</li>
-<li>Ex: A reverse proxy server is added that encrypts all traffic (HTTPS)</li>
-<li>Ex: The client uses a VPN</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-3" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Uniform Interface
-<ul>
-<li>Resources are defined in the requests</li>
-<li>The user is given, in a response, enough information to update/delete the resource</li>
-<li>A request contains all information needed to handle that request</li>
-<li>The API should be self-contained (No reliance on documentation that cannot be accessed from an API path)</li>
-</ul></li>
-</ul>
-</section>
-<section id="data-4" class="slide level2">
-<h2>Data</h2>
-<ul>
-<li>Users interact with our RESTful API</li>
-<li>API requests correlate to CRUD operations</li>
+<li>Make the url different whenever a resource changes</li>
 </ul>
 
 
-
-<img data-src="assets/slide30-diagram.jpg" alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations" class="r-stretch"></section></section>
+</section>
+<section id="further-reading" class="slide level2">
+<h2>Further Reading</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">MDN docs: Caching</a></li>
+</ul>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

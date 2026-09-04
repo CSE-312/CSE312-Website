@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure.">
+<meta name="description" content="Encodings and MIME types">
 
-<title>HTTP Request/Response – CSE312 Lectures</title>
+<title>HTTP - Static Files, MIME Types, and Encodings – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -67,9 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 
@@ -86,32 +83,38 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#http" id="toc-http" class="nav-link active" data-scroll-target="#http">HTTP</a>
+  <li><a href="#encodings" id="toc-encodings" class="nav-link active" data-scroll-target="#encodings">Encodings</a>
   <ul class="collapse">
-  <li><a href="#network-stack-a-simplified-view" id="toc-network-stack-a-simplified-view" class="nav-link" data-scroll-target="#network-stack-a-simplified-view">Network Stack (A simplified view)</a></li>
-  <li><a href="#http---documentation" id="toc-http---documentation" class="nav-link" data-scroll-target="#http---documentation">HTTP - Documentation</a></li>
-  <li><a href="#hypertext-transfer-protocol-http" id="toc-hypertext-transfer-protocol-http" class="nav-link" data-scroll-target="#hypertext-transfer-protocol-http">HyperText Transfer Protocol (HTTP)</a></li>
-  <li><a href="#web-server" id="toc-web-server" class="nav-link" data-scroll-target="#web-server">Web Server</a></li>
-  <li><a href="#loading-a-web-site" id="toc-loading-a-web-site" class="nav-link" data-scroll-target="#loading-a-web-site">Loading a Web Site</a></li>
-  <li><a href="#http-request" id="toc-http-request" class="nav-link" data-scroll-target="#http-request">HTTP Request</a></li>
-  <li><a href="#http-is-stateless" id="toc-http-is-stateless" class="nav-link" data-scroll-target="#http-is-stateless">HTTP is Stateless</a></li>
-  <li><a href="#new-lines" id="toc-new-lines" class="nav-link" data-scroll-target="#new-lines">New Lines</a></li>
+  <li><a href="#s-and-0s" id="toc-s-and-0s" class="nav-link" data-scroll-target="#s-and-0s">1's and 0's</a></li>
   </ul></li>
-  <li><a href="#http-get-request" id="toc-http-get-request" class="nav-link" data-scroll-target="#http-get-request">HTTP GET Request</a>
+  <li><a href="#encoding-text" id="toc-encoding-text" class="nav-link" data-scroll-target="#encoding-text">Encoding Text</a>
   <ul class="collapse">
-  <li><a href="#get-request" id="toc-get-request" class="nav-link" data-scroll-target="#get-request">GET Request</a></li>
-  <li><a href="#the-request-line" id="toc-the-request-line" class="nav-link" data-scroll-target="#the-request-line">The Request Line</a></li>
-  <li><a href="#headers" id="toc-headers" class="nav-link" data-scroll-target="#headers">Headers</a></li>
-  </ul></li>
-  <li><a href="#http-response" id="toc-http-response" class="nav-link" data-scroll-target="#http-response">HTTP Response</a>
-  <ul class="collapse">
-  <li><a href="#response" id="toc-response" class="nav-link" data-scroll-target="#response">Response</a></li>
-  <li><a href="#status-line" id="toc-status-line" class="nav-link" data-scroll-target="#status-line">Status Line</a></li>
-  <li><a href="#response-codes" id="toc-response-codes" class="nav-link" data-scroll-target="#response-codes">Response Codes</a></li>
-  <li><a href="#response-headers" id="toc-response-headers" class="nav-link" data-scroll-target="#response-headers">Response Headers</a></li>
-  <li><a href="#blank-line" id="toc-blank-line" class="nav-link" data-scroll-target="#blank-line">Blank Line</a></li>
-  <li><a href="#body" id="toc-body" class="nav-link" data-scroll-target="#body">Body</a></li>
-  <li><a href="#not-found" id="toc-not-found" class="nav-link" data-scroll-target="#not-found">404 Not Found</a></li>
+  <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text">Text</a></li>
+  <li><a href="#ascii" id="toc-ascii" class="nav-link" data-scroll-target="#ascii">ASCII</a></li>
+  <li><a href="#ascii-chart" id="toc-ascii-chart" class="nav-link" data-scroll-target="#ascii-chart">ASCII Chart</a></li>
+  <li><a href="#ascii-1" id="toc-ascii-1" class="nav-link" data-scroll-target="#ascii-1">ASCII</a></li>
+  <li><a href="#http-headers" id="toc-http-headers" class="nav-link" data-scroll-target="#http-headers">HTTP Headers</a></li>
+  <li><a href="#http-headers-1" id="toc-http-headers-1" class="nav-link" data-scroll-target="#http-headers-1">HTTP Headers</a></li>
+  <li><a href="#character-encodings" id="toc-character-encodings" class="nav-link" data-scroll-target="#character-encodings">Character Encodings</a></li>
+  <li><a href="#utf-8" id="toc-utf-8" class="nav-link" data-scroll-target="#utf-8">UTF-8</a></li>
+  <li><a href="#utf-8-1" id="toc-utf-8-1" class="nav-link" data-scroll-target="#utf-8-1">UTF-8</a></li>
+  <li><a href="#sending-data" id="toc-sending-data" class="nav-link" data-scroll-target="#sending-data">Sending Data</a></li>
+  <li><a href="#sending-data-1" id="toc-sending-data-1" class="nav-link" data-scroll-target="#sending-data-1">Sending Data</a></li>
+  <li><a href="#content-length" id="toc-content-length" class="nav-link" data-scroll-target="#content-length">Content Length</a></li>
+  <li><a href="#content-length-1" id="toc-content-length-1" class="nav-link" data-scroll-target="#content-length-1">Content Length</a></li>
+  <li><a href="#mime-types" id="toc-mime-types" class="nav-link" data-scroll-target="#mime-types">MIME Types</a></li>
+  <li><a href="#mime-types-1" id="toc-mime-types-1" class="nav-link" data-scroll-target="#mime-types-1">MIME Types</a></li>
+  <li><a href="#mime-types-2" id="toc-mime-types-2" class="nav-link" data-scroll-target="#mime-types-2">MIME Types</a></li>
+  <li><a href="#mime-types-3" id="toc-mime-types-3" class="nav-link" data-scroll-target="#mime-types-3">MIME Types</a></li>
+  <li><a href="#mime-types-4" id="toc-mime-types-4" class="nav-link" data-scroll-target="#mime-types-4">MIME Types</a></li>
+  <li><a href="#mime-type-sniffing" id="toc-mime-type-sniffing" class="nav-link" data-scroll-target="#mime-type-sniffing">MIME Type Sniffing</a></li>
+  <li><a href="#mime-type-sniffing-1" id="toc-mime-type-sniffing-1" class="nav-link" data-scroll-target="#mime-type-sniffing-1">MIME Type Sniffing</a></li>
+  <li><a href="#mime-type-sniffing-2" id="toc-mime-type-sniffing-2" class="nav-link" data-scroll-target="#mime-type-sniffing-2">MIME Type Sniffing</a></li>
+  <li><a href="#mime-types-5" id="toc-mime-types-5" class="nav-link" data-scroll-target="#mime-types-5">MIME Types</a></li>
+  <li><a href="#sending-images" id="toc-sending-images" class="nav-link" data-scroll-target="#sending-images">Sending Images</a></li>
+  <li><a href="#sending-images-1" id="toc-sending-images-1" class="nav-link" data-scroll-target="#sending-images-1">Sending Images</a></li>
+  <li><a href="#sending-images-2" id="toc-sending-images-2" class="nav-link" data-scroll-target="#sending-images-2">Sending Images</a></li>
+  <li><a href="#sending-images-3" id="toc-sending-images-3" class="nav-link" data-scroll-target="#sending-images-3">Sending Images</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -122,12 +125,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">HTTP Request/Response</h1>
+<h1 class="title">HTTP - Static Files, MIME Types, and Encodings</h1>
 </div>
 
 <div>
   <div class="description">
-    An introduction to HTTP requests and responses, including URLs, headers, status codes, and message structure.
+    Encodings and MIME types
   </div>
 </div>
 
@@ -144,461 +147,381 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="http" class="level1">
-<h1>HTTP</h1>
-<section id="network-stack-a-simplified-view" class="level2">
-<h2 class="anchored" data-anchor-id="network-stack-a-simplified-view">Network Stack (A simplified view)</h2>
+<section id="encodings" class="level1">
+<h1>Encodings</h1>
+<p>MIME types and bytes</p>
+<section id="s-and-0s" class="level2">
+<h2 class="anchored" data-anchor-id="s-and-0s">1's and 0's</h2>
 <ul>
-<li>Enter HTTP</li>
-</ul>
-<div class="diagram-description" role="note" aria-label="Packet structure of an HTTP packet traveling through the Internet">
-<p><strong>Packet Structure</strong>:</p>
-<ol type="1">
-<li>IP Headers</li>
-<li>TCP Headers</li>
-<li>HTTP Headers</li>
-<li>Content</li>
-</ol>
-</div>
-</section>
-<section id="http---documentation" class="level2">
-<h2 class="anchored" data-anchor-id="http---documentation">HTTP - Documentation</h2>
+<li>The Internet can only transfer bits
 <ul>
-<li>HTTP/1.1 is defined by RFC2616 of the IETF
-<ul>
-<li><a href="https://tools.ietf.org/html/rfc2616" class="uri">https://tools.ietf.org/html/rfc2616</a></li>
-<li>This is THE document for all your questions about HTTP</li>
-<li>Today we'll discuss topics in sections 4, 5, and 6</li>
+<li>Copper: High/Low voltage</li>
+<li>Fiber: Light/Dark</li>
 </ul></li>
-<li>RFC
+<li>All data sent over the Internet must be binary</li>
+<li>How do we know what these 1's and 0's represent in HTTP?
 <ul>
-<li>Request For Comments</li>
-<li>Submit an RFC for public discussion or to publish information</li>
-</ul></li>
-<li>IETF
-<ul>
-<li>Internet Engineering Task Force</li>
-<li>Adopts some RFC's as Internet standards</li>
+<li>Encodings and MIME Types</li>
 </ul></li>
 </ul>
 </section>
-<section id="hypertext-transfer-protocol-http" class="level2">
-<h2 class="anchored" data-anchor-id="hypertext-transfer-protocol-http">HyperText Transfer Protocol (HTTP)</h2>
+</section>
+<section id="encoding-text" class="level1">
+<h1>Encoding Text</h1>
+<section id="text" class="level2">
+<h2 class="anchored" data-anchor-id="text">Text</h2>
 <ul>
-<li>HTTP is an application layer protocol
+<li>Only 1's and 0's can travel through the Internet
 <ul>
-<li>Protocols used by our applications</li>
-<li>Protocols that are not concerned with the transmission of data</li>
-</ul></li>
-<li>[Almost] Always uses TCP for reliable communication
-<ul>
-<li>Always in this course</li>
+<li>How do we send text?</li>
 </ul></li>
 </ul>
 </section>
-<section id="http-1" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="http-1">HTTP</h2>
+<section id="ascii" class="level2">
+<h2 class="anchored" data-anchor-id="ascii">ASCII</h2>
 <ul>
-<li>HTTP is a protocol used to access content from a web server</li>
-<li>Protocol: An agreed upon set of rules
+<li>Character encoding
 <ul>
-<li>HTTP: Defines the format of messages sent to/from a web server</li>
+<li>Maps characters to numbers</li>
+<li>Numbers are represented in bits</li>
+<li>Bits are sent through the Internet</li>
+<li>Numbers are mapped back to characters by the receiver</li>
 </ul></li>
-<li>HTTP is a Request - Response protocol
+<li>ASCII uses 7 bit encodings</li>
+</ul>
+</section>
+<section id="ascii-chart" class="level2">
+<h2 class="anchored" data-anchor-id="ascii-chart">ASCII Chart</h2>
+<p><img src="assets/slide06-1.png" class="img-fluid" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value"></p>
+</section>
+<section id="ascii-1" class="level2">
+<h2 class="anchored" data-anchor-id="ascii-1">ASCII</h2>
 <ul>
-<li>Client makes request to server</li>
-<li>Server returns a response</li>
-<li>Ex. Request The latest tweets from a user. Twitter server returns the tweets in its response</li>
+<li>As a String:
+<ul>
+<li>"hello"</li>
+<li>Programming language specific representation</li>
 </ul></li>
-<li>Response may require more requests
+<li>In Hex:
 <ul>
-<li>Ex. Get HTML which requires CSS/JS/Images</li>
+<li>68 65 6c 6c 6f</li>
+<li>Need to encode the String into a byte representation</li>
+</ul></li>
+<li>In Binary:
+<ul>
+<li>01101000 01100101 01101100 01101100 01101111</li>
+<li>Send this over the Internet</li>
 </ul></li>
 </ul>
 </section>
-<section id="web-server" class="level2">
-<h2 class="anchored" data-anchor-id="web-server">Web Server</h2>
+<section id="http-headers" class="level2">
+<h2 class="anchored" data-anchor-id="http-headers">HTTP Headers</h2>
+<p>HTTP Headers can only contain</p>
+<p>ASCII characters</p>
+</section>
+<section id="http-headers-1" class="level2">
+<h2 class="anchored" data-anchor-id="http-headers-1">HTTP Headers</h2>
 <ul>
-<li>Software that "speaks" HTTP</li>
-<li>Listens for HTTP requests and responds with HTTP responses</li>
-<li>We want to host our web pages/apps on the Internet using HTTP</li>
-<li>Terminology:
+<li>When reading HTTP headers [And request/status lines]
 <ul>
-<li>Front End - The part of a web app that runs in the browser (HTML/CSS/JS)
-<ul>
-<li>The front end will send HTTP requests to the back end</li>
+<li>Assume it is text encoded using ASCII</li>
 </ul></li>
-<li>Back End - The web server and all software that does not run on the user's machine
+<li>The body of the request/response may be encoded differently
 <ul>
-<li>The back end will send HTTP responses to the front end</li>
-</ul></li>
+<li>Read the headers to find the encoding for the body</li>
 </ul></li>
 </ul>
 </section>
-<section id="loading-a-web-site" class="level2">
-<h2 class="anchored" data-anchor-id="loading-a-web-site">Loading a Web Site</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-  participant Browser as Browser (Front End)
-  participant Server as Web Server (Back End)
-  Browser-&gt;&gt;Server: 1. Request HTML
-  Server-&gt;&gt;Browser: 2. Sends HTML
-  Browser-&gt;&gt;Server: 3. Request Each url in HTML
-  Server-&gt;&gt;Browser: 4. Sends Content
-  Note over Browser: 5. Browser renders all content and runs JavaScript
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<p>The Browser and the Web Server communicate across the Network (Internet).</p>
-</section>
-<section id="http-request" class="level2">
-<h2 class="anchored" data-anchor-id="http-request">HTTP Request</h2>
+<section id="character-encodings" class="level2">
+<h2 class="anchored" data-anchor-id="character-encodings">Character Encodings</h2>
 <ul>
-<li>Each HTTP request will contain the request type:
+<li>ASCII can only encode 128 different characters
 <ul>
-<li>GET: Request information from a server</li>
-<li>POST: Send information to a server</li>
-<li>PUT: Add information to a service</li>
-<li>PATCH: Partial update of existing data</li>
-<li>DELETE: Delete information from a service</li>
-<li>HEAD: Request only the headers of a response</li>
+<li>Decent enough for english text</li>
+<li>Unusable for languages with different alphabets</li>
 </ul></li>
-<li>To start, we'll focus on GET and POST only</li>
-</ul>
-</section>
-<section id="http-request-1" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-1">HTTP Request</h2>
+<li>With the Internet, the world became much more connected
 <ul>
-<li>HTTP GET Request
-<ul>
-<li>Used when requesting content from a server</li>
-<li>[Typically] Only contains a URL and HTTP headers</li>
-<li>When you click a link, your browser makes a GET request</li>
-<li>Requesting HTML/CSS/Javascript/Images/etc are GET requests</li>
+<li>Too restrictive for each alphabet to have its own encoding</li>
 </ul></li>
-<li>HTTP POST Request
+<li>How do we encode more characters with a single standard?
 <ul>
-<li>Used when sending data to a website</li>
-<li>Contains a URL and a body [And HTTP headers]</li>
-<li>When you submit a form, your browser [typically] makes a POST request</li>
-<li>The contents of the form are sent in the body of the request</li>
+<li>We need more bits!</li>
+<li>Enter UTF-8</li>
 </ul></li>
 </ul>
 </section>
-<section id="http-request-2" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-2">HTTP Request</h2>
-<pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
+<section id="utf-8" class="level2">
+<h2 class="anchored" data-anchor-id="utf-8">UTF-8</h2>
 <ul>
-<li>Each request is made for a specific URL (Uniform Resource Location)
+<li>The modern standard for encoding text</li>
+<li>Uses up to 4 bytes to represent a character</li>
+<li>If the first bit is a 0
 <ul>
-<li>A URL uniquely identifies a resource and has the following parts</li>
-</ul></li>
-<li>Protocol - The protocol being used (ex. file, HTTP, HTTPS, FTP)</li>
-<li>Host - The IP address or domain name of the server
-<ul>
-<li>Used to route the request to the appropriate machine</li>
-</ul></li>
-<li>Port - The TCP port number of the host server
-<ul>
-<li>Defaults to 80/443 for HTTP/HTTPS respectively</li>
-</ul></li>
-<li>Path - Specifies the specific resource being requested from the server</li>
-</ul>
-</section>
-<section id="http-request-3" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="http-request-3">HTTP Request</h2>
-<pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
-<ul>
-<li>Query String - [Optional] Contains key-value pairs set by the client</li>
-<li><a href="https://www.google.com/search?q=web+development" class="uri">https://www.google.com/search?q=web+development</a>
-<ul>
-<li>HTTPS request to Google search for the phrase "web development"</li>
-</ul></li>
-<li><a href="https://duckduckgo.com/?q=web+development&amp;ia=images" class="uri">https://duckduckgo.com/?q=web+development&amp;ia=images</a>
-<ul>
-<li>An HTTPS request to Duck Duck Go image search for the phrase "web development"</li>
-</ul></li>
-<li>Fragment - [Optional] Specifies a single value commonly used for navigation</li>
-<li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier" class="uri">https://en.wikipedia.org/wiki/Uniform_Resource_Identifier</a>
-<ul>
-<li>HTTPS Request for the URI Wikipedia page</li>
-</ul></li>
-<li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition" class="uri">https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Definition</a>
-<ul>
-<li>HTTPS Request for the URI Wikipedia page that will scroll to the definition of URI</li>
+<li>One byte used. Remaining 7 bits are ASCII</li>
+<li>All ASCII encoded Strings are valid UTF-8</li>
 </ul></li>
 </ul>
+<p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="http-is-stateless" class="level2">
-<h2 class="anchored" data-anchor-id="http-is-stateless">HTTP is Stateless</h2>
+<section id="utf-8-1" class="level2">
+<h2 class="anchored" data-anchor-id="utf-8-1">UTF-8</h2>
 <ul>
-<li>HTTP is a stateless protocol</li>
-<li>Each request is handled in isolation even if a client just made another request</li>
-<li>If state is desired (ex. Login), the state must be sent with each request
+<li>If more bytes are needed:
 <ul>
-<li>Cookies</li>
-</ul></li>
-<li>When handling an HTTP request, do not have to care who sent it</li>
-</ul>
-<p><img src="assets/slide12-1.png" class="img-fluid" alt="xkcd comic 869, &quot;Server Attention Span&quot;: a person speaks to a server, which replies to every message with an identical, indifferent response, illustrating that the server keeps no memory of previous requests."></p>
-<p><a href="https://xkcd.com/869/" class="uri">https://xkcd.com/869/</a></p>
-</section>
-<section id="new-lines" class="level2">
-<h2 class="anchored" data-anchor-id="new-lines">New Lines</h2>
-<ul>
-<li>A new line character in an HTTP request/response must be:
-<ul>
-<li><code>\r\n</code>
-<ul>
-<li>Carriage return (From the days of typewriters)</li>
-<li>New line</li>
-</ul></li>
-<li>In the documentation this is referred to as a CRLF</li>
-<li>CRLF == Carriage Return Line Feed</li>
-</ul></li>
-<li>Be aware of this while parsing</li>
-<li>Use <code>\r\n</code> for new lines when preparing your responses</li>
-</ul>
-</section>
-</section>
-<section id="http-get-request" class="level1">
-<h1>HTTP GET Request</h1>
-<section id="get-request" class="level2">
-<h2 class="anchored" data-anchor-id="get-request">GET Request</h2>
-<ul>
-<li>We'll use this simple request as an example</li>
-</ul>
-<pre class="http"><code>GET / HTTP/1.1
-Host: cse312.com
-Connection: keep-alive
-Accept-Language: en-US,en</code></pre>
-</section>
-<section id="get-request-1" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="get-request-1">GET Request</h2>
-<ul>
-<li>More accurately, it will be this</li>
-</ul>
-<pre><code>GET / HTTP/1.1\r\nHost: cse312.com\r\nConnection: keep-alive\r\nAccept-Language: en-US,en\r\n\r\n</code></pre>
-<ul>
-<li>In the slides, we'll render "<code>\r\n</code>" as a new line</li>
-<li>Note that there is a blank line at the end of the request</li>
-</ul>
-</section>
-<section id="the-request-line" class="level2">
-<h2 class="anchored" data-anchor-id="the-request-line">The Request Line</h2>
-<ul>
-<li>The first line of the request is always the request line</li>
-<li>The request line has 3 values separated by spaces
-<ul>
-<li>The request type (GET/POST/PUT/DELETE/etc)</li>
-<li>The path of the request (ex. "/") - Everything after the port in the requested url</li>
-<li>The HTTP Version
-<ul>
-<li>We'll always use HTTP/1.1 in this course</li>
-</ul></li>
+<li>Lead with 1's to indicate the number of bytes</li>
+<li>Each continuation byte begins with 10</li>
+<li>Prevents decoding errors</li>
+<li>No character is a subsequence of another character</li>
 </ul></li>
 </ul>
-<pre class="http"><code>GET / HTTP/1.1
-Host: cse312.com
-Connection: keep-alive
-Accept-Language: en-US,en</code></pre>
+<p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="the-request-line-1" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="the-request-line-1">The Request Line</h2>
+<section id="sending-data" class="level2">
+<h2 class="anchored" data-anchor-id="sending-data">Sending Data</h2>
 <ul>
-<li>Parse the request line by looking for the 2 space characters
+<li>When sending Strings over the Internet
 <ul>
-<li>Separate the values and check the strings</li>
+<li>The Internet does not understand language-specific Strings</li>
+<li>Always convert to bytes/bits before sending</li>
+<li>Encode the String using UTF-8</li>
 </ul></li>
-<li>Typically: When the root path "/" is requested, serve the HTML of your home page
+<li>When receiving text over the Internet
 <ul>
-<li>By convention, web servers look for index.html to serve at the root path</li>
-</ul></li>
-<li>If the url contains a different path, it will appear in the request line</li>
-</ul>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Requesting <a href="http://cse312.com/" class="uri">http://cse312.com/</a></p>
-</div><div class="column" style="width:50%;">
-<p>Requesting <a href="http://cse312.com/static_files/slides/1_2_HTTP.pdf" class="uri">http://cse312.com/static_files/slides/1_2_HTTP.pdf</a></p>
-</div>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<pre class="http"><code>GET / HTTP/1.1
-Host: cse312.com
-Connection: keep-alive
-Accept-Language: en-US,en</code></pre>
-</div><div class="column" style="width:50%;">
-<pre class="http"><code>GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1
-Host: cse312.com
-Connection: keep-alive
-Accept-Language: en-US,en</code></pre>
-</div>
-</div>
-</section>
-<section id="headers" class="level2">
-<h2 class="anchored" data-anchor-id="headers">Headers</h2>
-<ul>
-<li>Following the request line are any number of headers</li>
-<li>HTTP Headers
-<ul>
-<li>Key-Value pairs</li>
-<li>Key and value separated by a colon ":"</li>
-</ul></li>
-<li>Each header will be on a new line (look for <code>\r\n</code>)</li>
-<li>To parse, look for the colon ":" and read the key and value
-<ul>
-<li>There is an optional space after the colon which should be removed if present <code>&lt;--</code> don't forget to do this! Leaving in the space will cause bugs that are very difficult to detect</li>
+<li>It must have been sent as bytes/bits</li>
+<li>Must convert to a language-specific String</li>
+<li>Decode the bytes using the proper encoding</li>
 </ul></li>
 </ul>
-<pre class="http"><code>GET / HTTP/1.1
-Host: cse312.com
-Connection: keep-alive
-Accept-Language: en-US,en</code></pre>
 </section>
-</section>
-<section id="http-response" class="level1">
-<h1>HTTP Response</h1>
-<section id="response" class="level2">
-<h2 class="anchored" data-anchor-id="response">Response</h2>
+<section id="sending-data-1" class="level2">
+<h2 class="anchored" data-anchor-id="sending-data-1">Sending Data</h2>
 <ul>
-<li>Your web server will listen for HTTP requests over the TCP sockets and respond with HTTP responses</li>
-<li>Send a response back to the client to serve them the requested content</li>
-<li>This response will display "hello" in their browser</li>
-</ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
-</section>
-<section id="response-1" class="level2 unnumbered unlisted">
-<h2 class="unnumbered unlisted anchored" data-anchor-id="response-1">Response</h2>
+<li>Use the Python methods
 <ul>
-<li>More accurately, this is the response</li>
-</ul>
-<pre><code>HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello</code></pre>
-</section>
-<section id="status-line" class="level2">
-<h2 class="anchored" data-anchor-id="status-line">Status Line</h2>
+<li>.encode()</li>
+<li>.decode()</li>
+</ul></li>
+<li>You can specify the encoding as an argument of these methods
 <ul>
-<li>The first line of the response must be the status line</li>
-<li>Status line contains 3 values separated by spaces
-<ul>
-<li>The HTTP version</li>
-<li>The status code</li>
-<li>The status message (Reason phrase in docs)</li>
+<li>Default is UTF-8 so providing no arguments will do what you want for this course</li>
 </ul></li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
 </section>
-<section id="response-codes" class="level2">
-<h2 class="anchored" data-anchor-id="response-codes">Response Codes</h2>
+<section id="content-length" class="level2">
+<h2 class="anchored" data-anchor-id="content-length">Content Length</h2>
 <ul>
-<li>Tells the browser the nature of the response
+<li>Content-Length header must be set when there is a body to a response/request</li>
+<li>Value is the number of bytes contained in the body
 <ul>
-<li>200-level codes: Everything went well</li>
-<li>300-level codes: Redirect the request</li>
-<li>400-level codes: Error caused by the client</li>
-<li>500-level codes: Error caused by the server</li>
+<li>Bytes referred to as octets in some documentation</li>
 </ul></li>
-<li>Include a human readable message</li>
-</ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
-</section>
-<section id="response-headers" class="level2">
-<h2 class="anchored" data-anchor-id="response-headers">Response Headers</h2>
+<li>If all your characters are ASCII
 <ul>
-<li>The headers in the response follow the same format as request headers</li>
-<li>Should have at least two headers
+<li>This is equal to the length of the String</li>
+</ul></li>
+<li>Any non-ASCII UTF-8 character uses &gt;1 byte
 <ul>
-<li>Content-Type - Tells the browser how to parse this content</li>
-<li>Content-Length - How many bytes should be read from the body of the response</li>
+<li>Cannot use the length of the String as your Content-Length!</li>
 </ul></li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
 </section>
-<section id="blank-line" class="level2">
-<h2 class="anchored" data-anchor-id="blank-line">Blank Line</h2>
+<section id="content-length-1" class="level2">
+<h2 class="anchored" data-anchor-id="content-length-1">Content Length</h2>
 <ul>
-<li>There is a blank line (<code>\r\n\r\n</code>) separating the headers and the body of the response</li>
-<li>The blank line is very important
+<li>To compute the content length of a UTF-8 String
 <ul>
-<li>It tells the browser that you're done with headers and the next bytes will be the body of the response</li>
+<li>Convert to bytes first</li>
+<li>Get the length of the byte array</li>
 </ul></li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
 </section>
-<section id="body" class="level2">
-<h2 class="anchored" data-anchor-id="body">Body</h2>
-<ul>
-<li>After the blank line are the bytes of the body</li>
-<li>The body contains the content that is being served</li>
-<li>The number of bytes in the body exactly match the value of the Content-Length header
-<ul>
-<li>The browser will read exactly this many bytes</li>
-</ul></li>
-<li>Note: There is no required format for the body. The format depends on the type of content being served</li>
-</ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/plain
-Content-Length: 5
-
-hello</code></pre>
+<section id="mime-types" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types">MIME Types</h2>
 </section>
-<section id="not-found" class="level2">
-<h2 class="anchored" data-anchor-id="not-found">404 Not Found</h2>
+<section id="mime-types-1" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types-1">MIME Types</h2>
 <ul>
-<li>If a path is requested that your server does not handle
+<li>When an HTTP response [or request] contains a body, the body is an array of bytes
 <ul>
-<li>Respond with a 404 Not Found</li>
-<li>Note: Spaces are allowed in your reason message</li>
+<li>There's no restriction on the encoding used for these bytes (Cannot always assume ASCII/UTF-8)</li>
 </ul></li>
-<li>The response format is the same as a 200 response
+<li>Set a Content-Type header to tell the browser what those bytes represent
 <ul>
-<li>Include content type and length</li>
-<li>Include a body that will be displayed to the client</li>
+<li>Tells the browser how to read the body of your response</li>
+</ul></li>
+<li>This is the MIME type of the data</li>
+</ul>
+</section>
+<section id="mime-types-2" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types-2">MIME Types</h2>
+<ul>
+<li>MIME type
+<ul>
+<li>Multipurpose Internet Mail Extensions</li>
+<li>Developed for email and adopted for HTTP</li>
+</ul></li>
+<li>Two parts separate by a /
+<ul>
+<li><code>&lt;type&gt;</code>/<code>&lt;subtype&gt;</code></li>
+</ul></li>
+<li>Common types
+<ul>
+<li>text - Data using a text encoding (eg. UTF-8)</li>
+<li>image - Raw binary of an image file</li>
+<li>video - Raw binary of a video</li>
 </ul></li>
 </ul>
-<pre class="http"><code>HTTP/1.1 404 Not Found
-Content-Type: text/plain
-Content-Length: 36
-
-The requested content does not exist</code></pre>
+</section>
+<section id="mime-types-3" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types-3">MIME Types</h2>
+<ul>
+<li>Common Type/Subtypes
+<ul>
+<li>text/plain</li>
+<li>text/html</li>
+<li>text/css</li>
+<li>text/javascript</li>
+<li>image/png</li>
+<li>image/jpeg</li>
+<li>video/mp4</li>
+<li>application/json</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types-4" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types-4">MIME Types</h2>
+<ul>
+<li>Optional settings can be added to the Content-Type header
+<ul>
+<li>Separate options by a ;</li>
+<li>Options are formatted as <code>&lt;name&gt;</code>=<code>&lt;value&gt;</code></li>
+</ul></li>
+<li>Content-Type: text/html; charset=utf-8
+<ul>
+<li>The content is HTML encoded using UTF-8</li>
+<li>*You must use this to tell the browser that you are using utf-8</li>
+<li>Don't forget to add this exactly as it appears. One character difference will break your page</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing" class="level2">
+<h2 class="anchored" data-anchor-id="mime-type-sniffing">MIME Type Sniffing</h2>
+<ul>
+<li>Modern browsers will "sniff" the proper MIME type of a response
+<ul>
+<li>If the MIME type is not correct, the browser will "figure it out"™ and guess what type makes the most sense</li>
+</ul></li>
+<li>Browsers can sometimes be wrong
+<ul>
+<li>Surprises when your site doesn't work with certain versions of certain browsers</li>
+</ul></li>
+<li>Best practice is to disable sniffing</li>
+<li>Set this HTTP header to tell the browser you set the correct MIME type
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing-1" class="level2">
+<h2 class="anchored" data-anchor-id="mime-type-sniffing-1">MIME Type Sniffing</h2>
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+<li>Be sure to set this header properly!
+<ul>
+<li>Open the browser console</li>
+<li>Check the headers of your response</li>
+<li>Make sure this header was parsed by the browser</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing-2" class="level2">
+<h2 class="anchored" data-anchor-id="mime-type-sniffing-2">MIME Type Sniffing</h2>
+<ul>
+<li>Security concern:
+<ul>
+<li>You have a site where users can upload images</li>
+<li>All users can view these images</li>
+<li>Instead of an image, a user uploads JavaScript that steals personal data</li>
+<li>You set the MIME type to image/png</li>
+<li>The browser notices something is wrong and sniffs out the MIME type of text/javascript and runs the script</li>
+<li>You just got hacked!</li>
+</ul></li>
+<li>Solution:
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types-5" class="level2">
+<h2 class="anchored" data-anchor-id="mime-types-5">MIME Types</h2>
+<ul>
+<li>With the proper MIME types set through a Content-Type header
+<ul>
+<li>The browser will know how to parse and render the body of your HTTP response</li>
+</ul></li>
+<li>When receiving an HTTP request that contains a body
+<ul>
+<li>The Content-Type will be set to let our server know the MIME type</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images" class="level2">
+<h2 class="anchored" data-anchor-id="sending-images">Sending Images</h2>
+</section>
+<section id="sending-images-1" class="level2">
+<h2 class="anchored" data-anchor-id="sending-images-1">Sending Images</h2>
+<ul>
+<li>Sometimes we want to send data that is not text</li>
+<li>Use different formats depending on the data</li>
+<li>To send an image
+<ul>
+<li>Read the bytes from the file</li>
+<li>Send the bytes as-is</li>
+<li>Content-Length is the size of the file</li>
+<li>Set the Content-Type to image/<code>&lt;image_type&gt;</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images-2" class="level2">
+<h2 class="anchored" data-anchor-id="sending-images-2">Sending Images</h2>
+<ul>
+<li>When sending images
+<ul>
+<li>Since the data is already in bytes when the file is read, no need to encode/decode</li>
+</ul></li>
+<li>Never try to read an image file as a string</li>
+<li>Never try to decode the bytes of an image into a string</li>
+<li>An image is not encoded using UTF-8
+<ul>
+<li>The bytes will not decode properly</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images-3" class="level2">
+<h2 class="anchored" data-anchor-id="sending-images-3">Sending Images</h2>
+<ul>
+<li>Don't overthink sending images</li>
+<li>Read the bytes of the file. That's the body of your response
+<ul>
+<li>You may have to specify that the file should be read as a byte array since text is often assumed in File IO examples</li>
+</ul></li>
+<li>Set the Content-Length to the length of the byte array</li>
+<li>Set the appropriate MIME type in Content-Type
+<ul>
+<li>Ex: to send a .png the MIME type is "image/png"</li>
+</ul></li>
+</ul>
 
 
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP (Wikipedia)</a></li>
-<li><a href="https://tools.ietf.org/html/rfc2616">RFC2616 - HTTP 1.1</a></li>
-<li><a href="https://docs.python.org/3/library/socketserver.html">Python TCP Server</a></li>
-<li><a href="https://pkg.go.dev/net">Go: net package</a></li>
+<li><a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 (Wikipedia)</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME types</a></li>
+<li><a href="https://www.iana.org/assignments/media-types/media-types.xhtml">Every MIME type</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">String MIME types</a></li>
 </ul>
 </section>
 </section>

@@ -1,19 +1,15 @@
 ---
 title: "CRUD and REST API"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Introduction to CRUD operation and REST APIs"
 
 reading-list: []
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## API
+# API's
 
 ## Data
 
@@ -27,8 +23,8 @@ released: false
 
 ## Data
 
-
 - How do users interact with stored data?
+
 
 User/Client
 
@@ -36,7 +32,7 @@ Server
 
 Database
 
-![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/slide03-diagram.jpg){fig-alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"}
 
 ## Data
 
@@ -63,8 +59,12 @@ Database
 ## CRUD - Create
 
 - Create a new record
-- INSERT INTO user (?, ?)
-- userCollection.insert_one({"email":"...", "username": "..."})
+
+```
+db.Exec(`
+	INSERT INTO user (email, username) VALUES ($1, $2)
+	`, email, username)
+```
 
 ## CRUD - Create
 
@@ -72,51 +72,56 @@ Database
   - This id will be used to identify the created record
   - The id is typically an auto-incrementing integer
     - First record had id==1, second has id==2, etc
-  - MySQL can generate these ids for you
-    - CREATE TABLE user (id int AUTO_INCREMENT, ...)
+  - Postgres can generate these ids for you using `SERIAL`
 
-## CRUD - Create
-
-- MongoDB does not have an auto-increment feature
-- You can either:
-  - Manage your own auto-incrementing ids
-    - Maintain a collection that remembers the last used id
-    - Increment the id each time a record is created
-  - Or generate your ids any other way you'd like
-    - Make sure the id's are unique
-    - Id's must be UTF-8 compatible if they will be used in a url
+  ```
+  db.Exec(`
+	CREATE TABLE IF NOT EXISTS user (
+		id SERIAL PRIMARY KEY,
+		email TEXT,
+		username TEXT
+	)
+	`)
+  ```
 
 ## CRUD - Retrieve/List
 
-- Retrieve all records
-  - SELECT * FROM user
-  - userCollection.find({})
+- Retrieve all records from a table
 - Retrieving all records is often called List
   - Technically, the acronym is CRUDL when list operations are allowed
 
-## CRUD - Retrieve
+```
+SELECT * FROM user
+```
 
-- Retrieve a single existing record
-- SELECT * FROM user WHERE id=3
-- userCollection.find_one({"id":3})
+- Retrieve a single existing records
+```
+SELECT * FROM user WHERE id=$1
+```
+
+
+
 
 ## CRUD - Update
 
 - Update an existing record
-- UPDATE user SET email=?, username=? WHERE id=5
-- userCollection.update_one({"id":5}, {"$set": {"email":"...", "username":"..."}})
-
-## CRUD - Update
-
 - Can update all fields except the id
-  - The id technically can change, but you should never change it
-    - It is a unique identifier
+  - It is a unique identifier
+  - Changing will break features including links that use the old id
+
+```
+UPDATE user SET email=$1, username=$2 WHERE id=$3
+```
+
 
 ## CRUD - Delete
 
 - Delete an existing record
-- DELETE FROM user WHERE id=2
-- userCollection.delete_one({"id":2})
+- Record is completely removed from the table
+
+```
+DELETE FROM user WHERE id=$1
+```
 
 ## CRUD - Delete
 
@@ -131,7 +136,6 @@ Database
 
 ## Data
 
-
 - How do users interact with our server?
 
 User/Client
@@ -140,22 +144,22 @@ Server
 
 ![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
 
-## HTTP Requests
+## HTTP Requests Methods
 
 - GET
   - Request data from the server (Retrieve)
 - POST
   - Send data to the server (Create)
 - PATCH
-  - Update a resource (Update)
+  - Partially update a resource (Update)
 - PUT
-  - Replace an existing record (Update)
+  - Replace an existing resource (Update)
 - DELETE
   - Delete a resource (Delete)
 
 ## HTTP - POST v. PATCH v. PUT
 
-- Both POST, PATCH, and PUT are all used to send data to the server, but with different expectations
+- POST, PATCH, and PUT are all used to send data to the server, but with different expectations
 - POST
   - Requires the server to process the data
   - eg. Generating the id for a created record
@@ -164,7 +168,7 @@ Server
   - eg. Update only the content of a chat message, but not the author
 - PUT
   - Replace an entire existing record
-  - Must be idempotent
+  - Must be *idempotent*
 
 ## HTTP - Idempotent
 
@@ -172,20 +176,17 @@ Server
   - If the requests are idempotent, they will have the same effect on the server as sending a single request
 - The additional requests will not change the data of the API
 - In math terms, if our request is a function f
-  - f(f(x)) == f(x)
+  - `f(f(x)) == f(x)`
+  - Including any side-effects of `f`
 
 ## HTTP - Idempotent
 
-- GET and DELETE are idempotent
+- GET, PUT, and DELETE are idempotent
 - GET should not change the data/state of the API
   - Only retrieve data
-- Deleting a record twice has the same effect on the API as deleting the record once
-
-## HTTP - Idempotent
-
-- PUT must be idempotent
 - PUT will replace the entire record with the data of the request
-- A second identical PUT doesn't change anything since the record was already replaced
+  - A second identical PUT doesn't change anything since the record was already replaced
+- Deleting a record twice has the same effect on the API as deleting the record once
 
 ## HTTP - Idempotent
 
@@ -198,7 +199,7 @@ Server
 - PATCH is not idempotent
 - In practice, PATCH endpoints are usually idempotent
 - There is no expectation that they must be idempotent
-- Eg. A record that tracks a counter or how many times it's been updated
+- Eg. A record that tracks a counter of how many times it's been updated
 
 ## RESTful API
 
@@ -215,7 +216,6 @@ Server
 - PUT => Update
 - DELETE => Delete
 
-![](assets/slide24-1.png){fig-alt="TODO: describe this image"}
 
 ## RESTful API
 
@@ -234,7 +234,6 @@ Server
 - The use of cookies in a RESTful API would be a violation of statelessness
   - Usually accepted in practice (API tokens)
 
-![](assets/slide26-diagram.jpg){fig-alt="TODO: describe this image"}
 
 ## REST Constraints
 
@@ -242,8 +241,6 @@ Server
   - Each response must contain caching information
   - Requests should be cached if possible
   - Avoid stale data from being cached
-
-![](assets/slide27-1.png){fig-alt="TODO: describe this image"}
 
 ## REST Constraints
 
@@ -254,7 +251,6 @@ Server
   - Ex: A reverse proxy server is added that encrypts all traffic (HTTPS)
   - Ex: The client uses a VPN
 
-![](assets/slide28-diagram.jpg){fig-alt="TODO: describe this image"}
 
 ## REST Constraints
 
@@ -264,7 +260,6 @@ Server
   - A request contains all information needed to handle that request
   - The API should be self-contained (No reliance on documentation that cannot be accessed from an API path)
 
-![](assets/slide27-1.png){fig-alt="TODO: describe this image"}
 
 ## Data
 
@@ -272,14 +267,4 @@ Server
 - Users interact with our RESTful API
 - API requests correlate to CRUD operations
 
-RESTful API
-
-CRUD
-
-User/Client
-
-Server
-
-Database
-
-![](assets/slide30-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/slide30-diagram.jpg){fig-alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations"}

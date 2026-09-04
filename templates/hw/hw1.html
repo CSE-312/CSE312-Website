@@ -421,10 +421,14 @@
 
         <p>Tips:</p>
         <ul>
-            <li>While debugging, you should run "docker compose up --build --force-recreate" to ensure that the containers are fully rebuilt. 
+            <li>While debugging, you should run "docker compose up --build --force-recreate --renew-anon-volumes" to ensure that the containers are fully rebuilt. 
                 If you do not see your new changes, this is usually the issue
             </li>
-            <li>You may need to regularly delete your volumes to clear your database, and/or manually delete your database container</li>
+            <li>The "--renew-anon-volumes" option will delete everything in your database container and start fresh. You may want to remove this option once 
+                you have your database working properly and add it again if you want to wipe your data. If you are using named volumes, it is assumed that you know how to use them properly</li>
+            <li>You must implement a way for your app to wait for the database to be ready for connections before connecting. There are many different solutions to this with 
+                the modern solution being a health check setup in docker compose
+            </li>
             <li>If you are running Windows, install WSL2 and run Docker from Ubuntu (Note: Windows will make your life as a developer 
                 more difficult. Consider switching to Linux if you are frustrated by the issues)</li>
         </ul>
@@ -450,11 +454,17 @@
 
         <p>
             Implement Keep-Alive support for your server such that a client is able to send multiple requests, and receive multiple responses, over
-            the same TCP connection. You must properly handle these multiple requests, especially requests that are received in quick succession. 
+            the same TCP connection.
         </p>
 
+        <p>
+            You must also gracefully handle any connections that have been closed by the client. Keeping goroutines running on a closed connection is not acceptable.
+        </p>
 
-
+        <p>Tips:</p>
+        <ul>
+            <li>Since this objective does not add any visible features to your app, you will have to think about how you will test your implementation</li>
+        </ul>
         <hr>
         <h2>
             Objective 5: Caching
@@ -480,14 +490,24 @@
         </p>
 
         <p>
-            You must implement both ETag and timeouts to cache responses. For timeouts you may choose to use Max-Age or Last-Modified. In 
-            either case, you should set a very short timeout (e.g. 10 seconds). This will make testing much faster and simpler. If a request 
-            is received for content that is cached, you should return a 304 Not Modified response.
+            You must implement both ETag and timeouts to cache responses. For timeouts, you may choose to use Max-Age or Last-Modified. 
+             If a request 
+            is received for content that should be cached, you should return a 304 Not Modified response. This includes requests with 
+            validation headers like If-None-Match or If-Modified-Since. If the file on disk has not changed since the if modified timestamp, 
+            send a 304 Not Modified with updated cache control headers.
         </p>
 
         <p>
-            All of you static content must be cached. This includes every file in the public directory, and the rendered HTML templates.
+            All of your static content must be cached. This includes every file in the public directory, and the rendered HTML templates.
         </p>
+
+        <p>Tips:</p>
+        <ul>
+            <li>When using ETags, when the content of the file changes, the ETag must also change. For testing, you should
+                change the content of the file and then request it again to ensure the ETag changes
+            </li>
+            <li>You should use a very short timeout (e.g. 10 seconds). This will make testing much faster and simpler</li>
+        </ul>
 
         <br>
         <h3>Submission</h3>

@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Introduction to CRUD operation and REST APIs">
 
 <title>CRUD and REST API – CSE312 Lectures</title>
 <style>
@@ -82,28 +83,25 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#api" id="toc-api" class="nav-link active" data-scroll-target="#api">API</a></li>
+  <li><a href="#apis" id="toc-apis" class="nav-link active" data-scroll-target="#apis">API's</a>
+  <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a></li>
   <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">Data</a></li>
   <li><a href="#crud" id="toc-crud" class="nav-link" data-scroll-target="#crud">CRUD</a></li>
   <li><a href="#crud---create" id="toc-crud---create" class="nav-link" data-scroll-target="#crud---create">CRUD - Create</a></li>
   <li><a href="#crud---create-1" id="toc-crud---create-1" class="nav-link" data-scroll-target="#crud---create-1">CRUD - Create</a></li>
-  <li><a href="#crud---create-2" id="toc-crud---create-2" class="nav-link" data-scroll-target="#crud---create-2">CRUD - Create</a></li>
   <li><a href="#crud---retrievelist" id="toc-crud---retrievelist" class="nav-link" data-scroll-target="#crud---retrievelist">CRUD - Retrieve/List</a></li>
-  <li><a href="#crud---retrieve" id="toc-crud---retrieve" class="nav-link" data-scroll-target="#crud---retrieve">CRUD - Retrieve</a></li>
   <li><a href="#crud---update" id="toc-crud---update" class="nav-link" data-scroll-target="#crud---update">CRUD - Update</a></li>
-  <li><a href="#crud---update-1" id="toc-crud---update-1" class="nav-link" data-scroll-target="#crud---update-1">CRUD - Update</a></li>
   <li><a href="#crud---delete" id="toc-crud---delete" class="nav-link" data-scroll-target="#crud---delete">CRUD - Delete</a></li>
   <li><a href="#crud---delete-1" id="toc-crud---delete-1" class="nav-link" data-scroll-target="#crud---delete-1">CRUD - Delete</a></li>
   <li><a href="#data-3" id="toc-data-3" class="nav-link" data-scroll-target="#data-3">Data</a></li>
-  <li><a href="#http-requests" id="toc-http-requests" class="nav-link" data-scroll-target="#http-requests">HTTP Requests</a></li>
+  <li><a href="#http-requests-methods" id="toc-http-requests-methods" class="nav-link" data-scroll-target="#http-requests-methods">HTTP Requests Methods</a></li>
   <li><a href="#http---post-v.-patch-v.-put" id="toc-http---post-v.-patch-v.-put" class="nav-link" data-scroll-target="#http---post-v.-patch-v.-put">HTTP - POST v. PATCH v. PUT</a></li>
   <li><a href="#http---idempotent" id="toc-http---idempotent" class="nav-link" data-scroll-target="#http---idempotent">HTTP - Idempotent</a></li>
   <li><a href="#http---idempotent-1" id="toc-http---idempotent-1" class="nav-link" data-scroll-target="#http---idempotent-1">HTTP - Idempotent</a></li>
   <li><a href="#http---idempotent-2" id="toc-http---idempotent-2" class="nav-link" data-scroll-target="#http---idempotent-2">HTTP - Idempotent</a></li>
   <li><a href="#http---idempotent-3" id="toc-http---idempotent-3" class="nav-link" data-scroll-target="#http---idempotent-3">HTTP - Idempotent</a></li>
-  <li><a href="#http---idempotent-4" id="toc-http---idempotent-4" class="nav-link" data-scroll-target="#http---idempotent-4">HTTP - Idempotent</a></li>
   <li><a href="#restful-api" id="toc-restful-api" class="nav-link" data-scroll-target="#restful-api">RESTful API</a></li>
   <li><a href="#rest-and-crud" id="toc-rest-and-crud" class="nav-link" data-scroll-target="#rest-and-crud">REST and CRUD</a></li>
   <li><a href="#restful-api-1" id="toc-restful-api-1" class="nav-link" data-scroll-target="#restful-api-1">RESTful API</a></li>
@@ -112,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#rest-constraints-2" id="toc-rest-constraints-2" class="nav-link" data-scroll-target="#rest-constraints-2">REST Constraints</a></li>
   <li><a href="#rest-constraints-3" id="toc-rest-constraints-3" class="nav-link" data-scroll-target="#rest-constraints-3">REST Constraints</a></li>
   <li><a href="#data-4" id="toc-data-4" class="nav-link" data-scroll-target="#data-4">Data</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -121,9 +120,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">CRUD and REST API</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Introduction to CRUD operation and REST APIs
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -138,9 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="api" class="level2">
-<h2 class="anchored" data-anchor-id="api">API</h2>
-</section>
+<section id="apis" class="level1">
+<h1>API's</h1>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <ul>
@@ -163,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User/Client</p>
 <p>Server</p>
 <p>Database</p>
-<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"></p>
 </section>
 <section id="data-2" class="level2">
 <h2 class="anchored" data-anchor-id="data-2">Data</h2>
@@ -191,9 +193,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="crud---create">CRUD - Create</h2>
 <ul>
 <li>Create a new record</li>
-<li>INSERT INTO user (?, ?)</li>
-<li>userCollection.insert_one({"email":"...", "username": "..."})</li>
 </ul>
+<pre><code>db.Exec(`
+    INSERT INTO user (email, username) VALUES ($1, $2)
+    `, email, username)</code></pre>
 </section>
 <section id="crud---create-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---create-1">CRUD - Create</h2>
@@ -205,81 +208,51 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>First record had id==1, second has id==2, etc</li>
 </ul></li>
-<li>MySQL can generate these ids for you
-<ul>
-<li>CREATE TABLE user (id int AUTO_INCREMENT, ...)</li>
-</ul></li>
-</ul></li>
+<li>Postgres can generate these ids for you using <code>SERIAL</code></li>
 </ul>
-</section>
-<section id="crud---create-2" class="level2">
-<h2 class="anchored" data-anchor-id="crud---create-2">CRUD - Create</h2>
-<ul>
-<li>MongoDB does not have an auto-increment feature</li>
-<li>You can either:
-<ul>
-<li>Manage your own auto-incrementing ids
-<ul>
-<li>Maintain a collection that remembers the last used id</li>
-<li>Increment the id each time a record is created</li>
-</ul></li>
-<li>Or generate your ids any other way you'd like
-<ul>
-<li>Make sure the id's are unique</li>
-<li>Id's must be UTF-8 compatible if they will be used in a url</li>
-</ul></li>
-</ul></li>
+<pre><code>db.Exec(`
+  CREATE TABLE IF NOT EXISTS user (
+      id SERIAL PRIMARY KEY,
+      email TEXT,
+      username TEXT
+  )
+  `)</code></pre></li>
 </ul>
 </section>
 <section id="crud---retrievelist" class="level2">
 <h2 class="anchored" data-anchor-id="crud---retrievelist">CRUD - Retrieve/List</h2>
 <ul>
-<li>Retrieve all records
-<ul>
-<li>SELECT * FROM user</li>
-<li>userCollection.find({})</li>
-</ul></li>
+<li>Retrieve all records from a table</li>
 <li>Retrieving all records is often called List
 <ul>
 <li>Technically, the acronym is CRUDL when list operations are allowed</li>
 </ul></li>
 </ul>
-</section>
-<section id="crud---retrieve" class="level2">
-<h2 class="anchored" data-anchor-id="crud---retrieve">CRUD - Retrieve</h2>
+<pre><code>SELECT * FROM user</code></pre>
 <ul>
-<li>Retrieve a single existing record</li>
-<li>SELECT * FROM user WHERE id=3</li>
-<li>userCollection.find_one({"id":3})</li>
+<li>Retrieve a single existing records</li>
 </ul>
+<pre><code>SELECT * FROM user WHERE id=$1</code></pre>
 </section>
 <section id="crud---update" class="level2">
 <h2 class="anchored" data-anchor-id="crud---update">CRUD - Update</h2>
 <ul>
 <li>Update an existing record</li>
-<li>UPDATE user SET email=?, username=? WHERE id=5</li>
-<li>userCollection.update_one({"id":5}, {"$set": {"email":"...", "username":"..."}})</li>
-</ul>
-</section>
-<section id="crud---update-1" class="level2">
-<h2 class="anchored" data-anchor-id="crud---update-1">CRUD - Update</h2>
-<ul>
 <li>Can update all fields except the id
 <ul>
-<li>The id technically can change, but you should never change it
-<ul>
 <li>It is a unique identifier</li>
-</ul></li>
+<li>Changing will break features including links that use the old id</li>
 </ul></li>
 </ul>
+<pre><code>UPDATE user SET email=$1, username=$2 WHERE id=$3</code></pre>
 </section>
 <section id="crud---delete" class="level2">
 <h2 class="anchored" data-anchor-id="crud---delete">CRUD - Delete</h2>
 <ul>
 <li>Delete an existing record</li>
-<li>DELETE FROM user WHERE id=2</li>
-<li>userCollection.delete_one({"id":2})</li>
+<li>Record is completely removed from the table</li>
 </ul>
+<pre><code>DELETE FROM user WHERE id=$1</code></pre>
 </section>
 <section id="crud---delete-1" class="level2">
 <h2 class="anchored" data-anchor-id="crud---delete-1">CRUD - Delete</h2>
@@ -307,8 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>Server</p>
 <p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="http-requests" class="level2">
-<h2 class="anchored" data-anchor-id="http-requests">HTTP Requests</h2>
+<section id="http-requests-methods" class="level2">
+<h2 class="anchored" data-anchor-id="http-requests-methods">HTTP Requests Methods</h2>
 <ul>
 <li>GET
 <ul>
@@ -320,11 +293,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>PATCH
 <ul>
-<li>Update a resource (Update)</li>
+<li>Partially update a resource (Update)</li>
 </ul></li>
 <li>PUT
 <ul>
-<li>Replace an existing record (Update)</li>
+<li>Replace an existing resource (Update)</li>
 </ul></li>
 <li>DELETE
 <ul>
@@ -335,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="http---post-v.-patch-v.-put" class="level2">
 <h2 class="anchored" data-anchor-id="http---post-v.-patch-v.-put">HTTP - POST v. PATCH v. PUT</h2>
 <ul>
-<li>Both POST, PATCH, and PUT are all used to send data to the server, but with different expectations</li>
+<li>POST, PATCH, and PUT are all used to send data to the server, but with different expectations</li>
 <li>POST
 <ul>
 <li>Requires the server to process the data</li>
@@ -349,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>PUT
 <ul>
 <li>Replace an entire existing record</li>
-<li>Must be idempotent</li>
+<li>Must be <em>idempotent</em></li>
 </ul></li>
 </ul>
 </section>
@@ -363,17 +336,22 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The additional requests will not change the data of the API</li>
 <li>In math terms, if our request is a function f
 <ul>
-<li>f(f(x)) == f(x)</li>
+<li><code>f(f(x)) == f(x)</code></li>
+<li>Including any side-effects of <code>f</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="http---idempotent-1" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-1">HTTP - Idempotent</h2>
 <ul>
-<li>GET and DELETE are idempotent</li>
+<li>GET, PUT, and DELETE are idempotent</li>
 <li>GET should not change the data/state of the API
 <ul>
 <li>Only retrieve data</li>
+</ul></li>
+<li>PUT will replace the entire record with the data of the request
+<ul>
+<li>A second identical PUT doesn't change anything since the record was already replaced</li>
 </ul></li>
 <li>Deleting a record twice has the same effect on the API as deleting the record once</li>
 </ul>
@@ -381,26 +359,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="http---idempotent-2" class="level2">
 <h2 class="anchored" data-anchor-id="http---idempotent-2">HTTP - Idempotent</h2>
 <ul>
-<li>PUT must be idempotent</li>
-<li>PUT will replace the entire record with the data of the request</li>
-<li>A second identical PUT doesn't change anything since the record was already replaced</li>
-</ul>
-</section>
-<section id="http---idempotent-3" class="level2">
-<h2 class="anchored" data-anchor-id="http---idempotent-3">HTTP - Idempotent</h2>
-<ul>
 <li>POST is not idempotent</li>
 <li>Since the server is processing the data, there is no implied idempotent property</li>
 <li>eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids</li>
 </ul>
 </section>
-<section id="http---idempotent-4" class="level2">
-<h2 class="anchored" data-anchor-id="http---idempotent-4">HTTP - Idempotent</h2>
+<section id="http---idempotent-3" class="level2">
+<h2 class="anchored" data-anchor-id="http---idempotent-3">HTTP - Idempotent</h2>
 <ul>
 <li>PATCH is not idempotent</li>
 <li>In practice, PATCH endpoints are usually idempotent</li>
 <li>There is no expectation that they must be idempotent</li>
-<li>Eg. A record that tracks a counter or how many times it's been updated</li>
+<li>Eg. A record that tracks a counter of how many times it's been updated</li>
 </ul>
 </section>
 <section id="restful-api" class="level2">
@@ -423,7 +393,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>PUT =&gt; Update</li>
 <li>DELETE =&gt; Delete</li>
 </ul>
-<p><img src="assets/slide24-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="restful-api-1" class="level2">
 <h2 class="anchored" data-anchor-id="restful-api-1">RESTful API</h2>
@@ -452,7 +421,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Usually accepted in practice (API tokens)</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="rest-constraints-1" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-1">REST Constraints</h2>
@@ -464,7 +432,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Avoid stale data from being cached</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide27-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="rest-constraints-2" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-2">REST Constraints</h2>
@@ -477,7 +444,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Ex: The client uses a VPN</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="rest-constraints-3" class="level2">
 <h2 class="anchored" data-anchor-id="rest-constraints-3">REST Constraints</h2>
@@ -490,7 +456,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The API should be self-contained (No reliance on documentation that cannot be accessed from an API path)</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide27-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="data-4" class="level2">
 <h2 class="anchored" data-anchor-id="data-4">Data</h2>
@@ -498,14 +463,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Users interact with our RESTful API</li>
 <li>API requests correlate to CRUD operations</li>
 </ul>
-<p>RESTful API</p>
-<p>CRUD</p>
-<p>User/Client</p>
-<p>Server</p>
-<p>Database</p>
-<p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations"></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

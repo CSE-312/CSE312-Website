@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Introduction to databases">
+<meta name="description" content="Caching HTTP responses">
 
-<title>Databases and HTML Templates – CSE312 Lectures</title>
+<title>HTTP - Caching – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -83,35 +83,29 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#databases" id="toc-databases" class="nav-link active" data-scroll-target="#databases">Databases</a>
+  <li><a href="#caching" id="toc-caching" class="nav-link active" data-scroll-target="#caching">Caching</a>
   <ul class="collapse">
-  <li><a href="#databases-1" id="toc-databases-1" class="nav-link" data-scroll-target="#databases-1">Databases</a></li>
-  <li><a href="#databases-2" id="toc-databases-2" class="nav-link" data-scroll-target="#databases-2">Databases</a></li>
+  <li><a href="#http-caching" id="toc-http-caching" class="nav-link" data-scroll-target="#http-caching">HTTP Caching</a></li>
   </ul></li>
-  <li><a href="#mongodb" id="toc-mongodb" class="nav-link" data-scroll-target="#mongodb">MongoDB</a>
+  <li><a href="#timeouts" id="toc-timeouts" class="nav-link" data-scroll-target="#timeouts">Timeouts</a>
   <ul class="collapse">
-  <li><a href="#mongodb-1" id="toc-mongodb-1" class="nav-link" data-scroll-target="#mongodb-1">MongoDB</a></li>
-  <li><a href="#mongodb---connection" id="toc-mongodb---connection" class="nav-link" data-scroll-target="#mongodb---connection">MongoDB - Connection</a></li>
-  <li><a href="#mongodb---security" id="toc-mongodb---security" class="nav-link" data-scroll-target="#mongodb---security">MongoDB - Security</a></li>
+  <li><a href="#max-age" id="toc-max-age" class="nav-link" data-scroll-target="#max-age">Max Age</a></li>
+  <li><a href="#expires" id="toc-expires" class="nav-link" data-scroll-target="#expires">Expires</a></li>
   </ul></li>
-  <li><a href="#postgresql" id="toc-postgresql" class="nav-link" data-scroll-target="#postgresql">PostgreSQL</a>
+  <li><a href="#etag" id="toc-etag" class="nav-link" data-scroll-target="#etag">ETag</a>
   <ul class="collapse">
-  <li><a href="#postgresql---setup" id="toc-postgresql---setup" class="nav-link" data-scroll-target="#postgresql---setup">PostgreSQL - Setup</a></li>
-  <li><a href="#postgresql---tables" id="toc-postgresql---tables" class="nav-link" data-scroll-target="#postgresql---tables">PostgreSQL - Tables</a></li>
-  <li><a href="#postgresql---insert-data" id="toc-postgresql---insert-data" class="nav-link" data-scroll-target="#postgresql---insert-data">PostgreSQL - Insert Data</a></li>
-  <li><a href="#sql---security" id="toc-sql---security" class="nav-link" data-scroll-target="#sql---security">SQL - Security</a></li>
-  <li><a href="#postgresql---retrieve-data" id="toc-postgresql---retrieve-data" class="nav-link" data-scroll-target="#postgresql---retrieve-data">PostgreSQL - Retrieve Data</a></li>
-  <li><a href="#mongodb-vs.-sql" id="toc-mongodb-vs.-sql" class="nav-link" data-scroll-target="#mongodb-vs.-sql">MongoDB vs. SQL</a></li>
-  <li><a href="#mongodb-vs.-sql-1" id="toc-mongodb-vs.-sql-1" class="nav-link" data-scroll-target="#mongodb-vs.-sql-1">MongoDB vs. SQL</a></li>
+  <li><a href="#etag-1" id="toc-etag-1" class="nav-link" data-scroll-target="#etag-1">ETag</a></li>
   </ul></li>
-  <li><a href="#html-templates" id="toc-html-templates" class="nav-link" data-scroll-target="#html-templates">HTML Templates</a>
+  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation">Validation</a>
   <ul class="collapse">
-  <li><a href="#html-templates-1" id="toc-html-templates-1" class="nav-link" data-scroll-target="#html-templates-1">HTML Templates</a></li>
-  <li><a href="#html-templates-2" id="toc-html-templates-2" class="nav-link" data-scroll-target="#html-templates-2">HTML Templates</a></li>
-  <li><a href="#html-templates-3" id="toc-html-templates-3" class="nav-link" data-scroll-target="#html-templates-3">HTML Templates</a></li>
-  <li><a href="#html-templates-4" id="toc-html-templates-4" class="nav-link" data-scroll-target="#html-templates-4">HTML Templates</a></li>
-  <li><a href="#common-template-features" id="toc-common-template-features" class="nav-link" data-scroll-target="#common-template-features">Common Template Features</a></li>
-  <li><a href="#common-template-features-1" id="toc-common-template-features-1" class="nav-link" data-scroll-target="#common-template-features-1">Common Template Features</a></li>
+  <li><a href="#validation-1" id="toc-validation-1" class="nav-link" data-scroll-target="#validation-1">Validation</a></li>
+  </ul></li>
+  <li><a href="#other" id="toc-other" class="nav-link" data-scroll-target="#other">other</a>
+  <ul class="collapse">
+  <li><a href="#vary" id="toc-vary" class="nav-link" data-scroll-target="#vary">Vary</a></li>
+  <li><a href="#private-cache-control" id="toc-private-cache-control" class="nav-link" data-scroll-target="#private-cache-control">Private Cache Control</a></li>
+  <li><a href="#caution" id="toc-caution" class="nav-link" data-scroll-target="#caution">Caution</a></li>
+  <li><a href="#other-caching-tech" id="toc-other-caching-tech" class="nav-link" data-scroll-target="#other-caching-tech">Other Caching Tech</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -122,12 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Databases and HTML Templates</h1>
+<h1 class="title">HTTP - Caching</h1>
 </div>
 
 <div>
   <div class="description">
-    Introduction to databases
+    Caching HTTP responses
   </div>
 </div>
 
@@ -144,335 +138,109 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="databases" class="level1">
-<h1>Databases</h1>
-<section id="databases-1" class="level2">
-<h2 class="anchored" data-anchor-id="databases-1">Databases</h2>
+<section id="caching" class="level1">
+<h1>Caching</h1>
+<section id="http-caching" class="level2">
+<h2 class="anchored" data-anchor-id="http-caching">HTTP Caching</h2>
 <ul>
-<li>Software that stores data on disk
-<ul>
-<li>Download, install, and run as a separate program</li>
-<li>.. until we talk about Docker</li>
-</ul></li>
-<li>Runs as a server and is communicated with via TCP sockets</li>
-<li>Provides an API to store/retrieve data
-<ul>
-<li>The database handles the low-level file IO</li>
-<li>Allows us to think about our data, not how to store it</li>
-</ul></li>
-<li>Provides many optimizations</li>
-</ul>
-</section>
-<section id="databases-2" class="level2">
-<h2 class="anchored" data-anchor-id="databases-2">Databases</h2>
-<ul>
-<li>We'll look at 2 different databases</li>
-<li>Both are pieces of software that must be downloaded, installed, ran, then connected to via TCP</li>
-<li>MongoDB (Briefly)
-<ul>
-<li>An unstructured server based on document stores</li>
-</ul></li>
-<li>PostgreSQL
-<ul>
-<li>A server implementing SQL (Structured Query Language)</li>
-</ul></li>
+<li>Browser stores previous response</li>
+<li>If it's fresh, reuse it</li>
+<li>Reuse until it's stale</li>
 </ul>
 </section>
 </section>
-<section id="mongodb" class="level1">
-<h1>MongoDB</h1>
-<section id="mongodb-1" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-1">MongoDB</h2>
+<section id="timeouts" class="level1">
+<h1>Timeouts</h1>
+<section id="max-age" class="level2">
+<h2 class="anchored" data-anchor-id="max-age">Max Age</h2>
 <ul>
-<li>Runs on port 27017 (By default)</li>
-<li>A document-based database</li>
-<li>Stores data in a structure very similar to JSON</li>
-<li>In python/JS
-<ul>
-<li>Insert dictionaries/objects directly</li>
-</ul></li>
-<li>Each object is stored in a collection</li>
+<li>Specify a max age. Once it's older, browser requests again</li>
+<li>Use <code>Cache-Control: max-age=3600</code></li>
 </ul>
 </section>
-<section id="mongodb---connection" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb---connection">MongoDB - Connection</h2>
+<section id="expires" class="level2">
+<h2 class="anchored" data-anchor-id="expires">Expires</h2>
 <ul>
-<li>Download a connection library and use it to establish a connection with MongoDB</li>
-<li>MongoDB is separated into several layers
-<ul>
-<li>Databases - Named by Strings; Contains collections</li>
-<li>Collections - Where the data is stored; similar to a SQL table</li>
-</ul></li>
-<li>Access your collections to insert/retrieve/update/delete data</li>
-</ul>
-</section>
-<section id="mongodb---security" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb---security">MongoDB - Security</h2>
-<ul>
-<li>No Mongo injection attacks</li>
-<li>Mongo does not rely on parsing statements as strings</li>
-<li>Any injected code would be treated as values</li>
+<li>Specify and exact time when the resource should become stale</li>
+<li>Use `Expires: Wed, 23 Sep 2026 15:50:00 EST</li>
+<li>max-age is preferred</li>
+<li>If both max-age and expires are used, the browser should prefer max-age</li>
 </ul>
 </section>
 </section>
-<section id="postgresql" class="level1">
-<h1>PostgreSQL</h1>
-<section id="postgresql---setup" class="level2">
-<h2 class="anchored" data-anchor-id="postgresql---setup">PostgreSQL - Setup</h2>
+<section id="etag" class="level1">
+<h1>ETag</h1>
+<section id="etag-1" class="level2">
+<h2 class="anchored" data-anchor-id="etag-1">ETag</h2>
 <ul>
-<li>Download, install, run the PostgreSQL server
-<ul>
-<li>Listens for TCP connections on port 5432 (By default)</li>
-</ul></li>
-<li>Set your password so you can connect from your server</li>
-<li>Install a library for your language that will connect to the PostgreSQL server
-<ul>
-<li><code>github.com/joho/godotenv</code></li>
-</ul></li>
-<li>Create a connection in your code</li>
-<li>When in doubt, follow the documentation</li>
-</ul>
-<pre><code>db, err := sql.Open(
-  "pgx",
-  "postgres://postgres:" + os.Getenv("POSTGRES_PASSWORD") + "@localhost:5432/cse312",
-)</code></pre>
-</section>
-<section id="postgresql---tables" class="level2">
-<h2 class="anchored" data-anchor-id="postgresql---tables">PostgreSQL - Tables</h2>
-<ul>
-<li>SQL is based on <strong>tables</strong> with rows and column
-<ul>
-<li>Similar in structure to CSV except the fields are typed</li>
-</ul></li>
-<li>A table must be fully defined before data is stored</li>
-<li>If creating tables on server startup, use <code>IF NOT EXISTS</code></li>
-</ul>
-<pre><code>_, err := db.Exec(`
-CREATE TABLE IF NOT EXISTS chat (
-  id SERIAL PRIMARY KEY,
-  author TEXT,
-  content TEXT,
-  updated BOOLEAN
-)
-`)</code></pre>
-</section>
-<section id="postgresql---insert-data" class="level2">
-<h2 class="anchored" data-anchor-id="postgresql---insert-data">PostgreSQL - Insert Data</h2>
-<ul>
-<li>Insert a record into a table using <code>INSERT INTO</code></li>
-<li>If using inputs from the user, always use prepared statements!
-<ul>
-<li>Use placeholders in your statement and replace the values later</li>
-<li>Prevents values from being interpreted as SQL code</li>
-</ul></li>
-</ul>
-<pre><code>_, err := db.Exec(`
-INSERT INTO chat (author, content, updated) VALUES ($1, $2, $3)
-`, "Jesse", "hello chat!", false)</code></pre>
-</section>
-<section id="sql---security" class="level2">
-<h2 class="anchored" data-anchor-id="sql---security">SQL - Security</h2>
-<ul>
-<li>Not using prepared statements?
-<ul>
-<li>Vulnerable to SQL injection attacks</li>
-</ul></li>
-<li>If you concatenate user inputs directly into your SQL statements
-<ul>
-<li>Attacker chooses a username of <code>';DROP TABLE chat;</code></li>
-<li>You lose all your data</li>
-<li>Even worse, they find a way to access the entire database and steal other users' data</li>
-<li>SQL Injection is the most common successful attack on servers</li>
-</ul></li>
-</ul>
-</section>
-<section id="postgresql---retrieve-data" class="level2">
-<h2 class="anchored" data-anchor-id="postgresql---retrieve-data">PostgreSQL - Retrieve Data</h2>
-<ul>
-<li>Retrieve records from a table using <code>SELECT ... FROM</code></li>
-<li><code>SELECT * FROM table_name</code> will return all fields from every record in <code>table_name</code></li>
-</ul>
-<pre><code>records, err := db.Query("SELECT * FROM chat")
-
-for records.Next() {
-  var id int
-  var author string
-  var content string
-  var updated bool
-  records.Scan(&amp;id, &amp;author, &amp;content, &amp;updated)
-}</code></pre>
-</section>
-<section id="mongodb-vs.-sql" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-vs.-sql">MongoDB vs. SQL</h2>
-<ul>
-<li>MongoDB is unstructured
-<ul>
-<li>Can add objects in any format to a collection</li>
-<li>Can mix formats in a single collection
-<ul>
-<li>Ie. In a single collection the documents can have different attributes</li>
-</ul></li>
-</ul></li>
-<li>SQL is structured (That's what the S stands for)
-<ul>
-<li>Table columns must be pre-defined
-<ul>
-<li>All rows have the same attributes</li>
-<li>Adding a column can be difficult</li>
-</ul></li>
-<li>Fast!</li>
-</ul></li>
-</ul>
-</section>
-<section id="mongodb-vs.-sql-1" class="level2">
-<h2 class="anchored" data-anchor-id="mongodb-vs.-sql-1">MongoDB vs. SQL</h2>
-<ul>
-<li>Hot Take
-<ul>
-<li>MongoDB is best for prototyping when the structure of your data is constantly changing
-<ul>
-<li>Take advantage of the flexibility</li>
-</ul></li>
-<li>SQL is best once your data has a defined structure
-<ul>
-<li>Take advantage of the efficiency</li>
-</ul></li>
-</ul></li>
+<li>Use an ETag</li>
 </ul>
 </section>
 </section>
-<section id="html-templates" class="level1">
-<h1>HTML Templates</h1>
-<section id="html-templates-1" class="level2">
-<h2 class="anchored" data-anchor-id="html-templates-1">HTML Templates</h2>
+<section id="validation" class="level1">
+<h1>Validation</h1>
+<section id="validation-1" class="level2">
+<h2 class="anchored" data-anchor-id="validation-1">Validation</h2>
 <ul>
-<li>Instead of writing complete HTML files
+<li>Client can send these headers if cache is stale
 <ul>
-<li>Write HTML templates</li>
+<li>If-None-Match</li>
+<li>If-Modified-Since</li>
 </ul></li>
-<li>An HTML template is an "incomplete" HTML file that is used to generate complete pages</li>
-<li>Use additional markup to add placeholders in the HTML</li>
-<li>Replace the placeholders with data at runtime</li>
+<li>Last-Modified</li>
+<li>Date</li>
+<li>Have to check the files modified timestamp and compare it to the If-Modified-Since timestamp. They will be in different formats! Possibly different time zones</li>
 </ul>
 </section>
-<section id="html-templates-2" class="level2">
-<h2 class="anchored" data-anchor-id="html-templates-2">HTML Templates</h2>
+</section>
+<section id="other" class="level1">
+<h1>other</h1>
+<section id="vary" class="level2">
+<h2 class="anchored" data-anchor-id="vary">Vary</h2>
 <ul>
-<li>Example template with 3 placeholders</li>
-<li>The title, description, and image_filename will be replaced later
+<li>Vary useful</li>
+<li>Every resource is uniquely identified by it's url</li>
+<li>We sometimes want even more control over caching than just the url (resource)</li>
+<li>The Vary header specifies additional request headers that are used to identify the content</li>
+<li>If the url for 2 requests are identical, but the value of a Vary header is different, the second requests will not used the cached version</li>
+<li>Commonly used for Accept and Accept-Language headers
 <ul>
-<li>Provide values for these 3 placeholders to serve a response</li>
+<li>The same resource is hosted in different file formats and languages</li>
+<li>If a different format or language is requested, do not used the cached version</li>
 </ul></li>
 </ul>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;This page was generated from a template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;h1&gt;{{title}}&lt;/h1&gt;
-
-&lt;p&gt;{{description}}&lt;/p&gt;
-
-&lt;img src="{{image_filename}}"/&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+<pre><code>Vary: Accept-Language</code></pre>
 </section>
-<section id="html-templates-3" class="level2">
-<h2 class="anchored" data-anchor-id="html-templates-3">HTML Templates</h2>
+<section id="private-cache-control" class="level2">
+<h2 class="anchored" data-anchor-id="private-cache-control">Private Cache Control</h2>
 <ul>
-<li>To substitute the placeholders
-<ul>
-<li>Use any string manipulation that gets the job done</li>
-<li>Find/replace is the simplest solution</li>
-</ul></li>
+<li>Cache-Control: private</li>
+<li>Ensures the cache will not be shared with other sessions</li>
 </ul>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;This page was generated from a template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-&lt;h1&gt;{{title}}&lt;/h1&gt;
-
-&lt;p&gt;{{description}}&lt;/p&gt;
-
-&lt;img src="{{image_filename}}"/&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
 </section>
-<section id="html-templates-4" class="level2">
-<h2 class="anchored" data-anchor-id="html-templates-4">HTML Templates</h2>
+<section id="caution" class="level2">
+<h2 class="anchored" data-anchor-id="caution">Caution</h2>
 <ul>
-<li>On the HW:
+<li>Dude I know set Max-Age: Several decades</li>
+<li>Made a change</li>
+<li>Had to email a few client who couldn't not get the change
 <ul>
-<li>layout.html contains all the HTML that is shown on every page (navigation, structure, etc)</li>
-<li>layout.html has one placeholder <code>{{content}}</code> which is where you'll insert all the HTML for the specific page that was requested</li>
-<li>To render a page, eg. index.html, replace <code>{{content}}</code> with everything read from index.html</li>
-<li>Send the resulting rendered page to the client</li>
+<li>"Can you please click these buttons to invalidate your cache"</li>
 </ul></li>
 </ul>
 </section>
-<section id="common-template-features" class="level2">
-<h2 class="anchored" data-anchor-id="common-template-features">Common Template Features</h2>
+<section id="other-caching-tech" class="level2">
+<h2 class="anchored" data-anchor-id="other-caching-tech">Other Caching Tech</h2>
 <ul>
-<li>Loops</li>
-<li>To add loops to your templates
-<ul>
-<li>Choose syntax for the start and end of the loop</li>
-</ul></li>
+<li>Make the url different whenever a resource changes</li>
 </ul>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;This page was generated from a template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-{{loop}}
-&lt;h6&gt;{{content_from_data_structure}}&lt;/h6&gt;
-{{end_loop}}
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-</section>
-<section id="common-template-features-1" class="level2">
-<h2 class="anchored" data-anchor-id="common-template-features-1">Common Template Features</h2>
-<ul>
-<li>Conditionals</li>
-<li>Can use similar approach as loops</li>
-<li>Choose syntax for the start and end of each block in the conditional</li>
-</ul>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;title&gt;This page was generated from a template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-
-{{if cookie_set}}
-&lt;h6&gt;Welcome back!&lt;/h6&gt;
-{{else}}
-&lt;h6&gt;Welcome!&lt;/h6&gt;
-{{end_if}}
-
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
 
 
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
-<li><a href="https://www.postgresql.org/">PostgreSql</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">MDN docs: Caching</a></li>
 </ul>
 </section>
 </section>

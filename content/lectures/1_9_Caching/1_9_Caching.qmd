@@ -1,0 +1,86 @@
+---
+title: "HTTP - Caching"
+lang: en
+
+description: "Caching HTTP responses"
+
+reading-list:
+  - url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching"
+    text: "MDN docs: Caching"
+
+released: true
+---
+
+# Caching
+
+
+## HTTP Caching
+
+- Browser stores previous response
+- If it's fresh, reuse it
+- Reuse until it's stale
+
+# Timeouts
+
+## Max Age
+
+- Specify a max age. Once it's older, browser requests again
+- Use `Cache-Control: max-age=3600`
+
+## Expires
+
+- Specify and exact time when the resource should become stale
+- Use `Expires: Wed, 23 Sep 2026 15:50:00 EST
+- max-age is preferred
+- If both max-age and expires are used, the browser should prefer max-age
+
+# ETag
+
+## ETag
+
+- Use an ETag
+
+# Validation
+
+## Validation
+
+- Client can send these headers if cache is stale
+  - If-None-Match
+  - If-Modified-Since
+
+- Last-Modified
+- Date
+- Have to check the files modified timestamp and compare it to the If-Modified-Since timestamp. They will be in different formats! Possibly different time zones
+
+# other
+
+## Vary
+
+- Vary useful
+- Every resource is uniquely identified by it's url
+- We sometimes want even more control over caching than just the url (resource)
+- The Vary header specifies additional request headers that are used to identify the content
+- If the url for 2 requests are identical, but the value of a Vary header is different, the second requests will not used the cached version
+- Commonly used for Accept and Accept-Language headers
+  - The same resource is hosted in different file formats and languages
+  - If a different format or language is requested, do not used the cached version
+
+```
+Vary: Accept-Language
+``` 
+
+## Private Cache Control
+
+- Cache-Control: private
+- Ensures the cache will not be shared with other sessions
+
+## Caution
+
+- Dude I know set Max-Age: Several decades
+- Made a change
+- Had to email a few client who couldn't not get the change
+  - "Can you please click these buttons to invalidate your cache"
+
+## Other Caching Tech
+
+- Make the url different whenever a resource changes

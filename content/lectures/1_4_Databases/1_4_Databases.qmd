@@ -16,7 +16,7 @@ released: true
 ## Databases
 
 - Software that stores data on disk
-  - Download, install, and run as a separate Programming
+  - Download, install, and run as a separate program
   - .. until we talk about Docker
 - Runs as a server and is communicated with via TCP sockets
 - Provides an API to store/retrieve data

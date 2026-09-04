@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
-  <title>CSE312 Lectures – CRUD and REST API</title>
+  <title>CSE312 Lectures – HTTP - Static Files, MIME Types, and Encodings</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -142,341 +142,393 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">CRUD and REST API</h1>
+  <h1 class="title">HTTP - Static Files, MIME Types, and Encodings</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
 <section>
-<section id="apis" class="title-slide slide level1 center">
-<h1>API's</h1>
+<section id="encodings" class="title-slide slide level1 center">
+<h1>Encodings</h1>
+<p>MIME types and bytes</p>
+</section>
+<section id="s-and-0s" class="slide level2">
+<h2>1's and 0's</h2>
+<ul>
+<li>The Internet can only transfer bits
+<ul>
+<li>Copper: High/Low voltage</li>
+<li>Fiber: Light/Dark</li>
+</ul></li>
+<li>All data sent over the Internet must be binary</li>
+<li>How do we know what these 1's and 0's represent in HTTP?
+<ul>
+<li>Encodings and MIME Types</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="encoding-text" class="title-slide slide level1 center">
+<h1>Encoding Text</h1>
 
 </section>
-<section id="data" class="slide level2">
-<h2>Data</h2>
+<section id="text" class="slide level2">
+<h2>Text</h2>
 <ul>
-<li>We now have a database that stores app data</li>
-<li>Users have to control data
+<li>Only 1's and 0's can travel through the Internet
 <ul>
-<li>Manage their profile/setting</li>
-<li>Make posts</li>
-<li>Use a shopping cart</li>
-<li>etc.</li>
+<li>How do we send text?</li>
 </ul></li>
-<li>How should users interact with stored data?</li>
 </ul>
 </section>
-<section id="data-1" class="slide level2">
-<h2>Data</h2>
+<section id="ascii" class="slide level2">
+<h2>ASCII</h2>
 <ul>
-<li>How do users interact with stored data?</li>
+<li>Character encoding
+<ul>
+<li>Maps characters to numbers</li>
+<li>Numbers are represented in bits</li>
+<li>Bits are sent through the Internet</li>
+<li>Numbers are mapped back to characters by the receiver</li>
+</ul></li>
+<li>ASCII uses 7 bit encodings</li>
 </ul>
-<p>User/Client</p>
-<p>Server</p>
-<p>Database</p>
+</section>
+<section id="ascii-chart" class="slide level2">
+<h2>ASCII Chart</h2>
 
-<img data-src="assets/slide03-diagram.jpg" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly" class="r-stretch"></section>
-<section id="data-2" class="slide level2">
-<h2>Data</h2>
+<img data-src="assets/slide06-1.png" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value" class="r-stretch"></section>
+<section id="ascii-1" class="slide level2">
+<h2>ASCII</h2>
 <ul>
-<li>How does our server interact with stored data?</li>
-</ul>
-<p>Server</p>
-<p>Database</p>
-
-<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="crud" class="slide level2">
-<h2>CRUD</h2>
+<li>As a String:
 <ul>
-<li>CRUD is an acronym for the 4 basic operation used to control data
-<ul>
-<li>Create</li>
-<li>Retrive</li>
-<li>Update</li>
-<li>Delete</li>
+<li>"hello"</li>
+<li>Programming language specific representation</li>
 </ul></li>
-</ul>
-
-<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="crud---create" class="slide level2">
-<h2>CRUD - Create</h2>
+<li>In Hex:
 <ul>
-<li>Create a new record</li>
-</ul>
-<pre><code>db.Exec(`
-    INSERT INTO user (email, username) VALUES ($1, $2)
-    `, email, username)</code></pre>
-</section>
-<section id="crud---create-1" class="slide level2">
-<h2>CRUD - Create</h2>
-<ul>
-<li>When a record is created, it should be assigned a unique id
-<ul>
-<li>This id will be used to identify the created record</li>
-<li>The id is typically an auto-incrementing integer
-<ul>
-<li>First record had id==1, second has id==2, etc</li>
+<li>68 65 6c 6c 6f</li>
+<li>Need to encode the String into a byte representation</li>
 </ul></li>
-<li>Postgres can generate these ids for you using <code>SERIAL</code></li>
-</ul>
-<pre><code>db.Exec(`
-  CREATE TABLE IF NOT EXISTS user (
-      id SERIAL PRIMARY KEY,
-      email TEXT,
-      username TEXT
-  )
-  `)</code></pre></li>
-</ul>
-</section>
-<section id="crud---retrievelist" class="slide level2">
-<h2>CRUD - Retrieve/List</h2>
+<li>In Binary:
 <ul>
-<li>Retrieve all records from a table</li>
-<li>Retrieving all records is often called List
-<ul>
-<li>Technically, the acronym is CRUDL when list operations are allowed</li>
-</ul></li>
-</ul>
-<pre><code>SELECT * FROM user</code></pre>
-<ul>
-<li>Retrieve a single existing records</li>
-</ul>
-<pre><code>SELECT * FROM user WHERE id=$1</code></pre>
-</section>
-<section id="crud---update" class="slide level2">
-<h2>CRUD - Update</h2>
-<ul>
-<li>Update an existing record</li>
-<li>Can update all fields except the id
-<ul>
-<li>It is a unique identifier</li>
-<li>Changing will break features including links that use the old id</li>
-</ul></li>
-</ul>
-<pre><code>UPDATE user SET email=$1, username=$2 WHERE id=$3</code></pre>
-</section>
-<section id="crud---delete" class="slide level2">
-<h2>CRUD - Delete</h2>
-<ul>
-<li>Delete an existing record</li>
-<li>Record is completely removed from the table</li>
-</ul>
-<pre><code>DELETE FROM user WHERE id=$1</code></pre>
-</section>
-<section id="crud---delete-1" class="slide level2">
-<h2>CRUD - Delete</h2>
-<ul>
-<li>In practice, common to "soft delete"
-<ul>
-<li>Don't actually delete the data</li>
-<li>Instead, mark it as deleted</li>
-<li>Do not allow retrieve/update operations on data marked as deleted</li>
-</ul></li>
-<li>Soft deletion allows sys admins to perform additional operations
-<ul>
-<li>eg. User requests to undo an accidental delete</li>
-<li>Preserves history (Helpful for debugging)</li>
-</ul></li>
-<li>For your HW, it's fine to "hard delete"</li>
-</ul>
-</section>
-<section id="data-3" class="slide level2">
-<h2>Data</h2>
-<ul>
-<li>How do users interact with our server?</li>
-</ul>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide15-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="http-requests-methods" class="slide level2">
-<h2>HTTP Requests Methods</h2>
-<ul>
-<li>GET
-<ul>
-<li>Request data from the server (Retrieve)</li>
-</ul></li>
-<li>POST
-<ul>
-<li>Send data to the server (Create)</li>
-</ul></li>
-<li>PATCH
-<ul>
-<li>Partially update a resource (Update)</li>
-</ul></li>
-<li>PUT
-<ul>
-<li>Replace an existing resource (Update)</li>
-</ul></li>
-<li>DELETE
-<ul>
-<li>Delete a resource (Delete)</li>
+<li>01101000 01100101 01101100 01101100 01101111</li>
+<li>Send this over the Internet</li>
 </ul></li>
 </ul>
 </section>
-<section id="http---post-v.-patch-v.-put" class="slide level2">
-<h2>HTTP - POST v. PATCH v. PUT</h2>
+<section id="http-headers" class="slide level2">
+<h2>HTTP Headers</h2>
+<p>HTTP Headers can only contain</p>
+<p>ASCII characters</p>
+</section>
+<section id="http-headers-1" class="slide level2">
+<h2>HTTP Headers</h2>
 <ul>
-<li>POST, PATCH, and PUT are all used to send data to the server, but with different expectations</li>
-<li>POST
+<li>When reading HTTP headers [And request/status lines]
 <ul>
-<li>Requires the server to process the data</li>
-<li>eg. Generating the id for a created record</li>
+<li>Assume it is text encoded using ASCII</li>
 </ul></li>
-<li>PATCH
+<li>The body of the request/response may be encoded differently
 <ul>
-<li>Make a partial update to an existing record</li>
-<li>eg. Update only the content of a chat message, but not the author</li>
-</ul></li>
-<li>PUT
-<ul>
-<li>Replace an entire existing record</li>
-<li>Must be <em>idempotent</em></li>
+<li>Read the headers to find the encoding for the body</li>
 </ul></li>
 </ul>
 </section>
-<section id="http---idempotent" class="slide level2">
-<h2>HTTP - Idempotent</h2>
+<section id="character-encodings" class="slide level2">
+<h2>Character Encodings</h2>
 <ul>
-<li>When multiple identical HTTP requests are sent
+<li>ASCII can only encode 128 different characters
 <ul>
-<li>If the requests are idempotent, they will have the same effect on the server as sending a single request</li>
+<li>Decent enough for english text</li>
+<li>Unusable for languages with different alphabets</li>
 </ul></li>
-<li>The additional requests will not change the data of the API</li>
-<li>In math terms, if our request is a function f
+<li>With the Internet, the world became much more connected
 <ul>
-<li><code>f(f(x)) == f(x)</code></li>
-<li>Including any side-effects of <code>f</code></li>
+<li>Too restrictive for each alphabet to have its own encoding</li>
 </ul></li>
-</ul>
-</section>
-<section id="http---idempotent-1" class="slide level2">
-<h2>HTTP - Idempotent</h2>
+<li>How do we encode more characters with a single standard?
 <ul>
-<li>GET, PUT, and DELETE are idempotent</li>
-<li>GET should not change the data/state of the API
-<ul>
-<li>Only retrieve data</li>
-</ul></li>
-<li>PUT will replace the entire record with the data of the request
-<ul>
-<li>A second identical PUT doesn't change anything since the record was already replaced</li>
-</ul></li>
-<li>Deleting a record twice has the same effect on the API as deleting the record once</li>
-</ul>
-</section>
-<section id="http---idempotent-2" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>POST is not idempotent</li>
-<li>Since the server is processing the data, there is no implied idempotent property</li>
-<li>eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids</li>
-</ul>
-</section>
-<section id="http---idempotent-3" class="slide level2">
-<h2>HTTP - Idempotent</h2>
-<ul>
-<li>PATCH is not idempotent</li>
-<li>In practice, PATCH endpoints are usually idempotent</li>
-<li>There is no expectation that they must be idempotent</li>
-<li>Eg. A record that tracks a counter of how many times it's been updated</li>
-</ul>
-</section>
-<section id="restful-api" class="slide level2">
-<h2>RESTful API</h2>
-<ul>
-<li>REST -&gt; REpresentational State Transfer</li>
-<li>We'll use HTTP requests to interact with API data</li>
-<li>REST is designed to simplify the way data is used
-<ul>
-<li>Improve reliability and scalability</li>
+<li>We need more bits!</li>
+<li>Enter UTF-8</li>
 </ul></li>
 </ul>
 </section>
-<section id="rest-and-crud" class="slide level2">
-<h2>REST and CRUD</h2>
+<section id="utf-8" class="slide level2">
+<h2>UTF-8</h2>
 <ul>
-<li>User sends HTTP requests that correlate to CRUD operations on the data</li>
-<li>POST =&gt; Create</li>
-<li>GET =&gt; Retrieve</li>
-<li>PUT =&gt; Update</li>
-<li>DELETE =&gt; Delete</li>
-</ul>
-</section>
-<section id="restful-api-1" class="slide level2">
-<h2>RESTful API</h2>
+<li>The modern standard for encoding text</li>
+<li>Uses up to 4 bytes to represent a character</li>
+<li>If the first bit is a 0
 <ul>
-<li>REST is fairly loosely defined (No RFC)
-<ul>
-<li>Or loosely understood</li>
+<li>One byte used. Remaining 7 bits are ASCII</li>
+<li>All ASCII encoded Strings are valid UTF-8</li>
 </ul></li>
-<li>Typically measured on a spectrum
-<ul>
-<li>An API can be more/less RESTful</li>
-<li>"We could do that, but it's not very RESTful"</li>
-<li>"Let's refactor our API to make it more RESTful"</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Client-Server architecture and statelessness
-<ul>
-<li>Both constraints are implicit when using HTTP</li>
-</ul></li>
-<li>The use of cookies in a RESTful API would be a violation of statelessness
-<ul>
-<li>Usually accepted in practice (API tokens)</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-1" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Cacheablility
-<ul>
-<li>Each response must contain caching information</li>
-<li>Requests should be cached if possible</li>
-<li>Avoid stale data from being cached</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-2" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Layered-System
-<ul>
-<li>The API should have the ability to add additional layers between it and the client</li>
-<li>Ex: Client interacts with a load balancer that delegates to many instances of your API</li>
-<li>Ex: A reverse proxy server is added that encrypts all traffic (HTTPS)</li>
-<li>Ex: The client uses a VPN</li>
-</ul></li>
-</ul>
-</section>
-<section id="rest-constraints-3" class="slide level2">
-<h2>REST Constraints</h2>
-<ul>
-<li>Uniform Interface
-<ul>
-<li>Resources are defined in the requests</li>
-<li>The user is given, in a response, enough information to update/delete the resource</li>
-<li>A request contains all information needed to handle that request</li>
-<li>The API should be self-contained (No reliance on documentation that cannot be accessed from an API path)</li>
-</ul></li>
-</ul>
-</section>
-<section id="data-4" class="slide level2">
-<h2>Data</h2>
-<ul>
-<li>Users interact with our RESTful API</li>
-<li>API requests correlate to CRUD operations</li>
 </ul>
 
+<img data-src="assets/slide11-1.png" alt="TODO: describe this image" class="r-stretch"></section>
+<section id="utf-8-1" class="slide level2">
+<h2>UTF-8</h2>
+<ul>
+<li>If more bytes are needed:
+<ul>
+<li>Lead with 1's to indicate the number of bytes</li>
+<li>Each continuation byte begins with 10</li>
+<li>Prevents decoding errors</li>
+<li>No character is a subsequence of another character</li>
+</ul></li>
+</ul>
+
+<img data-src="assets/slide11-1.png" alt="TODO: describe this image" class="r-stretch"></section>
+<section id="sending-data" class="slide level2">
+<h2>Sending Data</h2>
+<ul>
+<li>When sending Strings over the Internet
+<ul>
+<li>The Internet does not understand language-specific Strings</li>
+<li>Always convert to bytes/bits before sending</li>
+<li>Encode the String using UTF-8</li>
+</ul></li>
+<li>When receiving text over the Internet
+<ul>
+<li>It must have been sent as bytes/bits</li>
+<li>Must convert to a language-specific String</li>
+<li>Decode the bytes using the proper encoding</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-data-1" class="slide level2">
+<h2>Sending Data</h2>
+<ul>
+<li>Use the Python methods
+<ul>
+<li>.encode()</li>
+<li>.decode()</li>
+</ul></li>
+<li>You can specify the encoding as an argument of these methods
+<ul>
+<li>Default is UTF-8 so providing no arguments will do what you want for this course</li>
+</ul></li>
+</ul>
+</section>
+<section id="content-length" class="slide level2">
+<h2>Content Length</h2>
+<ul>
+<li>Content-Length header must be set when there is a body to a response/request</li>
+<li>Value is the number of bytes contained in the body
+<ul>
+<li>Bytes referred to as octets in some documentation</li>
+</ul></li>
+<li>If all your characters are ASCII
+<ul>
+<li>This is equal to the length of the String</li>
+</ul></li>
+<li>Any non-ASCII UTF-8 character uses &gt;1 byte
+<ul>
+<li>Cannot use the length of the String as your Content-Length!</li>
+</ul></li>
+</ul>
+</section>
+<section id="content-length-1" class="slide level2">
+<h2>Content Length</h2>
+<ul>
+<li>To compute the content length of a UTF-8 String
+<ul>
+<li>Convert to bytes first</li>
+<li>Get the length of the byte array</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types" class="slide level2">
+<h2>MIME Types</h2>
+</section>
+<section id="mime-types-1" class="slide level2">
+<h2>MIME Types</h2>
+<ul>
+<li>When an HTTP response [or request] contains a body, the body is an array of bytes
+<ul>
+<li>There's no restriction on the encoding used for these bytes (Cannot always assume ASCII/UTF-8)</li>
+</ul></li>
+<li>Set a Content-Type header to tell the browser what those bytes represent
+<ul>
+<li>Tells the browser how to read the body of your response</li>
+</ul></li>
+<li>This is the MIME type of the data</li>
+</ul>
+</section>
+<section id="mime-types-2" class="slide level2">
+<h2>MIME Types</h2>
+<ul>
+<li>MIME type
+<ul>
+<li>Multipurpose Internet Mail Extensions</li>
+<li>Developed for email and adopted for HTTP</li>
+</ul></li>
+<li>Two parts separate by a /
+<ul>
+<li><code>&lt;type&gt;</code>/<code>&lt;subtype&gt;</code></li>
+</ul></li>
+<li>Common types
+<ul>
+<li>text - Data using a text encoding (eg. UTF-8)</li>
+<li>image - Raw binary of an image file</li>
+<li>video - Raw binary of a video</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types-3" class="slide level2">
+<h2>MIME Types</h2>
+<ul>
+<li>Common Type/Subtypes
+<ul>
+<li>text/plain</li>
+<li>text/html</li>
+<li>text/css</li>
+<li>text/javascript</li>
+<li>image/png</li>
+<li>image/jpeg</li>
+<li>video/mp4</li>
+<li>application/json</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types-4" class="slide level2">
+<h2>MIME Types</h2>
+<ul>
+<li>Optional settings can be added to the Content-Type header
+<ul>
+<li>Separate options by a ;</li>
+<li>Options are formatted as <code>&lt;name&gt;</code>=<code>&lt;value&gt;</code></li>
+</ul></li>
+<li>Content-Type: text/html; charset=utf-8
+<ul>
+<li>The content is HTML encoded using UTF-8</li>
+<li>*You must use this to tell the browser that you are using utf-8</li>
+<li>Don't forget to add this exactly as it appears. One character difference will break your page</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing" class="slide level2">
+<h2>MIME Type Sniffing</h2>
+<ul>
+<li>Modern browsers will "sniff" the proper MIME type of a response
+<ul>
+<li>If the MIME type is not correct, the browser will "figure it out"™ and guess what type makes the most sense</li>
+</ul></li>
+<li>Browsers can sometimes be wrong
+<ul>
+<li>Surprises when your site doesn't work with certain versions of certain browsers</li>
+</ul></li>
+<li>Best practice is to disable sniffing</li>
+<li>Set this HTTP header to tell the browser you set the correct MIME type
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing-1" class="slide level2">
+<h2>MIME Type Sniffing</h2>
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+<li>Be sure to set this header properly!
+<ul>
+<li>Open the browser console</li>
+<li>Check the headers of your response</li>
+<li>Make sure this header was parsed by the browser</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-type-sniffing-2" class="slide level2">
+<h2>MIME Type Sniffing</h2>
+<ul>
+<li>Security concern:
+<ul>
+<li>You have a site where users can upload images</li>
+<li>All users can view these images</li>
+<li>Instead of an image, a user uploads JavaScript that steals personal data</li>
+<li>You set the MIME type to image/png</li>
+<li>The browser notices something is wrong and sniffs out the MIME type of text/javascript and runs the script</li>
+<li>You just got hacked!</li>
+</ul></li>
+<li>Solution:
+<ul>
+<li>X-Content-Type-Options: nosniff</li>
+</ul></li>
+</ul>
+</section>
+<section id="mime-types-5" class="slide level2">
+<h2>MIME Types</h2>
+<ul>
+<li>With the proper MIME types set through a Content-Type header
+<ul>
+<li>The browser will know how to parse and render the body of your HTTP response</li>
+</ul></li>
+<li>When receiving an HTTP request that contains a body
+<ul>
+<li>The Content-Type will be set to let our server know the MIME type</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images" class="slide level2">
+<h2>Sending Images</h2>
+</section>
+<section id="sending-images-1" class="slide level2">
+<h2>Sending Images</h2>
+<ul>
+<li>Sometimes we want to send data that is not text</li>
+<li>Use different formats depending on the data</li>
+<li>To send an image
+<ul>
+<li>Read the bytes from the file</li>
+<li>Send the bytes as-is</li>
+<li>Content-Length is the size of the file</li>
+<li>Set the Content-Type to image/<code>&lt;image_type&gt;</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images-2" class="slide level2">
+<h2>Sending Images</h2>
+<ul>
+<li>When sending images
+<ul>
+<li>Since the data is already in bytes when the file is read, no need to encode/decode</li>
+</ul></li>
+<li>Never try to read an image file as a string</li>
+<li>Never try to decode the bytes of an image into a string</li>
+<li>An image is not encoded using UTF-8
+<ul>
+<li>The bytes will not decode properly</li>
+</ul></li>
+</ul>
+</section>
+<section id="sending-images-3" class="slide level2">
+<h2>Sending Images</h2>
+<ul>
+<li>Don't overthink sending images</li>
+<li>Read the bytes of the file. That's the body of your response
+<ul>
+<li>You may have to specify that the file should be read as a byte array since text is often assumed in File IO examples</li>
+</ul></li>
+<li>Set the Content-Length to the length of the byte array</li>
+<li>Set the appropriate MIME type in Content-Type
+<ul>
+<li>Ex: to send a .png the MIME type is "image/png"</li>
+</ul></li>
+</ul>
 
 
-<img data-src="assets/slide30-diagram.jpg" alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations" class="r-stretch"></section></section>
+</section>
+<section id="further-reading" class="slide level2">
+<h2>Further Reading</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 (Wikipedia)</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME types</a></li>
+<li><a href="https://www.iana.org/assignments/media-types/media-types.xhtml">Every MIME type</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">String MIME types</a></li>
+</ul>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
