@@ -490,20 +490,18 @@
         </p>
 
         <p>
-            You must implement both ETag and timeouts to cache responses. For timeouts, you may choose to use Max-Age or Last-Modified. 
+            You must implement both ETag and timeouts to cache responses. For timeouts, you may choose to use max-age or Last-Modified. 
              If a request 
-            is received for content that should be cached, you should return a 304 Not Modified response. This includes requests with 
-            validation headers like If-None-Match or If-Modified-Since. If the file on disk has not changed since the if modified timestamp, 
-            send a 304 Not Modified with updated cache control headers.
+            is received for content that should be cached, you should return a 304 Not Modified response.
         </p>
 
         <p>
-            All of your static content must be cached. This includes every file in the public directory, and the rendered HTML templates.
+            You must cache all your static content which any request that starts with "/public". You may cache more than just static content, but it is not required.
         </p>
 
         <p>Tips:</p>
         <ul>
-            <li>When using ETags, when the content of the file changes, the ETag must also change. For testing, you should
+            <li>When using ETags, when the content of the file changes the ETag must also change. For testing, you should
                 change the content of the file and then request it again to ensure the ETag changes
             </li>
             <li>You should use a very short timeout (e.g. 10 seconds). This will make testing much faster and simpler</li>

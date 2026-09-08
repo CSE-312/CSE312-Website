@@ -12,14 +12,19 @@ reading-list:
   - url: "https://en.wikipedia.org/wiki/Query_string"
     text: "Query Strings (Wikipedia)"
 
-released: false
+released: true
 ---
 
-## HTTP POST
+
+# HTTP POST
+
 
 ## POST Request
 
 - A POST request, or any request containing a body, will be formatted similar to your HTTP responses
+
+::: {style="height: 2.0em"}
+:::
 
 ```
 POST /path HTTP/1.1
@@ -33,23 +38,43 @@ hello
 
 - More accurately
 
-```POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello```
+::: {style="height: 2.0em"}
+:::
+
+```
+POST /path HTTP/1.1\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello
+```
 
 ## POST Request
 
 - When parsing, there will be Content-Length and Content-Type headers
 
-POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
+::: {style="height: 2.0em"}
+:::
+
+```
+POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello
+```
 
 ## POST Request
 
 - Look for the blank line that separates the headers from the body
-  - "`\r\n\r\n`"
+  - `\r\n\r\n`
 - Read everything after this blank line
 - Make sure you've read "Content-Length" number of bytes
   - It's possible to only receive part of a request and have to read the rest from the TCP socket
 
-POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
+```
+POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello
+```
 
 ## POST Request
 
@@ -57,7 +82,13 @@ POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\
   - Do whatever your server does based on its feature for this path
   - Send a response to the client
 
-POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello
+```
+POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello
+```
 
 ## Query String
 
@@ -68,7 +99,9 @@ POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\
 
 ## URL Recall
 
+```
 Protocol://host:port/path?query_string#fragment
+```
 
 - Query String - [Optional] Contains key-value pairs set by the client
 - https://www.google.com/search?q=web+development
@@ -83,85 +116,63 @@ Protocol://host:port/path?query_string#fragment
 
 ## Query String Format
 
+```
 https://duckduckgo.com/?q=web+development&ia=images
+```
 
-- Preceded by a question mark - ?
+- Preceded by a question mark - `?`
 - Consists of key-value pairs
-  - Key and value separated by =
-  - Pairs separated by &
+  - Key and value separated by `=`
+  - Pairs separated by `&`
 - Can only contain ASCII characters
 - Cannot contain white space
 
 ## Percent Encoding
 
 - If a non-ASCII character is sent as part of a query string it must be url-encoded (or percent-encoded)
-- Specify byte values with a % followed by 2 hex values
-- 한
-  - %ed%95%9c
-- " " <-- single space
-  - %20
+- Specify byte values with a `%` followed by 2 hex values
+- `한` is encoded as `%ed%95%9c`
+- ` `   <-- single space is encoded as `%20`
 
 ## White Space
 
 - URLs cannot contain spaces
-- Spaces can be percent encoded as %20
-- Can also replace spaces with +
-  - The reserved character + indicates a key mapping to multiple values
+- Spaces can be percent encoded as `%20`
+- Can also replace spaces with `+`
+  - The reserved character `+` indicates a key mapping to multiple values
 
 ## Reserved Characters
 
+:::: {.columns}
+::: {.column width="50%"}
 
 - Some ASCII characters are reserved
-  - Example: ? begins a query string
-- Reserved characters must be % encoded
-
-Reserved
-
-:
-
-&
-
-/
-
-'
-
-?
-
-(
-
+  - Example: `?` begins a query string
+- Reserved characters must be %-encoded
 - Notable characters that are NOT reserved
-  - Dash -
-  - Dot .
-  - Underscore _
-  - Tilda ~
+  - Dash `-`
+  - Dot `.`
+  - Underscore `_`
+  - Tilda `~`
 
-#
+:::
+::: {.column width="50%"}
+| Reserved | Characters |
+|-----------|---------|
+| `:` | `#` |
+| `&` | `*` |
+| `/` | `+` |
+| `'` | `@` |
+| `?` | `,` |
+| `(` | `)` |
+| `[` | `]` |
+| `!` | `;` |
+| `$` | `=` |
+:::
+::::
 
-)
 
-[
-
-*
-
-]
-
-+
-
-@
-
-,
-
-!
-
-;
-
-$
-
-=
-
-![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## HTML Forms
+# HTML Forms
 
 ## Dynamic Pages
 
@@ -180,25 +191,32 @@ $
 - When the form is submitted, an HTTP request is sent to the path using this method
   - This behaves similar to clicking a link
 
-```
+
+::: {.absolute bottom=0 left=0 width="100%"}
+
+:::: {.columns}
+::: {.column width="70%"}
+```{.html code-line-numbers="1-1"}
 <form action="/form-path" method="get">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide15-1.png){fig-alt="The form rendered from this HTML"}
+:::
+::::
 
-![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
+:::
 
 ## HTML Forms
 
@@ -208,25 +226,32 @@ $
   - This input is a text box
 - The name attribute is used when the data is sent to the server
 
-```
+
+::: {.absolute bottom=0 left=0 width="100%"}
+
+:::: {.columns}
+::: {.column width="70%"}
+```{.html code-line-numbers="4,8"}
 <form action="/form-path" method="get">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide15-1.png){fig-alt="The form rendered from this HTML"}
+:::
+::::
 
-![](assets/slide16-diagram.jpg){fig-alt="TODO: describe this image"}
+:::
 
 ## HTML Forms
 
@@ -235,25 +260,32 @@ $
   - Helps with accessibility (eg. Screen readers)
   - Clicking the label focuses the input
 
-```
+
+::: {.absolute bottom=0 left=0 width="100%"}
+
+:::: {.columns}
+::: {.column width="70%"}
+```{.html code-line-numbers="3,7"}
 <form action="/form-path" method="get">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide15-1.png){fig-alt="The form rendered from this HTML"}
+:::
+::::
 
-![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
+:::
 
 ## HTML Forms
 
@@ -261,53 +293,66 @@ $
 - An input of type submit makes a button that will send the HTTP request when clicked
 - The value attribute is the text on the button
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+
+:::: {.columns}
+::: {.column width="70%"}
+```{.html code-line-numbers="11"}
 <form action="/form-path" method="get">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide15-1.png){fig-alt="The form rendered from this HTML"}
+:::
+::::
 
-![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
+:::
 
 ## HTML Forms
 
+```
+GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
+```
 
 - This sends a GET request containing the form data in a query string
   - Page reloads with the content of the response
 
-GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
+::: {.absolute bottom=0 left=0 width="100%"}
 
-```
+:::: {.columns}
+::: {.column width="70%"}
+```html
 <form action="/form-path" method="get">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide19-1.png){fig-alt="The form rendered from this HTML, no filled in with the text \"Jesse\" and \"Good Morning!\""}
+:::
+::::
 
-![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
+:::
 
 ## HTTP GET Limitations
 
@@ -322,23 +367,31 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
 
 - Change the method of a form to post to send the entered data in the body of a POST request
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+
+:::: {.columns}
+::: {.column width="70%"}
+```{.html code-line-numbers="1-1"}
 <form action="/form-path" method="post">
+
 <label>Enter your name:<br/>
 <input type="text" name="commenter"><br/>
 </label>
-```
 
-```
 <label>Comment: <br/>
 <input type="text" name="comment"><br/>
 </label>
-```
 
-```
 <input type="submit" value="Submit">
 </form>
 ```
+:::
+::: {.column width="30%"}
+![](assets/slide19-1.png){fig-alt="The form rendered from this HTML, no filled in with the text \"Jesse\" and \"Good Morning!\""}
+:::
+::::
+
+:::
 
 ## HTML Forms - POST
 
@@ -348,15 +401,17 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
 - Read the Content-Length to know how many bytes are in the body
   - Foreshadow: Very important when receiving more data than the size of your TCP buffer
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ```
 POST /form-path HTTP/1.1
 Content-Length: 27
 Content-Type: application/x-www-form-urlencoded
-```
 
 commenter=Jesse&comment=Good+morning%21
+```
+:::
 
-## HTML Injection Attacks
+# HTML Injection Attacks
 
 ## HTML Injection
 
@@ -368,53 +423,51 @@ commenter=Jesse&comment=Good+morning%21
   - Must protect against attacks
   - Never trust your users!!
 
-## Never Trust Your Users!
+# Never Trust Your Users!
 
-## Slide 26
-
-
-Never Trust Your Users!
-
-Seriously. NEVER.
 
 ## Never Trust Your Users
 
-- You may want to think your users will all act in good faith
-  - For most users, this may be true
-
-## Never Trust Your Users
-
-- You may want to think your users will all act in good faith
-  - For most users, this may be true
-- Besides your intended users, who else can access your app?
-
-## Never Trust Your Users
-
+::: {.incremental}
 - You may want to think your users will all act in good faith
   - For most users, this may be true
 - Besides your intended users, who else can access your app?
   - EVERYONE!
+:::
 
 ## Never Trust Your Users
 
-- Do you trust literally everyone??
+
+[Do you trust literally everyone??]{style="font-size: 3.5em"}
+
 
 ## HTML Injection
 
 - You are now handling user data and sending it to other users (Through chat messages)
 - You're building a form that accepts user data and serves it to all other users
 - What happens when a user enters this in chat:
-  - "`<script>`maliciousFunction()`</script>`"
+
+::: {.absolute bottom=50 left=0 width="100%"}
+```html
+<script>maliciousFunction()</script>
+```
+:::
 
 ## HTML Injection (XSS)
 
-- "`<script>`maliciousFunction()`</script>`"
+
 - This attack is called an HTML injection attack
   - This string is uploaded to your server
   - Your server stores this string
   - Your server sends this string to all users who use your app
   - Their browsers render the injected HTML
   - Their browsers runs the injected JS
+
+::: {.absolute bottom=50 left=0 width="100%"}
+```html
+<script>maliciousFunction()</script>
+```
+:::
 
 ## HTML Injection
 
@@ -425,34 +478,46 @@ Seriously. NEVER.
 - To prevent this attack:
   - Escape HTML when handling user submitted data
 - Escape HTML
-  - Replace &, <, and > with their HTML escaped characters
-  - '&' -> &amp;
-  - '<' -> &lt;
-  - '>' -> &gt;
+  - Replace `&`, `<`, and `>` with their HTML escaped characters
+  - `&` -> `&amp;`
+  - `<` -> `&lt;`
+  - `>` -> `&gt;`
 
 ## HTML Injection
 
-- The escaped characters &amp; &lt; &gt; will be rendered as characters by the browser
+- The escaped characters `&amp;` `&lt;` `&gt;` will be rendered as characters by the browser
 - Browser does not treat these as HTML
 
 ## HTML Injection
 
-- Replace &, <, and > with their HTML escaped characters
-- `<script>`maliciousFunction()`</script>`
-  - becomes
-- &lt;script&gt;maliciousFunction()&lt;/script&gt;
-  - and is rendered as a string instead of interpreted as HTML
+- Replace `&`, `<`, and `>` with their HTML escaped characters
+
+```html
+<script>maliciousFunction()</script>
+```
+
+becomes
+
+```html
+&lt;script&gt;maliciousFunction()&lt;/script&gt;
+```
+
+and is rendered as a string instead of interpreted as HTML
 
 ## HTML Injection
 
-  - Replace &, <, and > with their HTML escaped characters
+  - Replace `&`, `<`, and `>` with their HTML escaped characters
   - Order is important!
     - Always escape & first
-  - If & is escaped last you'll get:
-- &amp;lt;script&amp;gt;maliciousFunction()&amp;lt; /script&amp;gt;
+  - If `&` is escaped last you'll get:
+
+```html
+&amp;lt;script&amp;gt;maliciousFunction()&amp;lt; /script&amp;gt;
+```
+
   - Which will not render the way you intended
 
-## AJAX & Polling
+# AJAX & Polling
 
 ## User Interaction
 
@@ -470,30 +535,30 @@ A way to make HTTP requests using JavaScript after the page loads
 
 ## AJAX - HTTP GET Request
 
-```
+```{.javascript code-line-numbers="1-1,7-8"}
 var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
-if (this.readyState === 4 && this.status === 200){
-console.log(this.response);
-}
+  if (this.readyState === 4 && this.status === 200){
+    console.log(this.response);
+  }
 };
 request.open("GET", "/path");
 request.send();
 ```
 
 - Use JavaScript to make an AJAX request
-- Create an XMLHttpRequest object
-- Call "open" to set the request type and path
-- Call send to make the request
+- Create an `XMLHttpRequest` object
+- Call `open` to set the request type and path
+- Call `send` to make the request
 
 ## AJAX - HTTP GET Request
 
-```
+```{.javascript code-line-numbers="2-6"}
 var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
-if (this.readyState === 4 && this.status === 200){
-console.log(this.response);
-}
+  if (this.readyState === 4 && this.status === 200){
+    console.log(this.response);
+  }
 };
 request.open("GET", "/path");
 request.send();
@@ -506,12 +571,12 @@ request.send();
 
 ## AJAX - HTTP POST Request
 
-```
+```{.javascript code-line-numbers="7-9"}
 var request = new XMLHttpRequest();
 request.onreadystatechange = function(){
-if (this.readyState === 4 && this.status === 200){
-console.log(this.response);
-}
+  if (this.readyState === 4 && this.status === 200){
+    console.log(this.response);
+  }
 };
 request.open("POST", "/path");
 let data = {'username': "Jesse", 'message': "Welcome"}
@@ -524,103 +589,102 @@ request.send(JSON.stringify(data));
 
 ## Forms and AJAX
 
+:::: {.columns}
+::: {.column width="40%"}
 - We have choices for the format when sending the data of the AJAX request
 - We can use an HTML form
 - Add an onsubmit attribute that calls your JavaScript function
-
-```
+  - Add `return false` to block the page reload
+  - Or use `event.preventDefault();` in the JS function
+- Use JavaScript to read the data from the entire form
+:::
+::: {.column width="60%"}
+```html
 <form id="myForm" onsubmit="sendMessageWithForm(); return false;">
 <label for="form-chat">Chat: </label>
 <input id="form-chat" type="text" name="message"><br/>
 <input type="submit" value="Submit">
 </form>
 ```
-
-```
+::: {style="height: 1.0em"}
+:::
+```javascript
 function sendMessageWithForm() {
-const formElement = document.getElementById("myForm");
-const formData = new FormData(formElement);
-```
-
-  - Add "return false" to block the page reload
-  - Or use event.preventDefault(); in the JS function
-- Use JavaScript to read the data from the entire form
-
-```
-const request = new XMLHttpRequest();
-```
-
-```
-request.open("POST", "send-message-form");
-request.send(formData);
+  const formElement = document.getElementById("myForm");
+  const formData = new FormData(formElement);
+  const request = new XMLHttpRequest();
+  request.open("POST", "send-message-form");
+  request.send(formData);
 }
 ```
+:::
+::::
 
 ## Encodings - JSON
 
+:::: {.columns}
+::: {.column width="40%"}
 - Another option: Manually format the data using JSON
 - Don't use the form element
 - Create a button instead of a submit input
 - In JavaScript, read the value of each input and create your own JSON object
 
-```
+:::
+::: {.column width="60%"}
+```html
 <label>Chat:
 <input id="chatInput" type="text" name="message"><br/>
 </label>
-```
-
-```
 <button onclick="sendMessage()">Send</button>
 ```
-
-```
+::: {style="height: 1.0em"}
+:::
+```javascript
 function sendMessage() {
-const chat = document.getElementById("chatInput");
-const data = {"message": chat.value()};
-```
-
-```
-const request = new XMLHttpRequest();
-```
-
-```
-request.open("POST", "send-message-form");
-request.send(JSON.stringify(data));
+  const chat = document.getElementById("chatInput");
+  const data = {"message": chat.value()};
+  const request = new XMLHttpRequest();
+  request.open("POST", "send-message-form");
+  request.send(JSON.stringify(data));
 }
 ```
-
+:::
+::::
 ## Fetch
 
+:::: {.columns}
+::: {.column width="40%"}
 - Fetch is an alternate way to send an asynchronous request
 - Uses promises
   - Can await a promise (shown) or use "then"
 - *Fetch is what the HW front end uses
-
-```
+:::
+::: {.column width="60%"}
+```html
 <label>Chat:
 <input id="chatInput" type="text" name="message"><br/>
 </label>
-```
-
-```
 <button onclick="sendMessage()">Send</button>
 ```
-
-```
+::: {style="height: 1.0em"}
+:::
+```javascript
 function sendMessage() {
 const chat = document.getElementById("chatInput");
 const data = {"message": chat.value()};
 const response = await fetch("/send-message-form", {
-method: "POST",
-headers: {
-"Content-Type": "application/json",
-},
-body: JSON.stringify(data),
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
 });
 }
 ```
+:::
+::::
 
-## Polling
+# Polling
 
 ## Making it Live
 
@@ -632,18 +696,22 @@ body: JSON.stringify(data),
 
 ## Polling
 
+```javascript
 setInterval(getMessages, 1000)
+```
 
 - Browser sends requests for updates at regular intervals
 - Use setInterval
   - Takes a function to be called
   - Takes the number of milliseconds to wait between function calls
-- This example calls getMessages() (Implementation not shown) every second
-  - getMessages() will make the AJAX call to get the most recent data from the server and render it on the page
+- This example calls `getMessages()` (Implementation not shown) every second
+  - `getMessages()` will make the AJAX call to get the most recent data from the server and render it on the page
 
 ## Polling
 
+```javascript
 setInterval(getMessages, 1000)
+```
 
 - Easy to implement
   - Assuming the AJAX calls are already setup

@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Introduction to HTTP Cookies">
 
 <title>Cookies – CSE312 Lectures</title>
 <style>
@@ -32,10 +33,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -66,6 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 
@@ -82,7 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#cookies" id="toc-cookies" class="nav-link active" data-scroll-target="#cookies">Cookies</a></li>
+  <li><a href="#cookies" id="toc-cookies" class="nav-link active" data-scroll-target="#cookies">Cookies</a>
+  <ul class="collapse">
   <li><a href="#state" id="toc-state" class="nav-link" data-scroll-target="#state">State</a></li>
   <li><a href="#state-1" id="toc-state-1" class="nav-link" data-scroll-target="#state-1">State</a></li>
   <li><a href="#cookies-1" id="toc-cookies-1" class="nav-link" data-scroll-target="#cookies-1">Cookies</a></li>
@@ -100,8 +105,10 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#directives---path" id="toc-directives---path" class="nav-link" data-scroll-target="#directives---path">Directives - Path</a></li>
   <li><a href="#directives---samesite" id="toc-directives---samesite" class="nav-link" data-scroll-target="#directives---samesite">Directives - SameSite</a></li>
   <li><a href="#client-side-cookies" id="toc-client-side-cookies" class="nav-link" data-scroll-target="#client-side-cookies">Client-Side Cookies</a></li>
+  </ul></li>
+  <li><a href="#tracking-users" id="toc-tracking-users" class="nav-link" data-scroll-target="#tracking-users">Tracking Users</a>
+  <ul class="collapse">
   <li><a href="#tracking-user-sessions-with-cookies" id="toc-tracking-user-sessions-with-cookies" class="nav-link" data-scroll-target="#tracking-user-sessions-with-cookies">Tracking User Sessions with Cookies</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
   <li><a href="#user-sessions" id="toc-user-sessions" class="nav-link" data-scroll-target="#user-sessions">User Sessions</a></li>
   <li><a href="#user-sessions-1" id="toc-user-sessions-1" class="nav-link" data-scroll-target="#user-sessions-1">User Sessions</a></li>
   <li><a href="#user-sessions-2" id="toc-user-sessions-2" class="nav-link" data-scroll-target="#user-sessions-2">User Sessions</a></li>
@@ -110,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#user-sessions-5" id="toc-user-sessions-5" class="nav-link" data-scroll-target="#user-sessions-5">User Sessions</a></li>
   <li><a href="#user-sessions-6" id="toc-user-sessions-6" class="nav-link" data-scroll-target="#user-sessions-6">User Sessions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -119,9 +127,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Cookies</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Introduction to HTTP Cookies
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -136,9 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="cookies" class="level2">
-<h2 class="anchored" data-anchor-id="cookies">Cookies</h2>
-</section>
+<section id="cookies" class="level1">
+<h1>Cookies</h1>
 <section id="state" class="level2">
 <h2 class="anchored" data-anchor-id="state">State</h2>
 <ul>
@@ -189,11 +200,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="cookie-headers" class="level2">
 <h2 class="anchored" data-anchor-id="cookie-headers">Cookie Headers</h2>
 <ul>
-<li>Set-Cookie
+<li><code>Set-Cookie</code>
 <ul>
 <li>Use this header in your HTTP response to tell a client to set a cookie</li>
 </ul></li>
-<li>Cookie
+<li><code>Cookie</code>
 <ul>
 <li>The client will send all Cookies with each HTTP request using this header</li>
 </ul></li>
@@ -202,26 +213,26 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="set-cookie" class="level2">
 <h2 class="anchored" data-anchor-id="set-cookie">Set-Cookie</h2>
 <ul>
-<li>The Set-Cookie header is used by servers to tell the client to set a cookie</li>
+<li>The <code>Set-Cookie</code> header is used by servers to tell the client to set a cookie</li>
 <li>Cookies are sent as key-value pairs</li>
 <li>Syntax:
 <ul>
-<li><code>&lt;key&gt;</code>=<code>&lt;value&gt;</code></li>
+<li><code>&lt;key&gt;=&lt;value&gt;</code></li>
 </ul></li>
 <li>Example:
 <ul>
-<li>Set-Cookie: id=X6kAwpgW29M</li>
-<li>Set-Cookie: visits=4</li>
+<li><code>Set-Cookie: id=X6kAwpgW29M</code></li>
+<li><code>Set-Cookie: visits=4</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="set-cookie-1" class="level2">
 <h2 class="anchored" data-anchor-id="set-cookie-1">Set-Cookie</h2>
 <ul>
-<li>Only 1 cookie can be set using Set-Cookie</li>
+<li>Only 1 cookie can be set using <code>Set-Cookie</code></li>
 <li>If you want to set multiple cookies
 <ul>
-<li>Send multiple Set-Cookie headers</li>
+<li>Send multiple <code>Set-Cookie</code> headers</li>
 <li>Yes, duplicate headers with the same name are allowed
 <ul>
 <li>*In this course, we won't worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)</li>
@@ -236,50 +247,50 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The header used by clients to deliver all cookies that have been set</li>
 <li>Syntax [Similar to Set-Cookie]:
 <ul>
-<li><code>&lt;key&gt;</code>=<code>&lt;value&gt;</code></li>
+<li><code>&lt;key&gt;=&lt;value&gt;</code></li>
 <li>All cookies in one header</li>
-<li>Multiple cookies separated by ;</li>
+<li>Multiple cookies separated by <code>;</code></li>
 </ul></li>
 <li>Example:
 <ul>
-<li>Cookie: id=X6kAwpgW29M; visits=4</li>
+<li><code>Cookie: id=X6kAwpgW29M; visits=4</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="directives" class="level2">
 <h2 class="anchored" data-anchor-id="directives">Directives</h2>
 <ul>
-<li>Can add directives when setting a cookie
+<li>We can add directives when setting a cookie
 <ul>
-<li>After the cookie, use a ; to specify a directive</li>
-<li>Separate multiple directives with ;</li>
-<li>ex: Set-Cookie: id=X6kAwpgW29M; <code>&lt;directive1&gt;</code>; <code>&lt;directive2&gt;</code></li>
+<li>After the cookie, use a <code>;</code> to specify a directive</li>
+<li>Separate multiple directives with <code>;</code></li>
+<li>ex: <code>Set-Cookie: id=X6kAwpgW29M; &lt;directive1&gt;; &lt;directive2&gt;</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="directives---expires" class="level2">
 <h2 class="anchored" data-anchor-id="directives---expires">Directives - Expires</h2>
 <ul>
-<li>Expires
+<li><code>Expires</code>
 <ul>
 <li>The exact time when the cookie should be deleted</li>
 <li>Must be in the format:
 <ul>
-<li><code>&lt;day-name&gt;</code>, <code>&lt;day&gt;</code> <code>&lt;month&gt;</code> <code>&lt;year&gt;</code> <code>&lt;hour&gt;</code>:<code>&lt;minute&gt;</code>:<code>&lt;second&gt;</code> GMT</li>
+<li><code>&lt;day-name&gt;, &lt;day&gt; &lt;month&gt; &lt;year&gt; &lt;hour&gt;:&lt;minute&gt;:&lt;second&gt; GMT</code></li>
 </ul></li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT</li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT</code></li>
 </ul>
 </section>
 <section id="directives---max-age" class="level2">
 <h2 class="anchored" data-anchor-id="directives---max-age">Directives - Max-Age</h2>
 <ul>
-<li>Max-Age
+<li><code>Max-Age</code>
 <ul>
 <li>Set the number of second before the cookie expires</li>
 <li>Much simpler than setting the expires directive</li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; Max-Age=3600
+<li><code>Set-Cookie: id=X6kAwpgW29M; Max-Age=3600</code>
 <ul>
 <li>This cookie expires 1 hour after it is set</li>
 </ul></li>
@@ -288,7 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="directives---session-cookies" class="level2">
 <h2 class="anchored" data-anchor-id="directives---session-cookies">Directives - Session Cookies</h2>
 <ul>
-<li>If neither Expires nor Max-Age are set:
+<li>If neither <code>Expires</code> nor <code>Max-Age</code> are set:
 <ul>
 <li>The cookie is a session cookie
 <ul>
@@ -305,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="directives---secure" class="level2">
 <h2 class="anchored" data-anchor-id="directives---secure">Directives - Secure</h2>
 <ul>
-<li>Secure
+<li><code>Secure</code>
 <ul>
 <li>Only send this cookie over HTTPS</li>
 <li>The cookie will not be sent over an HTTP connection</li>
@@ -316,57 +327,61 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>If used on your HW server with HTTP, the browser won't send these cookies</li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; Secure</li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; Secure</code></li>
 </ul>
 </section>
 <section id="directives---httponly" class="level2">
 <h2 class="anchored" data-anchor-id="directives---httponly">Directives - HttpOnly</h2>
 <ul>
-<li>HttpOnly
+<li><code>HttpOnly</code>
 <ul>
 <li>Don't let anyone read or change this cookie using JavaScript</li>
 <li>Prevents hijackers from reading/changing your cookies with a JavaScript injection attack (XSS Attack)</li>
-<li>These cookies are not returned when "document.cookie" is accessed</li>
+<li>These cookies are not returned when <code>document.cookie</code> is accessed</li>
 <li>Can still access these cookies from the browser console
 <ul>
 <li>An attacker with access to your machine has all your cookies</li>
 </ul></li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; HttpOnly</li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; HttpOnly</code></li>
 </ul>
 </section>
 <section id="directives---path" class="level2">
 <h2 class="anchored" data-anchor-id="directives---path">Directives - Path</h2>
 <ul>
-<li>Path
+<li><code>Path</code>
 <ul>
 <li>Specify a prefix that the path must match for the cookie to be sent</li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; Path=/posts
+<li><code>Set-Cookie: id=X6kAwpgW29M; Path=/posts</code>
 <ul>
-<li>Cookie is only sent when the requested path begins with /posts</li>
+<li>Cookie is only sent when the requested path begins with <code>/posts</code></li>
+</ul></li>
+<li>Caution: The <code>Path</code> directive is sometimes automatically added by the browser using the path of the request when the cookie was set
+<ul>
+<li>You can override this by explicitly setting <code>Path=/</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="directives---samesite" class="level2">
 <h2 class="anchored" data-anchor-id="directives---samesite">Directives - SameSite</h2>
 <ul>
-<li>SameSite
+<li><code>SameSite</code>
 <ul>
 <li>Determines when the cookie will be sent on 3rd party requests</li>
-<li>Lax - Cookie only sent when navigating to your page -and- all 1st party requests
+<li><code>Lax</code> - Cookie only sent when navigating to your page -and- all 1st party requests
 <ul>
-<li>The default setting if SameSite is not set</li>
+<li>The default setting if <code>SameSite</code> is not set</li>
 </ul></li>
-<li>Strict - The cookie is only sent on 1st party requests
+<li><code>Strict</code> - The cookie is only sent on 1st party requests
 <ul>
 <li>ie. The cookie is only sent to your server when browsing your page</li>
 </ul></li>
-<li>None - The cookie is always sent. Requires the secure directive to also be set</li>
+<li><code>None</code> - The cookie is always sent. Requires the <code>Secure</code> directive to also be set</li>
 </ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Lax</li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Strict</li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure</li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=Lax</code></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=Strict</code></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure</code></li>
 </ul>
 </section>
 <section id="client-side-cookies" class="level2">
@@ -384,9 +399,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>So can attackers!</li>
 </ul></li>
-<li>Access cookies with "document.cookie"</li>
+<li>Access cookies with <code>document.cookie</code></li>
 </ul>
 </section>
+</section>
+<section id="tracking-users" class="level1">
+<h1>Tracking Users</h1>
 <section id="tracking-user-sessions-with-cookies" class="level2">
 <h2 class="anchored" data-anchor-id="tracking-user-sessions-with-cookies">Tracking User Sessions with Cookies</h2>
 <ul>
@@ -402,13 +420,40 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="example" class="level2">
-<h2 class="anchored" data-anchor-id="example">Example</h2>
-<p>Tracking User Sessions</p>
-<p>with Cookies</p>
-</section>
 <section id="user-sessions" class="level2">
 <h2 class="anchored" data-anchor-id="user-sessions">User Sessions</h2>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+  participant Browser as Browser (Front End)
+  participant Server as Web Server (Back End)
+  participant Database as Database
+  Browser-&gt;&gt;Server: 1. Request HTML
+  Server-&gt;&gt;Browser: 2. Sends HTML
+  Server-&gt;&gt;Database: 3. Sent the token awerfoi34hj98gfq3nhf9834hf19834uhf198p34fh1o3ig1h9834fh19384fh134f
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+  Client --&gt;|HTTP request| Server
+  Server --&gt;|HTTP response| Client
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <pre><code>User send their first
 chat message</code></pre>
 <p>-No cookies</p>
@@ -541,6 +586,7 @@ ac8b8d617792</code></pre>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Directives Overview</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date">Date Formatting</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -16,6 +16,7 @@ format:
     output-file: index.html
     theme: [cosmo, _theme/page.scss]
     include-in-header: _theme/accessibility-header.html
+    highlight-style: github-light
     toc: true
     toc-depth: 2
     anchor-sections: true
@@ -26,6 +27,7 @@ format:
     output-file: slides.html
     theme: [dark, _theme/slides.scss]
     include-in-header: _theme/accessibility-header.html
+    highlight-style: github-dark
     slide-level: 2
     slide-number: c/t
     progress: true

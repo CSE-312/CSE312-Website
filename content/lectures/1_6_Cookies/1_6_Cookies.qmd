@@ -1,12 +1,9 @@
 ---
 title: "Cookies"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Introduction to HTTP Cookies"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://tools.ietf.org/html/rfc6265"
     text: "RFC6265 - Cookies"
@@ -15,12 +12,10 @@ reading-list:
   - url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date"
     text: "Date Formatting"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## Cookies
+# Cookies
 
 ## State
 
@@ -53,26 +48,26 @@ released: false
 
 ## Cookie Headers
 
-- Set-Cookie
+- `Set-Cookie`
   - Use this header in your HTTP response to tell a client to set a cookie
-- Cookie
+- `Cookie`
   - The client will send all Cookies with each HTTP request using this header
 
 ## Set-Cookie
 
-- The Set-Cookie header is used by servers to tell the client to set a cookie
+- The `Set-Cookie` header is used by servers to tell the client to set a cookie
 - Cookies are sent as key-value pairs
 - Syntax:
-  - `<key>`=`<value>`
+  - `<key>=<value>`
 - Example:
-  - Set-Cookie: id=X6kAwpgW29M
-  - Set-Cookie: visits=4
+  - `Set-Cookie: id=X6kAwpgW29M`
+  - `Set-Cookie: visits=4`
 
 ## Set-Cookie
 
-- Only 1 cookie can be set using Set-Cookie
+- Only 1 cookie can be set using `Set-Cookie`
 - If you want to set multiple cookies
-  - Send multiple Set-Cookie headers
+  - Send multiple `Set-Cookie` headers
   - Yes, duplicate headers with the same name are allowed
     - *In this course, we won't worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)
     - The browser must handle this when it parses our headers
@@ -81,38 +76,38 @@ released: false
 
 - The header used by clients to deliver all cookies that have been set
 - Syntax [Similar to Set-Cookie]:
-  - `<key>`=`<value>`
+  - `<key>=<value>`
   - All cookies in one header
-  - Multiple cookies separated by ;
+  - Multiple cookies separated by `;`
 - Example:
-  - Cookie: id=X6kAwpgW29M; visits=4
+  - `Cookie: id=X6kAwpgW29M; visits=4`
 
 ## Directives
 
-- Can add directives when setting a cookie
-  - After the cookie, use a ; to specify a directive
-  - Separate multiple directives with ;
-  - ex: Set-Cookie: id=X6kAwpgW29M; `<directive1>`; `<directive2>`
+- We can add directives when setting a cookie
+  - After the cookie, use a `;` to specify a directive
+  - Separate multiple directives with `;`
+  - ex: `Set-Cookie: id=X6kAwpgW29M; <directive1>; <directive2>`
 
 ## Directives - Expires
 
-- Expires
+- `Expires`
   - The exact time when the cookie should be deleted
   - Must be in the format:
-    -  `<day-name>`, `<day>` `<month>` `<year>` `<hour>`:`<minute>`:`<second>` GMT
-- Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT
+    -  `<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT`
+- `Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT`
 
 ## Directives - Max-Age
 
-- Max-Age
+- `Max-Age`
   - Set the number of second before the cookie expires
   - Much simpler than setting the expires directive
-- Set-Cookie: id=X6kAwpgW29M; Max-Age=3600
+- `Set-Cookie: id=X6kAwpgW29M; Max-Age=3600`
   - This cookie expires 1 hour after it is set
 
 ## Directives - Session Cookies
 
-- If neither Expires nor Max-Age are set:
+- If neither `Expires` nor `Max-Age` are set:
   - The cookie is a session cookie
     - It will be deleted when the user ends the session
   - ie. The cookie is deleted when the browser is closed
@@ -121,44 +116,46 @@ released: false
 
 ## Directives - Secure
 
-- Secure
+- `Secure`
   - Only send this cookie over HTTPS
   - The cookie will not be sent over an HTTP connection
   - Protects against packet-sniffing
     - Using wifi, everyone in wifi range can read your HTTP requests
     - They cannot read your HTTPS requests since they are encrypted
   - If used on your HW server with HTTP, the browser won't send these cookies
-- Set-Cookie: id=X6kAwpgW29M; Secure
+- `Set-Cookie: id=X6kAwpgW29M; Secure`
 
 ## Directives - HttpOnly
 
-- HttpOnly
+- `HttpOnly`
   - Don't let anyone read or change this cookie using JavaScript
   - Prevents hijackers from reading/changing your cookies with a JavaScript injection attack (XSS Attack)
-  - These cookies are not returned when "document.cookie" is accessed
+  - These cookies are not returned when `document.cookie` is accessed
   - Can still access these cookies from the browser console
     - An attacker with access to your machine has all your cookies
-- Set-Cookie: id=X6kAwpgW29M; HttpOnly
+- `Set-Cookie: id=X6kAwpgW29M; HttpOnly`
 
 ## Directives - Path
 
-- Path
+- `Path`
   - Specify a prefix that the path must match for the cookie to be sent
-- Set-Cookie: id=X6kAwpgW29M; Path=/posts
-  - Cookie is only sent when the requested path begins with /posts
+- `Set-Cookie: id=X6kAwpgW29M; Path=/posts`
+  - Cookie is only sent when the requested path begins with `/posts`
+- Caution: The `Path` directive is sometimes automatically added by the browser using the path of the request when the cookie was set
+  - You can override this by explicitly setting `Path=/`
 
 ## Directives - SameSite
 
-- SameSite
+- `SameSite`
   - Determines when the cookie will be sent on 3rd party requests
-  - Lax - Cookie only sent when navigating to your page -and- all 1st party requests
-    - The default setting if SameSite is not set
-  - Strict - The cookie is only sent on 1st party requests
+  - `Lax` - Cookie only sent when navigating to your page -and- all 1st party requests
+    - The default setting if `SameSite` is not set
+  - `Strict` - The cookie is only sent on 1st party requests
     - ie. The cookie is only sent to your server when browsing your page
-  - None - The cookie is always sent. Requires the secure directive to also be set
-- Set-Cookie: id=X6kAwpgW29M; SameSite=Lax
-- Set-Cookie: id=X6kAwpgW29M; SameSite=Strict
-- Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure
+  - `None` - The cookie is always sent. Requires the `Secure` directive to also be set
+- `Set-Cookie: id=X6kAwpgW29M; SameSite=Lax`
+- `Set-Cookie: id=X6kAwpgW29M; SameSite=Strict`
+- `Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure`
 
 ## Client-Side Cookies
 
@@ -168,7 +165,9 @@ released: false
   - Verify its validity
 - Client can read/set cookies with JavaScript (Unless HTTPOnly is set)
   - So can attackers!
-- Access cookies with "document.cookie"
+- Access cookies with `document.cookie`
+
+# Tracking Users
 
 ## Tracking User Sessions with Cookies
 
@@ -179,31 +178,14 @@ released: false
   - Generate a random token that is both stored in the database AND set as a cookie for the user
   - Whenever you receive a request, lookup the token in your DB to retrieve the user's profile
 
-## Example
-
-Tracking User Sessions
-
-with Cookies
-
 ## User Sessions
 
 
-```
-User send their first
-chat message
-```
+User sends their first chat message
 
--No cookies
-
-Database
-
-User/Client
-
-Server
 
 - The server knows this is their first message since there is no cookie in their request
 
-![](assets/slide21-diagram.jpg){fig-alt="TODO: describe this image"}
 
 ## User Sessions
 

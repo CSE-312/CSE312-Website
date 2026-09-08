@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,10 +68,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -83,7 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#http-post" id="toc-http-post" class="nav-link active" data-scroll-target="#http-post">HTTP POST</a></li>
+  <li><a href="#http-post" id="toc-http-post" class="nav-link active" data-scroll-target="#http-post">HTTP POST</a>
+  <ul class="collapse">
   <li><a href="#post-request" id="toc-post-request" class="nav-link" data-scroll-target="#post-request">POST Request</a></li>
   <li><a href="#post-request-1" id="toc-post-request-1" class="nav-link" data-scroll-target="#post-request-1">POST Request</a></li>
   <li><a href="#post-request-2" id="toc-post-request-2" class="nav-link" data-scroll-target="#post-request-2">POST Request</a></li>
@@ -95,9 +131,9 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#percent-encoding" id="toc-percent-encoding" class="nav-link" data-scroll-target="#percent-encoding">Percent Encoding</a></li>
   <li><a href="#white-space" id="toc-white-space" class="nav-link" data-scroll-target="#white-space">White Space</a></li>
   <li><a href="#reserved-characters" id="toc-reserved-characters" class="nav-link" data-scroll-target="#reserved-characters">Reserved Characters</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a>
+  </ul></li>
+  <li><a href="#html-forms" id="toc-html-forms" class="nav-link" data-scroll-target="#html-forms">HTML Forms</a>
   <ul class="collapse">
-  <li><a href="#html-forms" id="toc-html-forms" class="nav-link" data-scroll-target="#html-forms">HTML Forms</a></li>
   <li><a href="#dynamic-pages" id="toc-dynamic-pages" class="nav-link" data-scroll-target="#dynamic-pages">Dynamic Pages</a></li>
   <li><a href="#html-forms-1" id="toc-html-forms-1" class="nav-link" data-scroll-target="#html-forms-1">HTML Forms</a></li>
   <li><a href="#html-forms-2" id="toc-html-forms-2" class="nav-link" data-scroll-target="#html-forms-2">HTML Forms</a></li>
@@ -107,14 +143,15 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#http-get-limitations" id="toc-http-get-limitations" class="nav-link" data-scroll-target="#http-get-limitations">HTTP GET Limitations</a></li>
   <li><a href="#html-forms---post" id="toc-html-forms---post" class="nav-link" data-scroll-target="#html-forms---post">HTML Forms - POST</a></li>
   <li><a href="#html-forms---post-1" id="toc-html-forms---post-1" class="nav-link" data-scroll-target="#html-forms---post-1">HTML Forms - POST</a></li>
-  <li><a href="#html-injection-attacks" id="toc-html-injection-attacks" class="nav-link" data-scroll-target="#html-injection-attacks">HTML Injection Attacks</a></li>
+  </ul></li>
+  <li><a href="#html-injection-attacks" id="toc-html-injection-attacks" class="nav-link" data-scroll-target="#html-injection-attacks">HTML Injection Attacks</a>
+  <ul class="collapse">
   <li><a href="#html-injection" id="toc-html-injection" class="nav-link" data-scroll-target="#html-injection">HTML Injection</a></li>
-  <li><a href="#never-trust-your-users" id="toc-never-trust-your-users" class="nav-link" data-scroll-target="#never-trust-your-users">Never Trust Your Users!</a></li>
-  <li><a href="#slide-26" id="toc-slide-26" class="nav-link" data-scroll-target="#slide-26">Slide 26</a></li>
+  </ul></li>
+  <li><a href="#never-trust-your-users" id="toc-never-trust-your-users" class="nav-link" data-scroll-target="#never-trust-your-users">Never Trust Your Users!</a>
+  <ul class="collapse">
   <li><a href="#never-trust-your-users-1" id="toc-never-trust-your-users-1" class="nav-link" data-scroll-target="#never-trust-your-users-1">Never Trust Your Users</a></li>
   <li><a href="#never-trust-your-users-2" id="toc-never-trust-your-users-2" class="nav-link" data-scroll-target="#never-trust-your-users-2">Never Trust Your Users</a></li>
-  <li><a href="#never-trust-your-users-3" id="toc-never-trust-your-users-3" class="nav-link" data-scroll-target="#never-trust-your-users-3">Never Trust Your Users</a></li>
-  <li><a href="#never-trust-your-users-4" id="toc-never-trust-your-users-4" class="nav-link" data-scroll-target="#never-trust-your-users-4">Never Trust Your Users</a></li>
   <li><a href="#html-injection-1" id="toc-html-injection-1" class="nav-link" data-scroll-target="#html-injection-1">HTML Injection</a></li>
   <li><a href="#html-injection-xss" id="toc-html-injection-xss" class="nav-link" data-scroll-target="#html-injection-xss">HTML Injection (XSS)</a></li>
   <li><a href="#html-injection-2" id="toc-html-injection-2" class="nav-link" data-scroll-target="#html-injection-2">HTML Injection</a></li>
@@ -122,7 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#html-injection-4" id="toc-html-injection-4" class="nav-link" data-scroll-target="#html-injection-4">HTML Injection</a></li>
   <li><a href="#html-injection-5" id="toc-html-injection-5" class="nav-link" data-scroll-target="#html-injection-5">HTML Injection</a></li>
   <li><a href="#html-injection-6" id="toc-html-injection-6" class="nav-link" data-scroll-target="#html-injection-6">HTML Injection</a></li>
-  <li><a href="#ajax-polling" id="toc-ajax-polling" class="nav-link" data-scroll-target="#ajax-polling">AJAX &amp; Polling</a></li>
+  </ul></li>
+  <li><a href="#ajax-polling" id="toc-ajax-polling" class="nav-link" data-scroll-target="#ajax-polling">AJAX &amp; Polling</a>
+  <ul class="collapse">
   <li><a href="#user-interaction" id="toc-user-interaction" class="nav-link" data-scroll-target="#user-interaction">User Interaction</a></li>
   <li><a href="#ajax" id="toc-ajax" class="nav-link" data-scroll-target="#ajax">AJAX</a></li>
   <li><a href="#ajax---http-get-request" id="toc-ajax---http-get-request" class="nav-link" data-scroll-target="#ajax---http-get-request">AJAX - HTTP GET Request</a></li>
@@ -131,7 +170,9 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#forms-and-ajax" id="toc-forms-and-ajax" class="nav-link" data-scroll-target="#forms-and-ajax">Forms and AJAX</a></li>
   <li><a href="#encodings---json" id="toc-encodings---json" class="nav-link" data-scroll-target="#encodings---json">Encodings - JSON</a></li>
   <li><a href="#fetch" id="toc-fetch" class="nav-link" data-scroll-target="#fetch">Fetch</a></li>
-  <li><a href="#polling" id="toc-polling" class="nav-link" data-scroll-target="#polling">Polling</a></li>
+  </ul></li>
+  <li><a href="#polling" id="toc-polling" class="nav-link" data-scroll-target="#polling">Polling</a>
+  <ul class="collapse">
   <li><a href="#making-it-live" id="toc-making-it-live" class="nav-link" data-scroll-target="#making-it-live">Making it Live</a></li>
   <li><a href="#polling-1" id="toc-polling-1" class="nav-link" data-scroll-target="#polling-1">Polling</a></li>
   <li><a href="#polling-2" id="toc-polling-2" class="nav-link" data-scroll-target="#polling-2">Polling</a></li>
@@ -169,14 +210,16 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="http-post" class="level2">
-<h2 class="anchored" data-anchor-id="http-post">HTTP POST</h2>
-</section>
+<section id="http-post" class="level1">
+<h1>HTTP POST</h1>
 <section id="post-request" class="level2">
 <h2 class="anchored" data-anchor-id="post-request">POST Request</h2>
 <ul>
 <li>A POST request, or any request containing a body, will be formatted similar to your HTTP responses</li>
 </ul>
+<div style="height: 2.0em">
+
+</div>
 <pre><code>POST /path HTTP/1.1
 Content-Type: text/plain
 Content-Length: 5
@@ -188,21 +231,31 @@ hello</code></pre>
 <ul>
 <li>More accurately</li>
 </ul>
-<p><code>POST /path HTTP/1.1`\r\n`Content-Type: text/plain`\r\n`Content-Length: 5`\r\n\r\n`hello</code></p>
+<div style="height: 2.0em">
+
+</div>
+<pre><code>POST /path HTTP/1.1\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello</code></pre>
 </section>
 <section id="post-request-2" class="level2">
 <h2 class="anchored" data-anchor-id="post-request-2">POST Request</h2>
 <ul>
 <li>When parsing, there will be Content-Length and Content-Type headers</li>
 </ul>
-<p>POST /path HTTP/1.1<code>\r\n</code>Content-Type: text/plain<code>\r\n</code>Content-Length: 5<code>\r\n\r\n</code>hello</p>
+<div style="height: 2.0em">
+
+</div>
+<pre><code>POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
 </section>
 <section id="post-request-3" class="level2">
 <h2 class="anchored" data-anchor-id="post-request-3">POST Request</h2>
 <ul>
 <li>Look for the blank line that separates the headers from the body
 <ul>
-<li>"<code>\r\n\r\n</code>"</li>
+<li><code>\r\n\r\n</code></li>
 </ul></li>
 <li>Read everything after this blank line</li>
 <li>Make sure you've read "Content-Length" number of bytes
@@ -210,7 +263,11 @@ hello</code></pre>
 <li>It's possible to only receive part of a request and have to read the rest from the TCP socket</li>
 </ul></li>
 </ul>
-<p>POST /path HTTP/1.1<code>\r\n</code>Content-Type: text/plain<code>\r\n</code>Content-Length: 5<code>\r\n\r\n</code>hello</p>
+<pre><code>POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
 </section>
 <section id="post-request-4" class="level2">
 <h2 class="anchored" data-anchor-id="post-request-4">POST Request</h2>
@@ -221,7 +278,11 @@ hello</code></pre>
 <li>Send a response to the client</li>
 </ul></li>
 </ul>
-<p>POST /path HTTP/1.1<code>\r\n</code>Content-Type: text/plain<code>\r\n</code>Content-Length: 5<code>\r\n\r\n</code>hello</p>
+<pre><code>POST /path HTTP/1.1
+Content-Type: text/plain
+Content-Length: 5
+
+hello</code></pre>
 </section>
 <section id="query-string" class="level2">
 <h2 class="anchored" data-anchor-id="query-string">Query String</h2>
@@ -236,7 +297,7 @@ hello</code></pre>
 </section>
 <section id="url-recall" class="level2">
 <h2 class="anchored" data-anchor-id="url-recall">URL Recall</h2>
-<p>Protocol://host:port/path?query_string#fragment</p>
+<pre><code>Protocol://host:port/path?query_string#fragment</code></pre>
 <ul>
 <li>Query String - [Optional] Contains key-value pairs set by the client</li>
 <li>https://www.google.com/search?q=web+development
@@ -260,13 +321,13 @@ hello</code></pre>
 </section>
 <section id="query-string-format" class="level2">
 <h2 class="anchored" data-anchor-id="query-string-format">Query String Format</h2>
-<p>https://duckduckgo.com/?q=web+development&amp;ia=images</p>
+<pre><code>https://duckduckgo.com/?q=web+development&amp;ia=images</code></pre>
 <ul>
-<li>Preceded by a question mark - ?</li>
+<li>Preceded by a question mark - <code>?</code></li>
 <li>Consists of key-value pairs
 <ul>
-<li>Key and value separated by =</li>
-<li>Pairs separated by &amp;</li>
+<li>Key and value separated by <code>=</code></li>
+<li>Pairs separated by <code>&amp;</code></li>
 </ul></li>
 <li>Can only contain ASCII characters</li>
 <li>Cannot contain white space</li>
@@ -276,75 +337,93 @@ hello</code></pre>
 <h2 class="anchored" data-anchor-id="percent-encoding">Percent Encoding</h2>
 <ul>
 <li>If a non-ASCII character is sent as part of a query string it must be url-encoded (or percent-encoded)</li>
-<li>Specify byte values with a % followed by 2 hex values</li>
-<li>한
-<ul>
-<li>%ed%95%9c</li>
-</ul></li>
-<li>" " &lt;-- single space
-<ul>
-<li>%20</li>
-</ul></li>
+<li>Specify byte values with a <code>%</code> followed by 2 hex values</li>
+<li><code>한</code> is encoded as <code>%ed%95%9c</code></li>
+<li><code></code> &lt;-- single space is encoded as <code>%20</code></li>
 </ul>
 </section>
 <section id="white-space" class="level2">
 <h2 class="anchored" data-anchor-id="white-space">White Space</h2>
 <ul>
 <li>URLs cannot contain spaces</li>
-<li>Spaces can be percent encoded as %20</li>
-<li>Can also replace spaces with +
+<li>Spaces can be percent encoded as <code>%20</code></li>
+<li>Can also replace spaces with <code>+</code>
 <ul>
-<li>The reserved character + indicates a key mapping to multiple values</li>
+<li>The reserved character <code>+</code> indicates a key mapping to multiple values</li>
 </ul></li>
 </ul>
 </section>
 <section id="reserved-characters" class="level2">
 <h2 class="anchored" data-anchor-id="reserved-characters">Reserved Characters</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Some ASCII characters are reserved
 <ul>
-<li>Example: ? begins a query string</li>
+<li>Example: <code>?</code> begins a query string</li>
 </ul></li>
-<li>Reserved characters must be % encoded</li>
-</ul>
-<p>Reserved</p>
-<p>:</p>
-<p>&amp;</p>
-<p>/</p>
-<p>'</p>
-<p>?</p>
-<p>(</p>
-<ul>
+<li>Reserved characters must be %-encoded</li>
 <li>Notable characters that are NOT reserved
 <ul>
-<li>Dash -</li>
-<li>Dot .</li>
-<li>Underscore _</li>
-<li>Tilda ~</li>
+<li>Dash <code>-</code></li>
+<li>Dot <code>.</code></li>
+<li>Underscore <code>_</code></li>
+<li>Tilda <code>~</code></li>
 </ul></li>
 </ul>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Reserved</th>
+<th>Characters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>:</code></td>
+<td><code>#</code></td>
+</tr>
+<tr class="even">
+<td><code>&amp;</code></td>
+<td><code>*</code></td>
+</tr>
+<tr class="odd">
+<td><code>/</code></td>
+<td><code>+</code></td>
+</tr>
+<tr class="even">
+<td><code>'</code></td>
+<td><code>@</code></td>
+</tr>
+<tr class="odd">
+<td><code>?</code></td>
+<td><code>,</code></td>
+</tr>
+<tr class="even">
+<td><code>(</code></td>
+<td><code>)</code></td>
+</tr>
+<tr class="odd">
+<td><code>[</code></td>
+<td><code>]</code></td>
+</tr>
+<tr class="even">
+<td><code>!</code></td>
+<td><code>;</code></td>
+</tr>
+<tr class="odd">
+<td><code>$</code></td>
+<td><code>=</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
-<section id="section" class="level1">
-<h1></h1>
-<p>)</p>
-<p>[</p>
-<ul>
-<li></li>
-</ul>
-<p>]</p>
-<ul>
-<li></li>
-</ul>
-<p>@</p>
-<p>,</p>
-<p>!</p>
-<p>;</p>
-<p>$</p>
-<p>=</p>
-<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-<section id="html-forms" class="level2">
-<h2 class="anchored" data-anchor-id="html-forms">HTML Forms</h2>
 </section>
+<section id="html-forms" class="level1">
+<h1>HTML Forms</h1>
 <section id="dynamic-pages" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-pages">Dynamic Pages</h2>
 <ul>
@@ -370,16 +449,26 @@ hello</code></pre>
 <li>This behaves similar to clicking a link</li>
 </ul></li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="get"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb8-1"><a href="#cb8-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide15-1.png" class="img-fluid" alt="The form rendered from this HTML"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="html-forms-2" class="level2">
 <h2 class="anchored" data-anchor-id="html-forms-2">HTML Forms</h2>
@@ -391,16 +480,26 @@ hello</code></pre>
 </ul></li>
 <li>The name attribute is used when the data is sent to the server</li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="get"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb9-1"><a href="#cb9-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide15-1.png" class="img-fluid" alt="The form rendered from this HTML"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="html-forms-3" class="level2">
 <h2 class="anchored" data-anchor-id="html-forms-3">HTML Forms</h2>
@@ -411,16 +510,26 @@ hello</code></pre>
 <li>Clicking the label focuses the input</li>
 </ul></li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="get"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1"><a href="#cb10-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide15-1.png" class="img-fluid" alt="The form rendered from this HTML"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="html-forms-4" class="level2">
 <h2 class="anchored" data-anchor-id="html-forms-4">HTML Forms</h2>
@@ -428,36 +537,56 @@ hello</code></pre>
 <li>An input of type submit makes a button that will send the HTTP request when clicked</li>
 <li>The value attribute is the text on the button</li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="get"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb11-1"><a href="#cb11-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide15-1.png" class="img-fluid" alt="The form rendered from this HTML"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="html-forms-5" class="level2">
 <h2 class="anchored" data-anchor-id="html-forms-5">HTML Forms</h2>
+<pre><code>GET /form-path?commenter=Jesse&amp;comment=Good+Morning%21 HTTP/1.1</code></pre>
 <ul>
 <li>This sends a GET request containing the form data in a query string
 <ul>
 <li>Page reloads with the content of the response</li>
 </ul></li>
 </ul>
-<p>GET /form-path?commenter=Jesse&amp;comment=Good+Morning%21 HTTP/1.1</p>
-<pre><code>&lt;form action="/form-path" method="get"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<p><img src="assets/slide19-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb13"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"get"</span><span class="dt">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide19-1.png" class="img-fluid" alt="The form rendered from this HTML, no filled in with the text &quot;Jesse&quot; and &quot;Good Morning!&quot;"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="http-get-limitations" class="level2">
 <h2 class="anchored" data-anchor-id="http-get-limitations">HTTP GET Limitations</h2>
@@ -479,15 +608,26 @@ hello</code></pre>
 <ul>
 <li>Change the method of a form to post to send the entered data in the body of a POST request</li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="post"&gt;
-&lt;label&gt;Enter your name:&lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="columns">
+<div class="column" style="width:70%;">
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb14-1"><a href="#cb14-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="dt">&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name:<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:30%;">
+<p><img src="assets/slide19-1.png" class="img-fluid" alt="The form rendered from this HTML, no filled in with the text &quot;Jesse&quot; and &quot;Good Morning!&quot;"></p>
+</div>
+</div>
+</div>
 </section>
 <section id="html-forms---post-1" class="level2">
 <h2 class="anchored" data-anchor-id="html-forms---post-1">HTML Forms - POST</h2>
@@ -502,14 +642,17 @@ hello</code></pre>
 <li>Foreshadow: Very important when receiving more data than the size of your TCP buffer</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <pre><code>POST /form-path HTTP/1.1
 Content-Length: 27
-Content-Type: application/x-www-form-urlencoded</code></pre>
-<p>commenter=Jesse&amp;comment=Good+morning%21</p>
+Content-Type: application/x-www-form-urlencoded
+
+commenter=Jesse&amp;comment=Good+morning%21</code></pre>
+</div>
 </section>
-<section id="html-injection-attacks" class="level2">
-<h2 class="anchored" data-anchor-id="html-injection-attacks">HTML Injection Attacks</h2>
 </section>
+<section id="html-injection-attacks" class="level1">
+<h1>HTML Injection Attacks</h1>
 <section id="html-injection" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection">HTML Injection</h2>
 <ul>
@@ -526,67 +669,42 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="never-trust-your-users" class="level2">
-<h2 class="anchored" data-anchor-id="never-trust-your-users">Never Trust Your Users!</h2>
 </section>
-<section id="slide-26" class="level2">
-<h2 class="anchored" data-anchor-id="slide-26">Slide 26</h2>
-<p>Never Trust Your Users!</p>
-<p>Seriously. NEVER.</p>
-</section>
+<section id="never-trust-your-users" class="level1">
+<h1>Never Trust Your Users!</h1>
 <section id="never-trust-your-users-1" class="level2">
 <h2 class="anchored" data-anchor-id="never-trust-your-users-1">Never Trust Your Users</h2>
-<ul>
+<div class="incremental">
+<ul class="incremental">
 <li>You may want to think your users will all act in good faith
-<ul>
-<li>For most users, this may be true</li>
-</ul></li>
-</ul>
-</section>
-<section id="never-trust-your-users-2" class="level2">
-<h2 class="anchored" data-anchor-id="never-trust-your-users-2">Never Trust Your Users</h2>
-<ul>
-<li>You may want to think your users will all act in good faith
-<ul>
-<li>For most users, this may be true</li>
-</ul></li>
-<li>Besides your intended users, who else can access your app?</li>
-</ul>
-</section>
-<section id="never-trust-your-users-3" class="level2">
-<h2 class="anchored" data-anchor-id="never-trust-your-users-3">Never Trust Your Users</h2>
-<ul>
-<li>You may want to think your users will all act in good faith
-<ul>
+<ul class="incremental">
 <li>For most users, this may be true</li>
 </ul></li>
 <li>Besides your intended users, who else can access your app?
-<ul>
+<ul class="incremental">
 <li>EVERYONE!</li>
 </ul></li>
 </ul>
+</div>
 </section>
-<section id="never-trust-your-users-4" class="level2">
-<h2 class="anchored" data-anchor-id="never-trust-your-users-4">Never Trust Your Users</h2>
-<ul>
-<li>Do you trust literally everyone??</li>
-</ul>
+<section id="never-trust-your-users-2" class="level2">
+<h2 class="anchored" data-anchor-id="never-trust-your-users-2">Never Trust Your Users</h2>
+<p><span style="font-size: 3.5em">Do you trust literally everyone??</span></p>
 </section>
 <section id="html-injection-1" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-1">HTML Injection</h2>
 <ul>
 <li>You are now handling user data and sending it to other users (Through chat messages)</li>
 <li>You're building a form that accepts user data and serves it to all other users</li>
-<li>What happens when a user enters this in chat:
-<ul>
-<li>"<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>"</li>
-</ul></li>
+<li>What happens when a user enters this in chat:</li>
 </ul>
+<div class="absolute" data-bottom="50" data-left="0" width="100%">
+<div class="sourceCode" id="cb16"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="fu">maliciousFunction</span>()<span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="html-injection-xss" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-xss">HTML Injection (XSS)</h2>
 <ul>
-<li>"<code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>"</li>
 <li>This attack is called an HTML injection attack
 <ul>
 <li>This string is uploaded to your server</li>
@@ -596,6 +714,9 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <li>Their browsers runs the injected JS</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="50" data-left="0" width="100%">
+<div class="sourceCode" id="cb17"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="fu">maliciousFunction</span>()<span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="html-injection-2" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-2">HTML Injection</h2>
@@ -612,52 +733,48 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </ul></li>
 <li>Escape HTML
 <ul>
-<li>Replace &amp;, &lt;, and &gt; with their HTML escaped characters</li>
-<li>'&amp;' -&gt; &amp;</li>
-<li>'&lt;' -&gt; &lt;</li>
-<li>'&gt;' -&gt; &gt;</li>
+<li>Replace <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> with their HTML escaped characters</li>
+<li><code>&amp;</code> -&gt; <code>&amp;amp;</code></li>
+<li><code>&lt;</code> -&gt; <code>&amp;lt;</code></li>
+<li><code>&gt;</code> -&gt; <code>&amp;gt;</code></li>
 </ul></li>
 </ul>
 </section>
 <section id="html-injection-4" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-4">HTML Injection</h2>
 <ul>
-<li>The escaped characters &amp; &lt; &gt; will be rendered as characters by the browser</li>
+<li>The escaped characters <code>&amp;amp;</code> <code>&amp;lt;</code> <code>&amp;gt;</code> will be rendered as characters by the browser</li>
 <li>Browser does not treat these as HTML</li>
 </ul>
 </section>
 <section id="html-injection-5" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-5">HTML Injection</h2>
 <ul>
-<li>Replace &amp;, &lt;, and &gt; with their HTML escaped characters</li>
-<li><code>&lt;script&gt;</code>maliciousFunction()<code>&lt;/script&gt;</code>
-<ul>
-<li>becomes</li>
-</ul></li>
-<li>&lt;script&gt;maliciousFunction()&lt;/script&gt;
-<ul>
-<li>and is rendered as a string instead of interpreted as HTML</li>
-</ul></li>
+<li>Replace <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> with their HTML escaped characters</li>
 </ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="fu">maliciousFunction</span>()<span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>becomes</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">&amp;lt;</span>script<span class="dv">&amp;gt;</span>maliciousFunction()<span class="dv">&amp;lt;</span>/script<span class="dv">&amp;gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>and is rendered as a string instead of interpreted as HTML</p>
 </section>
 <section id="html-injection-6" class="level2">
 <h2 class="anchored" data-anchor-id="html-injection-6">HTML Injection</h2>
 <ul>
-<li>Replace &amp;, &lt;, and &gt; with their HTML escaped characters</li>
+<li>Replace <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> with their HTML escaped characters</li>
 <li>Order is important!
 <ul>
 <li>Always escape &amp; first</li>
 </ul></li>
-<li>If &amp; is escaped last you'll get:</li>
-<li>&amp;lt;script&amp;gt;maliciousFunction()&amp;lt; /script&amp;gt;
+<li>If <code>&amp;</code> is escaped last you'll get:</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">&amp;amp;</span>lt;script<span class="dv">&amp;amp;</span>gt;maliciousFunction()<span class="dv">&amp;amp;</span>lt; /script<span class="dv">&amp;amp;</span>gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Which will not render the way you intended</li>
-</ul></li>
 </ul>
 </section>
-<section id="ajax-polling" class="level2">
-<h2 class="anchored" data-anchor-id="ajax-polling">AJAX &amp; Polling</h2>
 </section>
+<section id="ajax-polling" class="level1">
+<h1>AJAX &amp; Polling</h1>
 <section id="user-interaction" class="level2">
 <h2 class="anchored" data-anchor-id="user-interaction">User Interaction</h2>
 <ul>
@@ -679,31 +796,31 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </section>
 <section id="ajax---http-get-request" class="level2">
 <h2 class="anchored" data-anchor-id="ajax---http-get-request">AJAX - HTTP GET Request</h2>
-<pre><code>var request = new XMLHttpRequest();
-request.onreadystatechange = function(){
-if (this.readyState === 4 &amp;&amp; this.status === 200){
-console.log(this.response);
-}
-};
-request.open("GET", "/path");
-request.send();</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">var</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>request<span class="op">.</span><span class="at">onreadystatechange</span> <span class="op">=</span> <span class="kw">function</span>(){</span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">readyState</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> <span class="kw">this</span><span class="op">.</span><span class="at">status</span> <span class="op">===</span> <span class="dv">200</span>){</span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="kw">this</span><span class="op">.</span><span class="at">response</span>)<span class="op">;</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  }</span>
+<span id="cb21-6"><a href="#cb21-6"></a>}<span class="op">;</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>request<span class="op">.</span><span class="fu">open</span>(<span class="st">"GET"</span><span class="op">,</span> <span class="st">"/path"</span>)<span class="op">;</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>request<span class="op">.</span><span class="fu">send</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Use JavaScript to make an AJAX request</li>
-<li>Create an XMLHttpRequest object</li>
-<li>Call "open" to set the request type and path</li>
-<li>Call send to make the request</li>
+<li>Create an <code>XMLHttpRequest</code> object</li>
+<li>Call <code>open</code> to set the request type and path</li>
+<li>Call <code>send</code> to make the request</li>
 </ul>
 </section>
 <section id="ajax---http-get-request-1" class="level2">
 <h2 class="anchored" data-anchor-id="ajax---http-get-request-1">AJAX - HTTP GET Request</h2>
-<pre><code>var request = new XMLHttpRequest();
-request.onreadystatechange = function(){
-if (this.readyState === 4 &amp;&amp; this.status === 200){
-console.log(this.response);
-}
-};
-request.open("GET", "/path");
-request.send();</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">var</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>request<span class="op">.</span><span class="at">onreadystatechange</span> <span class="op">=</span> <span class="kw">function</span>(){</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">readyState</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> <span class="kw">this</span><span class="op">.</span><span class="at">status</span> <span class="op">===</span> <span class="dv">200</span>){</span>
+<span id="cb22-4"><a href="#cb22-4"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="kw">this</span><span class="op">.</span><span class="at">response</span>)<span class="op">;</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>  }</span>
+<span id="cb22-6"><a href="#cb22-6"></a>}<span class="op">;</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>request<span class="op">.</span><span class="fu">open</span>(<span class="st">"GET"</span><span class="op">,</span> <span class="st">"/path"</span>)<span class="op">;</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>request<span class="op">.</span><span class="fu">send</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Set onreadystatechange to a function that will be called whenever the ready state changes</li>
 <li>A ready state of 4 means a response has been fully received
@@ -715,15 +832,15 @@ request.send();</code></pre>
 </section>
 <section id="ajax---http-post-request" class="level2">
 <h2 class="anchored" data-anchor-id="ajax---http-post-request">AJAX - HTTP POST Request</h2>
-<pre><code>var request = new XMLHttpRequest();
-request.onreadystatechange = function(){
-if (this.readyState === 4 &amp;&amp; this.status === 200){
-console.log(this.response);
-}
-};
-request.open("POST", "/path");
-let data = {'username': "Jesse", 'message': "Welcome"}
-request.send(JSON.stringify(data));</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb23-1"><a href="#cb23-1"></a><span class="kw">var</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>request<span class="op">.</span><span class="at">onreadystatechange</span> <span class="op">=</span> <span class="kw">function</span>(){</span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">readyState</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> <span class="kw">this</span><span class="op">.</span><span class="at">status</span> <span class="op">===</span> <span class="dv">200</span>){</span>
+<span id="cb23-4"><a href="#cb23-4"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="kw">this</span><span class="op">.</span><span class="at">response</span>)<span class="op">;</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a>  }</span>
+<span id="cb23-6"><a href="#cb23-6"></a>}<span class="op">;</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>request<span class="op">.</span><span class="fu">open</span>(<span class="st">"POST"</span><span class="op">,</span> <span class="st">"/path"</span>)<span class="op">;</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a><span class="kw">let</span> data <span class="op">=</span> {<span class="st">'username'</span><span class="op">:</span> <span class="st">"Jesse"</span><span class="op">,</span> <span class="st">'message'</span><span class="op">:</span> <span class="st">"Welcome"</span>}</span>
+<span id="cb23-9"><a href="#cb23-9"></a>request<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(data))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>To make a post request:
 <ul>
@@ -734,51 +851,69 @@ request.send(JSON.stringify(data));</code></pre>
 </section>
 <section id="forms-and-ajax" class="level2">
 <h2 class="anchored" data-anchor-id="forms-and-ajax">Forms and AJAX</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
 <li>We have choices for the format when sending the data of the AJAX request</li>
 <li>We can use an HTML form</li>
-<li>Add an onsubmit attribute that calls your JavaScript function</li>
-</ul>
-<pre><code>&lt;form id="myForm" onsubmit="sendMessageWithForm(); return false;"&gt;
-&lt;label for="form-chat"&gt;Chat: &lt;/label&gt;
-&lt;input id="form-chat" type="text" name="message"&gt;&lt;br/&gt;
-&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
-<pre><code>function sendMessageWithForm() {
-const formElement = document.getElementById("myForm");
-const formData = new FormData(formElement);</code></pre>
+<li>Add an onsubmit attribute that calls your JavaScript function
 <ul>
-<li>Add "return false" to block the page reload</li>
-<li>Or use event.preventDefault(); in the JS function</li>
+<li>Add <code>return false</code> to block the page reload</li>
+<li>Or use <code>event.preventDefault();</code> in the JS function</li>
+</ul></li>
 <li>Use JavaScript to read the data from the entire form</li>
 </ul>
-<pre><code>const request = new XMLHttpRequest();</code></pre>
-<pre><code>request.open("POST", "send-message-form");
-request.send(formData);
-}</code></pre>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb24"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> id</span><span class="op">=</span><span class="st">"myForm"</span><span class="ot"> onsubmit</span><span class="op">=</span><span class="st">"sendMessageWithForm(); return false;"</span><span class="dt">&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"form-chat"</span><span class="dt">&gt;</span>Chat: <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"form-chat"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"message"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="height: 1.0em">
+
+</div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sendMessageWithForm</span>() {</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formElement <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"myForm"</span>)<span class="op">;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formData <span class="op">=</span> <span class="kw">new</span> <span class="bu">FormData</span>(formElement)<span class="op">;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  request<span class="op">.</span><span class="fu">open</span>(<span class="st">"POST"</span><span class="op">,</span> <span class="st">"send-message-form"</span>)<span class="op">;</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  request<span class="op">.</span><span class="fu">send</span>(formData)<span class="op">;</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="encodings---json" class="level2">
 <h2 class="anchored" data-anchor-id="encodings---json">Encodings - JSON</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
 <li>Another option: Manually format the data using JSON</li>
 <li>Don't use the form element</li>
 <li>Create a button instead of a submit input</li>
 <li>In JavaScript, read the value of each input and create your own JSON object</li>
 </ul>
-<pre><code>&lt;label&gt;Chat:
-&lt;input id="chatInput" type="text" name="message"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;button onclick="sendMessage()"&gt;Send&lt;/button&gt;</code></pre>
-<pre><code>function sendMessage() {
-const chat = document.getElementById("chatInput");
-const data = {"message": chat.value()};</code></pre>
-<pre><code>const request = new XMLHttpRequest();</code></pre>
-<pre><code>request.open("POST", "send-message-form");
-request.send(JSON.stringify(data));
-}</code></pre>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb26"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Chat:</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chatInput"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"message"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> onclick</span><span class="op">=</span><span class="st">"sendMessage()"</span><span class="dt">&gt;</span>Send<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="height: 1.0em">
+
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sendMessage</span>() {</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> chat <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chatInput"</span>)<span class="op">;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> {<span class="st">"message"</span><span class="op">:</span> chat<span class="op">.</span><span class="fu">value</span>()}<span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  request<span class="op">.</span><span class="fu">open</span>(<span class="st">"POST"</span><span class="op">,</span> <span class="st">"send-message-form"</span>)<span class="op">;</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  request<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(data))<span class="op">;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="fetch" class="level2">
 <h2 class="anchored" data-anchor-id="fetch">Fetch</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
 <li>Fetch is an alternate way to send an asynchronous request</li>
 <li>Uses promises
@@ -787,25 +922,31 @@ request.send(JSON.stringify(data));
 </ul></li>
 <li>*Fetch is what the HW front end uses</li>
 </ul>
-<pre><code>&lt;label&gt;Chat:
-&lt;input id="chatInput" type="text" name="message"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;button onclick="sendMessage()"&gt;Send&lt;/button&gt;</code></pre>
-<pre><code>function sendMessage() {
-const chat = document.getElementById("chatInput");
-const data = {"message": chat.value()};
-const response = await fetch("/send-message-form", {
-method: "POST",
-headers: {
-"Content-Type": "application/json",
-},
-body: JSON.stringify(data),
-});
-}</code></pre>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb28"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Chat:</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"chatInput"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"message"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> onclick</span><span class="op">=</span><span class="st">"sendMessage()"</span><span class="dt">&gt;</span>Send<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="height: 1.0em">
+
+</div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">sendMessage</span>() {</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> chat <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"chatInput"</span>)<span class="op">;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> {<span class="st">"message"</span><span class="op">:</span> chat<span class="op">.</span><span class="fu">value</span>()}<span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="st">"/send-message-form"</span><span class="op">,</span> {</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">method</span><span class="op">:</span> <span class="st">"POST"</span><span class="op">,</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">headers</span><span class="op">:</span> {</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Content-Type"</span><span class="op">:</span> <span class="st">"application/json"</span><span class="op">,</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">body</span><span class="op">:</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(data)<span class="op">,</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="polling" class="level2">
-<h2 class="anchored" data-anchor-id="polling">Polling</h2>
 </section>
+<section id="polling" class="level1">
+<h1>Polling</h1>
 <section id="making-it-live" class="level2">
 <h2 class="anchored" data-anchor-id="making-it-live">Making it Live</h2>
 <ul>
@@ -822,7 +963,7 @@ body: JSON.stringify(data),
 </section>
 <section id="polling-1" class="level2">
 <h2 class="anchored" data-anchor-id="polling-1">Polling</h2>
-<p>setInterval(getMessages, 1000)</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="pp">setInterval</span>(getMessages<span class="op">,</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Browser sends requests for updates at regular intervals</li>
 <li>Use setInterval
@@ -830,15 +971,15 @@ body: JSON.stringify(data),
 <li>Takes a function to be called</li>
 <li>Takes the number of milliseconds to wait between function calls</li>
 </ul></li>
-<li>This example calls getMessages() (Implementation not shown) every second
+<li>This example calls <code>getMessages()</code> (Implementation not shown) every second
 <ul>
-<li>getMessages() will make the AJAX call to get the most recent data from the server and render it on the page</li>
+<li><code>getMessages()</code> will make the AJAX call to get the most recent data from the server and render it on the page</li>
 </ul></li>
 </ul>
 </section>
 <section id="polling-2" class="level2">
 <h2 class="anchored" data-anchor-id="polling-2">Polling</h2>
-<p>setInterval(getMessages, 1000)</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="pp">setInterval</span>(getMessages<span class="op">,</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Easy to implement
 <ul>

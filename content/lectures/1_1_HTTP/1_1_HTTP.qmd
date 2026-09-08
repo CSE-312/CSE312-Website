@@ -17,7 +17,9 @@ reading-list:
 released: true
 ---
 
+
 # HTTP
+
 
 ## Network Stack (A simplified view)
 
@@ -183,6 +185,7 @@ GET / HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
+
 ```
 
 ## GET Request {.unnumbered .unlisted}
@@ -210,6 +213,7 @@ GET / HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
+
 ```
 
 ## The Request Line {.unnumbered .unlisted}
@@ -238,6 +242,7 @@ GET / HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
+
 ```
 :::
 ::: {.column width="50%"}
@@ -246,6 +251,7 @@ GET /static_files/slides/1_2_HTTP.pdf HTTP/1.1
 Host: cse312.com
 Connection: keep-alive
 Accept-Language: en-US,en
+
 ```
 :::
 ::::
