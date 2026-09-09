@@ -233,7 +233,7 @@ Content-Length: 5
 
 hello</code></pre>
 </section>
-<section id="post-request-1" class="slide level2">
+<section id="post-request-1" class="slide level2 unnumbered unlisted">
 <h2>POST Request</h2>
 <ul>
 <li>More accurately</li>
@@ -243,7 +243,7 @@ hello</code></pre>
 </div>
 <pre><code>POST /path HTTP/1.1\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello</code></pre>
 </section>
-<section id="post-request-2" class="slide level2">
+<section id="post-request-2" class="slide level2 unnumbered unlisted">
 <h2>POST Request</h2>
 <ul>
 <li>When parsing, there will be Content-Length and Content-Type headers</li>
@@ -257,7 +257,7 @@ Content-Length: 5
 
 hello</code></pre>
 </section>
-<section id="post-request-3" class="slide level2">
+<section id="post-request-3" class="slide level2 unnumbered unlisted">
 <h2>POST Request</h2>
 <ul>
 <li>Look for the blank line that separates the headers from the body
@@ -276,7 +276,7 @@ Content-Length: 5
 
 hello</code></pre>
 </section>
-<section id="post-request-4" class="slide level2">
+<section id="post-request-4" class="slide level2 unnumbered unlisted">
 <h2>POST Request</h2>
 <ul>
 <li>When you read the content from the body:
@@ -477,7 +477,7 @@ hello</code></pre>
 </div></div>
 </div>
 </section>
-<section id="html-forms-2" class="slide level2">
+<section id="html-forms-2" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms</h2>
 <ul>
 <li>Use input elements for the user to interact with the form</li>
@@ -507,7 +507,7 @@ hello</code></pre>
 </div></div>
 </div>
 </section>
-<section id="html-forms-3" class="slide level2">
+<section id="html-forms-3" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms</h2>
 <ul>
 <li>Should provide a label for each input
@@ -536,7 +536,7 @@ hello</code></pre>
 </div></div>
 </div>
 </section>
-<section id="html-forms-4" class="slide level2">
+<section id="html-forms-4" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms</h2>
 <ul>
 <li>An input of type submit makes a button that will send the HTTP request when clicked</li>
@@ -562,7 +562,7 @@ hello</code></pre>
 </div></div>
 </div>
 </section>
-<section id="html-forms-5" class="slide level2">
+<section id="html-forms-5" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms</h2>
 <pre><code>GET /form-path?commenter=Jesse&amp;comment=Good+Morning%21 HTTP/1.1</code></pre>
 <ul>
@@ -631,7 +631,7 @@ hello</code></pre>
 </div></div>
 </div>
 </section>
-<section id="html-forms---post-1" class="slide level2">
+<section id="html-forms---post-1" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
 <ul>
 <li>A request is sent to the path from the action attribute without a query string</li>
@@ -706,7 +706,7 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb16-1"><a></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="fu">maliciousFunction</span>()<span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="html-injection-xss" class="slide level2">
+<section id="html-injection-xss" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection (XSS)</h2>
 <ul>
 <li>This attack is called an HTML injection attack
@@ -722,13 +722,13 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb17-1"><a></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="fu">maliciousFunction</span>()<span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="html-injection-2" class="slide level2">
+<section id="html-injection-2" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection</h2>
 <ul>
 <li>Lucky for us, Preventing this attack is very simple</li>
 </ul>
 </section>
-<section id="html-injection-3" class="slide level2">
+<section id="html-injection-3" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection</h2>
 <ul>
 <li>To prevent this attack:
@@ -744,14 +744,14 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="html-injection-4" class="slide level2">
+<section id="html-injection-4" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection</h2>
 <ul>
 <li>The escaped characters <code>&amp;amp;</code> <code>&amp;lt;</code> <code>&amp;gt;</code> will be rendered as characters by the browser</li>
 <li>Browser does not treat these as HTML</li>
 </ul>
 </section>
-<section id="html-injection-5" class="slide level2">
+<section id="html-injection-5" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection</h2>
 <ul>
 <li>Replace <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> with their HTML escaped characters</li>
@@ -761,7 +761,7 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 <div class="sourceCode" id="cb19"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb19-1"><a></a><span class="dv">&amp;lt;</span>script<span class="dv">&amp;gt;</span>maliciousFunction()<span class="dv">&amp;lt;</span>/script<span class="dv">&amp;gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>and is rendered as a string instead of interpreted as HTML</p>
 </section>
-<section id="html-injection-6" class="slide level2">
+<section id="html-injection-6" class="slide level2 unnumbered unlisted">
 <h2>HTML Injection</h2>
 <ul>
 <li>Replace <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> with their HTML escaped characters</li>
@@ -817,7 +817,7 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 <li>Call <code>send</code> to make the request</li>
 </ul>
 </section>
-<section id="ajax---http-get-request-1" class="slide level2">
+<section id="ajax---http-get-request-1" class="slide level2 unnumbered unlisted">
 <h2>AJAX - HTTP GET Request</h2>
 <div class="sourceCode" id="cb22" data-code-line-numbers="2-6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb22-1"><a></a><span class="kw">var</span> request <span class="op">=</span> <span class="kw">new</span> <span class="bu">XMLHttpRequest</span>()<span class="op">;</span></span>
 <span id="cb22-2"><a></a>request<span class="op">.</span><span class="at">onreadystatechange</span> <span class="op">=</span> <span class="kw">function</span>(){</span>
@@ -982,7 +982,7 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="polling-2" class="slide level2">
+<section id="polling-2" class="slide level2 unnumbered unlisted">
 <h2>Polling</h2>
 <div class="sourceCode" id="cb31"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb31-1"><a></a><span class="pp">setInterval</span>(getMessages<span class="op">,</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
@@ -1016,7 +1016,7 @@ commenter=Jesse&amp;comment=Good+morning%21</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="long-polling-1" class="slide level2">
+<section id="long-polling-1" class="slide level2 unnumbered unlisted">
 <h2>Long-Polling</h2>
 <ul>
 <li>End result

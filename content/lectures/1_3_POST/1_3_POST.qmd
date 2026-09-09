@@ -34,7 +34,7 @@ Content-Length: 5
 hello
 ```
 
-## POST Request
+## POST Request {.unnumbered .unlisted}
 
 - More accurately
 
@@ -45,7 +45,7 @@ hello
 POST /path HTTP/1.1\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nhello
 ```
 
-## POST Request
+## POST Request {.unnumbered .unlisted}
 
 - When parsing, there will be Content-Length and Content-Type headers
 
@@ -60,7 +60,7 @@ Content-Length: 5
 hello
 ```
 
-## POST Request
+## POST Request {.unnumbered .unlisted}
 
 - Look for the blank line that separates the headers from the body
   - `\r\n\r\n`
@@ -76,7 +76,7 @@ Content-Length: 5
 hello
 ```
 
-## POST Request
+## POST Request {.unnumbered .unlisted}
 
 - When you read the content from the body:
   - Do whatever your server does based on its feature for this path
@@ -218,7 +218,7 @@ https://duckduckgo.com/?q=web+development&ia=images
 
 :::
 
-## HTML Forms
+## HTML Forms {.unnumbered .unlisted}
 
 
 - Use input elements for the user to interact with the form
@@ -253,7 +253,7 @@ https://duckduckgo.com/?q=web+development&ia=images
 
 :::
 
-## HTML Forms
+## HTML Forms {.unnumbered .unlisted}
 
 
 - Should provide a label for each input
@@ -287,7 +287,7 @@ https://duckduckgo.com/?q=web+development&ia=images
 
 :::
 
-## HTML Forms
+## HTML Forms {.unnumbered .unlisted}
 
 
 - An input of type submit makes a button that will send the HTTP request when clicked
@@ -319,7 +319,7 @@ https://duckduckgo.com/?q=web+development&ia=images
 
 :::
 
-## HTML Forms
+## HTML Forms {.unnumbered .unlisted}
 
 ```
 GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
@@ -393,7 +393,7 @@ GET /form-path?commenter=Jesse&comment=Good+Morning%21 HTTP/1.1
 
 :::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
 - A request is sent to the path from the action attribute without a query string
 - Content-Type is a url encoded string containing the entered data
@@ -453,7 +453,7 @@ commenter=Jesse&comment=Good+morning%21
 ```
 :::
 
-## HTML Injection (XSS)
+## HTML Injection (XSS) {.unnumbered .unlisted}
 
 
 - This attack is called an HTML injection attack
@@ -469,11 +469,11 @@ commenter=Jesse&comment=Good+morning%21
 ```
 :::
 
-## HTML Injection
+## HTML Injection {.unnumbered .unlisted}
 
 - Lucky for us, Preventing this attack is very simple
 
-## HTML Injection
+## HTML Injection {.unnumbered .unlisted}
 
 - To prevent this attack:
   - Escape HTML when handling user submitted data
@@ -483,12 +483,12 @@ commenter=Jesse&comment=Good+morning%21
   - `<` -> `&lt;`
   - `>` -> `&gt;`
 
-## HTML Injection
+## HTML Injection {.unnumbered .unlisted}
 
 - The escaped characters `&amp;` `&lt;` `&gt;` will be rendered as characters by the browser
 - Browser does not treat these as HTML
 
-## HTML Injection
+## HTML Injection {.unnumbered .unlisted}
 
 - Replace `&`, `<`, and `>` with their HTML escaped characters
 
@@ -504,7 +504,7 @@ becomes
 
 and is rendered as a string instead of interpreted as HTML
 
-## HTML Injection
+## HTML Injection {.unnumbered .unlisted}
 
   - Replace `&`, `<`, and `>` with their HTML escaped characters
   - Order is important!
@@ -551,7 +551,7 @@ request.send();
 - Call `open` to set the request type and path
 - Call `send` to make the request
 
-## AJAX - HTTP GET Request
+## AJAX - HTTP GET Request {.unnumbered .unlisted}
 
 ```{.javascript code-line-numbers="2-6"}
 var request = new XMLHttpRequest();
@@ -707,7 +707,7 @@ setInterval(getMessages, 1000)
 - This example calls `getMessages()` (Implementation not shown) every second
   - `getMessages()` will make the AJAX call to get the most recent data from the server and render it on the page
 
-## Polling
+## Polling {.unnumbered .unlisted}
 
 ```javascript
 setInterval(getMessages, 1000)
@@ -732,7 +732,7 @@ setInterval(getMessages, 1000)
   - If there's no new data after ~10-20 seconds, server responds with no new data
   - Client gets the response and sends a new long-poll request
 
-## Long-Polling
+## Long-Polling {.unnumbered .unlisted}
 
 - End result
   - The client always has a request waiting at the server

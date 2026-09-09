@@ -136,9 +136,6 @@
     }
   });
   </script>
-  <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
   <div class="reveal">
@@ -170,7 +167,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="state-1" class="slide level2">
+<section id="state-1" class="slide level2 unnumbered unlisted">
 <h2>State</h2>
 <ul>
 <li>We often want the client to have state</li>
@@ -194,7 +191,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="cookies-2" class="slide level2">
+<section id="cookies-2" class="slide level2 unnumbered unlisted">
 <h2>Cookies</h2>
 <ul>
 <li>Since cookies work through HTTP headers:
@@ -216,8 +213,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="set-cookie" class="slide level2">
-<h2>Set-Cookie</h2>
+<section id="set-cookie-header" class="slide level2">
+<h2>Set-Cookie Header</h2>
 <ul>
 <li>The <code>Set-Cookie</code> header is used by servers to tell the client to set a cookie</li>
 <li>Cookies are sent as key-value pairs</li>
@@ -232,7 +229,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="set-cookie-1" class="slide level2">
+<section id="set-cookie" class="slide level2 unnumbered unlisted">
 <h2>Set-Cookie</h2>
 <ul>
 <li>Only 1 cookie can be set using <code>Set-Cookie</code></li>
@@ -247,8 +244,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="cookie" class="slide level2">
-<h2>Cookie</h2>
+<section id="cookie-header" class="slide level2">
+<h2>Cookie Header</h2>
 <ul>
 <li>The header used by clients to deliver all cookies that have been set</li>
 <li>Syntax [Similar to Set-Cookie]:
@@ -430,150 +427,59 @@
 </section>
 <section id="user-sessions" class="slide level2">
 <h2>User Sessions</h2>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-  participant Browser as Browser (Front End)
-  participant Server as Web Server (Back End)
-  participant Database as Database
-  Browser-&gt;&gt;Server: 1. Request HTML
-  Server-&gt;&gt;Browser: 2. Sends HTML
-  Server-&gt;&gt;Database: 3. Sent the token awerfoi34hj98gfq3nhf9834hf19834uhf198p34fh1o3ig1h9834fh19384fh134f
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-  Client --&gt;|HTTP request| Server
-  Server --&gt;|HTTP response| Client
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<pre><code>User send their first
-chat message</code></pre>
-<p>-No cookies</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<ul>
-<li>The server knows this is their first message since there is no cookie in their request</li>
-</ul>
 
-<img data-src="assets/slide21-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-1" class="slide level2">
-<h2>User Sessions</h2>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
+<img data-src="assets/cookies_1.svg" alt="A client, server and database diagram. The client is sending a request to the server with their first chat message" class="r-stretch"><ul>
+<li>Client sends their first chat message</li>
+<li>There are no cookies in this request
 <ul>
+<li>The server knows this is their first message since no cookies have been set</li>
+</ul></li>
+</ul>
+</section>
+<section id="user-sessions-1" class="slide level2 unnumbered unlisted">
+<h2>User Sessions</h2>
+
+<img data-src="assets/cookies_2.svg" alt="A client, server and database diagram. The server is storing a randomly-generated username and token in the database" class="r-stretch"><ul>
 <li>Server generates a random username for this user</li>
 <li>Server generates a random secret token that will uniquely identify the user</li>
-<li>Store both values in a database</li>
+<li>Store both values in the database</li>
 </ul>
-
-<img data-src="assets/slide22-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-2" class="slide level2">
+</section>
+<section id="user-sessions-2" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
-<pre><code>Set a cookie with the value
-"fd933a6e-b4c6-4636-
-b046-ac8b8d617792"</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<ul>
+
+<img data-src="assets/cookies_3.svg" alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token" class="r-stretch"><ul>
 <li>In the response to the user, set a cookie containing their token</li>
 <li>Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
 <ul>
 <li>It's a session cookie in that it tracks a users session with our app</li>
-<li>It's not a session cookie in that it is not tied to session of their browser</li>
+<li>It's not a session cookie in that it is not tied to this session of their browser</li>
 </ul></li>
 </ul>
-
-<img data-src="assets/slide23-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-3" class="slide level2">
+</section>
+<section id="user-sessions-3" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
-<pre><code>Next chat message contains
-"fd933a6e-b4c6-4636-b046-
-ac8b8d617792" in a cookie</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<ul>
-<li>Since this token is set as a cookie
-<ul>
-<li>It is sent in the headers of all subsequent requests from this user</li>
-</ul></li>
+
+<img data-src="assets/cookies_4.svg" alt="A client, server and database diagram. User sends another chat message to the server" class="r-stretch"><ul>
+<li>All subsequent requests will contain this user's token in a cookie</li>
 </ul>
-
-<img data-src="assets/slide24-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-4" class="slide level2">
+</section>
+<section id="user-sessions-4" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
-<pre><code>Lookup the
-record with a
-Token equal to
-"fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792"</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<ul>
-<li>The server see that there is a cookie set and looks up the token in the database to retrieve this users profile including their username</li>
-<li>When adding the chat message to the database, we know to set "Guest-r8d" as the author</li>
+
+<img data-src="assets/cookies_5.svg" alt="A client, server and database diagram. The server looks up this user's username using their token that is read from the cookie" class="r-stretch"><ul>
+<li>The server sees that there is a cookie in this request and looks up the token in the database to retrieve this users profile, including their username</li>
+<li>When adding the new chat message to the database, we know to set "Anon243" as the author</li>
 </ul>
-
-<img data-src="assets/slide25-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-5" class="slide level2">
+</section>
+<section id="user-sessions-5" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
-<pre><code>Thanks for the
-message!</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<ul>
+
+<img data-src="assets/cookies_6.svg" alt="A client, server and database diagram. The server responds to subsequent chat messages with responses that do not set any cookies" class="r-stretch"><ul>
 <li>No need to set cookies or do anything special on subsequent responses</li>
 </ul>
-
-<img data-src="assets/slide26-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="user-sessions-6" class="slide level2">
+</section>
+<section id="user-sessions-6" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
 <ul>
 <li>With multiple users:

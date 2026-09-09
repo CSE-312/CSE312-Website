@@ -5,3 +5,4 @@ autolab_config.py
 .tools/
 .quarto-data/
 .quarto/
+*.bkp

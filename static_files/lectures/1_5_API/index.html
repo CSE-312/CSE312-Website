@@ -33,10 +33,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -86,29 +86,19 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#apis" id="toc-apis" class="nav-link active" data-scroll-target="#apis">API's</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
-  <li><a href="#data-1" id="toc-data-1" class="nav-link" data-scroll-target="#data-1">Data</a></li>
-  <li><a href="#data-2" id="toc-data-2" class="nav-link" data-scroll-target="#data-2">Data</a></li>
   <li><a href="#crud" id="toc-crud" class="nav-link" data-scroll-target="#crud">CRUD</a></li>
   <li><a href="#crud---create" id="toc-crud---create" class="nav-link" data-scroll-target="#crud---create">CRUD - Create</a></li>
-  <li><a href="#crud---create-1" id="toc-crud---create-1" class="nav-link" data-scroll-target="#crud---create-1">CRUD - Create</a></li>
   <li><a href="#crud---retrievelist" id="toc-crud---retrievelist" class="nav-link" data-scroll-target="#crud---retrievelist">CRUD - Retrieve/List</a></li>
   <li><a href="#crud---update" id="toc-crud---update" class="nav-link" data-scroll-target="#crud---update">CRUD - Update</a></li>
   <li><a href="#crud---delete" id="toc-crud---delete" class="nav-link" data-scroll-target="#crud---delete">CRUD - Delete</a></li>
-  <li><a href="#crud---delete-1" id="toc-crud---delete-1" class="nav-link" data-scroll-target="#crud---delete-1">CRUD - Delete</a></li>
   <li><a href="#data-3" id="toc-data-3" class="nav-link" data-scroll-target="#data-3">Data</a></li>
   <li><a href="#http-requests-methods" id="toc-http-requests-methods" class="nav-link" data-scroll-target="#http-requests-methods">HTTP Requests Methods</a></li>
   <li><a href="#http---post-v.-patch-v.-put" id="toc-http---post-v.-patch-v.-put" class="nav-link" data-scroll-target="#http---post-v.-patch-v.-put">HTTP - POST v. PATCH v. PUT</a></li>
   <li><a href="#http---idempotent" id="toc-http---idempotent" class="nav-link" data-scroll-target="#http---idempotent">HTTP - Idempotent</a></li>
-  <li><a href="#http---idempotent-1" id="toc-http---idempotent-1" class="nav-link" data-scroll-target="#http---idempotent-1">HTTP - Idempotent</a></li>
-  <li><a href="#http---idempotent-2" id="toc-http---idempotent-2" class="nav-link" data-scroll-target="#http---idempotent-2">HTTP - Idempotent</a></li>
-  <li><a href="#http---idempotent-3" id="toc-http---idempotent-3" class="nav-link" data-scroll-target="#http---idempotent-3">HTTP - Idempotent</a></li>
   <li><a href="#restful-api" id="toc-restful-api" class="nav-link" data-scroll-target="#restful-api">RESTful API</a></li>
   <li><a href="#rest-and-crud" id="toc-rest-and-crud" class="nav-link" data-scroll-target="#rest-and-crud">REST and CRUD</a></li>
   <li><a href="#restful-api-1" id="toc-restful-api-1" class="nav-link" data-scroll-target="#restful-api-1">RESTful API</a></li>
   <li><a href="#rest-constraints" id="toc-rest-constraints" class="nav-link" data-scroll-target="#rest-constraints">REST Constraints</a></li>
-  <li><a href="#rest-constraints-1" id="toc-rest-constraints-1" class="nav-link" data-scroll-target="#rest-constraints-1">REST Constraints</a></li>
-  <li><a href="#rest-constraints-2" id="toc-rest-constraints-2" class="nav-link" data-scroll-target="#rest-constraints-2">REST Constraints</a></li>
-  <li><a href="#rest-constraints-3" id="toc-rest-constraints-3" class="nav-link" data-scroll-target="#rest-constraints-3">REST Constraints</a></li>
   <li><a href="#data-4" id="toc-data-4" class="nav-link" data-scroll-target="#data-4">Data</a></li>
   </ul></li>
   </ul>
@@ -157,23 +147,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>How should users interact with stored data?</li>
 </ul>
 </section>
-<section id="data-1" class="level2">
-<h2 class="anchored" data-anchor-id="data-1">Data</h2>
+<section id="data-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="data-1">Data</h2>
 <ul>
 <li>How do users interact with stored data?</li>
 </ul>
-<p>User/Client</p>
-<p>Server</p>
-<p>Database</p>
 <p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"></p>
 </section>
-<section id="data-2" class="level2">
-<h2 class="anchored" data-anchor-id="data-2">Data</h2>
+<section id="data-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="data-2">Data</h2>
 <ul>
 <li>How does our server interact with stored data?</li>
 </ul>
-<p>Server</p>
-<p>Database</p>
 <p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
 <section id="crud" class="level2">
@@ -198,8 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
     INSERT INTO user (email, username) VALUES ($1, $2)
     `, email, username)</code></pre>
 </section>
-<section id="crud---create-1" class="level2">
-<h2 class="anchored" data-anchor-id="crud---create-1">CRUD - Create</h2>
+<section id="crud---create-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="crud---create-1">CRUD - Create</h2>
 <ul>
 <li>When a record is created, it should be assigned a unique id
 <ul>
@@ -254,8 +239,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <pre><code>DELETE FROM user WHERE id=$1</code></pre>
 </section>
-<section id="crud---delete-1" class="level2">
-<h2 class="anchored" data-anchor-id="crud---delete-1">CRUD - Delete</h2>
+<section id="crud---delete-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="crud---delete-1">CRUD - Delete</h2>
 <ul>
 <li>In practice, common to "soft delete"
 <ul>
@@ -341,8 +326,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="http---idempotent-1" class="level2">
-<h2 class="anchored" data-anchor-id="http---idempotent-1">HTTP - Idempotent</h2>
+<section id="http---idempotent-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http---idempotent-1">HTTP - Idempotent</h2>
 <ul>
 <li>GET, PUT, and DELETE are idempotent</li>
 <li>GET should not change the data/state of the API
@@ -356,16 +341,16 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Deleting a record twice has the same effect on the API as deleting the record once</li>
 </ul>
 </section>
-<section id="http---idempotent-2" class="level2">
-<h2 class="anchored" data-anchor-id="http---idempotent-2">HTTP - Idempotent</h2>
+<section id="http---idempotent-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http---idempotent-2">HTTP - Idempotent</h2>
 <ul>
 <li>POST is not idempotent</li>
 <li>Since the server is processing the data, there is no implied idempotent property</li>
 <li>eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids</li>
 </ul>
 </section>
-<section id="http---idempotent-3" class="level2">
-<h2 class="anchored" data-anchor-id="http---idempotent-3">HTTP - Idempotent</h2>
+<section id="http---idempotent-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http---idempotent-3">HTTP - Idempotent</h2>
 <ul>
 <li>PATCH is not idempotent</li>
 <li>In practice, PATCH endpoints are usually idempotent</li>
@@ -422,8 +407,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="rest-constraints-1" class="level2">
-<h2 class="anchored" data-anchor-id="rest-constraints-1">REST Constraints</h2>
+<section id="rest-constraints-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="rest-constraints-1">REST Constraints</h2>
 <ul>
 <li>Cacheablility
 <ul>
@@ -433,8 +418,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="rest-constraints-2" class="level2">
-<h2 class="anchored" data-anchor-id="rest-constraints-2">REST Constraints</h2>
+<section id="rest-constraints-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="rest-constraints-2">REST Constraints</h2>
 <ul>
 <li>Layered-System
 <ul>
@@ -445,8 +430,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="rest-constraints-3" class="level2">
-<h2 class="anchored" data-anchor-id="rest-constraints-3">REST Constraints</h2>
+<section id="rest-constraints-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="rest-constraints-3">REST Constraints</h2>
 <ul>
 <li>Uniform Interface
 <ul>

@@ -33,10 +33,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4c57cdd5e80f6ca436998ce64738895a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -91,30 +91,21 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#text" id="toc-text" class="nav-link" data-scroll-target="#text">Text</a></li>
   <li><a href="#ascii" id="toc-ascii" class="nav-link" data-scroll-target="#ascii">ASCII</a></li>
-  <li><a href="#ascii-chart" id="toc-ascii-chart" class="nav-link" data-scroll-target="#ascii-chart">ASCII Chart</a></li>
-  <li><a href="#ascii-1" id="toc-ascii-1" class="nav-link" data-scroll-target="#ascii-1">ASCII</a></li>
   <li><a href="#http-headers" id="toc-http-headers" class="nav-link" data-scroll-target="#http-headers">HTTP Headers</a></li>
-  <li><a href="#http-headers-1" id="toc-http-headers-1" class="nav-link" data-scroll-target="#http-headers-1">HTTP Headers</a></li>
   <li><a href="#character-encodings" id="toc-character-encodings" class="nav-link" data-scroll-target="#character-encodings">Character Encodings</a></li>
   <li><a href="#utf-8" id="toc-utf-8" class="nav-link" data-scroll-target="#utf-8">UTF-8</a></li>
-  <li><a href="#utf-8-1" id="toc-utf-8-1" class="nav-link" data-scroll-target="#utf-8-1">UTF-8</a></li>
   <li><a href="#sending-data" id="toc-sending-data" class="nav-link" data-scroll-target="#sending-data">Sending Data</a></li>
-  <li><a href="#sending-data-1" id="toc-sending-data-1" class="nav-link" data-scroll-target="#sending-data-1">Sending Data</a></li>
   <li><a href="#content-length" id="toc-content-length" class="nav-link" data-scroll-target="#content-length">Content Length</a></li>
-  <li><a href="#content-length-1" id="toc-content-length-1" class="nav-link" data-scroll-target="#content-length-1">Content Length</a></li>
-  <li><a href="#mime-types" id="toc-mime-types" class="nav-link" data-scroll-target="#mime-types">MIME Types</a></li>
+  </ul></li>
+  <li><a href="#mime-types" id="toc-mime-types" class="nav-link" data-scroll-target="#mime-types">MIME Types</a>
+  <ul class="collapse">
   <li><a href="#mime-types-1" id="toc-mime-types-1" class="nav-link" data-scroll-target="#mime-types-1">MIME Types</a></li>
-  <li><a href="#mime-types-2" id="toc-mime-types-2" class="nav-link" data-scroll-target="#mime-types-2">MIME Types</a></li>
-  <li><a href="#mime-types-3" id="toc-mime-types-3" class="nav-link" data-scroll-target="#mime-types-3">MIME Types</a></li>
-  <li><a href="#mime-types-4" id="toc-mime-types-4" class="nav-link" data-scroll-target="#mime-types-4">MIME Types</a></li>
   <li><a href="#mime-type-sniffing" id="toc-mime-type-sniffing" class="nav-link" data-scroll-target="#mime-type-sniffing">MIME Type Sniffing</a></li>
-  <li><a href="#mime-type-sniffing-1" id="toc-mime-type-sniffing-1" class="nav-link" data-scroll-target="#mime-type-sniffing-1">MIME Type Sniffing</a></li>
-  <li><a href="#mime-type-sniffing-2" id="toc-mime-type-sniffing-2" class="nav-link" data-scroll-target="#mime-type-sniffing-2">MIME Type Sniffing</a></li>
   <li><a href="#mime-types-5" id="toc-mime-types-5" class="nav-link" data-scroll-target="#mime-types-5">MIME Types</a></li>
-  <li><a href="#sending-images" id="toc-sending-images" class="nav-link" data-scroll-target="#sending-images">Sending Images</a></li>
+  </ul></li>
+  <li><a href="#sending-images" id="toc-sending-images" class="nav-link" data-scroll-target="#sending-images">Sending Images</a>
+  <ul class="collapse">
   <li><a href="#sending-images-1" id="toc-sending-images-1" class="nav-link" data-scroll-target="#sending-images-1">Sending Images</a></li>
-  <li><a href="#sending-images-2" id="toc-sending-images-2" class="nav-link" data-scroll-target="#sending-images-2">Sending Images</a></li>
-  <li><a href="#sending-images-3" id="toc-sending-images-3" class="nav-link" data-scroll-target="#sending-images-3">Sending Images</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -190,12 +181,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>ASCII uses 7 bit encodings</li>
 </ul>
 </section>
-<section id="ascii-chart" class="level2">
-<h2 class="anchored" data-anchor-id="ascii-chart">ASCII Chart</h2>
+<section id="ascii-chart" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="ascii-chart">ASCII Chart</h2>
 <p><img src="assets/slide06-1.png" class="img-fluid" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value"></p>
 </section>
-<section id="ascii-1" class="level2">
-<h2 class="anchored" data-anchor-id="ascii-1">ASCII</h2>
+<section id="ascii-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="ascii-1">ASCII</h2>
 <ul>
 <li>As a String:
 <ul>
@@ -219,8 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>HTTP Headers can only contain</p>
 <p>ASCII characters</p>
 </section>
-<section id="http-headers-1" class="level2">
-<h2 class="anchored" data-anchor-id="http-headers-1">HTTP Headers</h2>
+<section id="http-headers-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="http-headers-1">HTTP Headers</h2>
 <ul>
 <li>When reading HTTP headers [And request/status lines]
 <ul>
@@ -264,8 +255,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 <p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="utf-8-1" class="level2">
-<h2 class="anchored" data-anchor-id="utf-8-1">UTF-8</h2>
+<section id="utf-8-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="utf-8-1">UTF-8</h2>
 <ul>
 <li>If more bytes are needed:
 <ul>
@@ -294,8 +285,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="sending-data-1" class="level2">
-<h2 class="anchored" data-anchor-id="sending-data-1">Sending Data</h2>
+<section id="sending-data-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="sending-data-1">Sending Data</h2>
 <ul>
 <li>Use the Python methods
 <ul>
@@ -326,8 +317,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="content-length-1" class="level2">
-<h2 class="anchored" data-anchor-id="content-length-1">Content Length</h2>
+<section id="content-length-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="content-length-1">Content Length</h2>
 <ul>
 <li>To compute the content length of a UTF-8 String
 <ul>
@@ -336,9 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="mime-types" class="level2">
-<h2 class="anchored" data-anchor-id="mime-types">MIME Types</h2>
 </section>
+<section id="mime-types" class="level1">
+<h1>MIME Types</h1>
 <section id="mime-types-1" class="level2">
 <h2 class="anchored" data-anchor-id="mime-types-1">MIME Types</h2>
 <ul>
@@ -353,8 +344,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This is the MIME type of the data</li>
 </ul>
 </section>
-<section id="mime-types-2" class="level2">
-<h2 class="anchored" data-anchor-id="mime-types-2">MIME Types</h2>
+<section id="mime-types-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="mime-types-2">MIME Types</h2>
 <ul>
 <li>MIME type
 <ul>
@@ -373,8 +364,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="mime-types-3" class="level2">
-<h2 class="anchored" data-anchor-id="mime-types-3">MIME Types</h2>
+<section id="mime-types-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="mime-types-3">MIME Types</h2>
 <ul>
 <li>Common Type/Subtypes
 <ul>
@@ -389,8 +380,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="mime-types-4" class="level2">
-<h2 class="anchored" data-anchor-id="mime-types-4">MIME Types</h2>
+<section id="mime-types-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="mime-types-4">MIME Types</h2>
 <ul>
 <li>Optional settings can be added to the Content-Type header
 <ul>
@@ -423,8 +414,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="mime-type-sniffing-1" class="level2">
-<h2 class="anchored" data-anchor-id="mime-type-sniffing-1">MIME Type Sniffing</h2>
+<section id="mime-type-sniffing-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="mime-type-sniffing-1">MIME Type Sniffing</h2>
 <ul>
 <li>X-Content-Type-Options: nosniff</li>
 <li>Be sure to set this header properly!
@@ -435,8 +426,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="mime-type-sniffing-2" class="level2">
-<h2 class="anchored" data-anchor-id="mime-type-sniffing-2">MIME Type Sniffing</h2>
+<section id="mime-type-sniffing-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="mime-type-sniffing-2">MIME Type Sniffing</h2>
 <ul>
 <li>Security concern:
 <ul>
@@ -466,9 +457,9 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="sending-images" class="level2">
-<h2 class="anchored" data-anchor-id="sending-images">Sending Images</h2>
 </section>
+<section id="sending-images" class="level1">
+<h1>Sending Images</h1>
 <section id="sending-images-1" class="level2">
 <h2 class="anchored" data-anchor-id="sending-images-1">Sending Images</h2>
 <ul>
@@ -483,8 +474,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="sending-images-2" class="level2">
-<h2 class="anchored" data-anchor-id="sending-images-2">Sending Images</h2>
+<section id="sending-images-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="sending-images-2">Sending Images</h2>
 <ul>
 <li>When sending images
 <ul>
@@ -498,8 +489,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="sending-images-3" class="level2">
-<h2 class="anchored" data-anchor-id="sending-images-3">Sending Images</h2>
+<section id="sending-images-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="sending-images-3">Sending Images</h2>
 <ul>
 <li>Don't overthink sending images</li>
 <li>Read the bytes of the file. That's the body of your response

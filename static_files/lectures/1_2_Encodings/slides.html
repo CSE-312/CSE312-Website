@@ -6,7 +6,7 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-befe23ebd2f54d8af2c8a89d1a1611f1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8dcd8563ea6803ab7cbb3d71ca5772e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
   <title>CSE312 Lectures – HTTP - Static Files, MIME Types, and Encodings</title>
@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-e466170a8bdeb4624dfb8c21b3126ec9.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -195,11 +195,11 @@
 <li>ASCII uses 7 bit encodings</li>
 </ul>
 </section>
-<section id="ascii-chart" class="slide level2">
+<section id="ascii-chart" class="slide level2 unnumbered unlisted">
 <h2>ASCII Chart</h2>
 
 <img data-src="assets/slide06-1.png" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value" class="r-stretch"></section>
-<section id="ascii-1" class="slide level2">
+<section id="ascii-1" class="slide level2 unnumbered unlisted">
 <h2>ASCII</h2>
 <ul>
 <li>As a String:
@@ -224,7 +224,7 @@
 <p>HTTP Headers can only contain</p>
 <p>ASCII characters</p>
 </section>
-<section id="http-headers-1" class="slide level2">
+<section id="http-headers-1" class="slide level2 unnumbered unlisted">
 <h2>HTTP Headers</h2>
 <ul>
 <li>When reading HTTP headers [And request/status lines]
@@ -269,7 +269,7 @@
 </ul>
 
 <img data-src="assets/slide11-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="utf-8-1" class="slide level2">
+<section id="utf-8-1" class="slide level2 unnumbered unlisted">
 <h2>UTF-8</h2>
 <ul>
 <li>If more bytes are needed:
@@ -299,7 +299,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="sending-data-1" class="slide level2">
+<section id="sending-data-1" class="slide level2 unnumbered unlisted">
 <h2>Sending Data</h2>
 <ul>
 <li>Use the Python methods
@@ -331,7 +331,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="content-length-1" class="slide level2">
+<section id="content-length-1" class="slide level2 unnumbered unlisted">
 <h2>Content Length</h2>
 <ul>
 <li>To compute the content length of a UTF-8 String
@@ -340,9 +340,11 @@
 <li>Get the length of the byte array</li>
 </ul></li>
 </ul>
-</section>
-<section id="mime-types" class="slide level2">
-<h2>MIME Types</h2>
+</section></section>
+<section>
+<section id="mime-types" class="title-slide slide level1 center">
+<h1>MIME Types</h1>
+
 </section>
 <section id="mime-types-1" class="slide level2">
 <h2>MIME Types</h2>
@@ -358,7 +360,7 @@
 <li>This is the MIME type of the data</li>
 </ul>
 </section>
-<section id="mime-types-2" class="slide level2">
+<section id="mime-types-2" class="slide level2 unnumbered unlisted">
 <h2>MIME Types</h2>
 <ul>
 <li>MIME type
@@ -378,7 +380,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="mime-types-3" class="slide level2">
+<section id="mime-types-3" class="slide level2 unnumbered unlisted">
 <h2>MIME Types</h2>
 <ul>
 <li>Common Type/Subtypes
@@ -394,7 +396,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="mime-types-4" class="slide level2">
+<section id="mime-types-4" class="slide level2 unnumbered unlisted">
 <h2>MIME Types</h2>
 <ul>
 <li>Optional settings can be added to the Content-Type header
@@ -428,7 +430,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="mime-type-sniffing-1" class="slide level2">
+<section id="mime-type-sniffing-1" class="slide level2 unnumbered unlisted">
 <h2>MIME Type Sniffing</h2>
 <ul>
 <li>X-Content-Type-Options: nosniff</li>
@@ -440,7 +442,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="mime-type-sniffing-2" class="slide level2">
+<section id="mime-type-sniffing-2" class="slide level2 unnumbered unlisted">
 <h2>MIME Type Sniffing</h2>
 <ul>
 <li>Security concern:
@@ -470,9 +472,11 @@
 <li>The Content-Type will be set to let our server know the MIME type</li>
 </ul></li>
 </ul>
-</section>
-<section id="sending-images" class="slide level2">
-<h2>Sending Images</h2>
+</section></section>
+<section>
+<section id="sending-images" class="title-slide slide level1 center">
+<h1>Sending Images</h1>
+
 </section>
 <section id="sending-images-1" class="slide level2">
 <h2>Sending Images</h2>
@@ -488,7 +492,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="sending-images-2" class="slide level2">
+<section id="sending-images-2" class="slide level2 unnumbered unlisted">
 <h2>Sending Images</h2>
 <ul>
 <li>When sending images
@@ -503,7 +507,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="sending-images-3" class="slide level2">
+<section id="sending-images-3" class="slide level2 unnumbered unlisted">
 <h2>Sending Images</h2>
 <ul>
 <li>Don't overthink sending images</li>

@@ -25,7 +25,7 @@ released: true
   - Read the request type (GET/POST), path, headers, and body
   - No other information can be requested from the client
 
-## State
+## State {.unnumbered .unlisted}
 
 - We often want the client to have state
 - State is required for authentication
@@ -41,7 +41,7 @@ released: true
   - Tell the client to set a cookie using a header in your response
   - Client sends that cookie in a header on all subsequent requests
 
-## Cookies
+## Cookies {.unnumbered .unlisted}
 
 - Since cookies work through HTTP headers:
   - ASCII only
@@ -53,7 +53,7 @@ released: true
 - `Cookie`
   - The client will send all Cookies with each HTTP request using this header
 
-## Set-Cookie
+## Set-Cookie Header
 
 - The `Set-Cookie` header is used by servers to tell the client to set a cookie
 - Cookies are sent as key-value pairs
@@ -63,7 +63,7 @@ released: true
   - `Set-Cookie: id=X6kAwpgW29M`
   - `Set-Cookie: visits=4`
 
-## Set-Cookie
+## Set-Cookie {.unnumbered .unlisted}
 
 - Only 1 cookie can be set using `Set-Cookie`
 - If you want to set multiple cookies
@@ -72,7 +72,7 @@ released: true
     - *In this course, we won't worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)
     - The browser must handle this when it parses our headers
 
-## Cookie
+## Cookie Header
 
 - The header used by clients to deliver all cookies that have been set
 - Syntax [Similar to Set-Cookie]:
@@ -181,166 +181,58 @@ released: true
 ## User Sessions
 
 
-User sends their first chat message
+![](assets/cookies_1.svg){fig-alt="A client, server and database diagram. The client is sending a request to the server with their first chat message"}
+
+- Client sends their first chat message
+- There are no cookies in this request
+  - The server knows this is their first message since no cookies have been set
 
 
-- The server knows this is their first message since there is no cookie in their request
+## User Sessions {.unnumbered .unlisted}
 
 
-## User Sessions
+![](assets/cookies_2.svg){fig-alt="A client, server and database diagram. The server is storing a randomly-generated username and token in the database"}
 
-
-```
-Username:
-Guest-r8d
-```
-
-```
-Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792
-```
-
-Database
-
-User/Client
-
-Server
 
 - Server generates a random username for this user
 - Server generates a random secret token that will uniquely identify the user
-- Store both values in a database
-
-![](assets/slide22-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## User Sessions
+- Store both values in the database
 
 
-```
-Set a cookie with the value
-"fd933a6e-b4c6-4636-
-b046-ac8b8d617792"
-```
+## User Sessions {.unnumbered .unlisted}
 
-Database
+![](assets/cookies_3.svg){fig-alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token"}
 
-User/Client
-
-Server
-
-```
-Username:
-Guest-r8d
-```
-
-```
-Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792
-```
 
 - In the response to the user, set a cookie containing their token
 - Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
   - It's a session cookie in that it tracks a users session with our app
-  - It's not a session cookie in that it is not tied to session of their browser
-
-![](assets/slide23-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## User Sessions
+  - It's not a session cookie in that it is not tied to this session of their browser
 
 
-```
-Next chat message contains
-"fd933a6e-b4c6-4636-b046-
-ac8b8d617792" in a cookie
-```
+## User Sessions {.unnumbered .unlisted}
 
-Database
+![](assets/cookies_4.svg){fig-alt="A client, server and database diagram. User sends another chat message to the server"}
 
-User/Client
-
-Server
-
-```
-Username:
-Guest-r8d
-```
-
-```
-Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792
-```
-
-- Since this token is set as a cookie
-  - It is sent in the headers of all subsequent requests from this user
-
-![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## User Sessions
+- All subsequent requests will contain this user's token in a cookie
 
 
-```
-Lookup the
-record with a
-Token equal to
-"fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792"
-```
+## User Sessions {.unnumbered .unlisted}
 
-Database
+![](assets/cookies_5.svg){fig-alt="A client, server and database diagram. The server looks up this user's username using their token that is read from the cookie"}
 
-User/Client
-
-Server
-
-```
-Username:
-Guest-r8d
-```
-
-```
-Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792
-```
-
-- The server see that there is a cookie set and looks up the token in the database to retrieve this users profile including their username
-- When adding the chat message to the database, we know to set "Guest-r8d" as the author
-
-![](assets/slide25-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## User Sessions
+- The server sees that there is a cookie in this request and looks up the token in the database to retrieve this users profile, including their username
+- When adding the new chat message to the database, we know to set "Anon243" as the author
 
 
-```
-Thanks for the
-message!
-```
+## User Sessions {.unnumbered .unlisted}
 
-Database
-
-User/Client
-
-Server
-
-```
-Username:
-Guest-r8d
-```
-
-```
-Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792
-```
+![](assets/cookies_6.svg){fig-alt="A client, server and database diagram. The server responds to subsequent chat messages with responses that do not set any cookies"}
 
 - No need to set cookies or do anything special on subsequent responses
 
-![](assets/slide26-diagram.jpg){fig-alt="TODO: describe this image"}
 
-## User Sessions
+## User Sessions {.unnumbered .unlisted}
 
 - With multiple users:
   - Each user has a different username and token

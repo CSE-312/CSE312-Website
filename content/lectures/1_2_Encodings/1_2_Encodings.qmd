@@ -46,12 +46,12 @@ MIME types and bytes
   - Numbers are mapped back to characters by the receiver
 - ASCII uses 7 bit encodings
 
-## ASCII Chart
+## ASCII Chart  {.unnumbered .unlisted}
 
 
 ![](assets/slide06-1.png){fig-alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value"}
 
-## ASCII
+## ASCII {.unnumbered .unlisted}
 
 - As a String:
   - "hello"
@@ -69,7 +69,7 @@ HTTP Headers can only contain
 
 ASCII characters
 
-## HTTP Headers
+## HTTP Headers {.unnumbered .unlisted}
 
 - When reading HTTP headers [And request/status lines]
   - Assume it is text encoded using ASCII
@@ -97,7 +97,7 @@ ASCII characters
 
 ![](assets/slide11-1.png){fig-alt="TODO: describe this image"}
 
-## UTF-8
+## UTF-8 {.unnumbered .unlisted}
 
 - If more bytes are needed:
   - Lead with 1's to indicate the number of bytes
@@ -118,7 +118,7 @@ ASCII characters
   - Must convert to a language-specific String
   - Decode the bytes using the proper encoding
 
-## Sending Data
+## Sending Data {.unnumbered .unlisted}
 
 - Use the Python methods
   - .encode()
@@ -136,13 +136,13 @@ ASCII characters
 - Any non-ASCII UTF-8 character uses >1 byte
   - Cannot use the length of the String as your Content-Length!
 
-## Content Length
+## Content Length {.unnumbered .unlisted}
 
 - To compute the content length of a UTF-8 String
   - Convert to bytes first
   - Get the length of the byte array
 
-## MIME Types
+# MIME Types
 
 ## MIME Types
 
@@ -152,7 +152,7 @@ ASCII characters
   - Tells the browser how to read the body of your response
 - This is the MIME type of the data
 
-## MIME Types
+## MIME Types {.unnumbered .unlisted}
 
 - MIME type
   - Multipurpose Internet Mail Extensions
@@ -164,7 +164,7 @@ ASCII characters
   - image - Raw binary of an image file
   - video - Raw binary of a video
 
-## MIME Types
+## MIME Types {.unnumbered .unlisted}
 
 - Common Type/Subtypes
   - text/plain
@@ -176,7 +176,7 @@ ASCII characters
   - video/mp4
   - application/json
 
-## MIME Types
+## MIME Types {.unnumbered .unlisted}
 
 - Optional settings can be added to the Content-Type header
   - Separate options by a ;
@@ -196,7 +196,7 @@ ASCII characters
 - Set this HTTP header to tell the browser you set the correct MIME type
   - X-Content-Type-Options: nosniff
 
-## MIME Type Sniffing
+## MIME Type Sniffing {.unnumbered .unlisted}
 
 - X-Content-Type-Options: nosniff
 - Be sure to set this header properly!
@@ -204,7 +204,7 @@ ASCII characters
   - Check the headers of your response
   - Make sure this header was parsed by the browser
 
-## MIME Type Sniffing
+## MIME Type Sniffing {.unnumbered .unlisted}
 
 - Security concern:
   - You have a site where users can upload images
@@ -223,7 +223,7 @@ ASCII characters
 - When receiving an HTTP request that contains a body
   - The Content-Type will be set to let our server know the MIME type
 
-## Sending Images
+# Sending Images
 
 ## Sending Images
 
@@ -235,7 +235,7 @@ ASCII characters
   - Content-Length is the size of the file
   - Set the Content-Type to image/`<image_type>`
 
-## Sending Images
+## Sending Images {.unnumbered .unlisted}
 
 - When sending images
   - Since the data is already in bytes when the file is read, no need to encode/decode
@@ -244,7 +244,7 @@ ASCII characters
 - An image is not encoded using UTF-8
   - The bytes will not decode properly
 
-## Sending Images
+## Sending Images {.unnumbered .unlisted}
 
 - Don't overthink sending images
 - Read the bytes of the file. That's the body of your response

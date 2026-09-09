@@ -67,9 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 
@@ -89,13 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#cookies" id="toc-cookies" class="nav-link active" data-scroll-target="#cookies">Cookies</a>
   <ul class="collapse">
   <li><a href="#state" id="toc-state" class="nav-link" data-scroll-target="#state">State</a></li>
-  <li><a href="#state-1" id="toc-state-1" class="nav-link" data-scroll-target="#state-1">State</a></li>
   <li><a href="#cookies-1" id="toc-cookies-1" class="nav-link" data-scroll-target="#cookies-1">Cookies</a></li>
-  <li><a href="#cookies-2" id="toc-cookies-2" class="nav-link" data-scroll-target="#cookies-2">Cookies</a></li>
   <li><a href="#cookie-headers" id="toc-cookie-headers" class="nav-link" data-scroll-target="#cookie-headers">Cookie Headers</a></li>
-  <li><a href="#set-cookie" id="toc-set-cookie" class="nav-link" data-scroll-target="#set-cookie">Set-Cookie</a></li>
-  <li><a href="#set-cookie-1" id="toc-set-cookie-1" class="nav-link" data-scroll-target="#set-cookie-1">Set-Cookie</a></li>
-  <li><a href="#cookie" id="toc-cookie" class="nav-link" data-scroll-target="#cookie">Cookie</a></li>
+  <li><a href="#set-cookie-header" id="toc-set-cookie-header" class="nav-link" data-scroll-target="#set-cookie-header">Set-Cookie Header</a></li>
+  <li><a href="#cookie-header" id="toc-cookie-header" class="nav-link" data-scroll-target="#cookie-header">Cookie Header</a></li>
   <li><a href="#directives" id="toc-directives" class="nav-link" data-scroll-target="#directives">Directives</a></li>
   <li><a href="#directives---expires" id="toc-directives---expires" class="nav-link" data-scroll-target="#directives---expires">Directives - Expires</a></li>
   <li><a href="#directives---max-age" id="toc-directives---max-age" class="nav-link" data-scroll-target="#directives---max-age">Directives - Max-Age</a></li>
@@ -110,12 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#tracking-user-sessions-with-cookies" id="toc-tracking-user-sessions-with-cookies" class="nav-link" data-scroll-target="#tracking-user-sessions-with-cookies">Tracking User Sessions with Cookies</a></li>
   <li><a href="#user-sessions" id="toc-user-sessions" class="nav-link" data-scroll-target="#user-sessions">User Sessions</a></li>
-  <li><a href="#user-sessions-1" id="toc-user-sessions-1" class="nav-link" data-scroll-target="#user-sessions-1">User Sessions</a></li>
-  <li><a href="#user-sessions-2" id="toc-user-sessions-2" class="nav-link" data-scroll-target="#user-sessions-2">User Sessions</a></li>
-  <li><a href="#user-sessions-3" id="toc-user-sessions-3" class="nav-link" data-scroll-target="#user-sessions-3">User Sessions</a></li>
-  <li><a href="#user-sessions-4" id="toc-user-sessions-4" class="nav-link" data-scroll-target="#user-sessions-4">User Sessions</a></li>
-  <li><a href="#user-sessions-5" id="toc-user-sessions-5" class="nav-link" data-scroll-target="#user-sessions-5">User Sessions</a></li>
-  <li><a href="#user-sessions-6" id="toc-user-sessions-6" class="nav-link" data-scroll-target="#user-sessions-6">User Sessions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -164,8 +152,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="state-1" class="level2">
-<h2 class="anchored" data-anchor-id="state-1">State</h2>
+<section id="state-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="state-1">State</h2>
 <ul>
 <li>We often want the client to have state</li>
 <li>State is required for authentication
@@ -188,8 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="cookies-2" class="level2">
-<h2 class="anchored" data-anchor-id="cookies-2">Cookies</h2>
+<section id="cookies-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="cookies-2">Cookies</h2>
 <ul>
 <li>Since cookies work through HTTP headers:
 <ul>
@@ -210,8 +198,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="set-cookie" class="level2">
-<h2 class="anchored" data-anchor-id="set-cookie">Set-Cookie</h2>
+<section id="set-cookie-header" class="level2">
+<h2 class="anchored" data-anchor-id="set-cookie-header">Set-Cookie Header</h2>
 <ul>
 <li>The <code>Set-Cookie</code> header is used by servers to tell the client to set a cookie</li>
 <li>Cookies are sent as key-value pairs</li>
@@ -226,8 +214,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="set-cookie-1" class="level2">
-<h2 class="anchored" data-anchor-id="set-cookie-1">Set-Cookie</h2>
+<section id="set-cookie" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="set-cookie">Set-Cookie</h2>
 <ul>
 <li>Only 1 cookie can be set using <code>Set-Cookie</code></li>
 <li>If you want to set multiple cookies
@@ -241,8 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="cookie" class="level2">
-<h2 class="anchored" data-anchor-id="cookie">Cookie</h2>
+<section id="cookie-header" class="level2">
+<h2 class="anchored" data-anchor-id="cookie-header">Cookie Header</h2>
 <ul>
 <li>The header used by clients to deliver all cookies that have been set</li>
 <li>Syntax [Similar to Set-Cookie]:
@@ -422,151 +410,60 @@ document.addEventListener("DOMContentLoaded", function () {
 </section>
 <section id="user-sessions" class="level2">
 <h2 class="anchored" data-anchor-id="user-sessions">User Sessions</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-  participant Browser as Browser (Front End)
-  participant Server as Web Server (Back End)
-  participant Database as Database
-  Browser-&gt;&gt;Server: 1. Request HTML
-  Server-&gt;&gt;Browser: 2. Sends HTML
-  Server-&gt;&gt;Database: 3. Sent the token awerfoi34hj98gfq3nhf9834hf19834uhf198p34fh1o3ig1h9834fh19384fh134f
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-  Client --&gt;|HTTP request| Server
-  Server --&gt;|HTTP response| Client
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<pre><code>User send their first
-chat message</code></pre>
-<p>-No cookies</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
+<p><img src="assets/cookies_1.svg" class="img-fluid" alt="A client, server and database diagram. The client is sending a request to the server with their first chat message"></p>
 <ul>
-<li>The server knows this is their first message since there is no cookie in their request</li>
+<li>Client sends their first chat message</li>
+<li>There are no cookies in this request
+<ul>
+<li>The server knows this is their first message since no cookies have been set</li>
+</ul></li>
 </ul>
-<p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-1" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-1">User Sessions</h2>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
+<section id="user-sessions-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-1">User Sessions</h2>
+<p><img src="assets/cookies_2.svg" class="img-fluid" alt="A client, server and database diagram. The server is storing a randomly-generated username and token in the database"></p>
 <ul>
 <li>Server generates a random username for this user</li>
 <li>Server generates a random secret token that will uniquely identify the user</li>
-<li>Store both values in a database</li>
+<li>Store both values in the database</li>
 </ul>
-<p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-2" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-2">User Sessions</h2>
-<pre><code>Set a cookie with the value
-"fd933a6e-b4c6-4636-
-b046-ac8b8d617792"</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
+<section id="user-sessions-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-2">User Sessions</h2>
+<p><img src="assets/cookies_3.svg" class="img-fluid" alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token"></p>
 <ul>
 <li>In the response to the user, set a cookie containing their token</li>
 <li>Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
 <ul>
 <li>It's a session cookie in that it tracks a users session with our app</li>
-<li>It's not a session cookie in that it is not tied to session of their browser</li>
+<li>It's not a session cookie in that it is not tied to this session of their browser</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-3" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-3">User Sessions</h2>
-<pre><code>Next chat message contains
-"fd933a6e-b4c6-4636-b046-
-ac8b8d617792" in a cookie</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
+<section id="user-sessions-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-3">User Sessions</h2>
+<p><img src="assets/cookies_4.svg" class="img-fluid" alt="A client, server and database diagram. User sends another chat message to the server"></p>
 <ul>
-<li>Since this token is set as a cookie
-<ul>
-<li>It is sent in the headers of all subsequent requests from this user</li>
-</ul></li>
+<li>All subsequent requests will contain this user's token in a cookie</li>
 </ul>
-<p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-4" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-4">User Sessions</h2>
-<pre><code>Lookup the
-record with a
-Token equal to
-"fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792"</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
+<section id="user-sessions-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-4">User Sessions</h2>
+<p><img src="assets/cookies_5.svg" class="img-fluid" alt="A client, server and database diagram. The server looks up this user's username using their token that is read from the cookie"></p>
 <ul>
-<li>The server see that there is a cookie set and looks up the token in the database to retrieve this users profile including their username</li>
-<li>When adding the chat message to the database, we know to set "Guest-r8d" as the author</li>
+<li>The server sees that there is a cookie in this request and looks up the token in the database to retrieve this users profile, including their username</li>
+<li>When adding the new chat message to the database, we know to set "Anon243" as the author</li>
 </ul>
-<p><img src="assets/slide25-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-5" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-5">User Sessions</h2>
-<pre><code>Thanks for the
-message!</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-<pre><code>Username:
-Guest-r8d</code></pre>
-<pre><code>Token: fd933a6e-
-b4c6-4636-b046-
-ac8b8d617792</code></pre>
+<section id="user-sessions-5" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-5">User Sessions</h2>
+<p><img src="assets/cookies_6.svg" class="img-fluid" alt="A client, server and database diagram. The server responds to subsequent chat messages with responses that do not set any cookies"></p>
 <ul>
 <li>No need to set cookies or do anything special on subsequent responses</li>
 </ul>
-<p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="user-sessions-6" class="level2">
-<h2 class="anchored" data-anchor-id="user-sessions-6">User Sessions</h2>
+<section id="user-sessions-6" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="user-sessions-6">User Sessions</h2>
 <ul>
 <li>With multiple users:
 <ul>

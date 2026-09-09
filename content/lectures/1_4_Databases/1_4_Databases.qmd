@@ -24,7 +24,7 @@ released: true
   - Allows us to think about our data, not how to store it
 - Provides many optimizations
 
-## Databases
+## Databases {.unnumbered .unlisted}
 
 - We'll look at 2 different databases
 - Both are pieces of software that must be downloaded, installed, ran, then connected to via TCP
@@ -151,7 +151,7 @@ for records.Next() {
     - Adding a column can be difficult
   - Fast!
 
-## MongoDB vs. SQL
+## MongoDB vs. SQL {.unnumbered .unlisted}
 
 - Hot Take
   - MongoDB is best for prototyping when the structure of your data is constantly changing
@@ -170,7 +170,7 @@ for records.Next() {
 - Use additional markup to add placeholders in the HTML
 - Replace the placeholders with data at runtime
 
-## HTML Templates
+## HTML Templates {.unnumbered .unlisted}
 
 - Example template with 3 placeholders
 - The title, description, and image_filename will be replaced later
@@ -195,7 +195,7 @@ for records.Next() {
 </html>
 ```
 
-## HTML Templates
+## HTML Templates {.unnumbered .unlisted}
 
 - To substitute the placeholders
   - Use any string manipulation that gets the job done
@@ -220,7 +220,7 @@ for records.Next() {
 </html>
 ```
 
-## HTML Templates
+## HTML Templates {.unnumbered .unlisted}
 
 - On the HW:
   - layout.html contains all the HTML that is shown on every page (navigation, structure, etc)
@@ -252,7 +252,7 @@ for records.Next() {
 </html>
 ```
 
-## Common Template Features
+## Common Template Features {.unnumbered .unlisted}
 
 - Conditionals
 - Can use similar approach as loops

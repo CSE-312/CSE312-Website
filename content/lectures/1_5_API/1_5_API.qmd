@@ -21,27 +21,20 @@ released: true
   - etc.
 - How should users interact with stored data?
 
-## Data
+## Data {.unnumbered .unlisted}
 
 - How do users interact with stored data?
 
 
-User/Client
 
-Server
-
-Database
 
 ![](assets/slide03-diagram.jpg){fig-alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"}
 
-## Data
+## Data {.unnumbered .unlisted}
 
 
 - How does our server interact with stored data?
 
-Server
-
-Database
 
 ![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
 
@@ -66,7 +59,7 @@ db.Exec(`
 	`, email, username)
 ```
 
-## CRUD - Create
+## CRUD - Create {.unnumbered .unlisted}
 
 - When a record is created, it should be assigned a unique id
   - This id will be used to identify the created record
@@ -123,7 +116,7 @@ UPDATE user SET email=$1, username=$2 WHERE id=$3
 DELETE FROM user WHERE id=$1
 ```
 
-## CRUD - Delete
+## CRUD - Delete {.unnumbered .unlisted}
 
 - In practice, common to "soft delete"
   - Don't actually delete the data
@@ -179,7 +172,7 @@ Server
   - `f(f(x)) == f(x)`
   - Including any side-effects of `f`
 
-## HTTP - Idempotent
+## HTTP - Idempotent {.unnumbered .unlisted}
 
 - GET, PUT, and DELETE are idempotent
 - GET should not change the data/state of the API
@@ -188,13 +181,13 @@ Server
   - A second identical PUT doesn't change anything since the record was already replaced
 - Deleting a record twice has the same effect on the API as deleting the record once
 
-## HTTP - Idempotent
+## HTTP - Idempotent {.unnumbered .unlisted}
 
 - POST is not idempotent
 - Since the server is processing the data, there is no implied idempotent property
 - eg. Sending 2 identical POST requests to create a record will result in 2 records being created with different ids
 
-## HTTP - Idempotent
+## HTTP - Idempotent {.unnumbered .unlisted}
 
 - PATCH is not idempotent
 - In practice, PATCH endpoints are usually idempotent
@@ -235,14 +228,14 @@ Server
   - Usually accepted in practice (API tokens)
 
 
-## REST Constraints
+## REST Constraints {.unnumbered .unlisted}
 
 - Cacheablility
   - Each response must contain caching information
   - Requests should be cached if possible
   - Avoid stale data from being cached
 
-## REST Constraints
+## REST Constraints {.unnumbered .unlisted}
 
 
 - Layered-System
@@ -252,7 +245,7 @@ Server
   - Ex: The client uses a VPN
 
 
-## REST Constraints
+## REST Constraints {.unnumbered .unlisted}
 
 - Uniform Interface
   - Resources are defined in the requests
