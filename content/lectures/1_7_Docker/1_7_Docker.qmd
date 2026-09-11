@@ -1,12 +1,9 @@
 ---
 title: "Docker and Docker Compose"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Introduction to Docker and docker compose"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://www.docker.com/"
     text: "Docker"
@@ -17,14 +14,11 @@ reading-list:
   - url: "https://docs.docker.com/compose/"
     text: "Docker Compose"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## Docker and docker compose
+# Containers
 
-1
 
 ## Vocab
 
@@ -37,7 +31,7 @@ released: false
   - The live server with real end users
   - Do everything we can to avoid bugs in production
 
-2
+
 
 ## Deployment Headaches
 
@@ -45,12 +39,12 @@ released: false
 - Run your code in production and it's broken
 - Many causes
   - Different version of compiler/interpreter
-  - Dependancies not linked
+  - Dependencies not linked
   - Hard-coded paths
   - Different environment variables
   - etc.
 
-3
+
 
 ## Virtual Machines
 
@@ -59,36 +53,36 @@ released: false
 - Run an exact copy of the VM on the production server
 - No more surprise deployment issues
 - Simulating an entire machine can be inefficient
-  - If you've ran a VM on your laptop you know how slow this can get
+  - If you've run a VM on your laptop you know how slow this can get
 
-4
+
+## Containers
+
+- Effectively, lightweight VMs
+- Efficiently shares resources across containers
+  - As opposed to VMs which require dedicated ram/cpu/disk
+
 
 ## Security
 
-- Can't break out of the VM [Without sophisticated attacks]
+- Can't break out of a VM/Container [Without sophisticated attacks]
 - If an attacker compromises the server, they can only access what you put in the container
   - Can't "rm -rf /" your entire machine
   - Patch the exploited vulnerability and rebuild the image
 - The attacker can still cause significant damage and steal private data
   - They just can't destroy your server box
 
-5
 
-## Security
+
+## Security {.unnumbered .unlisted}
 
 - Sometimes an app has to allow code injection attacks to function
-  - AutoLab
+  - Autolab
   - AWS
   - Digital Ocean
 - Run user code in their own VM/Container
+  - One malicious user cannot take down the entire service
 
-6
-
-## Containers
-
-- Effectively, lightweight VMs
-
-7
 
 ## Docker
 
@@ -96,7 +90,7 @@ released: false
 - Install Docker in your development environment to test containers
 - Install Docker in your production environment and run the same containers
 
-8
+
 
 ## Dockerfile
 
@@ -104,972 +98,688 @@ released: false
 - This file contains all the instructions needed to build a Docker image
   - Some similarities to a Makefile
 
-9
 
-## Dockerfile
+
+## Dockerfile {.unnumbered .unlisted}
+
+
+:::: {.columns}
+::: {.column width="50%"}
 
 - Let's explore this sample Dockerfile
+- This Dockerfile creates an image for a node.js app
+  - You don't need to know node.js. We're using this example to learn Docker
 
-FROM ubuntu:18.04
+:::
+::: {.column width="50%"}
 
-RUN apt-get update
+```dockerfile
+FROM ubuntu:26.04
 
-```
-ENV HOME /root
-```
+WORKDIR /app
 
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-- This Dockerfile creates an image for a node.js app
-
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
 
-# Run the app
+## Dockerfile {.unnumbered .unlisted}
 
-CMD node app-www.js
 
-10
-
-## Dockerfile
+:::: {.columns}
+::: {.column width="50%"}
 
 - The first line of your Dockerfile will specify the base image
 - This image is downloaded and the rest of your Dockerfile adds to this image
-- In this example: We start with Ubuntu 18.04
+- In this example: We start with Ubuntu 26.04
 
-FROM ubuntu:18.04
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="1-1"}
+FROM ubuntu:26.04
 
-RUN apt-get update
+WORKDIR /app
 
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-  - Our Dockerfile can run Linux commands in Ubunutu
 
-```
-EXPOSE 8000
-```
+## Dockerfile {.unnumbered .unlisted}
 
-# Run the app
 
-CMD node app-www.js
+:::: {.columns}
+::: {.column width="50%"}
 
-11
-
-## Dockerfile
-
-- Use the RUN keyword to run commands in the base image
-- Use this for any setup of your OS before setting up your app
-- In this example: Updating apt-get which is used to install software
-
-FROM ubuntu:18.04
-
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
-RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm
-```
-
-```
-COPY . .
-```
-
-```
-RUN npm install
-```
-
-```
-EXPOSE 8000
-```
-
-# Run the app
-
-CMD node app-www.js
-
-12
-
-## Dockerfile
-
-- Use ENV to set environment variables
-  - Setting the home directory here
-  - Can use ENV to setup any other variables you need
 - Use WORKDIR to change your current working directory
   - Same as "cd"
+- This Dockerfile sets the working directory to `/app`
+- You'll know where your files are if you ever have to navigate the container
 
-FROM ubuntu:18.04
+:::
+::: {.column width="50%"}
 
-RUN apt-get update
+```{.dockerfile code-line-numbers="3"}
+FROM ubuntu:26.04
 
-```
-ENV HOME /root
-```
+WORKDIR /app
 
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
+## Dockerfile {.unnumbered .unlisted}
 
-# Run the app
 
-CMD node app-www.js
+:::: {.columns}
+::: {.column width="50%"}
 
-13
+- Use the `RUN` keyword to run commands in the base image
+- We are starting with a fresh Ubuntu install
+  - Need to run any commands needed for your app to run
+- This is the same as running these commands in the terminal
+- Use flags like `-y` to ensure everything is automated
+- All commands run as root
+  - No need for `sudo`
 
-## Dockerfile
+:::
+::: {.column width="50%"}
 
-- Since we're starting with a fresh image of Ubuntu:
-  - Only the default software is installed
-- RUN commands to install all required software for your app
-  - Typically the development tools for your language of choice
+```{.dockerfile code-line-numbers="5-7,10"}
+FROM ubuntu:26.04
 
-FROM ubuntu:18.04
+WORKDIR /app
 
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
 
-# Run the app
+## Dockerfile {.unnumbered .unlisted}
 
-CMD node app-www.js
 
-14
+:::: {.columns}
+::: {.column width="50%"}
 
-## Dockerfile
+- Use `COPY` to copy local files into your image
+`COPY <local_src> <image_dest>`
+- Need to copy all files needed for your app
+- Destination is relative to the working directory that we set on line 3
 
-- COPY all your app file into the image
-- "." denotes the current directory
-- Run docker from your apps root directory
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="9,12-13"}
+FROM ubuntu:26.04
 
-FROM ubuntu:18.04
+WORKDIR /app
 
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-  - The the first "." will refer to your apps directory
-- We changed the home and working directory to /root
-
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-  - The second "." refers to /root in the image
+## Dockerfile {.unnumbered .unlisted}
 
-```
-EXPOSE 8000
-```
 
-# Run the app
+:::: {.columns}
+::: {.column width="50%"}
 
-CMD node app-www.js
+- Install any dependencies needed for your app
+- Copy in any files specifying your dependencies (e.g. `go.mod` and `go.sum`)
+- Very useful to do this before copying your code
+- Docker has a very good caching system and won't repeat steps where nothing changed
+  - Only reinstall dependencies when your dependencies change, not every time your code changes
 
-15
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="9-10"}
+FROM ubuntu:26.04
 
-## Dockerfile
+WORKDIR /app
 
-- Now that your apps files are in the image, run all app specific commands
-- Order is important
-  - Don't depend on your app files before copying them into the image
-- Use RUN to install dependancies and perform any other required setup
-
-FROM ubuntu:18.04
-
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
+## Dockerfile {.unnumbered .unlisted}
 
-# Run the app
 
-CMD node app-www.js
+:::: {.columns}
+::: {.column width="50%"}
+- Get your app ready to run
+  - Copy all the code for your app into the image
+  - If needed, compile your code after copying it
+    - Test compiling and running your code locally first (e.g. If you've only ever ran `go run .` you'll need to learn how to compile and run separately)
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="12-13"}
+FROM ubuntu:26.04
 
-16
+WORKDIR /app
 
-## Dockerfile
-
-- Use EXPOSE to allow specific ports to be accessed from outside the container
-- By default, all ports are blocked
-
-FROM ubuntu:18.04
-
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-  - Container is meant to run in isolation
-- To run a web app in a container, expose the port you need
-
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
 
-# Run the app
+## Dockerfile {.unnumbered .unlisted}
 
-CMD node app-www.js
 
-17
-
-## Dockerfile
-
+:::: {.columns}
+::: {.column width="50%"}
 - Finally, use CMD to run your app
 - Important: Do not use RUN to run your app!
 - RUN will execute the command when the image is being built
-- CMD will execute when the container is ran
-- We do not want the app to run when the image is being built
+- CMD will execute when the container is run
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="15"}
+FROM ubuntu:26.04
 
-FROM ubuntu:18.04
+WORKDIR /app
 
-RUN apt-get update
-
-```
-ENV HOME /root
-```
-
-```
-WORKDIR /root
-```
-
-```
 RUN apt-get update --fix-missing
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
-```
 
-```
-COPY . .
-```
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
+:::
+::::
 
-```
-EXPOSE 8000
-```
 
-# Run the app
+## Dockerfile {.unnumbered .unlisted}
 
-CMD node app-www.js
 
-18
-
-## Dockerfile
-
+:::: {.columns}
+::: {.column width="50%"}
 - There are many base images to choose from
-- Start with an image with your language installed to simplify your docker file
+- Start with an image with your language installed to simplify your Dockerfile
+  - Search "docker language" to find images/tutorials for your other language
+- This image starts with node and npm installed so we can remove the installation lines
+:::
+::: {.column width="50%"}
+```{.dockerfile code-line-numbers="1-1"}
+FROM node:24
 
-FROM node:13
+WORKDIR /app
 
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-COPY . .
-
-  - Search "docker `<language>`" to find images/tutorials for your favorite language
-- This image starts with node installed so we can remove the node installation lines
-
-```
+COPY package.json package.json
 RUN npm install
+
+COPY server.js server.js
+COPY src/ src/
+
+CMD ["node", "server.js"]
 ```
-
-EXPOSE 8000
-
-CMD node app-www.js
-
-19
-
-## Dockerfile
-
-- Example for Python
-
-FROM python:3.8
-
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-COPY . .
-
-```
-RUN pip3 install -r requirements.txt
-```
-
-EXPOSE 8000
-
-CMD python3 -u app.py
-
-20
-
-## Dockerfile
-
-- For Python
-  - Make sure you add this -u flag
-  - This will force stdout and stderr to be unbuffered
-  - Without it, when running in Docker, you might not see your print statements
-
-FROM python:3.8
-
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-COPY . .
-
-```
-RUN pip3 install -r requirements.txt
-```
-
-EXPOSE 8000
-
-CMD python3 -u app.py
-
-21
+:::
+::::
 
 ## Running Your App
 
+- Now that we have a Dockerfile, build an image using this command
+  - `docker build -t my-image .`
+- But we're interested in containers
+  - Images can be used to create many containers (Like a class being used to create objects)
+- To create a container from an image, run this command
+  - `docker run -p 8080:8080 my-mage`
+  - The `-p 8080:8080` will map local port 8080 to container port 8080
+  - Need to map the port for your app to be accessible from outside the container (e.g. From your browser)
+- Your app is now running in a docker container
+
+## Running Your App {.unnumbered .unlisted}
+
 - When preparing your app to run in a container
-  - Do not use "localhost" [in your code]
-  - Use "0.0.0.0" as the host instead
-  - This allows your app to be accessed from outside the container
+  - Do not use `localhost` [in your code]
+  - Use `0.0.0.0` as the host instead
+  - This allows your app to be accessed from outside the container by listening on all network interfaces
+- Go does this by default when using the `net` package
 
-22
+
+
+# Docker Compose
+
 
 ## Docker Compose
 
-## Docker Compose
-
-- Manages building/running docker images/containers
+- Docker compose manages building/running docker images/containers
 - Build and run with one command
-  - docker compose up --build --force-recreate
-- No need to use docker build and docker run
+`docker compose up --build --force-recreate --renew-anon-volumes`
+- No need to use `docker build` and `docker run`
 - Will be used to manage multiple containers
   - Separate container for your database
-- Let's walk through a docker-compose.yml file
+- Configure using a file named `compose.yaml`, `compose.yml`, or `docker-compose.yml`
 
-## Docker Compose
+## Docker Compose {.unnumbered .unlisted}
 
-docker-compose.yml
-
-```
-version: '3'
+:::: {.columns}
+::: {.column width="45%"}
+- CAUTION: DO NOT store passwords in plain text like this!
+  - Fine for Homework 1
+  - We will explore a better setup for homework 2
+- The `compose.yaml` file uses the YAML format
+  - White space (indentation) matters
+  - Format: `<key>:<value>`
+  - List values prefixed with `-`
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```yaml
 services:
-app:
-build: .
-ports:
-- '8080:8000'
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
 ```
+:::
+::::
 
-- Specify the docker compose file format version
-- Version 3[.8] is the current latest version
-- This line is now optional
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'
-```
-
+## Docker Compose {.unnumbered .unlisted}
+:::: {.columns}
+::: {.column width="45%"}
 - List of all the services for docker compose to run
 - A docker container is created for each service
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3'
+- This compose file will create 2 containers
+  - One for a mySQL database named `mysql`
+  - One for a web server named `app`
+- The name of each service will become its hostname when using network protocols across containers
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="1-2,9"}
 services:
-app:
-build: .
-ports:
-- '8080:8000'
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
 ```
+:::
+::::
 
-- Name each service
-- We have one service that we name "app"
-- This name becomes the hostname when communicating between containers
 
-## Docker Compose
+## Docker Compose {.unnumbered .unlisted}
 
-docker-compose.yml
-
-```
-version: '3'
+:::: {.columns}
+::: {.column width="45%"}
+- For each service, specify how to build its image
+- Use `image` to specify an image to use
+  - Same as having a 1 line Dockerfile
+  - `FROM mysql`
+  - Useful when you need very little customization
+- Use `build` to specify a local Dockerfile
+  - Specify the directory where the Dockerfile can be found
+  - Using `.` to specify the current directory
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="3,10"}
 services:
-app:
-build: .
-ports:
-- '8080:8000'
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
 ```
+:::
+::::
 
-- Use 'build' to specify the path to build from
-  - Docker compose will look in this directory for a Dockerfile and use it to build the image
-- Same as the trailing '.' when building an image
+## Docker Compose {.unnumbered .unlisted}
 
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'
-```
-
+:::: {.columns}
+::: {.column width="45%"}
 - Map a local port to a container port
-- Same as using "-p 8080:8000" when running a single container
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3'
+- Same as using `-p 8080:8080` when running a single container
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="15-16"}
 services:
-app:
-build: .
-ports:
-- '8080:8000'
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
 ```
+:::
+::::
 
-- Mapping a port allows your app [inside the container] to be accessed from your machine
-- This line maps your local port 8080 [On your machine] to port 8000 inside your container
+## Docker Compose {.unnumbered .unlisted}
 
-## Docker Compose
-
-
-docker-compose.yml
-
-```
-version: '3'
+:::: {.columns}
+::: {.column width="45%"}
+- Use `environment` to set any needed environment variables
+- When using MySQL, the image expects certain environment variables that are used for setup
+  - This is how you setup your username/password and the name of your database
+  - Hint: Postgres uses the same concept, but with different variable names
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="4-8"}
 services:
-app:
-build: .
-ports:
-- '8080:8000'
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
 ```
+:::
+::::
 
-http://localhost:8080
 
-Your Laptop
+## Docker Compose {.unnumbered .unlisted}
 
-http://app:8000
+:::: {.columns}
+::: {.column width="45%"}
+- You can also set environment variables in your app container
+  - Makes for a cleaner setup and can avoid storing plain-text passwords in your code
+  - When we learn about authentication, we will discus a better way to handle passwords
+    - Brief version: Use a `.env` file and use `${VARIABLE_NAME}` to read your variables
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="11-14"}
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
+```
+:::
+::::
 
-app
 
-container
 
-- When your machine receives a request for the mapped port
-  - Docker forwards the request to the container on the specified port
 
-![](assets/slide31-diagram.png){fig-alt="TODO: describe this image"}
+## Docker Compose {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="45%"}
+- We have a detrimental race condition
+- Docker compose will start both containers concurrently
+- Your code will likely connect to your database on startup
+  - What if the database is still starting up and not accepting connections yet?
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```yaml
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
+```
+:::
+::::
+
+
+
+## Docker Compose {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="45%"}
+- Many different solutions to the race
+- Find and implement your favorite approach:
+  - Handle rejected connections in your code gracefully and retry
+  - Use docker compose's `depends_on` with `healthcheck` (After reading the documentation)
+  - Use a 3rd party solution like `ufoscout`'s solution on GitHub
+:::
+::: {.column width="5%"}
+:::
+::: {.column width="50%"}
+```yaml
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '7PtypF^*6&to@PAhwaw5'
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+  app:
+    build: .
+    environment:
+      MYSQL_USER: mysql_username
+      MYSQL_PASSWORD: 'WTc&$5#jAd6jRe9gJ0nL'
+      MYSQL_DATABASE: my_db
+    ports:
+      - "8080:8080"
+```
+:::
+::::
+
+
+## Docker Compose {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="50%"}
+- When communicating across containers, the service name is the container's hostname
+- Connection string:
+
+  `postgres://user:pass@HOST:5432/db`
+
+- Running with `go run .`
+
+  HOST = `localhost`
+
+- Running with `docker compose up`
+
+  HOST = `postgres`
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="2"}
+services:
+  postgres:
+    image: postgres
+    ...
+  app:
+    build: .
+    ...
+    ports:
+      - "8080:8080"
+```
+:::
+::::
+
+
+## Docker Compose {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="50%"}
+- Note that you choose your service names
+- Be consistent!
+
+  HOST = `my_super_cool_service_name`
+
+- Must match the service name in `compose.yaml`
+:::
+::: {.column width="50%"}
+```{.yaml code-line-numbers="2"}
+services:
+  my_super_cool_service_name:
+    image: postgres
+    ...
+  app:
+    build: .
+    ...
+    ports:
+      - "8080:8080"
+```
+:::
+::::
 
 ## Running Your App
 
 - To run your app
-  - docker compose up
-- To run in detached mode
-  - docker compose up -d
+  - `docker compose up`
 - To rebuild and restart the containers
-  - docker compose up --build --force-recreate
-  - *This is the best command to use!
+  - `docker compose up --build --force-recreate --renew-anon-volumes`
+  - Will ensure your newest code is running in the containers
+  - Renewing anonymous volumes will destroy your database
+    - Remove this if you want your data to persist
 - To restart the container without rebuilding
-  - docker compose restart
+  - `docker compose restart`
 
-## Running Your App
 
-- To rebuild and restart the containers
-  - docker compose up --build --force-recreate
-- Use this command during development
-- Very important to rebuild your images after you change code
-  - If you don't, you will not see your changes since you'll be running your old code
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- Let's modify our docker compose configuration to run our database
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- "services" is a list of all the images/ containers to create
-- We'll add a second service for the DB
-
-## Docker Compose
-
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- Name each service
-- These names are used as the hostnames for each container
-  - Used to communicate between containers
-
-![](assets/slide36-diagram.png){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- This service named 'mongo' uses a pre-built image
-  - Same as having a 1-line Dockerfile:
-    - "FROM mongo:4.2.5"
-- No Dockerfile is needed
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- Use 'environment' to set any needed environment variables
-- If using MySQL, set variables for your username/ password
-
-## Docker Compose
-
-
-docker-compose.yml
-
-- We use an environment variable to tell our app to wait until the database is running before connecting to it
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-FROM python:3.8.2
-
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-```
-COPY . .
-RUN pip install -r requirements.txt
-```
-
-EXPOSE 8000
-
-```
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait
-```
-
-CMD /wait && python app.py
-
-![](assets/slide39-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-
-docker-compose.yml
-
-- If the app runs before the database, it won't be able to establish a DB connection
-- Solution: Wait for the DB to start before running the app
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-FROM python:3.8.2
-
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-```
-COPY . .
-RUN pip install -r requirements.txt
-```
-
-EXPOSE 8000
-
-```
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait
-```
-
-CMD /wait && python app.py
-
-![](assets/slide40-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-
-docker-compose.yml
-
-- This solution from github user "ufoscout" works well
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-FROM python:3.8.2
-
-```
-ENV HOME /root
-WORKDIR /root
-```
-
-```
-COPY . .
-RUN pip install -r requirements.txt
-```
-
-EXPOSE 8000
-
-```
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait
-```
-
-CMD /wait && python app.py
-
-![](assets/slide41-diagram.png){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-- This file is used to build both images and run both containers using docker-compose
-
-## Docker Compose
-
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'
-```
-
-mongo_client = MongoClient('localhost')
-
-mongo_client = MongoClient('mongo')
-
-- Recall that we chose names for each service
-- When connecting to the database in your app
-  - The service name is the hostname for the container
-
-![](assets/slide43-diagram.png){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-
-docker-compose.yml
-
-- version: '3.3' services: mongo: image: mongo:4.2.5 app: build: . environment: WAIT_HOSTS: mongo:27017 ports: - '8080:8000'
-- Use the name of the service
-- docker-compose will resolve this hostname to the appropriate container
-
-mongo_client = MongoClient('localhost')
-
-mongo_client = MongoClient('mongo')
-
-![](assets/slide44-diagram.png){fig-alt="TODO: describe this image"}
-
-## Docker Compose
-
-
-docker-compose.yml
-
-```
-version: '3.3'
-services:
-mysupercooldatabase:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mysupercooldatabase:27017
-ports:
-- '8080:8000'
-```
-
-mongo_client = MongoClient('localhost')
-
-mongo_client = MongoClient('mysupercooldatabase')
-
-- We can name our services whatever we want
-- Make sure you are consistent!
-
-![](assets/slide45-diagram.png){fig-alt="TODO: describe this image"}
-
-## Running Your App
-
-- docker-compose up --build --force-recreate
-  - Will now start both containers
-  - Use the service name as the host name to communicate across containers

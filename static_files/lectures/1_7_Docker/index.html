@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Introduction to Docker and docker compose">
 
 <title>Docker and Docker Compose – CSE312 Lectures</title>
 <style>
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -82,78 +118,21 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#docker-and-docker-compose" id="toc-docker-and-docker-compose" class="nav-link active" data-scroll-target="#docker-and-docker-compose">Docker and docker compose</a></li>
+  <li><a href="#containers" id="toc-containers" class="nav-link active" data-scroll-target="#containers">Containers</a>
+  <ul class="collapse">
   <li><a href="#vocab" id="toc-vocab" class="nav-link" data-scroll-target="#vocab">Vocab</a></li>
   <li><a href="#deployment-headaches" id="toc-deployment-headaches" class="nav-link" data-scroll-target="#deployment-headaches">Deployment Headaches</a></li>
   <li><a href="#virtual-machines" id="toc-virtual-machines" class="nav-link" data-scroll-target="#virtual-machines">Virtual Machines</a></li>
+  <li><a href="#containers-1" id="toc-containers-1" class="nav-link" data-scroll-target="#containers-1">Containers</a></li>
   <li><a href="#security" id="toc-security" class="nav-link" data-scroll-target="#security">Security</a></li>
-  <li><a href="#security-1" id="toc-security-1" class="nav-link" data-scroll-target="#security-1">Security</a></li>
-  <li><a href="#containers" id="toc-containers" class="nav-link" data-scroll-target="#containers">Containers</a></li>
   <li><a href="#docker" id="toc-docker" class="nav-link" data-scroll-target="#docker">Docker</a></li>
   <li><a href="#dockerfile" id="toc-dockerfile" class="nav-link" data-scroll-target="#dockerfile">Dockerfile</a></li>
-  <li><a href="#dockerfile-1" id="toc-dockerfile-1" class="nav-link" data-scroll-target="#dockerfile-1">Dockerfile</a></li>
-  <li><a href="#run-the-app" id="toc-run-the-app" class="nav-link" data-scroll-target="#run-the-app">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-2" id="toc-dockerfile-2" class="nav-link" data-scroll-target="#dockerfile-2">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-1" id="toc-run-the-app-1" class="nav-link" data-scroll-target="#run-the-app-1">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-3" id="toc-dockerfile-3" class="nav-link" data-scroll-target="#dockerfile-3">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-2" id="toc-run-the-app-2" class="nav-link" data-scroll-target="#run-the-app-2">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-4" id="toc-dockerfile-4" class="nav-link" data-scroll-target="#dockerfile-4">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-3" id="toc-run-the-app-3" class="nav-link" data-scroll-target="#run-the-app-3">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-5" id="toc-dockerfile-5" class="nav-link" data-scroll-target="#dockerfile-5">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-4" id="toc-run-the-app-4" class="nav-link" data-scroll-target="#run-the-app-4">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-6" id="toc-dockerfile-6" class="nav-link" data-scroll-target="#dockerfile-6">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-5" id="toc-run-the-app-5" class="nav-link" data-scroll-target="#run-the-app-5">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-7" id="toc-dockerfile-7" class="nav-link" data-scroll-target="#dockerfile-7">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-6" id="toc-run-the-app-6" class="nav-link" data-scroll-target="#run-the-app-6">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-8" id="toc-dockerfile-8" class="nav-link" data-scroll-target="#dockerfile-8">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-7" id="toc-run-the-app-7" class="nav-link" data-scroll-target="#run-the-app-7">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-9" id="toc-dockerfile-9" class="nav-link" data-scroll-target="#dockerfile-9">Dockerfile</a></li>
-  </ul></li>
-  <li><a href="#run-the-app-8" id="toc-run-the-app-8" class="nav-link" data-scroll-target="#run-the-app-8">Run the app</a>
-  <ul class="collapse">
-  <li><a href="#dockerfile-10" id="toc-dockerfile-10" class="nav-link" data-scroll-target="#dockerfile-10">Dockerfile</a></li>
-  <li><a href="#dockerfile-11" id="toc-dockerfile-11" class="nav-link" data-scroll-target="#dockerfile-11">Dockerfile</a></li>
-  <li><a href="#dockerfile-12" id="toc-dockerfile-12" class="nav-link" data-scroll-target="#dockerfile-12">Dockerfile</a></li>
   <li><a href="#running-your-app" id="toc-running-your-app" class="nav-link" data-scroll-target="#running-your-app">Running Your App</a></li>
-  <li><a href="#docker-compose" id="toc-docker-compose" class="nav-link" data-scroll-target="#docker-compose">Docker Compose</a></li>
+  </ul></li>
+  <li><a href="#docker-compose" id="toc-docker-compose" class="nav-link" data-scroll-target="#docker-compose">Docker Compose</a>
+  <ul class="collapse">
   <li><a href="#docker-compose-1" id="toc-docker-compose-1" class="nav-link" data-scroll-target="#docker-compose-1">Docker Compose</a></li>
-  <li><a href="#docker-compose-2" id="toc-docker-compose-2" class="nav-link" data-scroll-target="#docker-compose-2">Docker Compose</a></li>
-  <li><a href="#docker-compose-3" id="toc-docker-compose-3" class="nav-link" data-scroll-target="#docker-compose-3">Docker Compose</a></li>
-  <li><a href="#docker-compose-4" id="toc-docker-compose-4" class="nav-link" data-scroll-target="#docker-compose-4">Docker Compose</a></li>
-  <li><a href="#docker-compose-5" id="toc-docker-compose-5" class="nav-link" data-scroll-target="#docker-compose-5">Docker Compose</a></li>
-  <li><a href="#docker-compose-6" id="toc-docker-compose-6" class="nav-link" data-scroll-target="#docker-compose-6">Docker Compose</a></li>
-  <li><a href="#docker-compose-7" id="toc-docker-compose-7" class="nav-link" data-scroll-target="#docker-compose-7">Docker Compose</a></li>
-  <li><a href="#docker-compose-8" id="toc-docker-compose-8" class="nav-link" data-scroll-target="#docker-compose-8">Docker Compose</a></li>
-  <li><a href="#running-your-app-1" id="toc-running-your-app-1" class="nav-link" data-scroll-target="#running-your-app-1">Running Your App</a></li>
   <li><a href="#running-your-app-2" id="toc-running-your-app-2" class="nav-link" data-scroll-target="#running-your-app-2">Running Your App</a></li>
-  <li><a href="#docker-compose-9" id="toc-docker-compose-9" class="nav-link" data-scroll-target="#docker-compose-9">Docker Compose</a></li>
-  <li><a href="#docker-compose-10" id="toc-docker-compose-10" class="nav-link" data-scroll-target="#docker-compose-10">Docker Compose</a></li>
-  <li><a href="#docker-compose-11" id="toc-docker-compose-11" class="nav-link" data-scroll-target="#docker-compose-11">Docker Compose</a></li>
-  <li><a href="#docker-compose-12" id="toc-docker-compose-12" class="nav-link" data-scroll-target="#docker-compose-12">Docker Compose</a></li>
-  <li><a href="#docker-compose-13" id="toc-docker-compose-13" class="nav-link" data-scroll-target="#docker-compose-13">Docker Compose</a></li>
-  <li><a href="#docker-compose-14" id="toc-docker-compose-14" class="nav-link" data-scroll-target="#docker-compose-14">Docker Compose</a></li>
-  <li><a href="#docker-compose-15" id="toc-docker-compose-15" class="nav-link" data-scroll-target="#docker-compose-15">Docker Compose</a></li>
-  <li><a href="#docker-compose-16" id="toc-docker-compose-16" class="nav-link" data-scroll-target="#docker-compose-16">Docker Compose</a></li>
-  <li><a href="#docker-compose-17" id="toc-docker-compose-17" class="nav-link" data-scroll-target="#docker-compose-17">Docker Compose</a></li>
-  <li><a href="#docker-compose-18" id="toc-docker-compose-18" class="nav-link" data-scroll-target="#docker-compose-18">Docker Compose</a></li>
-  <li><a href="#docker-compose-19" id="toc-docker-compose-19" class="nav-link" data-scroll-target="#docker-compose-19">Docker Compose</a></li>
-  <li><a href="#docker-compose-20" id="toc-docker-compose-20" class="nav-link" data-scroll-target="#docker-compose-20">Docker Compose</a></li>
-  <li><a href="#running-your-app-3" id="toc-running-your-app-3" class="nav-link" data-scroll-target="#running-your-app-3">Running Your App</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -165,9 +144,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Docker and Docker Compose</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Introduction to Docker and docker compose
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -182,10 +165,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="docker-and-docker-compose" class="level2">
-<h2 class="anchored" data-anchor-id="docker-and-docker-compose">Docker and docker compose</h2>
-<p>1</p>
-</section>
+<section id="containers" class="level1">
+<h1>Containers</h1>
 <section id="vocab" class="level2">
 <h2 class="anchored" data-anchor-id="vocab">Vocab</h2>
 <ul>
@@ -202,7 +183,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Do everything we can to avoid bugs in production</li>
 </ul></li>
 </ul>
-<p>2</p>
 </section>
 <section id="deployment-headaches" class="level2">
 <h2 class="anchored" data-anchor-id="deployment-headaches">Deployment Headaches</h2>
@@ -212,13 +192,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Many causes
 <ul>
 <li>Different version of compiler/interpreter</li>
-<li>Dependancies not linked</li>
+<li>Dependencies not linked</li>
 <li>Hard-coded paths</li>
 <li>Different environment variables</li>
 <li>etc.</li>
 </ul></li>
 </ul>
-<p>3</p>
 </section>
 <section id="virtual-machines" class="level2">
 <h2 class="anchored" data-anchor-id="virtual-machines">Virtual Machines</h2>
@@ -229,15 +208,24 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>No more surprise deployment issues</li>
 <li>Simulating an entire machine can be inefficient
 <ul>
-<li>If you've ran a VM on your laptop you know how slow this can get</li>
+<li>If you've run a VM on your laptop you know how slow this can get</li>
 </ul></li>
 </ul>
-<p>4</p>
+</section>
+<section id="containers-1" class="level2">
+<h2 class="anchored" data-anchor-id="containers-1">Containers</h2>
+<ul>
+<li>Effectively, lightweight VMs</li>
+<li>Efficiently shares resources across containers
+<ul>
+<li>As opposed to VMs which require dedicated ram/cpu/disk</li>
+</ul></li>
+</ul>
 </section>
 <section id="security" class="level2">
 <h2 class="anchored" data-anchor-id="security">Security</h2>
 <ul>
-<li>Can't break out of the VM [Without sophisticated attacks]</li>
+<li>Can't break out of a VM/Container [Without sophisticated attacks]</li>
 <li>If an attacker compromises the server, they can only access what you put in the container
 <ul>
 <li>Can't "rm -rf /" your entire machine</li>
@@ -248,27 +236,21 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>They just can't destroy your server box</li>
 </ul></li>
 </ul>
-<p>5</p>
 </section>
-<section id="security-1" class="level2">
-<h2 class="anchored" data-anchor-id="security-1">Security</h2>
+<section id="security-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="security-1">Security</h2>
 <ul>
 <li>Sometimes an app has to allow code injection attacks to function
 <ul>
-<li>AutoLab</li>
+<li>Autolab</li>
 <li>AWS</li>
 <li>Digital Ocean</li>
 </ul></li>
-<li>Run user code in their own VM/Container</li>
-</ul>
-<p>6</p>
-</section>
-<section id="containers" class="level2">
-<h2 class="anchored" data-anchor-id="containers">Containers</h2>
+<li>Run user code in their own VM/Container
 <ul>
-<li>Effectively, lightweight VMs</li>
+<li>One malicious user cannot take down the entire service</li>
+</ul></li>
 </ul>
-<p>7</p>
 </section>
 <section id="docker" class="level2">
 <h2 class="anchored" data-anchor-id="docker">Docker</h2>
@@ -277,7 +259,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Install Docker in your development environment to test containers</li>
 <li>Install Docker in your production environment and run the same containers</li>
 </ul>
-<p>8</p>
 </section>
 <section id="dockerfile" class="level2">
 <h2 class="anchored" data-anchor-id="dockerfile">Dockerfile</h2>
@@ -288,736 +269,681 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Some similarities to a Makefile</li>
 </ul></li>
 </ul>
-<p>9</p>
 </section>
-<section id="dockerfile-1" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-1">Dockerfile</h2>
+<section id="dockerfile-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-1">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Let's explore this sample Dockerfile</li>
-</ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
+<li>This Dockerfile creates an image for a node.js app
 <ul>
-<li>This Dockerfile creates an image for a node.js app</li>
+<li>You don't need to know node.js. We're using this example to learn Docker</li>
+</ul></li>
 </ul>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="run-the-app" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>10</p>
-<section id="dockerfile-2" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-2">Dockerfile</h2>
+<section id="dockerfile-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-2">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>The first line of your Dockerfile will specify the base image</li>
 <li>This image is downloaded and the rest of your Dockerfile adds to this image</li>
-<li>In this example: We start with Ubuntu 18.04</li>
+<li>In this example: We start with Ubuntu 26.04</li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<ul>
-<li>Our Dockerfile can run Linux commands in Ubunutu</li>
-</ul>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-1" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>11</p>
-<section id="dockerfile-3" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-3">Dockerfile</h2>
+<section id="dockerfile-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-3">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>Use the RUN keyword to run commands in the base image</li>
-<li>Use this for any setup of your OS before setting up your app</li>
-<li>In this example: Updating apt-get which is used to install software</li>
-</ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
-</section>
-</section>
-<section id="run-the-app-2" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>12</p>
-<section id="dockerfile-4" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-4">Dockerfile</h2>
-<ul>
-<li>Use ENV to set environment variables
-<ul>
-<li>Setting the home directory here</li>
-<li>Can use ENV to setup any other variables you need</li>
-</ul></li>
 <li>Use WORKDIR to change your current working directory
 <ul>
 <li>Same as "cd"</li>
 </ul></li>
+<li>This Dockerfile sets the working directory to <code>/app</code></li>
+<li>You'll know where your files are if you ever have to navigate the container</li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-3" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>13</p>
-<section id="dockerfile-5" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-5">Dockerfile</h2>
+<section id="dockerfile-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-4">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>Since we're starting with a fresh image of Ubuntu:
+<li>Use the <code>RUN</code> keyword to run commands in the base image</li>
+<li>We are starting with a fresh Ubuntu install
 <ul>
-<li>Only the default software is installed</li>
+<li>Need to run any commands needed for your app to run</li>
 </ul></li>
-<li>RUN commands to install all required software for your app
+<li>This is the same as running these commands in the terminal</li>
+<li>Use flags like <code>-y</code> to ensure everything is automated</li>
+<li>All commands run as root
 <ul>
-<li>Typically the development tools for your language of choice</li>
+<li>No need for <code>sudo</code></li>
 </ul></li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-4" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>14</p>
-<section id="dockerfile-6" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-6">Dockerfile</h2>
+<section id="dockerfile-5" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-5">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>COPY all your app file into the image</li>
-<li>"." denotes the current directory</li>
-<li>Run docker from your apps root directory</li>
+<li>Use <code>COPY</code> to copy local files into your image <code>COPY &lt;local_src&gt; &lt;image_dest&gt;</code></li>
+<li>Need to copy all files needed for your app</li>
+<li>Destination is relative to the working directory that we set on line 3</li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<ul>
-<li>The the first "." will refer to your apps directory</li>
-<li>We changed the home and working directory to /root</li>
-</ul>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<ul>
-<li>The second "." refers to /root in the image</li>
-</ul>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb5-14"><a href="#cb5-14"></a></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-5" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>15</p>
-<section id="dockerfile-7" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-7">Dockerfile</h2>
+<section id="dockerfile-6" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-6">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>Now that your apps files are in the image, run all app specific commands</li>
-<li>Order is important
+<li>Install any dependencies needed for your app</li>
+<li>Copy in any files specifying your dependencies (e.g. <code>go.mod</code> and <code>go.sum</code>)</li>
+<li>Very useful to do this before copying your code</li>
+<li>Docker has a very good caching system and won't repeat steps where nothing changed
 <ul>
-<li>Don't depend on your app files before copying them into the image</li>
+<li>Only reinstall dependencies when your dependencies change, not every time your code changes</li>
 </ul></li>
-<li>Use RUN to install dependancies and perform any other required setup</li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb6-14"><a href="#cb6-14"></a></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-6" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>16</p>
-<section id="dockerfile-8" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-8">Dockerfile</h2>
+<section id="dockerfile-7" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-7">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>Use EXPOSE to allow specific ports to be accessed from outside the container</li>
-<li>By default, all ports are blocked</li>
-</ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
+<li>Get your app ready to run
 <ul>
-<li>Container is meant to run in isolation</li>
-<li>To run a web app in a container, expose the port you need</li>
+<li>Copy all the code for your app into the image</li>
+<li>If needed, compile your code after copying it
+<ul>
+<li>Test compiling and running your code locally first (e.g. If you've only ever ran <code>go run .</code> you'll need to learn how to compile and run separately)</li>
+</ul></li>
+</ul></li>
 </ul>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb7-8"><a href="#cb7-8"></a></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb7-14"><a href="#cb7-14"></a></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-7" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>17</p>
-<section id="dockerfile-9" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-9">Dockerfile</h2>
+<section id="dockerfile-8" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-8">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Finally, use CMD to run your app</li>
 <li>Important: Do not use RUN to run your app!</li>
 <li>RUN will execute the command when the image is being built</li>
-<li>CMD will execute when the container is ran</li>
-<li>We do not want the app to run when the image is being built</li>
+<li>CMD will execute when the container is run</li>
 </ul>
-<p>FROM ubuntu:18.04</p>
-<p>RUN apt-get update</p>
-<pre><code>ENV HOME /root</code></pre>
-<pre><code>WORKDIR /root</code></pre>
-<pre><code>RUN apt-get update --fix-missing
-RUN apt-get install -y nodejs
-RUN apt-get install -y npm</code></pre>
-<pre><code>COPY . .</code></pre>
-<pre><code>RUN npm install</code></pre>
-<pre><code>EXPOSE 8000</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb8-8"><a href="#cb8-8"></a></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-</section>
-<section id="run-the-app-8" class="level1">
-<h1>Run the app</h1>
-<p>CMD node app-www.js</p>
-<p>18</p>
-<section id="dockerfile-10" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-10">Dockerfile</h2>
+<section id="dockerfile-9" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="dockerfile-9">Dockerfile</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>There are many base images to choose from</li>
-<li>Start with an image with your language installed to simplify your docker file</li>
-</ul>
-<p>FROM node:13</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<p>COPY . .</p>
+<li>Start with an image with your language installed to simplify your Dockerfile
 <ul>
-<li>Search "docker <code>&lt;language&gt;</code>" to find images/tutorials for your favorite language</li>
-<li>This image starts with node installed so we can remove the node installation lines</li>
-</ul>
-<pre><code>RUN npm install</code></pre>
-<p>EXPOSE 8000</p>
-<p>CMD node app-www.js</p>
-<p>19</p>
-</section>
-<section id="dockerfile-11" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-11">Dockerfile</h2>
-<ul>
-<li>Example for Python</li>
-</ul>
-<p>FROM python:3.8</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<p>COPY . .</p>
-<pre><code>RUN pip3 install -r requirements.txt</code></pre>
-<p>EXPOSE 8000</p>
-<p>CMD python3 -u app.py</p>
-<p>20</p>
-</section>
-<section id="dockerfile-12" class="level2">
-<h2 class="anchored" data-anchor-id="dockerfile-12">Dockerfile</h2>
-<ul>
-<li>For Python
-<ul>
-<li>Make sure you add this -u flag</li>
-<li>This will force stdout and stderr to be unbuffered</li>
-<li>Without it, when running in Docker, you might not see your print statements</li>
+<li>Search "docker language" to find images/tutorials for your other language</li>
 </ul></li>
+<li>This image starts with node and npm installed so we can remove the installation lines</li>
 </ul>
-<p>FROM python:3.8</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<p>COPY . .</p>
-<pre><code>RUN pip3 install -r requirements.txt</code></pre>
-<p>EXPOSE 8000</p>
-<p>CMD python3 -u app.py</p>
-<p>21</p>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">FROM</span> node:24</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="running-your-app" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app">Running Your App</h2>
 <ul>
+<li>Now that we have a Dockerfile, build an image using this command
+<ul>
+<li><code>docker build -t my-image .</code></li>
+</ul></li>
+<li>But we're interested in containers
+<ul>
+<li>Images can be used to create many containers (Like a class being used to create objects)</li>
+</ul></li>
+<li>To create a container from an image, run this command
+<ul>
+<li><code>docker run -p 8080:8080 my-mage</code></li>
+<li>The <code>-p 8080:8080</code> will map local port 8080 to container port 8080</li>
+<li>Need to map the port for your app to be accessible from outside the container (e.g. From your browser)</li>
+</ul></li>
+<li>Your app is now running in a docker container</li>
+</ul>
+</section>
+<section id="running-your-app-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="running-your-app-1">Running Your App</h2>
+<ul>
 <li>When preparing your app to run in a container
 <ul>
-<li>Do not use "localhost" [in your code]</li>
-<li>Use "0.0.0.0" as the host instead</li>
-<li>This allows your app to be accessed from outside the container</li>
+<li>Do not use <code>localhost</code> [in your code]</li>
+<li>Use <code>0.0.0.0</code> as the host instead</li>
+<li>This allows your app to be accessed from outside the container by listening on all network interfaces</li>
 </ul></li>
+<li>Go does this by default when using the <code>net</code> package</li>
 </ul>
-<p>22</p>
 </section>
-<section id="docker-compose" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose">Docker Compose</h2>
 </section>
+<section id="docker-compose" class="level1">
+<h1>Docker Compose</h1>
 <section id="docker-compose-1" class="level2">
 <h2 class="anchored" data-anchor-id="docker-compose-1">Docker Compose</h2>
 <ul>
-<li>Manages building/running docker images/containers</li>
-<li>Build and run with one command
-<ul>
-<li>docker compose up --build --force-recreate</li>
-</ul></li>
-<li>No need to use docker build and docker run</li>
+<li>Docker compose manages building/running docker images/containers</li>
+<li>Build and run with one command <code>docker compose up --build --force-recreate --renew-anon-volumes</code></li>
+<li>No need to use <code>docker build</code> and <code>docker run</code></li>
 <li>Will be used to manage multiple containers
 <ul>
 <li>Separate container for your database</li>
 </ul></li>
-<li>Let's walk through a docker-compose.yml file</li>
+<li>Configure using a file named <code>compose.yaml</code>, <code>compose.yml</code>, or <code>docker-compose.yml</code></li>
 </ul>
 </section>
-<section id="docker-compose-2" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-2">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
+<section id="docker-compose-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-2">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
-<li>Specify the docker compose file format version</li>
-<li>Version 3[.8] is the current latest version</li>
-<li>This line is now optional</li>
+<li>CAUTION: DO NOT store passwords in plain text like this!
+<ul>
+<li>Fine for Homework 1</li>
+<li>We will explore a better setup for homework 2</li>
+</ul></li>
+<li>The <code>compose.yaml</code> file uses the YAML format
+<ul>
+<li>White space (indentation) matters</li>
+<li>Format: <code>&lt;key&gt;:&lt;value&gt;</code></li>
+<li>List values prefixed with <code>-</code></li>
+</ul></li>
 </ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="docker-compose-3" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-3">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
+<section id="docker-compose-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-3">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
 <li>List of all the services for docker compose to run</li>
 <li>A docker container is created for each service</li>
-</ul>
-</section>
-<section id="docker-compose-4" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-4">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
+<li>This compose file will create 2 containers
 <ul>
-<li>Name each service</li>
-<li>We have one service that we name "app"</li>
-<li>This name becomes the hostname when communicating between containers</li>
-</ul>
-</section>
-<section id="docker-compose-5" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-5">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>Use 'build' to specify the path to build from
-<ul>
-<li>Docker compose will look in this directory for a Dockerfile and use it to build the image</li>
+<li>One for a mySQL database named <code>mysql</code></li>
+<li>One for a web server named <code>app</code></li>
 </ul></li>
-<li>Same as the trailing '.' when building an image</li>
+<li>The name of each service will become its hostname when using network protocols across containers</li>
 </ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="docker-compose-6" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-6">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
+<section id="docker-compose-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-4">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>For each service, specify how to build its image</li>
+<li>Use <code>image</code> to specify an image to use
+<ul>
+<li>Same as having a 1 line Dockerfile</li>
+<li><code>FROM mysql</code></li>
+<li>Useful when you need very little customization</li>
+</ul></li>
+<li>Use <code>build</code> to specify a local Dockerfile
+<ul>
+<li>Specify the directory where the Dockerfile can be found</li>
+<li>Using <code>.</code> to specify the current directory</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="docker-compose-5" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-5">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
 <li>Map a local port to a container port</li>
-<li>Same as using "-p 8080:8000" when running a single container</li>
+<li>Same as using <code>-p 8080:8080</code> when running a single container</li>
 </ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="docker-compose-7" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-7">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
+<section id="docker-compose-6" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-6">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
-<li>Mapping a port allows your app [inside the container] to be accessed from your machine</li>
-<li>This line maps your local port 8080 [On your machine] to port 8000 inside your container</li>
+<li>Use <code>environment</code> to set any needed environment variables</li>
+<li>When using MySQL, the image expects certain environment variables that are used for setup
+<ul>
+<li>This is how you setup your username/password and the name of your database</li>
+<li>Hint: Postgres uses the same concept, but with different variable names</li>
+</ul></li>
 </ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="docker-compose-8" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-8">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3'
-services:
-app:
-build: .
-ports:
-- '8080:8000'</code></pre>
-<p>http://localhost:8080</p>
-<p>Your Laptop</p>
-<p>http://app:8000</p>
-<p>app</p>
-<p>container</p>
+<section id="docker-compose-7" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-7">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
-<li>When your machine receives a request for the mapped port
+<li>You can also set environment variables in your app container
 <ul>
-<li>Docker forwards the request to the container on the specified port</li>
+<li>Makes for a cleaner setup and can avoid storing plain-text passwords in your code</li>
+<li>When we learn about authentication, we will discus a better way to handle passwords
+<ul>
+<li>Brief version: Use a <code>.env</code> file and use <code>${VARIABLE_NAME}</code> to read your variables</li>
+</ul></li>
 </ul></li>
 </ul>
-<p><img src="assets/slide31-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="running-your-app-1" class="level2">
-<h2 class="anchored" data-anchor-id="running-your-app-1">Running Your App</h2>
+<section id="docker-compose-8" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-8">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
 <ul>
-<li>To run your app
+<li>We have a detrimental race condition</li>
+<li>Docker compose will start both containers concurrently</li>
+<li>Your code will likely connect to your database on startup
 <ul>
-<li>docker compose up</li>
-</ul></li>
-<li>To run in detached mode
-<ul>
-<li>docker compose up -d</li>
-</ul></li>
-<li>To rebuild and restart the containers
-<ul>
-<li>docker compose up --build --force-recreate</li>
-<li>*This is the best command to use!</li>
-</ul></li>
-<li>To restart the container without rebuilding
-<ul>
-<li>docker compose restart</li>
+<li>What if the database is still starting up and not accepting connections yet?</li>
 </ul></li>
 </ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb16"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="docker-compose-9" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-9">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Many different solutions to the race</li>
+<li>Find and implement your favorite approach:
+<ul>
+<li>Handle rejected connections in your code gracefully and retry</li>
+<li>Use docker compose's <code>depends_on</code> with <code>healthcheck</code> (After reading the documentation)</li>
+<li>Use a 3rd party solution like <code>ufoscout</code>'s solution on GitHub</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb17"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="docker-compose-10" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-10">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>When communicating across containers, the service name is the container's hostname</p></li>
+<li><p>Connection string:</p>
+<p><code>postgres://user:pass@HOST:5432/db</code></p></li>
+<li><p>Running with <code>go run .</code></p>
+<p>HOST = <code>localhost</code></p></li>
+<li><p>Running with <code>docker compose up</code></p>
+<p>HOST = <code>postgres</code></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="at">  </span><span class="fu">postgres</span><span class="kw">:</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="at">    ...</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="at">    ...</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="docker-compose-11" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="docker-compose-11">Docker Compose</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Note that you choose your service names</p></li>
+<li><p>Be consistent!</p>
+<p>HOST = <code>my_super_cool_service_name</code></p></li>
+<li><p>Must match the service name in <code>compose.yaml</code></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="at">  </span><span class="fu">my_super_cool_service_name</span><span class="kw">:</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="at">    ...</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="at">    ...</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="running-your-app-2" class="level2">
 <h2 class="anchored" data-anchor-id="running-your-app-2">Running Your App</h2>
 <ul>
+<li>To run your app
+<ul>
+<li><code>docker compose up</code></li>
+</ul></li>
 <li>To rebuild and restart the containers
 <ul>
-<li>docker compose up --build --force-recreate</li>
-</ul></li>
-<li>Use this command during development</li>
-<li>Very important to rebuild your images after you change code
+<li><code>docker compose up --build --force-recreate --renew-anon-volumes</code></li>
+<li>Will ensure your newest code is running in the containers</li>
+<li>Renewing anonymous volumes will destroy your database
 <ul>
-<li>If you don't, you will not see your changes since you'll be running your old code</li>
-</ul></li>
-</ul>
-</section>
-<section id="docker-compose-9" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-9">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>Let's modify our docker compose configuration to run our database</li>
-</ul>
-</section>
-<section id="docker-compose-10" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-10">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>"services" is a list of all the images/ containers to create</li>
-<li>We'll add a second service for the DB</li>
-</ul>
-</section>
-<section id="docker-compose-11" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-11">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>Name each service</li>
-<li>These names are used as the hostnames for each container
-<ul>
-<li>Used to communicate between containers</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide36-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-12" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-12">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>This service named 'mongo' uses a pre-built image
-<ul>
-<li>Same as having a 1-line Dockerfile:
-<ul>
-<li>"FROM mongo:4.2.5"</li>
+<li>Remove this if you want your data to persist</li>
 </ul></li>
 </ul></li>
-<li>No Dockerfile is needed</li>
-</ul>
-</section>
-<section id="docker-compose-13" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-13">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
+<li>To restart the container without rebuilding
 <ul>
-<li>Use 'environment' to set any needed environment variables</li>
-<li>If using MySQL, set variables for your username/ password</li>
-</ul>
-</section>
-<section id="docker-compose-14" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-14">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<ul>
-<li>We use an environment variable to tell our app to wait until the database is running before connecting to it</li>
-</ul>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<p>FROM python:3.8.2</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<pre><code>COPY . .
-RUN pip install -r requirements.txt</code></pre>
-<p>EXPOSE 8000</p>
-<pre><code>ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait</code></pre>
-<p>CMD /wait &amp;&amp; python app.py</p>
-<p><img src="assets/slide39-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-15" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-15">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<ul>
-<li>If the app runs before the database, it won't be able to establish a DB connection</li>
-<li>Solution: Wait for the DB to start before running the app</li>
-</ul>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<p>FROM python:3.8.2</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<pre><code>COPY . .
-RUN pip install -r requirements.txt</code></pre>
-<p>EXPOSE 8000</p>
-<pre><code>ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait</code></pre>
-<p>CMD /wait &amp;&amp; python app.py</p>
-<p><img src="assets/slide40-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-16" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-16">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<ul>
-<li>This solution from github user "ufoscout" works well</li>
-</ul>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<p>FROM python:3.8.2</p>
-<pre><code>ENV HOME /root
-WORKDIR /root</code></pre>
-<pre><code>COPY . .
-RUN pip install -r requirements.txt</code></pre>
-<p>EXPOSE 8000</p>
-<pre><code>ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.2.1/wait /wait
-RUN chmod +x /wait</code></pre>
-<p>CMD /wait &amp;&amp; python app.py</p>
-<p><img src="assets/slide41-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-17" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-17">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<ul>
-<li>This file is used to build both images and run both containers using docker-compose</li>
-</ul>
-</section>
-<section id="docker-compose-18" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-18">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mongo:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mongo:27017
-ports:
-- '8080:8000'</code></pre>
-<p>mongo_client = MongoClient('localhost')</p>
-<p>mongo_client = MongoClient('mongo')</p>
-<ul>
-<li>Recall that we chose names for each service</li>
-<li>When connecting to the database in your app
-<ul>
-<li>The service name is the hostname for the container</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide43-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-19" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-19">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<ul>
-<li>version: '3.3' services: mongo: image: mongo:4.2.5 app: build: . environment: WAIT_HOSTS: mongo:27017 ports: - '8080:8000'</li>
-<li>Use the name of the service</li>
-<li>docker-compose will resolve this hostname to the appropriate container</li>
-</ul>
-<p>mongo_client = MongoClient('localhost')</p>
-<p>mongo_client = MongoClient('mongo')</p>
-<p><img src="assets/slide44-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="docker-compose-20" class="level2">
-<h2 class="anchored" data-anchor-id="docker-compose-20">Docker Compose</h2>
-<p>docker-compose.yml</p>
-<pre><code>version: '3.3'
-services:
-mysupercooldatabase:
-image: mongo:4.2.5
-app:
-build: .
-environment:
-WAIT_HOSTS: mysupercooldatabase:27017
-ports:
-- '8080:8000'</code></pre>
-<p>mongo_client = MongoClient('localhost')</p>
-<p>mongo_client = MongoClient('mysupercooldatabase')</p>
-<ul>
-<li>We can name our services whatever we want</li>
-<li>Make sure you are consistent!</li>
-</ul>
-<p><img src="assets/slide45-diagram.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="running-your-app-3" class="level2">
-<h2 class="anchored" data-anchor-id="running-your-app-3">Running Your App</h2>
-<ul>
-<li>docker-compose up --build --force-recreate
-<ul>
-<li>Will now start both containers</li>
-<li>Use the service name as the host name to communicate across containers</li>
+<li><code>docker compose restart</code></li>
 </ul></li>
 </ul>
 

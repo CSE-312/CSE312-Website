@@ -209,7 +209,7 @@
 </ul></li>
 <li><code>Cookie</code>
 <ul>
-<li>The client will send all Cookies with each HTTP request using this header</li>
+<li>The client will send all cookies with each HTTP request using this header</li>
 </ul></li>
 </ul>
 </section>
@@ -244,11 +244,11 @@
 </ul></li>
 </ul>
 </section>
-<section id="cookie-header" class="slide level2">
-<h2>Cookie Header</h2>
+<section id="the-cookie-header" class="slide level2">
+<h2>The Cookie Header</h2>
 <ul>
 <li>The header used by clients to deliver all cookies that have been set</li>
-<li>Syntax [Similar to Set-Cookie]:
+<li>Syntax (name/value pairs only; no directives):
 <ul>
 <li><code>&lt;key&gt;=&lt;value&gt;</code></li>
 <li>All cookies in one header</li>
@@ -282,7 +282,7 @@
 <li><code>&lt;day-name&gt;, &lt;day&gt; &lt;month&gt; &lt;year&gt; &lt;hour&gt;:&lt;minute&gt;:&lt;second&gt; GMT</code></li>
 </ul></li>
 </ul></li>
-<li><code>Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT</code></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 07 Feb 2024 16:35:00 GMT</code></li>
 </ul>
 </section>
 <section id="directives---max-age" class="slide level2">
@@ -398,7 +398,7 @@
 <ul>
 <li>Verify its validity</li>
 </ul></li>
-<li>Client can read/set cookies with JavaScript (Unless HTTPOnly is set)
+<li>Client can read/set cookies with JavaScript (Unless HttpOnly is set)
 <ul>
 <li>So can attackers!</li>
 </ul></li>
@@ -450,42 +450,49 @@
 
 <img data-src="assets/cookies_3.svg" alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token" class="r-stretch"><ul>
 <li>In the response to the user, set a cookie containing their token</li>
-<li>Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
+<li>Use the expires or max-age directive to make sure this is not a session cookie</li>
+</ul>
+</section>
+<section id="user-sessions-3" class="slide level2 unnumbered unlisted">
+<h2>User Sessions</h2>
+
+<img data-src="assets/cookies_3.svg" alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token" class="r-stretch"><ul>
+<li>Yes, it's confusing that we overload the word session
 <ul>
-<li>It's a session cookie in that it tracks a users session with our app</li>
+<li>It's a session cookie in that it tracks a user's session with our app</li>
 <li>It's not a session cookie in that it is not tied to this session of their browser</li>
 </ul></li>
 </ul>
 </section>
-<section id="user-sessions-3" class="slide level2 unnumbered unlisted">
+<section id="user-sessions-4" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
 
 <img data-src="assets/cookies_4.svg" alt="A client, server and database diagram. User sends another chat message to the server" class="r-stretch"><ul>
 <li>All subsequent requests will contain this user's token in a cookie</li>
 </ul>
 </section>
-<section id="user-sessions-4" class="slide level2 unnumbered unlisted">
+<section id="user-sessions-5" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
 
 <img data-src="assets/cookies_5.svg" alt="A client, server and database diagram. The server looks up this user's username using their token that is read from the cookie" class="r-stretch"><ul>
-<li>The server sees that there is a cookie in this request and looks up the token in the database to retrieve this users profile, including their username</li>
+<li>The server sees that there is a cookie in this request and looks up the token in the database to retrieve this user's profile, including their username</li>
 <li>When adding the new chat message to the database, we know to set "Anon243" as the author</li>
 </ul>
 </section>
-<section id="user-sessions-5" class="slide level2 unnumbered unlisted">
+<section id="user-sessions-6" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
 
 <img data-src="assets/cookies_6.svg" alt="A client, server and database diagram. The server responds to subsequent chat messages with responses that do not set any cookies" class="r-stretch"><ul>
 <li>No need to set cookies or do anything special on subsequent responses</li>
 </ul>
 </section>
-<section id="user-sessions-6" class="slide level2 unnumbered unlisted">
+<section id="user-sessions-7" class="slide level2 unnumbered unlisted">
 <h2>User Sessions</h2>
 <ul>
 <li>With multiple users:
 <ul>
 <li>Each user has a different username and token</li>
-<li>The tokens are all secret so users cannot steal each others identities</li>
+<li>The tokens are all secret so users cannot steal each other's identities</li>
 <li>Usernames are public and displayed to all users in the chat</li>
 </ul></li>
 <li>Server identifies each user based on their token cookie</li>

@@ -51,7 +51,7 @@ released: true
 - `Set-Cookie`
   - Use this header in your HTTP response to tell a client to set a cookie
 - `Cookie`
-  - The client will send all Cookies with each HTTP request using this header
+  - The client will send all cookies with each HTTP request using this header
 
 ## Set-Cookie Header
 
@@ -72,10 +72,11 @@ released: true
     - *In this course, we won't worry about this in our request parsing code, but you may want to address it in your response class (Technically not required)
     - The browser must handle this when it parses our headers
 
-## Cookie Header
+
+## The Cookie Header
 
 - The header used by clients to deliver all cookies that have been set
-- Syntax [Similar to Set-Cookie]:
+- Syntax (name/value pairs only; no directives):
   - `<key>=<value>`
   - All cookies in one header
   - Multiple cookies separated by `;`
@@ -95,7 +96,7 @@ released: true
   - The exact time when the cookie should be deleted
   - Must be in the format:
     -  `<day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT`
-- `Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 7 Feb 2024 16:35:00 GMT`
+- `Set-Cookie: id=X6kAwpgW29M; Expires=Wed, 07 Feb 2024 16:35:00 GMT`
 
 ## Directives - Max-Age
 
@@ -163,7 +164,7 @@ released: true
   - Do not trust the value stored in a cookie!
 - If a cookie is important for security
   - Verify its validity
-- Client can read/set cookies with JavaScript (Unless HTTPOnly is set)
+- Client can read/set cookies with JavaScript (Unless HttpOnly is set)
   - So can attackers!
 - Access cookies with `document.cookie`
 
@@ -205,8 +206,15 @@ released: true
 
 
 - In the response to the user, set a cookie containing their token
-- Use the expires directive to make sure this is not a session cookie (Yes, it's confusing that we overload the word session)
-  - It's a session cookie in that it tracks a users session with our app
+- Use the expires or max-age directive to make sure this is not a session cookie
+
+## User Sessions {.unnumbered .unlisted}
+
+![](assets/cookies_3.svg){fig-alt="A client, server and database diagram. The server responds to the client with a Set-Cookie header for their token"}
+
+
+- Yes, it's confusing that we overload the word session
+  - It's a session cookie in that it tracks a user's session with our app
   - It's not a session cookie in that it is not tied to this session of their browser
 
 
@@ -221,7 +229,7 @@ released: true
 
 ![](assets/cookies_5.svg){fig-alt="A client, server and database diagram. The server looks up this user's username using their token that is read from the cookie"}
 
-- The server sees that there is a cookie in this request and looks up the token in the database to retrieve this users profile, including their username
+- The server sees that there is a cookie in this request and looks up the token in the database to retrieve this user's profile, including their username
 - When adding the new chat message to the database, we know to set "Anon243" as the author
 
 
@@ -236,6 +244,6 @@ released: true
 
 - With multiple users:
   - Each user has a different username and token
-  - The tokens are all secret so users cannot steal each others identities
+  - The tokens are all secret so users cannot steal each other's identities
   - Usernames are public and displayed to all users in the chat
 - Server identifies each user based on their token cookie
