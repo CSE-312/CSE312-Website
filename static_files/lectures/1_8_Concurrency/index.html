@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#http-connections" id="toc-http-connections" class="nav-link active" data-scroll-target="#http-connections">HTTP COnnections</a>
+  <li><a href="#http-connections" id="toc-http-connections" class="nav-link active" data-scroll-target="#http-connections">HTTP Connections</a>
   <ul class="collapse">
   <li><a href="#loading-a-page" id="toc-loading-a-page" class="nav-link" data-scroll-target="#loading-a-page">Loading a Page</a></li>
   <li><a href="#tcp-connections-are-expensive" id="toc-tcp-connections-are-expensive" class="nav-link" data-scroll-target="#tcp-connections-are-expensive">TCP Connections are Expensive</a></li>
@@ -91,12 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#keep-alive" id="toc-keep-alive" class="nav-link" data-scroll-target="#keep-alive">Keep-Alive</a>
   <ul class="collapse">
   <li><a href="#connection-keep-alive" id="toc-connection-keep-alive" class="nav-link" data-scroll-target="#connection-keep-alive">Connection: keep-alive</a></li>
-  <li><a href="#the-connection-header" id="toc-the-connection-header" class="nav-link" data-scroll-target="#the-connection-header">The Connection header</a></li>
+  <li><a href="#the-connection-header" id="toc-the-connection-header" class="nav-link" data-scroll-target="#the-connection-header">The Connection Header</a></li>
   <li><a href="#connection-close" id="toc-connection-close" class="nav-link" data-scroll-target="#connection-close">Connection: close</a></li>
   <li><a href="#content-length" id="toc-content-length" class="nav-link" data-scroll-target="#content-length">Content Length</a></li>
-  <li><a href="#the-keep-alive-loop" id="toc-the-keep-alive-loop" class="nav-link" data-scroll-target="#the-keep-alive-loop">The keep-alive loop</a></li>
+  <li><a href="#the-keep-alive-loop" id="toc-the-keep-alive-loop" class="nav-link" data-scroll-target="#the-keep-alive-loop">The keep-alive Loop</a></li>
   <li><a href="#closing-a-connection" id="toc-closing-a-connection" class="nav-link" data-scroll-target="#closing-a-connection">Closing a Connection</a></li>
-  <li><a href="#keep-alive-is-still-sequential" id="toc-keep-alive-is-still-sequential" class="nav-link" data-scroll-target="#keep-alive-is-still-sequential">Keep-alive is still sequential</a></li>
+  <li><a href="#keep-alive-is-still-sequential" id="toc-keep-alive-is-still-sequential" class="nav-link" data-scroll-target="#keep-alive-is-still-sequential">Keep-alive is Still Sequential</a></li>
   </ul></li>
   <li><a href="#multiple-clients" id="toc-multiple-clients" class="nav-link" data-scroll-target="#multiple-clients">Multiple Clients</a>
   <ul class="collapse">
@@ -135,14 +135,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 <section id="http-connections" class="level1">
-<h1>HTTP COnnections</h1>
+<h1>HTTP Connections</h1>
 <section id="loading-a-page" class="level2">
 <h2 class="anchored" data-anchor-id="loading-a-page">Loading a Page</h2>
 <ul>
 <li>One page load is not one HTTP request</li>
 <li>Browser gets the HTML, then requests every CSS, JS, image, etc. needed to render the page</li>
-<li>Each of those needs its own request/response</li>
-<li>If every request opens a new TCP connection, the page is slower than it needs to be</li>
+<li>Each resource needs its own request/response</li>
+<li>If every request opens a new TCP connection, the page loads slower than it needs to</li>
 </ul>
 </section>
 <section id="tcp-connections-are-expensive" class="level2">
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>A new TCP connection starts with a 3-way handshake
 <ul>
 <li>1 full additional round-trip</li>
-<li>The 3rd step of hte handshake often contains a request</li>
+<li>The 3rd step of the handshake often contains a request</li>
 </ul></li>
 <li>That extra round trip happens <em>before</em> any of your content moves</li>
 <li>Even more expensive with encryption</li>
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 </section>
 <section id="the-connection-header" class="level2">
-<h2 class="anchored" data-anchor-id="the-connection-header">The Connection header</h2>
+<h2 class="anchored" data-anchor-id="the-connection-header">The Connection Header</h2>
 <ul>
 <li>Both the request and the response can include it</li>
 </ul>
@@ -221,18 +221,18 @@ Connection: close</code></pre>
 <li>The next bytes on the socket are the next request</li>
 </ul></li>
 <li><code>Content-Length</code> tells you exactly how many body bytes to read/write before the next request starts</li>
-<li>If your <code>Content-Length</code> is wrong, the next request on the connection is garbage</li>
+<li>If your <code>Content-Length</code> is wrong, the next request on the connection is corrupt</li>
 </ul>
 </section>
 <section id="the-keep-alive-loop" class="level2">
-<h2 class="anchored" data-anchor-id="the-keep-alive-loop">The keep-alive loop</h2>
+<h2 class="anchored" data-anchor-id="the-keep-alive-loop">The keep-alive Loop</h2>
 <ul>
 <li>Accept a TCP connection</li>
 <li>Then loop:
 <ol type="1">
 <li>Read one full HTTP request (headers + <code>Content-Length</code> bytes of body)</li>
 <li>Send one full HTTP response</li>
-<li>If <code>Connection: close</code>, break and close the socket</li>
+<li>If <code>Connection: close</code>, or the client disconnect, break and close the socket</li>
 <li>Otherwise, go back to step 1</li>
 </ol></li>
 <li>This is still <strong>one request at a time</strong> on this connection</li>
@@ -242,6 +242,8 @@ Connection: close</code></pre>
 <section id="closing-a-connection" class="level2">
 <h2 class="anchored" data-anchor-id="closing-a-connection">Closing a Connection</h2>
 <ul>
+<li>Several possible causes for a closed connection
+<ul>
 <li>Client sent <code>Connection: close</code></li>
 <li>Client closes their browser
 <ul>
@@ -249,6 +251,7 @@ Connection: close</code></pre>
 </ul></li>
 <li>Server decides to close (idle too long, error, done with the client)</li>
 <li>Network error</li>
+</ul></li>
 <li>Your server needs to handle a closed socket gracefully
 <ul>
 <li><code>Read</code> returns an error / EOF</li>
@@ -257,7 +260,7 @@ Connection: close</code></pre>
 </ul>
 </section>
 <section id="keep-alive-is-still-sequential" class="level2">
-<h2 class="anchored" data-anchor-id="keep-alive-is-still-sequential">Keep-alive is still sequential</h2>
+<h2 class="anchored" data-anchor-id="keep-alive-is-still-sequential">Keep-alive is Still Sequential</h2>
 <ul>
 <li>On one TCP connection, HTTP/1.1 is request then response then request then response</li>
 <li>The CSS request waits until the HTML response is done</li>
@@ -297,7 +300,6 @@ Connection: close</code></pre>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Connection">HTTP Connection Header</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x">Connection management in HTTP/1.x</a></li>
-<li><a href="https://go.dev/tour/concurrency/1">A Tour of Go: Goroutines</a></li>
 </ul>
 </section>
 </section>

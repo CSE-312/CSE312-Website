@@ -67,9 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
-<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 
@@ -88,37 +85,23 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#caching" id="toc-caching" class="nav-link active" data-scroll-target="#caching">Caching</a>
   <ul class="collapse">
-  <li><a href="#why-cache" id="toc-why-cache" class="nav-link" data-scroll-target="#why-cache">Why cache</a></li>
-  <li><a href="#who-stores-the-cache" id="toc-who-stores-the-cache" class="nav-link" data-scroll-target="#who-stores-the-cache">Who stores the cache?</a></li>
+  <li><a href="#caching-1" id="toc-caching-1" class="nav-link" data-scroll-target="#caching-1">Caching</a></li>
+  <li><a href="#who-stores-the-cache" id="toc-who-stores-the-cache" class="nav-link" data-scroll-target="#who-stores-the-cache">Who Stores the Cache?</a></li>
   <li><a href="#fresh-vs-stale" id="toc-fresh-vs-stale" class="nav-link" data-scroll-target="#fresh-vs-stale">Fresh vs stale</a></li>
   </ul></li>
   <li><a href="#timeouts" id="toc-timeouts" class="nav-link" data-scroll-target="#timeouts">Timeouts</a>
   <ul class="collapse">
   <li><a href="#cache-control-max-age" id="toc-cache-control-max-age" class="nav-link" data-scroll-target="#cache-control-max-age">Cache-Control: max-age</a></li>
-  <li><a href="#fresh-no-request-at-all" id="toc-fresh-no-request-at-all" class="nav-link" data-scroll-target="#fresh-no-request-at-all">Fresh: no request at all</a></li>
   <li><a href="#expires" id="toc-expires" class="nav-link" data-scroll-target="#expires">Expires</a></li>
   <li><a href="#other-cache-control-values" id="toc-other-cache-control-values" class="nav-link" data-scroll-target="#other-cache-control-values">Other Cache-Control values</a></li>
   </ul></li>
   <li><a href="#validators" id="toc-validators" class="nav-link" data-scroll-target="#validators">Validators</a>
   <ul class="collapse">
-  <li><a href="#when-the-cache-is-stale" id="toc-when-the-cache-is-stale" class="nav-link" data-scroll-target="#when-the-cache-is-stale">When the cache is stale</a></li>
+  <li><a href="#when-the-cache-is-stale" id="toc-when-the-cache-is-stale" class="nav-link" data-scroll-target="#when-the-cache-is-stale">When the Cache is Stale</a></li>
   <li><a href="#etag" id="toc-etag" class="nav-link" data-scroll-target="#etag">ETag</a></li>
   <li><a href="#if-none-match" id="toc-if-none-match" class="nav-link" data-scroll-target="#if-none-match">If-None-Match</a></li>
-  <li><a href="#not-modified" id="toc-not-modified" class="nav-link" data-scroll-target="#not-modified">304 Not Modified</a></li>
   <li><a href="#has-no-body" id="toc-has-no-body" class="nav-link" data-scroll-target="#has-no-body">304 has no body</a></li>
-  <li><a href="#last-modified" id="toc-last-modified" class="nav-link" data-scroll-target="#last-modified">Last-Modified</a></li>
-  <li><a href="#if-modified-since" id="toc-if-modified-since" class="nav-link" data-scroll-target="#if-modified-since">If-Modified-Since</a></li>
-  <li><a href="#date-formats-will-hurt-you" id="toc-date-formats-will-hurt-you" class="nav-link" data-scroll-target="#date-formats-will-hurt-you">Date formats will hurt you</a></li>
-  </ul></li>
-  <li><a href="#what-to-cache" id="toc-what-to-cache" class="nav-link" data-scroll-target="#what-to-cache">What to cache</a>
-  <ul class="collapse">
-  <li><a href="#static-files-not-everything" id="toc-static-files-not-everything" class="nav-link" data-scroll-target="#static-files-not-everything">Static files, not everything</a></li>
-  <li><a href="#cache-control-private" id="toc-cache-control-private" class="nav-link" data-scroll-target="#cache-control-private">Cache-Control: private</a></li>
   <li><a href="#vary" id="toc-vary" class="nav-link" data-scroll-target="#vary">Vary</a></li>
-  <li><a href="#do-not-cache-forever" id="toc-do-not-cache-forever" class="nav-link" data-scroll-target="#do-not-cache-forever">Do not cache forever</a></li>
-  <li><a href="#cache-busting" id="toc-cache-busting" class="nav-link" data-scroll-target="#cache-busting">Cache busting</a></li>
-  <li><a href="#what-the-server-does" id="toc-what-the-server-does" class="nav-link" data-scroll-target="#what-the-server-does">What the server does</a></li>
-  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -153,8 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <section id="caching" class="level1">
 <h1>Caching</h1>
-<section id="why-cache" class="level2">
-<h2 class="anchored" data-anchor-id="why-cache">Why cache</h2>
+<section id="caching-1" class="level2">
+<h2 class="anchored" data-anchor-id="caching-1">Caching</h2>
 <ul>
 <li>Loading a page is still a lot of requests, even with keep-alive</li>
 <li>CSS, JS, images, and fonts rarely change</li>
@@ -163,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
 </section>
 <section id="who-stores-the-cache" class="level2">
-<h2 class="anchored" data-anchor-id="who-stores-the-cache">Who stores the cache?</h2>
+<h2 class="anchored" data-anchor-id="who-stores-the-cache">Who Stores the Cache?</h2>
 <ul>
 <li><strong>The browser</strong> stores the response</li>
 <li>Your server does not keep a cache of responses</li>
@@ -172,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>How long this response can be reused</li>
 <li>How to check whether it is still valid</li>
 </ul></li>
-<li>Same URL later: the browser decides whether to reuse, revalidate, or request from scratch</li>
+<li>Same URL later: the browser decides whether to reuse, revalidate, or request the resource</li>
 </ul>
 </section>
 <section id="fresh-vs-stale" class="level2">
@@ -200,35 +183,9 @@ Content-Type: text/css
 Content-Length: 42
 Cache-Control: max-age=3600</code></pre>
 <ul>
-<li><code>max-age=3600</code> → fresh for one hour</li>
-<li>After that, the copy is stale</li>
-<li>For homework, use a <strong>short</strong> timeout (about 10 seconds) so you can test it</li>
+<li><code>max-age=3600</code> means this is fresh for one hour</li>
+<li>After that, the copy is stale and a new request will be sent</li>
 </ul>
-</section>
-<section id="fresh-no-request-at-all" class="level2">
-<h2 class="anchored" data-anchor-id="fresh-no-request-at-all">Fresh: no request at all</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-  participant Browser
-  participant Server
-  Browser-&gt;&gt;Server: GET /style.css
-  Server-&gt;&gt;Browser: 200 + max-age=10
-  Note over Browser: Cache the response
-  Note over Browser: A few seconds later: reuse the cache
-  Note over Server: No second request
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="diagram-description" role="note" aria-label="A fresh cache is used without contacting the server">
-<p>The browser downloads <code>style.css</code> once and stores it. A few seconds later it needs the file again. The cache is still fresh, so the browser uses the stored copy and the server is not contacted.</p>
-</div>
 </section>
 <section id="expires" class="level2">
 <h2 class="anchored" data-anchor-id="expires">Expires</h2>
@@ -237,8 +194,12 @@ Cache-Control: max-age=3600</code></pre>
 </ul>
 <pre class="http"><code>Expires: Wed, 23 Sep 2026 19:50:00 GMT</code></pre>
 <ul>
-<li>HTTP dates are <strong>GMT</strong>, not local time, not EST</li>
-<li><code>max-age</code> is preferred</li>
+<li>HTTP dates are <strong>GMT</strong>, not local time</li>
+<li><code>max-age</code> is preferred
+<ul>
+<li>Less prone to time zone, daylight savings, etc. issues</li>
+<li>Easier to use</li>
+</ul></li>
 <li>If both are present, the browser uses <code>max-age</code></li>
 </ul>
 </section>
@@ -249,28 +210,30 @@ Cache-Control: max-age=3600</code></pre>
 <li><code>no-cache</code> — you may store it, but revalidate before using it</li>
 <li><code>private</code> — only this user's browser may cache it, not a shared proxy</li>
 <li><code>public</code> — OK to store in a shared cache</li>
-<li>You will mostly send <code>max-age</code> on static files</li>
 </ul>
 </section>
 </section>
 <section id="validators" class="level1">
 <h1>Validators</h1>
 <section id="when-the-cache-is-stale" class="level2">
-<h2 class="anchored" data-anchor-id="when-the-cache-is-stale">When the cache is stale</h2>
+<h2 class="anchored" data-anchor-id="when-the-cache-is-stale">When the Cache is Stale</h2>
 <ul>
 <li>Timeout expired. Browser still has the old bytes</li>
-<li>It does <strong>not</strong> throw them away immediately</li>
-<li>It asks the server: "Is this still the current version?"</li>
-<li>If yes: <strong>304 Not Modified</strong> — keep using the cached body</li>
-<li>If no: <strong>200 OK</strong> with the new body</li>
-<li>That question is sent with a validator</li>
+<li>Send a request to the server asking if the response is still current
+<ul>
+<li>If it is, send a 304 Not Modified response with no body
+<ul>
+<li>Prevents resending the same data and can reset the timeout</li>
+</ul></li>
+<li>If it is not current, send a 200 OK with the new response</li>
+</ul></li>
 </ul>
 </section>
 <section id="etag" class="level2">
 <h2 class="anchored" data-anchor-id="etag">ETag</h2>
 <ul>
 <li>A fingerprint of this version of the resource</li>
-<li>Send it on the original 200 response</li>
+<li>Send it on 200 responses</li>
 </ul>
 <pre class="http"><code>HTTP/1.1 200 OK
 Content-Type: text/css
@@ -278,9 +241,8 @@ Content-Length: 42
 Cache-Control: max-age=10
 ETag: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
 <ul>
-<li>Quotes are part of the value</li>
 <li>When the file contents change, the ETag <strong>must</strong> change</li>
-<li>A hash of the file bytes is a solid way to do this</li>
+<li>A hash of the file bytes is a great way to do this</li>
 </ul>
 </section>
 <section id="if-none-match" class="level2">
@@ -292,116 +254,24 @@ ETag: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
 Host: localhost:8080
 If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
 <ul>
-<li>Compare it to the ETag of the file on disk <strong>right now</strong></li>
-<li>Same → nothing changed → 304</li>
-<li>Different → file changed → 200 with the new body and the new ETag</li>
+<li>Compare it to the ETag of the file currently on disk</li>
+<li>If they match, send a 304</li>
+<li>If they are different, send a 200 with the new etag</li>
 </ul>
-</section>
-<section id="not-modified" class="level2">
-<h2 class="anchored" data-anchor-id="not-modified">304 Not Modified</h2>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-  participant Browser
-  participant Server
-  Note over Browser: Cached copy is stale
-  Browser-&gt;&gt;Server: GET /public/style.css
-  Note over Browser,Server: If-None-Match: "abc"
-  Server-&gt;&gt;Browser: 304 Not Modified
-  Note over Browser: Reuse the cached body
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="diagram-description" role="note" aria-label="A stale cache is revalidated with If-None-Match">
-<p>The browser still has a copy of <code>style.css</code>, but it is stale. It sends <code>If-None-Match</code> with the stored ETag. The server compares it to the current file and replies <code>304 Not Modified</code>. The browser keeps using the cached body.</p>
-</div>
 </section>
 <section id="has-no-body" class="level2">
 <h2 class="anchored" data-anchor-id="has-no-body">304 has no body</h2>
 <pre class="http"><code>HTTP/1.1 304 Not Modified
 ETag: "9e107d9d372bb6826bd81d3542a419d6"
-Cache-Control: max-age=10</code></pre>
+Cache-Control: max-age=3600</code></pre>
 <ul>
-<li>300-level is not only redirects. 304 means "your copy is still good"</li>
-<li>Do <strong>not</strong> send the file</li>
-<li>Do <strong>not</strong> send a fake body with <code>Content-Length</code> of the original file</li>
+<li>304 means "your copy is still current"</li>
+<li>No body in the response
+<ul>
+<li>Not Content-Length/Content-Type headers</li>
+</ul></li>
 <li>The browser already has the bytes. You are only confirming they are current</li>
 <li>You may send the ETag and <code>Cache-Control</code> again so the copy becomes fresh</li>
-</ul>
-</section>
-<section id="last-modified" class="level2">
-<h2 class="anchored" data-anchor-id="last-modified">Last-Modified</h2>
-<ul>
-<li>The other validator: when this file last changed on disk</li>
-</ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/css
-Content-Length: 42
-Cache-Control: max-age=10
-Last-Modified: Wed, 16 Sep 2026 18:00:00 GMT</code></pre>
-<ul>
-<li>Homework: timeouts can be <code>max-age</code> <strong>or</strong> <code>Last-Modified</code>. You still need ETags either way</li>
-<li><code>max-age</code> is the straightforward timeout. Prefer it</li>
-</ul>
-</section>
-<section id="if-modified-since" class="level2">
-<h2 class="anchored" data-anchor-id="if-modified-since">If-Modified-Since</h2>
-<ul>
-<li>Browser sends the <code>Last-Modified</code> value back when revalidating</li>
-</ul>
-<pre class="http"><code>GET /public/style.css HTTP/1.1
-Host: localhost:8080
-If-Modified-Since: Wed, 16 Sep 2026 18:00:00 GMT</code></pre>
-<ul>
-<li>Compare to the file's current modification time</li>
-<li>Not newer → 304</li>
-<li>Newer → 200 with the new body and a new <code>Last-Modified</code></li>
-</ul>
-</section>
-<section id="date-formats-will-hurt-you" class="level2">
-<h2 class="anchored" data-anchor-id="date-formats-will-hurt-you">Date formats will hurt you</h2>
-<ul>
-<li>File timestamps on disk are not HTTP dates</li>
-<li>HTTP dates look like: <code>Wed, 16 Sep 2026 18:00:00 GMT</code></li>
-<li>They are always GMT. Your laptop is probably not</li>
-<li><code>Date</code> on the response is "now" in that same format</li>
-<li>Parse and format carefully. Off-by-one-hour bugs look like "caching is broken"</li>
-<li>This is a good reason to prefer ETags plus <code>max-age</code></li>
-</ul>
-</section>
-</section>
-<section id="what-to-cache" class="level1">
-<h1>What to cache</h1>
-<section id="static-files-not-everything" class="level2">
-<h2 class="anchored" data-anchor-id="static-files-not-everything">Static files, not everything</h2>
-<ul>
-<li>Cache responses for paths under <code>/public</code>
-<ul>
-<li>CSS, JS, images, fonts</li>
-</ul></li>
-<li>Do not blindly cache:
-<ul>
-<li>HTML that changes when users post</li>
-<li>JSON APIs with per-user data</li>
-<li>Anything that depends on a cookie / session</li>
-</ul></li>
-<li>If two users must not see each other's response, do not let a shared cache store it</li>
-</ul>
-</section>
-<section id="cache-control-private" class="level2">
-<h2 class="anchored" data-anchor-id="cache-control-private">Cache-Control: private</h2>
-<pre class="http"><code>Cache-Control: private, max-age=60</code></pre>
-<ul>
-<li>This user's browser may cache it</li>
-<li>A CDN or proxy in the middle must not</li>
-<li>Use this for anything tied to a logged-in session</li>
-<li>Static public files can be cached without <code>private</code></li>
 </ul>
 </section>
 <section id="vary" class="level2">
@@ -416,58 +286,6 @@ If-Modified-Since: Wed, 16 Sep 2026 18:00:00 GMT</code></pre>
 <li>If you skip <code>Vary</code>, an English user can be served the Spanish page from cache</li>
 <li>Common on <code>Accept</code> and <code>Accept-Language</code></li>
 </ul>
-</section>
-<section id="do-not-cache-forever" class="level2">
-<h2 class="anchored" data-anchor-id="do-not-cache-forever">Do not cache forever</h2>
-<ul>
-<li>Dude I know set <code>max-age</code> to several decades</li>
-<li>Made a change</li>
-<li>Had to email a few clients who could not get the change
-<ul>
-<li>"Can you please click these buttons to invalidate your cache"</li>
-</ul></li>
-<li>You cannot reach into someone else's browser and delete the file</li>
-<li>Short <code>max-age</code> + validators = fast and still correct</li>
-</ul>
-</section>
-<section id="cache-busting" class="level2">
-<h2 class="anchored" data-anchor-id="cache-busting">Cache busting</h2>
-<ul>
-<li>Another way to force a new download: change the URL</li>
-</ul>
-<pre><code>/public/style.css?v=3
-/public/style.3.css</code></pre>
-<ul>
-<li>New URL → cache miss → browser fetches the new file</li>
-<li>Useful when you ship a new frontend and cannot wait for <code>max-age</code> to expire</li>
-<li>The old URL can stay cached. Nobody requests it anymore</li>
-</ul>
-</section>
-<section id="what-the-server-does" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-server-does">What the server does</h2>
-<p>On <code>GET /public/...</code>:</p>
-<ol type="1">
-<li>Compute the current ETag (and/or <code>Last-Modified</code>)</li>
-<li>If <code>If-None-Match</code> matches (or <code>If-Modified-Since</code> says it is not newer): send <strong>304</strong></li>
-<li>Otherwise send <strong>200</strong> with:
-<ul>
-<li>the file body</li>
-<li><code>Cache-Control: max-age=10</code></li>
-<li><code>ETag</code></li>
-<li><code>Content-Type</code> and <code>Content-Length</code></li>
-</ul></li>
-</ol>
-</section>
-<section id="testing" class="level2">
-<h2 class="anchored" data-anchor-id="testing">Testing</h2>
-<ul>
-<li>Use a short <code>max-age</code> (10 seconds)</li>
-<li>First request: 200, look for <code>ETag</code> and <code>Cache-Control</code></li>
-<li>Reload immediately: browser may not even send a request (still fresh)</li>
-<li>Wait for <code>max-age</code> to expire, reload: <code>If-None-Match</code> and a 304</li>
-<li>Change the file, wait, reload: 200 and a <strong>different</strong> ETag</li>
-<li>DevTools → Network → "Disable cache" will hide all of this. Leave it unchecked</li>
-</ul>
 
 
 </section>
@@ -475,8 +293,6 @@ If-Modified-Since: Wed, 16 Sep 2026 18:00:00 GMT</code></pre>
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">MDN: HTTP Caching</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control">Cache-Control</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag">ETag</a></li>
 </ul>
 </section>
 </section>

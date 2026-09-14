@@ -216,7 +216,7 @@
 </section>
 <section>
 <section id="http-connections" class="title-slide slide level1 center">
-<h1>HTTP COnnections</h1>
+<h1>HTTP Connections</h1>
 
 </section>
 <section id="loading-a-page" class="slide level2">
@@ -224,8 +224,8 @@
 <ul>
 <li>One page load is not one HTTP request</li>
 <li>Browser gets the HTML, then requests every CSS, JS, image, etc. needed to render the page</li>
-<li>Each of those needs its own request/response</li>
-<li>If every request opens a new TCP connection, the page is slower than it needs to be</li>
+<li>Each resource needs its own request/response</li>
+<li>If every request opens a new TCP connection, the page loads slower than it needs to</li>
 </ul>
 </section>
 <section id="tcp-connections-are-expensive" class="slide level2">
@@ -236,7 +236,7 @@
 <li>A new TCP connection starts with a 3-way handshake
 <ul>
 <li>1 full additional round-trip</li>
-<li>The 3rd step of hte handshake often contains a request</li>
+<li>The 3rd step of the handshake often contains a request</li>
 </ul></li>
 <li>That extra round trip happens <em>before</em> any of your content moves</li>
 <li>Even more expensive with encryption</li>
@@ -266,7 +266,7 @@
 </ul>
 </section>
 <section id="the-connection-header" class="slide level2">
-<h2>The Connection header</h2>
+<h2>The Connection Header</h2>
 <ul>
 <li>Both the request and the response can include it</li>
 </ul>
@@ -305,18 +305,18 @@
 <li>The next bytes on the socket are the next request</li>
 </ul></li>
 <li><code>Content-Length</code> tells you exactly how many body bytes to read/write before the next request starts</li>
-<li>If your <code>Content-Length</code> is wrong, the next request on the connection is garbage</li>
+<li>If your <code>Content-Length</code> is wrong, the next request on the connection is corrupt</li>
 </ul>
 </section>
 <section id="the-keep-alive-loop" class="slide level2">
-<h2>The keep-alive loop</h2>
+<h2>The keep-alive Loop</h2>
 <ul>
 <li>Accept a TCP connection</li>
 <li>Then loop:
 <ol type="1">
 <li>Read one full HTTP request (headers + <code>Content-Length</code> bytes of body)</li>
 <li>Send one full HTTP response</li>
-<li>If <code>Connection: close</code>, break and close the socket</li>
+<li>If <code>Connection: close</code>, or the client disconnect, break and close the socket</li>
 <li>Otherwise, go back to step 1</li>
 </ol></li>
 <li>This is still <strong>one request at a time</strong> on this connection</li>
@@ -326,6 +326,8 @@
 <section id="closing-a-connection" class="slide level2">
 <h2>Closing a Connection</h2>
 <ul>
+<li>Several possible causes for a closed connection
+<ul>
 <li>Client sent <code>Connection: close</code></li>
 <li>Client closes their browser
 <ul>
@@ -333,6 +335,7 @@
 </ul></li>
 <li>Server decides to close (idle too long, error, done with the client)</li>
 <li>Network error</li>
+</ul></li>
 <li>Your server needs to handle a closed socket gracefully
 <ul>
 <li><code>Read</code> returns an error / EOF</li>
@@ -341,7 +344,7 @@
 </ul>
 </section>
 <section id="keep-alive-is-still-sequential" class="slide level2">
-<h2>Keep-alive is still sequential</h2>
+<h2>Keep-alive is Still Sequential</h2>
 <ul>
 <li>On one TCP connection, HTTP/1.1 is request then response then request then response</li>
 <li>The CSS request waits until the HTML response is done</li>
@@ -383,7 +386,6 @@
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Connection">HTTP Connection Header</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x">Connection management in HTTP/1.x</a></li>
-<li><a href="https://go.dev/tour/concurrency/1">A Tour of Go: Goroutines</a></li>
 </ul>
 </section></section>
     </div>
