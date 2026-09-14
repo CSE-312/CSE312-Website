@@ -2,11 +2,11 @@
 title: "HTTP - Caching"
 lang: en
 
-description: "Caching HTTP responses"
+description: "How browsers cache HTTP responses using timeouts, ETags, and 304 Not Modified"
 
 reading-list:
   - url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching"
-    text: "MDN docs: Caching"
+    text: "MDN: HTTP Caching"
 
 released: true
 ---
@@ -14,73 +14,146 @@ released: true
 # Caching
 
 
-## HTTP Caching
+## Caching
 
-- Browser stores previous response
-- If it's fresh, reuse it
-- Reuse until it's stale
+- Loading a page is still a lot of requests, even with keep-alive
+- CSS, JS, images, and fonts rarely change
+- Sending the same file over the network every time is wasted work
+- Caching: reuse a previous response instead of downloading it again
+
+
+## Who Stores the Cache?
+
+- **The browser** stores the response
+- Your server does not keep a cache of responses
+- Your job is to send headers that tell the browser:
+  - How long this response can be reused
+  - How to check whether it is still valid
+- Same URL later: the browser decides whether to reuse, revalidate, or request the resource
+
+
+## Fresh vs stale
+
+- **Fresh**: the cached copy is still good. Use it. Do not talk to the server
+- **Stale**: the cached copy might be outdated. Ask the server before using it
+- Two independent mechanisms:
+  - **Timeouts** (`max-age`, `Expires`): how long the copy stays fresh
+  - **Validators** (`ETag`, `Last-Modified`): how the server confirms it has not changed
 
 # Timeouts
 
-## Max Age
 
-- Specify a max age. Once it's older, browser requests again
-- Use `Cache-Control: max-age=3600`
+## Cache-Control: max-age
+
+- Number of seconds the browser may reuse this response
+
+```http
+HTTP/1.1 200 OK
+Content-Type: text/css
+Content-Length: 42
+Cache-Control: max-age=3600
+```
+
+- `max-age=3600` means this is fresh for one hour
+- After that, the copy is stale and a new request will be sent
+
 
 ## Expires
 
-- Specify and exact time when the resource should become stale
-- Use `Expires: Wed, 23 Sep 2026 15:50:00 EST
-- max-age is preferred
-- If both max-age and expires are used, the browser should prefer max-age
+- An exact time when the response becomes stale
 
-# ETag
+```http
+Expires: Wed, 23 Sep 2026 19:50:00 GMT
+```
+
+- HTTP dates are **GMT**, not local time
+- `max-age` is preferred
+  - Less prone to time zone, daylight savings, etc. issues
+  - Easier to use
+- If both are present, the browser uses `max-age`
+
+
+## Other Cache-Control values
+
+- `no-store` — do not save this at all (passwords, private pages)
+- `no-cache` — you may store it, but revalidate before using it
+- `private` — only this user's browser may cache it, not a shared proxy
+- `public` — OK to store in a shared cache
+
+
+# Validators
+
+
+## When the Cache is Stale
+
+- Timeout expired. Browser still has the old bytes
+- Send a request to the server asking if the response is still current
+  - If it is, send a 304 Not Modified response with no body
+    - Prevents resending the same data and can reset the timeout
+  - If it is not current, send a 200 OK with the new response
+
 
 ## ETag
 
-- Use an ETag
+- A fingerprint of this version of the resource
+- Send it on 200 responses
 
-# Validation
+```http
+HTTP/1.1 200 OK
+Content-Type: text/css
+Content-Length: 42
+Cache-Control: max-age=10
+ETag: "9e107d9d372bb6826bd81d3542a419d6"
+```
 
-## Validation
+- When the file contents change, the ETag **must** change
+- A hash of the file bytes is a great way to do this
 
-- Client can send these headers if cache is stale
-  - If-None-Match
-  - If-Modified-Since
 
-- Last-Modified
-- Date
-- Have to check the files modified timestamp and compare it to the If-Modified-Since timestamp. They will be in different formats! Possibly different time zones
+## If-None-Match
 
-# other
+- Once the copy is stale, the browser sends the ETag back
+
+```http
+GET /public/style.css HTTP/1.1
+Host: localhost:8080
+If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"
+```
+
+- Compare it to the ETag of the file currently on disk 
+- If they match, send a 304
+- If they are different, send a 200 with the new etag
+
+
+
+
+## 304 has no body
+
+```http
+HTTP/1.1 304 Not Modified
+ETag: "9e107d9d372bb6826bd81d3542a419d6"
+Cache-Control: max-age=3600
+```
+
+- 304 means "your copy is still current"
+- No body in the response
+  - Not Content-Length/Content-Type headers
+- The browser already has the bytes. You are only confirming they are current
+- You may send the ETag and `Cache-Control` again so the copy becomes fresh
+
+
+
 
 ## Vary
 
-- Vary useful
-- Every resource is uniquely identified by it's url
-- We sometimes want even more control over caching than just the url (resource)
-- The Vary header specifies additional request headers that are used to identify the content
-- If the url for 2 requests are identical, but the value of a Vary header is different, the second requests will not used the cached version
-- Commonly used for Accept and Accept-Language headers
-  - The same resource is hosted in different file formats and languages
-  - If a different format or language is requested, do not used the cached version
+- By default the cache key is the URL
+- Sometimes the same URL serves different content depending on a request header
 
-```
+```http
 Vary: Accept-Language
-``` 
+```
 
-## Private Cache Control
+- `GET /page` with `Accept-Language: en` and `Accept-Language: es` are different cache entries
+- If you skip `Vary`, an English user can be served the Spanish page from cache
+- Common on `Accept` and `Accept-Language`
 
-- Cache-Control: private
-- Ensures the cache will not be shared with other sessions
-
-## Caution
-
-- Dude I know set Max-Age: Several decades
-- Made a change
-- Had to email a few client who couldn't not get the change
-  - "Can you please click these buttons to invalidate your cache"
-
-## Other Caching Tech
-
-- Make the url different whenever a resource changes

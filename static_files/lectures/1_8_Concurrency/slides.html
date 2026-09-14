@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8dcd8563ea6803ab7cbb3d71ca5772e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
-  <title>CSE312 Lectures – HTTP - Static Files, MIME Types, and Encodings</title>
+  <title>CSE312 Lectures – Concurrency</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,6 +28,72 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -142,380 +208,172 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">HTTP - Static Files, MIME Types, and Encodings</h1>
+  <h1 class="title">Concurrency</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
 <section>
-<section id="encodings" class="title-slide slide level1 center">
-<h1>Encodings</h1>
-<p>MIME types and bytes</p>
+<section id="http-connections" class="title-slide slide level1 center">
+<h1>HTTP COnnections</h1>
+
 </section>
-<section id="s-and-0s" class="slide level2">
-<h2>1's and 0's</h2>
+<section id="loading-a-page" class="slide level2">
+<h2>Loading a Page</h2>
 <ul>
-<li>The Internet can only transfer bits
-<ul>
-<li>Copper: High/Low voltage</li>
-<li>Fiber: Light/Dark</li>
-</ul></li>
-<li>All data sent over the Internet must be binary</li>
-<li>How do we know what these 1's and 0's represent in HTTP?
-<ul>
-<li>Encodings and MIME Types</li>
-</ul></li>
+<li>One page load is not one HTTP request</li>
+<li>Browser gets the HTML, then requests every CSS, JS, image, etc. needed to render the page</li>
+<li>Each of those needs its own request/response</li>
+<li>If every request opens a new TCP connection, the page is slower than it needs to be</li>
 </ul>
+</section>
+<section id="tcp-connections-are-expensive" class="slide level2">
+<h2>TCP Connections are Expensive</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>A new TCP connection starts with a 3-way handshake
+<ul>
+<li>1 full additional round-trip</li>
+<li>The 3rd step of hte handshake often contains a request</li>
+</ul></li>
+<li>That extra round trip happens <em>before</em> any of your content moves</li>
+<li>Even more expensive with encryption</li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<p><img data-src="assets/tcp.png" alt="TCP 3-way handshake"></p>
+</div></div>
 </section></section>
 <section>
-<section id="encoding-text" class="title-slide slide level1 center">
-<h1>Encoding Text</h1>
+<section id="keep-alive" class="title-slide slide level1 center">
+<h1>Keep-Alive</h1>
 
 </section>
-<section id="text" class="slide level2">
-<h2>Text</h2>
+<section id="connection-keep-alive" class="slide level2">
+<h2>Connection: keep-alive</h2>
 <ul>
-<li>Only 1's and 0's can travel through the Internet
+<li>You'll see this header on most requests</li>
+<li>The browser is requesting that you keep the TCP connection open for subsequent requests</li>
+<li>Handshake once, then send as many requests/responses as you need over that single connection</li>
+<li>Default for HTTP/1.1
 <ul>
-<li>How do we send text?</li>
+<li>The browser does not have to send <code>Connection: keep-alive</code>, but clients often do</li>
 </ul></li>
+<li><code>Connection: close</code> means this is the last request on this socket</li>
 </ul>
 </section>
-<section id="ascii" class="slide level2">
-<h2>ASCII</h2>
+<section id="the-connection-header" class="slide level2">
+<h2>The Connection header</h2>
 <ul>
-<li>Character encoding
+<li>Both the request and the response can include it</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>GET /public/style.css HTTP/1.1</span>
+<span id="cb1-2"><a></a>Host: cse312.com</span>
+<span id="cb1-3"><a></a>Connection: keep-alive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>HTTP/1.1 200 OK</span>
+<span id="cb2-2"><a></a>Content-Type: text/css</span>
+<span id="cb2-3"><a></a>Content-Length: 42</span>
+<span id="cb2-4"><a></a>Connection: keep-alive</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Maps characters to numbers</li>
-<li>Numbers are represented in bits</li>
-<li>Bits are sent through the Internet</li>
-<li>Numbers are mapped back to characters by the receiver</li>
-</ul></li>
-<li>ASCII uses 7 bit encodings</li>
+<li>After a keep-alive response, <strong>do not close the socket</strong></li>
+<li>Wait for the next request on the same connection</li>
 </ul>
 </section>
-<section id="ascii-chart" class="slide level2">
-<h2>ASCII Chart</h2>
-
-<img data-src="assets/slide06-1.png" alt="Chart of all ASCII values including each character's decimal, hex, octal, and HTML value" class="r-stretch"></section>
-<section id="ascii-1" class="slide level2">
-<h2>ASCII</h2>
+<section id="connection-close" class="slide level2">
+<h2>Connection: close</h2>
 <ul>
-<li>As a String:
-<ul>
-<li>"hello"</li>
-<li>Programming language specific representation</li>
-</ul></li>
-<li>In Hex:
-<ul>
-<li>68 65 6c 6c 6f</li>
-<li>Need to encode the String into a byte representation</li>
-</ul></li>
-<li>In Binary:
-<ul>
-<li>01101000 01100101 01101100 01101100 01101111</li>
-<li>Send this over the Internet</li>
-</ul></li>
+<li>Either side can end the connection</li>
 </ul>
-</section>
-<section id="http-headers" class="slide level2">
-<h2>HTTP Headers</h2>
-<p>HTTP Headers can only contain</p>
-<p>ASCII characters</p>
-</section>
-<section id="http-headers-1" class="slide level2">
-<h2>HTTP Headers</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>GET / HTTP/1.1</span>
+<span id="cb3-2"><a></a>Host: cse312.com</span>
+<span id="cb3-3"><a></a>Connection: close</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>When reading HTTP headers [And request/status lines]
-<ul>
-<li>Assume it is text encoded using ASCII</li>
-</ul></li>
-<li>The body of the request/response may be encoded differently
-<ul>
-<li>Read the headers to find the encoding for the body</li>
-</ul></li>
-</ul>
-</section>
-<section id="character-encodings" class="slide level2">
-<h2>Character Encodings</h2>
-<ul>
-<li>ASCII can only encode 128 different characters
-<ul>
-<li>Decent enough for english text</li>
-<li>Unusable for languages with different alphabets</li>
-</ul></li>
-<li>With the Internet, the world became much more connected
-<ul>
-<li>Too restrictive for each alphabet to have its own encoding</li>
-</ul></li>
-<li>How do we encode more characters with a single standard?
-<ul>
-<li>We need more bits!</li>
-<li>Enter UTF-8</li>
-</ul></li>
-</ul>
-</section>
-<section id="utf-8" class="slide level2">
-<h2>UTF-8</h2>
-<ul>
-<li>The modern standard for encoding text</li>
-<li>Uses up to 4 bytes to represent a character</li>
-<li>If the first bit is a 0
-<ul>
-<li>One byte used. Remaining 7 bits are ASCII</li>
-<li>All ASCII encoded Strings are valid UTF-8</li>
-</ul></li>
-</ul>
-
-<img data-src="assets/slide11-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="utf-8-1" class="slide level2">
-<h2>UTF-8</h2>
-<ul>
-<li>If more bytes are needed:
-<ul>
-<li>Lead with 1's to indicate the number of bytes</li>
-<li>Each continuation byte begins with 10</li>
-<li>Prevents decoding errors</li>
-<li>No character is a subsequence of another character</li>
-</ul></li>
-</ul>
-
-<img data-src="assets/slide11-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="sending-data" class="slide level2">
-<h2>Sending Data</h2>
-<ul>
-<li>When sending Strings over the Internet
-<ul>
-<li>The Internet does not understand language-specific Strings</li>
-<li>Always convert to bytes/bits before sending</li>
-<li>Encode the String using UTF-8</li>
-</ul></li>
-<li>When receiving text over the Internet
-<ul>
-<li>It must have been sent as bytes/bits</li>
-<li>Must convert to a language-specific String</li>
-<li>Decode the bytes using the proper encoding</li>
-</ul></li>
-</ul>
-</section>
-<section id="sending-data-1" class="slide level2">
-<h2>Sending Data</h2>
-<ul>
-<li>Use the Python methods
-<ul>
-<li>.encode()</li>
-<li>.decode()</li>
-</ul></li>
-<li>You can specify the encoding as an argument of these methods
-<ul>
-<li>Default is UTF-8 so providing no arguments will do what you want for this course</li>
-</ul></li>
+<li>After you send the response, close the TCP connection</li>
+<li>If you are going to close, send <code>Connection: close</code> in the response so the client knows not to reuse it</li>
 </ul>
 </section>
 <section id="content-length" class="slide level2">
 <h2>Content Length</h2>
 <ul>
-<li>Content-Length header must be set when there is a body to a response/request</li>
-<li>Value is the number of bytes contained in the body
+<li>Messages are delimited by their content length</li>
+<li>With <code>Connection: close</code>, the socket can be closed after reading the body of the request [and sending your response]</li>
+<li>That does <strong>not</strong> work with keep-alive
 <ul>
-<li>Bytes referred to as octets in some documentation</li>
+<li>The next bytes on the socket are the next request</li>
 </ul></li>
-<li>If all your characters are ASCII
+<li><code>Content-Length</code> tells you exactly how many body bytes to read/write before the next request starts</li>
+<li>If your <code>Content-Length</code> is wrong, the next request on the connection is garbage</li>
+</ul>
+</section>
+<section id="the-keep-alive-loop" class="slide level2">
+<h2>The keep-alive loop</h2>
 <ul>
-<li>This is equal to the length of the String</li>
+<li>Accept a TCP connection</li>
+<li>Then loop:
+<ol type="1">
+<li>Read one full HTTP request (headers + <code>Content-Length</code> bytes of body)</li>
+<li>Send one full HTTP response</li>
+<li>If <code>Connection: close</code>, break and close the socket</li>
+<li>Otherwise, go back to step 1</li>
+</ol></li>
+<li>This is still <strong>one request at a time</strong> on this connection</li>
+<li>The loop is per connection, not per server</li>
+</ul>
+</section>
+<section id="closing-a-connection" class="slide level2">
+<h2>Closing a Connection</h2>
+<ul>
+<li>Client sent <code>Connection: close</code></li>
+<li>Client closes their browser
+<ul>
+<li>No request is sent. You need to detect this</li>
 </ul></li>
-<li>Any non-ASCII UTF-8 character uses &gt;1 byte
+<li>Server decides to close (idle too long, error, done with the client)</li>
+<li>Network error</li>
+<li>Your server needs to handle a closed socket gracefully
 <ul>
-<li>Cannot use the length of the String as your Content-Length!</li>
+<li><code>Read</code> returns an error / EOF</li>
+<li>Stop looping, close your side, return</li>
 </ul></li>
 </ul>
 </section>
-<section id="content-length-1" class="slide level2">
-<h2>Content Length</h2>
+<section id="keep-alive-is-still-sequential" class="slide level2">
+<h2>Keep-alive is still sequential</h2>
 <ul>
-<li>To compute the content length of a UTF-8 String
+<li>On one TCP connection, HTTP/1.1 is request then response then request then response</li>
+<li>The CSS request waits until the HTML response is done</li>
+<li>A slow response holds up everything else on that connection</li>
+<li>Keep-alive removes handshake cost. It does not make requests parallel</li>
+</ul>
+</section></section>
+<section>
+<section id="multiple-clients" class="title-slide slide level1 center">
+<h1>Multiple Clients</h1>
+
+</section>
+<section id="multiple-clients-1" class="slide level2">
+<h2>Multiple Clients</h2>
 <ul>
-<li>Convert to bytes first</li>
-<li>Get the length of the byte array</li>
+<li>Your app will have more than one user [hopefully]</li>
+<li>Need to maintain connections with all clients simultaneously</li>
+<li>If your server handles one connection at a time, everyone else waits
+<ul>
+<li>If that connection respect keep-alive, they may be waiting for a very long time</li>
 </ul></li>
+<li>Handle this with concurrency</li>
 </ul>
 </section>
-<section id="mime-types" class="slide level2">
-<h2>MIME Types</h2>
-</section>
-<section id="mime-types-1" class="slide level2">
-<h2>MIME Types</h2>
+<section id="goroutines" class="slide level2">
+<h2>Goroutines</h2>
 <ul>
-<li>When an HTTP response [or request] contains a body, the body is an array of bytes
-<ul>
-<li>There's no restriction on the encoding used for these bytes (Cannot always assume ASCII/UTF-8)</li>
-</ul></li>
-<li>Set a Content-Type header to tell the browser what those bytes represent
-<ul>
-<li>Tells the browser how to read the body of your response</li>
-</ul></li>
-<li>This is the MIME type of the data</li>
-</ul>
-</section>
-<section id="mime-types-2" class="slide level2">
-<h2>MIME Types</h2>
-<ul>
-<li>MIME type
-<ul>
-<li>Multipurpose Internet Mail Extensions</li>
-<li>Developed for email and adopted for HTTP</li>
-</ul></li>
-<li>Two parts separate by a /
-<ul>
-<li><code>&lt;type&gt;</code>/<code>&lt;subtype&gt;</code></li>
-</ul></li>
-<li>Common types
-<ul>
-<li>text - Data using a text encoding (eg. UTF-8)</li>
-<li>image - Raw binary of an image file</li>
-<li>video - Raw binary of a video</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-types-3" class="slide level2">
-<h2>MIME Types</h2>
-<ul>
-<li>Common Type/Subtypes
-<ul>
-<li>text/plain</li>
-<li>text/html</li>
-<li>text/css</li>
-<li>text/javascript</li>
-<li>image/png</li>
-<li>image/jpeg</li>
-<li>video/mp4</li>
-<li>application/json</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-types-4" class="slide level2">
-<h2>MIME Types</h2>
-<ul>
-<li>Optional settings can be added to the Content-Type header
-<ul>
-<li>Separate options by a ;</li>
-<li>Options are formatted as <code>&lt;name&gt;</code>=<code>&lt;value&gt;</code></li>
-</ul></li>
-<li>Content-Type: text/html; charset=utf-8
-<ul>
-<li>The content is HTML encoded using UTF-8</li>
-<li>*You must use this to tell the browser that you are using utf-8</li>
-<li>Don't forget to add this exactly as it appears. One character difference will break your page</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-type-sniffing" class="slide level2">
-<h2>MIME Type Sniffing</h2>
-<ul>
-<li>Modern browsers will "sniff" the proper MIME type of a response
-<ul>
-<li>If the MIME type is not correct, the browser will "figure it out"™ and guess what type makes the most sense</li>
-</ul></li>
-<li>Browsers can sometimes be wrong
-<ul>
-<li>Surprises when your site doesn't work with certain versions of certain browsers</li>
-</ul></li>
-<li>Best practice is to disable sniffing</li>
-<li>Set this HTTP header to tell the browser you set the correct MIME type
-<ul>
-<li>X-Content-Type-Options: nosniff</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-type-sniffing-1" class="slide level2">
-<h2>MIME Type Sniffing</h2>
-<ul>
-<li>X-Content-Type-Options: nosniff</li>
-<li>Be sure to set this header properly!
-<ul>
-<li>Open the browser console</li>
-<li>Check the headers of your response</li>
-<li>Make sure this header was parsed by the browser</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-type-sniffing-2" class="slide level2">
-<h2>MIME Type Sniffing</h2>
-<ul>
-<li>Security concern:
-<ul>
-<li>You have a site where users can upload images</li>
-<li>All users can view these images</li>
-<li>Instead of an image, a user uploads JavaScript that steals personal data</li>
-<li>You set the MIME type to image/png</li>
-<li>The browser notices something is wrong and sniffs out the MIME type of text/javascript and runs the script</li>
-<li>You just got hacked!</li>
-</ul></li>
-<li>Solution:
-<ul>
-<li>X-Content-Type-Options: nosniff</li>
-</ul></li>
-</ul>
-</section>
-<section id="mime-types-5" class="slide level2">
-<h2>MIME Types</h2>
-<ul>
-<li>With the proper MIME types set through a Content-Type header
-<ul>
-<li>The browser will know how to parse and render the body of your HTTP response</li>
-</ul></li>
-<li>When receiving an HTTP request that contains a body
-<ul>
-<li>The Content-Type will be set to let our server know the MIME type</li>
-</ul></li>
-</ul>
-</section>
-<section id="sending-images" class="slide level2">
-<h2>Sending Images</h2>
-</section>
-<section id="sending-images-1" class="slide level2">
-<h2>Sending Images</h2>
-<ul>
-<li>Sometimes we want to send data that is not text</li>
-<li>Use different formats depending on the data</li>
-<li>To send an image
-<ul>
-<li>Read the bytes from the file</li>
-<li>Send the bytes as-is</li>
-<li>Content-Length is the size of the file</li>
-<li>Set the Content-Type to image/<code>&lt;image_type&gt;</code></li>
-</ul></li>
-</ul>
-</section>
-<section id="sending-images-2" class="slide level2">
-<h2>Sending Images</h2>
-<ul>
-<li>When sending images
-<ul>
-<li>Since the data is already in bytes when the file is read, no need to encode/decode</li>
-</ul></li>
-<li>Never try to read an image file as a string</li>
-<li>Never try to decode the bytes of an image into a string</li>
-<li>An image is not encoded using UTF-8
-<ul>
-<li>The bytes will not decode properly</li>
-</ul></li>
-</ul>
-</section>
-<section id="sending-images-3" class="slide level2">
-<h2>Sending Images</h2>
-<ul>
-<li>Don't overthink sending images</li>
-<li>Read the bytes of the file. That's the body of your response
-<ul>
-<li>You may have to specify that the file should be read as a byte array since text is often assumed in File IO examples</li>
-</ul></li>
-<li>Set the Content-Length to the length of the byte array</li>
-<li>Set the appropriate MIME type in Content-Type
-<ul>
-<li>Ex: to send a .png the MIME type is "image/png"</li>
-</ul></li>
+<li>A goroutine is a lightweight thread managed by Go</li>
+<li>Cheap to create: Use one per connection</li>
+<li><code>go handleConnection(conn)</code> starts the function and does not wait for it</li>
+<li>The accept loop immediately goes back to waiting for the next client</li>
+<li>Be sure to end the connection and goroutine when a client disconnects</li>
 </ul>
 
 
@@ -523,10 +381,9 @@
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8 (Wikipedia)</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">MIME types</a></li>
-<li><a href="https://www.iana.org/assignments/media-types/media-types.xhtml">Every MIME type</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options">String MIME types</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Connection">HTTP Connection Header</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x">Connection management in HTTP/1.x</a></li>
+<li><a href="https://go.dev/tour/concurrency/1">A Tour of Go: Goroutines</a></li>
 </ul>
 </section></section>
     </div>

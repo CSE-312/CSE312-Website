@@ -28,6 +28,72 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -136,6 +202,9 @@
     }
   });
   </script>
+  <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+  <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+  <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
   <div class="reveal">
@@ -153,12 +222,38 @@
 <h1>Caching</h1>
 
 </section>
-<section id="http-caching" class="slide level2">
-<h2>HTTP Caching</h2>
+<section id="why-cache" class="slide level2">
+<h2>Why cache</h2>
 <ul>
-<li>Browser stores previous response</li>
-<li>If it's fresh, reuse it</li>
-<li>Reuse until it's stale</li>
+<li>Loading a page is still a lot of requests, even with keep-alive</li>
+<li>CSS, JS, images, and fonts rarely change</li>
+<li>Sending the same file over the network every time is wasted work</li>
+<li>Caching: reuse a previous response instead of downloading it again</li>
+</ul>
+</section>
+<section id="who-stores-the-cache" class="slide level2">
+<h2>Who stores the cache?</h2>
+<ul>
+<li><strong>The browser</strong> stores the response</li>
+<li>Your server does not keep a cache of responses</li>
+<li>Your job is to send headers that tell the browser:
+<ul>
+<li>How long this response can be reused</li>
+<li>How to check whether it is still valid</li>
+</ul></li>
+<li>Same URL later: the browser decides whether to reuse, revalidate, or request from scratch</li>
+</ul>
+</section>
+<section id="fresh-vs-stale" class="slide level2">
+<h2>Fresh vs stale</h2>
+<ul>
+<li><strong>Fresh</strong>: the cached copy is still good. Use it. Do not talk to the server</li>
+<li><strong>Stale</strong>: the cached copy might be outdated. Ask the server before using it</li>
+<li>Two independent mechanisms:
+<ul>
+<li><strong>Timeouts</strong> (<code>max-age</code>, <code>Expires</code>): how long the copy stays fresh</li>
+<li><strong>Validators</strong> (<code>ETag</code>, <code>Last-Modified</code>): how the server confirms it has not changed</li>
+</ul></li>
 </ul>
 </section></section>
 <section>
@@ -166,94 +261,281 @@
 <h1>Timeouts</h1>
 
 </section>
-<section id="max-age" class="slide level2">
-<h2>Max Age</h2>
+<section id="cache-control-max-age" class="slide level2">
+<h2>Cache-Control: max-age</h2>
 <ul>
-<li>Specify a max age. Once it's older, browser requests again</li>
-<li>Use <code>Cache-Control: max-age=3600</code></li>
+<li>Number of seconds the browser may reuse this response</li>
 </ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>HTTP/1.1 200 OK</span>
+<span id="cb1-2"><a></a>Content-Type: text/css</span>
+<span id="cb1-3"><a></a>Content-Length: 42</span>
+<span id="cb1-4"><a></a>Cache-Control: max-age=3600</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>max-age=3600</code> → fresh for one hour</li>
+<li>After that, the copy is stale</li>
+<li>For homework, use a <strong>short</strong> timeout (about 10 seconds) so you can test it</li>
+</ul>
+</section>
+<section id="fresh-no-request-at-all" class="slide level2">
+<h2>Fresh: no request at all</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+  participant Browser
+  participant Server
+  Browser-&gt;&gt;Server: GET /style.css
+  Server-&gt;&gt;Browser: 200 + max-age=10
+  Note over Browser: Cache the response
+  Note over Browser: A few seconds later: reuse the cache
+  Note over Server: No second request
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="expires" class="slide level2">
 <h2>Expires</h2>
 <ul>
-<li>Specify and exact time when the resource should become stale</li>
-<li>Use `Expires: Wed, 23 Sep 2026 15:50:00 EST</li>
-<li>max-age is preferred</li>
-<li>If both max-age and expires are used, the browser should prefer max-age</li>
+<li>An exact time when the response becomes stale</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>Expires: Wed, 23 Sep 2026 19:50:00 GMT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>HTTP dates are <strong>GMT</strong>, not local time, not EST</li>
+<li><code>max-age</code> is preferred</li>
+<li>If both are present, the browser uses <code>max-age</code></li>
+</ul>
+</section>
+<section id="other-cache-control-values" class="slide level2">
+<h2>Other Cache-Control values</h2>
+<ul>
+<li><code>no-store</code> — do not save this at all (passwords, private pages)</li>
+<li><code>no-cache</code> — you may store it, but revalidate before using it</li>
+<li><code>private</code> — only this user's browser may cache it, not a shared proxy</li>
+<li><code>public</code> — OK to store in a shared cache</li>
+<li>You will mostly send <code>max-age</code> on static files</li>
 </ul>
 </section></section>
 <section>
-<section id="etag" class="title-slide slide level1 center">
-<h1>ETag</h1>
+<section id="validators" class="title-slide slide level1 center">
+<h1>Validators</h1>
 
 </section>
-<section id="etag-1" class="slide level2">
+<section id="when-the-cache-is-stale" class="slide level2">
+<h2>When the cache is stale</h2>
+<ul>
+<li>Timeout expired. Browser still has the old bytes</li>
+<li>It does <strong>not</strong> throw them away immediately</li>
+<li>It asks the server: "Is this still the current version?"</li>
+<li>If yes: <strong>304 Not Modified</strong> — keep using the cached body</li>
+<li>If no: <strong>200 OK</strong> with the new body</li>
+<li>That question is sent with a validator</li>
+</ul>
+</section>
+<section id="etag" class="slide level2">
 <h2>ETag</h2>
 <ul>
-<li>Use an ETag</li>
+<li>A fingerprint of this version of the resource</li>
+<li>Send it on the original 200 response</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>HTTP/1.1 200 OK</span>
+<span id="cb3-2"><a></a>Content-Type: text/css</span>
+<span id="cb3-3"><a></a>Content-Length: 42</span>
+<span id="cb3-4"><a></a>Cache-Control: max-age=10</span>
+<span id="cb3-5"><a></a>ETag: "9e107d9d372bb6826bd81d3542a419d6"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Quotes are part of the value</li>
+<li>When the file contents change, the ETag <strong>must</strong> change</li>
+<li>A hash of the file bytes is a solid way to do this</li>
+</ul>
+</section>
+<section id="if-none-match" class="slide level2">
+<h2>If-None-Match</h2>
+<ul>
+<li>Once the copy is stale, the browser sends the ETag back</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a></a>GET /public/style.css HTTP/1.1</span>
+<span id="cb4-2"><a></a>Host: localhost:8080</span>
+<span id="cb4-3"><a></a>If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Compare it to the ETag of the file on disk <strong>right now</strong></li>
+<li>Same → nothing changed → 304</li>
+<li>Different → file changed → 200 with the new body and the new ETag</li>
+</ul>
+</section>
+<section id="not-modified" class="slide level2">
+<h2>304 Not Modified</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+  participant Browser
+  participant Server
+  Note over Browser: Cached copy is stale
+  Browser-&gt;&gt;Server: GET /public/style.css
+  Note over Browser,Server: If-None-Match: "abc"
+  Server-&gt;&gt;Browser: 304 Not Modified
+  Note over Browser: Reuse the cached body
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="has-no-body" class="slide level2">
+<h2>304 has no body</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>HTTP/1.1 304 Not Modified</span>
+<span id="cb5-2"><a></a>ETag: "9e107d9d372bb6826bd81d3542a419d6"</span>
+<span id="cb5-3"><a></a>Cache-Control: max-age=10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>300-level is not only redirects. 304 means "your copy is still good"</li>
+<li>Do <strong>not</strong> send the file</li>
+<li>Do <strong>not</strong> send a fake body with <code>Content-Length</code> of the original file</li>
+<li>The browser already has the bytes. You are only confirming they are current</li>
+<li>You may send the ETag and <code>Cache-Control</code> again so the copy becomes fresh</li>
+</ul>
+</section>
+<section id="last-modified" class="slide level2">
+<h2>Last-Modified</h2>
+<ul>
+<li>The other validator: when this file last changed on disk</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>HTTP/1.1 200 OK</span>
+<span id="cb6-2"><a></a>Content-Type: text/css</span>
+<span id="cb6-3"><a></a>Content-Length: 42</span>
+<span id="cb6-4"><a></a>Cache-Control: max-age=10</span>
+<span id="cb6-5"><a></a>Last-Modified: Wed, 16 Sep 2026 18:00:00 GMT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Homework: timeouts can be <code>max-age</code> <strong>or</strong> <code>Last-Modified</code>. You still need ETags either way</li>
+<li><code>max-age</code> is the straightforward timeout. Prefer it</li>
+</ul>
+</section>
+<section id="if-modified-since" class="slide level2">
+<h2>If-Modified-Since</h2>
+<ul>
+<li>Browser sends the <code>Last-Modified</code> value back when revalidating</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a></a>GET /public/style.css HTTP/1.1</span>
+<span id="cb7-2"><a></a>Host: localhost:8080</span>
+<span id="cb7-3"><a></a>If-Modified-Since: Wed, 16 Sep 2026 18:00:00 GMT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Compare to the file's current modification time</li>
+<li>Not newer → 304</li>
+<li>Newer → 200 with the new body and a new <code>Last-Modified</code></li>
+</ul>
+</section>
+<section id="date-formats-will-hurt-you" class="slide level2">
+<h2>Date formats will hurt you</h2>
+<ul>
+<li>File timestamps on disk are not HTTP dates</li>
+<li>HTTP dates look like: <code>Wed, 16 Sep 2026 18:00:00 GMT</code></li>
+<li>They are always GMT. Your laptop is probably not</li>
+<li><code>Date</code> on the response is "now" in that same format</li>
+<li>Parse and format carefully. Off-by-one-hour bugs look like "caching is broken"</li>
+<li>This is a good reason to prefer ETags plus <code>max-age</code></li>
 </ul>
 </section></section>
 <section>
-<section id="validation" class="title-slide slide level1 center">
-<h1>Validation</h1>
+<section id="what-to-cache" class="title-slide slide level1 center">
+<h1>What to cache</h1>
 
 </section>
-<section id="validation-1" class="slide level2">
-<h2>Validation</h2>
+<section id="static-files-not-everything" class="slide level2">
+<h2>Static files, not everything</h2>
 <ul>
-<li>Client can send these headers if cache is stale
+<li>Cache responses for paths under <code>/public</code>
 <ul>
-<li>If-None-Match</li>
-<li>If-Modified-Since</li>
+<li>CSS, JS, images, fonts</li>
 </ul></li>
-<li>Last-Modified</li>
-<li>Date</li>
-<li>Have to check the files modified timestamp and compare it to the If-Modified-Since timestamp. They will be in different formats! Possibly different time zones</li>
+<li>Do not blindly cache:
+<ul>
+<li>HTML that changes when users post</li>
+<li>JSON APIs with per-user data</li>
+<li>Anything that depends on a cookie / session</li>
+</ul></li>
+<li>If two users must not see each other's response, do not let a shared cache store it</li>
 </ul>
-</section></section>
-<section>
-<section id="other" class="title-slide slide level1 center">
-<h1>other</h1>
-
+</section>
+<section id="cache-control-private" class="slide level2">
+<h2>Cache-Control: private</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>Cache-Control: private, max-age=60</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This user's browser may cache it</li>
+<li>A CDN or proxy in the middle must not</li>
+<li>Use this for anything tied to a logged-in session</li>
+<li>Static public files can be cached without <code>private</code></li>
+</ul>
 </section>
 <section id="vary" class="slide level2">
 <h2>Vary</h2>
 <ul>
-<li>Vary useful</li>
-<li>Every resource is uniquely identified by it's url</li>
-<li>We sometimes want even more control over caching than just the url (resource)</li>
-<li>The Vary header specifies additional request headers that are used to identify the content</li>
-<li>If the url for 2 requests are identical, but the value of a Vary header is different, the second requests will not used the cached version</li>
-<li>Commonly used for Accept and Accept-Language headers
-<ul>
-<li>The same resource is hosted in different file formats and languages</li>
-<li>If a different format or language is requested, do not used the cached version</li>
-</ul></li>
+<li>By default the cache key is the URL</li>
+<li>Sometimes the same URL serves different content depending on a request header</li>
 </ul>
-<pre><code>Vary: Accept-Language</code></pre>
-</section>
-<section id="private-cache-control" class="slide level2">
-<h2>Private Cache Control</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>Vary: Accept-Language</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Cache-Control: private</li>
-<li>Ensures the cache will not be shared with other sessions</li>
+<li><code>GET /page</code> with <code>Accept-Language: en</code> and <code>Accept-Language: es</code> are different cache entries</li>
+<li>If you skip <code>Vary</code>, an English user can be served the Spanish page from cache</li>
+<li>Common on <code>Accept</code> and <code>Accept-Language</code></li>
 </ul>
 </section>
-<section id="caution" class="slide level2">
-<h2>Caution</h2>
+<section id="do-not-cache-forever" class="slide level2">
+<h2>Do not cache forever</h2>
 <ul>
-<li>Dude I know set Max-Age: Several decades</li>
+<li>Dude I know set <code>max-age</code> to several decades</li>
 <li>Made a change</li>
-<li>Had to email a few client who couldn't not get the change
+<li>Had to email a few clients who could not get the change
 <ul>
 <li>"Can you please click these buttons to invalidate your cache"</li>
 </ul></li>
+<li>You cannot reach into someone else's browser and delete the file</li>
+<li>Short <code>max-age</code> + validators = fast and still correct</li>
 </ul>
 </section>
-<section id="other-caching-tech" class="slide level2">
-<h2>Other Caching Tech</h2>
+<section id="cache-busting" class="slide level2">
+<h2>Cache busting</h2>
 <ul>
-<li>Make the url different whenever a resource changes</li>
+<li>Another way to force a new download: change the URL</li>
+</ul>
+<pre><code>/public/style.css?v=3
+/public/style.3.css</code></pre>
+<ul>
+<li>New URL → cache miss → browser fetches the new file</li>
+<li>Useful when you ship a new frontend and cannot wait for <code>max-age</code> to expire</li>
+<li>The old URL can stay cached. Nobody requests it anymore</li>
+</ul>
+</section>
+<section id="what-the-server-does" class="slide level2">
+<h2>What the server does</h2>
+<p>On <code>GET /public/...</code>:</p>
+<ol type="1">
+<li>Compute the current ETag (and/or <code>Last-Modified</code>)</li>
+<li>If <code>If-None-Match</code> matches (or <code>If-Modified-Since</code> says it is not newer): send <strong>304</strong></li>
+<li>Otherwise send <strong>200</strong> with:
+<ul>
+<li>the file body</li>
+<li><code>Cache-Control: max-age=10</code></li>
+<li><code>ETag</code></li>
+<li><code>Content-Type</code> and <code>Content-Length</code></li>
+</ul></li>
+</ol>
+</section>
+<section id="testing" class="slide level2">
+<h2>Testing</h2>
+<ul>
+<li>Use a short <code>max-age</code> (10 seconds)</li>
+<li>First request: 200, look for <code>ETag</code> and <code>Cache-Control</code></li>
+<li>Reload immediately: browser may not even send a request (still fresh)</li>
+<li>Wait for <code>max-age</code> to expire, reload: <code>If-None-Match</code> and a 304</li>
+<li>Change the file, wait, reload: 200 and a <strong>different</strong> ETag</li>
+<li>DevTools → Network → "Disable cache" will hide all of this. Leave it unchecked</li>
 </ul>
 
 
@@ -261,7 +543,9 @@
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">MDN docs: Caching</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching">MDN: HTTP Caching</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control">Cache-Control</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag">ETag</a></li>
 </ul>
 </section></section>
     </div>

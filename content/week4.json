@@ -4,18 +4,18 @@
   "recitation": "Yes Recitation",
   "content": [
     {
-      "lecture": "1_concurrency.json",
+      "lecture": "1_8_Concurrency",
       "day": "Monday",
       "date": "September 14"
 
     },
     {
-      "lecture": "1_concurrency.json",
+      "lecture": "1_9_Caching",
       "day": "Wednesday",
       "date": "September 16"
     },
     {
-      "lecture": "1_caching.json",
+      "lecture": "1_examples.json",
       "day": "Friday",
       "date": "September 18"
     }
