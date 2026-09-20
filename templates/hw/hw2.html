@@ -121,21 +121,21 @@
     <p>
         Handling every possible URL-encoded request could be daunting. The following limitations are added and
         will be followed during grading:
+    </p>
     <ul>
         <li>Usernames cannot contain any characters that are not alphanumeric. If a submitted username contains any
             characters that are not alphanumeric, return a 400 Bad Request to the user
         </li>
         <li>
             The password may contain any of the following special characters
-            {'!', '@', '#', '$', '%', '^', '&', '(', ')', '-', '_', '='}. You're app will not be tested with passwords
-            containing anything other than these, and alphanumeric, characters (Except when testing for invalid
-            passwords).
+            {'!', '@', '#', '$', '%', '^', '&', '(', ')', '-', '_', '='}. If any other characters are used,
+            besides alphanumerics, should result in a 400 response.
             You are welcome, and expected, to
             hard-code these characters into your app.
             Note that '%' is included in this list..
         </li>
     </ul>
-    </p>
+
 
     <p>
         When a user registers, store their username, a unique id (generated in the same way as chat message ids), and a
@@ -145,13 +145,14 @@
     <p>Registration must fail, with a 400 response and a message of your choosing, if:</p>
     <ul>
         <li>The username is already taken. <b>Duplicate usernames are not allowed</b></li>
+        <li>The username contains any non-alphanumeric characters</li>
         <li>The password does not meet all of the following criteria:
             <ul>
                 <li>At least 8 characters long</li>
                 <li>Contains at least 1 lowercase letter</li>
                 <li>Contains at least 1 uppercase letter</li>
                 <li>Contains at least 1 number</li>
-                <li>Contains at least 1 special characters</li>
+                <li>Contains at least 1 special character</li>
                 <li>Contains no characters other than alphanumerics and the special characters listed above</li>
             </ul>
         </li>
@@ -173,13 +174,16 @@
     <div class="alert alert-danger">
         <b>Security Concern - Secrets in code:</b> Your database password (and any other secrets) must not appear in
         your source code, your Dockerfile, or your compose.yaml. Store these in a file named ".env" with placeholder
-        values.
+        values (A value of "changeMe" is good since it is both a valid password for testing, and clear to anyone
+        deploying
+        the app that they must change it with a strong password. Leaving this blank can be better in the real world
+        since it prevents anyone from forgetting to change the password).
     </div>
 
     <p>Tips:</p>
     <ul>
         <li>
-            If two users attempt to create an account with the same username simultaneously, it will create a race
+            If two users attempt to create an account with the same username simultaneously, it creates a race
             condition.
             Be sure to handle this in a way that cannot result in both users registering with the same username.
         </li>
@@ -199,7 +203,7 @@
     </p>
     <ul>
         <li>Must have the <b>HttpOnly</b> directive</li>
-        <li>Must not be a session cookie (eg. set Max-Age or Expires so it survives closing the browser)</li>
+        <li>Must not be a session cookie (e.g. set Max-Age or Expires so it survives closing the browser)</li>
         <li>Must have at least 80 bits of entropy (You are allowed to use libraries to generate these tokens)</li>
     </ul>
 
@@ -209,12 +213,13 @@
 
     <p>
         If login is successful, respond with a 200 OK and a message of your choice. The front end will redirect to the
-        homepage and this message will not be displayed. If login is not successful (eg. the username doesn't exist or
+        homepage and this message will not be displayed. If login is not successful (e.g. the username doesn't exist or
         the password is wrong), respond with a 400 and a message of your choosing.
     </p>
 
     <div class="alert alert-danger">
-        <b>Security Concern - Auth token cookie:</b> The "auth_token" cookie must be set with the HttpOnly directive.
+        <b>Security Concern - Auth token cookie:</b> The cookie storing your auth token must be set with the HttpOnly
+        directive.
     </div>
 
     <div class="alert alert-danger">
@@ -232,9 +237,9 @@
     </p>
     <ul>
         <li>Their auth token must be removed from their cookies (To remove a cookie, set a cookie with the same name
-            and a Max-Age of 0)</li>
+            and path with a Max-Age of 0)</li>
         <li>Their auth token must be <b>invalidated in your database</b>. The token they were issued must not work
-            anymore, even if your server later receives it as a cookie value (eg. a token an attacker copied before
+            anymore, even if your server later receives it as a cookie value (e.g. a token an attacker copied before
             the user logged out)</li>
         <li>Respond with a 302 Found that redirects the user to your homepage</li>
     </ul>
@@ -314,7 +319,7 @@
     <p>
         When a user registers, any messages that were sent by that browser while it was a guest must be <b>claimed</b>
         by the new account. These messages now belong to the new user. Their author must be updated to the user's
-        username and the user
+        username, and the user
         can update and delete them like any other message they sent.
     </p>
 
@@ -335,6 +340,13 @@
     <div class="alert alert-danger">
         <b>Security Concern - Escape HTML:</b> You must escape any HTML in user-provided content before it is displayed
         to other users.
+    </div>
+
+    <div class="alert alert-danger">
+        <b>Security Concern - Guest cookies/token protection:</b> Your cookie from HW1 that tracks guest users is now
+        used for authorization
+        since registered users can claim messages. These token must therefore have at least 80 bits of entropy. You
+        may/should optionally store only hashes of these tokens
     </div>
 
 
@@ -375,9 +387,7 @@
     <p>
         Add an endpoint POST "/api/users/settings" that lets a logged in user update their display name and/or their
         password. The provided front end has labels of username and password on the form. This does not mean that
-        you are changing their username, but instead their display name. You are welcome to update this label to
-        make it more clear. If preferred, you may also want to separate this into two forms. You could also change this
-        to a PATCH endpoint which would be more descriptive..
+        you are changing their username, but instead their display name.
     </p>
 
     <ul>
@@ -385,10 +395,15 @@
         <li>If a new password is provided, it must meet the same criteria as registration and must be stored securely in
             the same way. If it does not meet all criteria, respond with a 400 and a message of your choice, and do
             not update anything (including their display name)</li>
+        <li>A display name may have all the same characters as a password (Be sure to avoid HTML injection). If an
+            invalid
+            character is used, respond with a 400
+        </li>
         <li>An empty display name field means the user only wants to change their password, and their display name must
             remain unchanged</li>
         <li>An empty password field means the user only wants to change their display name, and their password must
             remain unchanged</li>
+        <li>If both fields are empty, nothing should be changed</li>
         <li>After a password is changed, the user must not be able to log in using their old password</li>
     </ul>
 
@@ -429,7 +444,6 @@
     <p>Concepts Covered:</p>
     <ul>
         <li>XSRF tokens</li>
-        <li>SameSite:lax cookies and the Same-Origin Policy</li>
         <li>Editing a front end and designing a full stack feature</li>
     </ul>
     <p>
@@ -439,7 +453,7 @@
     </p>
     <p>
         Your users' browsers automatically attach their auth_token cookie to every request sent to your server, even
-        certain cross-site requests (Safe requests). In this objective you will make sure that
+        certain cross-site requests. In this objective you will make sure that
         only requests that were made by <i>your</i> front end can make changes on behalf of a logged in
         user.
     </p>
@@ -459,18 +473,18 @@
 
     <p>Your implementation must meet all of the following:</p>
     <ul>
-        <li>Generate a XSRF token, with at least 80 bits of entropy, for each logged in user (eg. when they log in)
+        <li>Generate a XSRF token, with at least 80 bits of entropy, for each logged in user (e.g. when they log in)
             and store
             it on your server so it is linked to that user's session. It must be different for every user and for
             every login</li>
         <li>Send the token to the user when you render pages for them, and modify your front end so it sends the token
             back with every state-changing request. For a form, this is typically a hidden input. For requests sent
-            with JavaScript (eg. chat requests), read the token from the page and send it in the body or in a header
+            with JavaScript (e.g. chat requests), read the token from the page and send it in the body or in a header
         </li>
         <li>When a state-changing request is received from an authenticated user, verify that the token in the request
             is the one your server issued to <i>that</i> user. If the token is missing or incorrect, reject the request
             with a 403 Forbidden and do not perform the action</li>
-        <li>The token should be invalid after the user logs out (When they log back in, generate a new token for them)
+        <li>The token must be invalid after the user logs out (When they log back in, generate a new token for them)
         </li>
     </ul>
 
@@ -487,7 +501,7 @@
         Specifically, logging out uses a GET request. Changing state in response to a GET request is exactly what
         makes
         XSRF easy to pull off (An attacker can log you out of any site using nothing more than an
-        <code>&lt;img src="example.com/logout"&gt;</code> tag on their site). Change logout so it is a
+        <code>&lt;img src="http://example.com/logout"&gt;</code> tag on their site). Change logout so it is a
         POST request that requires the user's XSRF
         token, and update your front end so the logout button sends this request. Logging out must still delete
         the cookie, invalidate the token, and redirect the user to the homepage.
@@ -496,20 +510,20 @@
     <p>
         Since this entire objective's purpose is to prevent a security risk, there are no security concerns
         related to this objective that would trigger a security essay. Instead, if your implementation does
-        not properly prevent XSRF attacks, you will not earn credit for this objective and not the entire assignment.
+        not properly prevent XSRF attacks, you will not earn credit for this objective [and not 0 on the entire assignment].
         This also implies that you cannot recover your credit for this objective by writing an essay. This will
-        be true for all similar objectives (e.g. Using state in the next objective)
+        be true for all similar objectives (e.g. Using the state parameter in the next objective)
     </p>
 
     <p>Tips:</p>
     <ul>
         <li>
-            Since you are writing the both the front and back end for this feature, you have significant flexibility
+            Since you are writing both the front and back end for this feature, you have significant flexibility
             in how you implement your tokens. As long as they successfully protect against XSRF attack, it will
             be accepted. This, by design, will require you to make some thoughtful architecture decisions as
             opposed to having the entire spec outlined for you
         </li>
-        <li>To test, you can build a small HTML page that is served from a different origin (eg. a different
+        <li>To test, you can build a small HTML page that is served from a different origin (e.g. a different
             localhost port)
             and contains a form that submits to your server. While logged into your app, submit the form from the
             "attacker" page and make sure your server rejects it</li>
@@ -555,33 +569,39 @@
     <p>
         Use "http://localhost:8080/authcallback" as your redirect_uri. The course staff will use this exact string
         to test your app. Request only the scopes that you need to identify the user. Asking
-        for more access than your app requires is a bad practice.
+        for more access than your app requires is bad practice.
     </p>
 
     <br>
     <h3>Requirements</h3>
     <ul>
         <li>
-            GitHub users must behave exactly the same as other users, including claiming guest messages, with the only
-            difference being that they cannot login with a password (Unless they set one by updating their account)
+            GitHub users must behave exactly the same as other users, including claiming guest messages on first login,
+            with
+            the only
+            difference being that they cannot login with a password. Note that when they log in, you will still issue
+            your own
+            auth token. Do not use their access token as an auth token
         </li>
         <li>
             When logging in with GitHub, use a unique id provided by the API (GitHub numeric id is preferred since it
             cannot change). You must not allow username collisions between GitHub and non-GitHub users. For example,
             if someone registered (with username/password) choosing a username that matches someone's GitHub id,
-            when the user with that GitHub id logs on with GitHub it must not cause an issue
+            when the user with that GitHub id logs in with GitHub it must not cause an issue (e.g. The GitHub user
+            must not be able to take over the other user's account or edit/delete their messages)
         </li>
         <li>
             You must use the "state" parameter while obtaining the access grant from GitHub and
-            verify that you receive the expected state value at your callback uri. If the state does not match,
+            verify that you receive the expected state value at your callback URI. If the state does not match the one
+            issued to that particular user,
             respond with a 400 response and end the login process. You have some freedom in what value to use for the
             state, but it must successfully prevent a XSRF attack as discussed in lecture
         </li>
         <li>
-            You have a very sensitive value, you client secret, which must be protected. As with your database password,
+            You have a very sensitive value, your client secret, which must be protected. As with your database password,
             this secret must only ever
             appear in your .env file, and never hard-coded in your code or docker configuration. Anywhere you
-            need this value, it should be read, either directly or indirectly, from your .evn file. Before
+            need this value, it should be read, either directly or indirectly, from your .env file. Before
             submitting, replace your secret with a placeholder so you don't leak it to the course staff.
             Though it's not a security risk, you should do the same with your client ID. For testing, we
             will paste our own id and secret into your
@@ -596,8 +616,8 @@
     </div>
 
     <div class="alert alert-danger">
-        <b>Security Concern - Access tokens:</b> Your users' access token must be protected. If they are leaked,
-        or exposed to an attack (e.g. SQL injection), in any way it is a security risk.
+        <b>Security Concern - Access tokens:</b> Your users' access tokens must be protected. If they are leaked,
+        or exposed to an attack (e.g. SQL injection), in any way it is a security risk.. or simply don't store them.
     </div>
 
 
@@ -607,7 +627,7 @@
             base64 library, if needed</li>
         <li>You do not need to keep the GitHub access token after you've identified the user. If you don't store it,
             you can't leak it</li>
-        <li>You are not required to handle refresh tokens. You should for the practice, but it's impractical to
+        <li>You are not required to handle refresh tokens. You should implement this for practice, but it's impractical to
             test for a
             course assignment since you'd have to wait for your access token to expire to properly test your feature
         </li>
@@ -626,9 +646,7 @@
     <p>
         Your submission must include a ".env" file with placeholder values for all your sensitive values. This is
         required so we
-        know your variable names. Optionally, you may submit a .env.example file instead which is common practice when
-        checking
-        .env files into repositories.
+        know your variable names.
     </p>
 
     <p>Complete the homework submission form after submitting your zip file to Autolab:
@@ -679,7 +697,8 @@
         </tr>
         <tr>
             <td>0 (Incomplete)</td>
-            <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
+            <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library, except
+                the one for sending request to GitHub)</td>
         </tr>
         <tr>
             <td>0.X (Security Risk)</td>
