@@ -1,64 +1,45 @@
 ---
 title: "Authentication and Secure Password Storage"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "How to build an authentication system. Users register and login using their username and password. How we securely store passwords"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://en.wikipedia.org/wiki/Bcrypt"
     text: "bcrypt (Wikipedia)"
-
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+    
+released: true
 ---
 
-## Authentication
-
-## User Accounts
-
-- Everything we've built so far treats every user the same and delivers the same content to all visitors
-  - Only exception was setting a cookie to count visits
-- For many features of a web app we want to remember a user across multiple visits and verify their identity
+# Authentication
 
 ## User Accounts
 
 - Registration
-  - Users can create an account on your app
+  - Users create an account on your app
   - Choose a username and password
 - Authentication
-  - Verify that a user is [likely] a registered account holder by providing their username/password
-  - Log them into your app
-  - Serve content specific to them
+  - User claims to be a specific registered account holder
+  - Supplies their username and password
+    - They are claiming the be username and their proof is the password
+  - Verify their identity using the password
+  - If the password matches, log them into your app
+    - Serve private content specific to them
 
-## User Accounts
+## Password Storage
 
+- You have a need to store each username **and password** in a database
+- This data must persist so users can log in even after a server restart
+- What if this database is compromised?
+  - Perhaps by a SQL injection attack
 
-- Registration
-  - Can be a simple web form
-  - At a minimum, provide a username and password
-- Common to affiliate an account with a valid email address
-  - And verify that email
-  - Limits the number of bots that register
+## Never Store Passwords as Plain Text
 
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
+- **NEVER store passwords as plain text**
 
-## Authentication
-
-- On the server
-  - Store each username/password in a database
-  - This data must persist so the users can log in even after a server restart
-  - What if this database is compromised?
-    - Perhaps by a SQL injection attack
-
-## Authentication
-
-- NEVER store passwords as plain text
-- Not even the admins of a website should know the passwords of their users
-- We do this by hashing the passwords and storing only the hashes
+- We need to securely store passwords
+- Our goal: Store them in a way that even the admins of the app can know the passwords of their users
+- Solution: Hash the passwords and only store the hashes
 
 ## Hash Function
 
@@ -74,29 +55,27 @@ released: false
 - Goal of being a one-way function
   - Easy to compute a hash value from plain text
   - Very difficult to compute the plain text of a given hash
-- Hashes can be shared without compromising the plain text
+- Hashes can be shared without compromising the plain text [With care]
 
-password
+Your password: "password"
 
-5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+Hashed password: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
 
 ## Cryptographic Hash Function
 
-- Only a cryptographic hash of your password is stored
+- Only a cryptographic hash of your password is stored in the database
 - By only storing the hash of a password:
   - Even the admins of a site can't read your password!
 - SHA256 is a commonly used cryptographic hash function
-  - https://www.xorbin.com/tools/sha256-hash-calculator
+  - [https://www.xorbin.com/tools/sha256-hash-calculator](https://www.xorbin.com/tools/sha256-hash-calculator)
 
 ## SHA256
 
 - Runs input through multiple rounds of bit-level manipulation
-- Easy (Fast) to compute
-- Very difficult to compute in reverse
+- Designed to be VERY fast!
+- Very difficult to invert
+- We *could* just store a SHA256 hash of our passwords
 
-Ref: opencores.org
-
-![](assets/slide10-1.png){fig-alt="TODO: describe this image"}
 
 ## Brute Force Attack
 
@@ -106,6 +85,8 @@ Ref: opencores.org
 - To attack a hash:
   - Hash every possible password
   - If the hashes match, you know the password
+- SHA256 is designed to be FAST!
+  - This feature makes the attack more effective
 
 ## Entropy
 
@@ -166,13 +147,17 @@ Ref: opencores.org
   - If this hash matches the stored hash, the user is verified
   - If this hash does not match the stored hash, the user is not logged in
 
-## Authentication
+## bcrypt
 
-- The bcrypt library implements hashing, salting, and other security related functions
-- Available in many different languages
-- It is highly recommended that you use this library in your assignment
+- bcrypt is a hashing algorithm designed specifically for passwords
+  - Much more secure for low-entropy inputs like human generated passwords
+- Designed to be SLOW! 
+  - Roughly 100ms per hash with default settings and a typical laptop
+- Build salting into the algorithm and output
+- Use a bcrypt library to compute and check hashes
+- Limited to 72 bytes of input (Truncates after 72)
 
-## Redirects
+# Redirects
 
 ## Redirects
 
@@ -186,6 +171,7 @@ Ref: opencores.org
 HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path
+
 ```
 
 ## Redirects
@@ -198,6 +184,7 @@ Location: /new-path
 HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path
+
 ```
 
 ## Redirects
@@ -212,6 +199,7 @@ Location: /new-path
 HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path
+
 ```
 
 ## Redirects
@@ -225,6 +213,7 @@ Location: /new-path
 HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: https://google.com/
+
 ```
 
 ## Redirects
@@ -237,4 +226,5 @@ Location: https://google.com/
 HTTP/1.1 301 Moved Permanently
 Content-Length: 0
 Location: /new-path
+
 ```

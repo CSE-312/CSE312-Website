@@ -143,77 +143,57 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Authentication and Secure Password Storage</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="authentication" class="slide level2">
-<h2>Authentication</h2>
+<section>
+<section id="authentication" class="title-slide slide level1 center">
+<h1>Authentication</h1>
+
 </section>
 <section id="user-accounts" class="slide level2">
 <h2>User Accounts</h2>
 <ul>
-<li>Everything we've built so far treats every user the same and delivers the same content to all visitors
-<ul>
-<li>Only exception was setting a cookie to count visits</li>
-</ul></li>
-<li>For many features of a web app we want to remember a user across multiple visits and verify their identity</li>
-</ul>
-</section>
-<section id="user-accounts-1" class="slide level2">
-<h2>User Accounts</h2>
-<ul>
 <li>Registration
 <ul>
-<li>Users can create an account on your app</li>
+<li>Users create an account on your app</li>
 <li>Choose a username and password</li>
 </ul></li>
 <li>Authentication
 <ul>
-<li>Verify that a user is [likely] a registered account holder by providing their username/password</li>
-<li>Log them into your app</li>
-<li>Serve content specific to them</li>
+<li>User claims to be a specific registered account holder</li>
+<li>Supplies their username and password
+<ul>
+<li>They are claiming the be username and their proof is the password</li>
+</ul></li>
+<li>Verify their identity using the password</li>
+<li>If the password matches, log them into your app
+<ul>
+<li>Serve private content specific to them</li>
+</ul></li>
 </ul></li>
 </ul>
 </section>
-<section id="user-accounts-2" class="slide level2">
-<h2>User Accounts</h2>
+<section id="password-storage" class="slide level2">
+<h2>Password Storage</h2>
 <ul>
-<li>Registration
-<ul>
-<li>Can be a simple web form</li>
-<li>At a minimum, provide a username and password</li>
-</ul></li>
-<li>Common to affiliate an account with a valid email address
-<ul>
-<li>And verify that email</li>
-<li>Limits the number of bots that register</li>
-</ul></li>
-</ul>
-
-<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="authentication-1" class="slide level2">
-<h2>Authentication</h2>
-<ul>
-<li>On the server
-<ul>
-<li>Store each username/password in a database</li>
-<li>This data must persist so the users can log in even after a server restart</li>
+<li>You have a need to store each username <strong>and password</strong> in a database</li>
+<li>This data must persist so users can log in even after a server restart</li>
 <li>What if this database is compromised?
 <ul>
 <li>Perhaps by a SQL injection attack</li>
 </ul></li>
-</ul></li>
 </ul>
 </section>
-<section id="authentication-2" class="slide level2">
-<h2>Authentication</h2>
+<section id="never-store-passwords-as-plain-text" class="slide level2">
+<h2>Never Store Passwords as Plain Text</h2>
 <ul>
-<li>NEVER store passwords as plain text</li>
-<li>Not even the admins of a website should know the passwords of their users</li>
-<li>We do this by hashing the passwords and storing only the hashes</li>
+<li><p><strong>NEVER store passwords as plain text</strong></p></li>
+<li><p>We need to securely store passwords</p></li>
+<li><p>Our goal: Store them in a way that even the admins of the app can know the passwords of their users</p></li>
+<li><p>Solution: Hash the passwords and only store the hashes</p></li>
 </ul>
 </section>
 <section id="hash-function" class="slide level2">
@@ -239,22 +219,22 @@
 <li>Easy to compute a hash value from plain text</li>
 <li>Very difficult to compute the plain text of a given hash</li>
 </ul></li>
-<li>Hashes can be shared without compromising the plain text</li>
+<li>Hashes can be shared without compromising the plain text [With care]</li>
 </ul>
-<p>password</p>
-<p>5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</p>
+<p>Your password: "password"</p>
+<p>Hashed password: 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8</p>
 </section>
 <section id="cryptographic-hash-function-1" class="slide level2">
 <h2>Cryptographic Hash Function</h2>
 <ul>
-<li>Only a cryptographic hash of your password is stored</li>
+<li>Only a cryptographic hash of your password is stored in the database</li>
 <li>By only storing the hash of a password:
 <ul>
 <li>Even the admins of a site can't read your password!</li>
 </ul></li>
 <li>SHA256 is a commonly used cryptographic hash function
 <ul>
-<li>https://www.xorbin.com/tools/sha256-hash-calculator</li>
+<li><a href="https://www.xorbin.com/tools/sha256-hash-calculator">https://www.xorbin.com/tools/sha256-hash-calculator</a></li>
 </ul></li>
 </ul>
 </section>
@@ -262,12 +242,11 @@
 <h2>SHA256</h2>
 <ul>
 <li>Runs input through multiple rounds of bit-level manipulation</li>
-<li>Easy (Fast) to compute</li>
-<li>Very difficult to compute in reverse</li>
+<li>Designed to be VERY fast!</li>
+<li>Very difficult to invert</li>
+<li>We <em>could</em> just store a SHA256 hash of our passwords</li>
 </ul>
-<p>Ref: opencores.org</p>
-
-<img data-src="assets/slide10-1.png" alt="TODO: describe this image" class="r-stretch"></section>
+</section>
 <section id="brute-force-attack" class="slide level2">
 <h2>Brute Force Attack</h2>
 <ul>
@@ -280,6 +259,10 @@
 <ul>
 <li>Hash every possible password</li>
 <li>If the hashes match, you know the password</li>
+</ul></li>
+<li>SHA256 is designed to be FAST!
+<ul>
+<li>This feature makes the attack more effective</li>
 </ul></li>
 </ul>
 </section>
@@ -343,7 +326,7 @@
 <li>The salt does not add entropy since it is stored in the clear</li>
 </ul>
 </section>
-<section id="authentication-3" class="slide level2">
+<section id="authentication-1" class="slide level2">
 <h2>Authentication</h2>
 <ul>
 <li>Registration
@@ -355,7 +338,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="authentication-4" class="slide level2">
+<section id="authentication-2" class="slide level2">
 <h2>Authentication</h2>
 <ul>
 <li>Authentication
@@ -368,16 +351,26 @@
 </ul></li>
 </ul>
 </section>
-<section id="authentication-5" class="slide level2">
-<h2>Authentication</h2>
+<section id="bcrypt" class="slide level2">
+<h2>bcrypt</h2>
 <ul>
-<li>The bcrypt library implements hashing, salting, and other security related functions</li>
-<li>Available in many different languages</li>
-<li>It is highly recommended that you use this library in your assignment</li>
+<li>bcrypt is a hashing algorithm designed specifically for passwords
+<ul>
+<li>Much more secure for low-entropy inputs like human generated passwords</li>
+</ul></li>
+<li>Designed to be SLOW!
+<ul>
+<li>Roughly 100ms per hash with default settings and a typical laptop</li>
+</ul></li>
+<li>Build salting into the algorithm and output</li>
+<li>Use a bcrypt library to compute and check hashes</li>
+<li>Limited to 72 bytes of input (Truncates after 72)</li>
 </ul>
-</section>
-<section id="redirects" class="slide level2">
-<h2>Redirects</h2>
+</section></section>
+<section>
+<section id="redirects" class="title-slide slide level1 center">
+<h1>Redirects</h1>
+
 </section>
 <section id="redirects-1" class="slide level2">
 <h2>Redirects</h2>
@@ -392,7 +385,8 @@
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
-Location: /new-path</code></pre>
+Location: /new-path
+</code></pre>
 </section>
 <section id="redirects-2" class="slide level2">
 <h2>Redirects</h2>
@@ -405,7 +399,8 @@ Location: /new-path</code></pre>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
-Location: /new-path</code></pre>
+Location: /new-path
+</code></pre>
 </section>
 <section id="redirects-3" class="slide level2">
 <h2>Redirects</h2>
@@ -420,7 +415,8 @@ Location: /new-path</code></pre>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
-Location: /new-path</code></pre>
+Location: /new-path
+</code></pre>
 </section>
 <section id="redirects-4" class="slide level2">
 <h2>Redirects</h2>
@@ -434,7 +430,8 @@ Location: /new-path</code></pre>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
-Location: https://google.com/</code></pre>
+Location: https://google.com/
+</code></pre>
 </section>
 <section id="redirects-5" class="slide level2">
 <h2>Redirects</h2>
@@ -447,7 +444,8 @@ Location: https://google.com/</code></pre>
 </ul>
 <pre><code>HTTP/1.1 301 Moved Permanently
 Content-Length: 0
-Location: /new-path</code></pre>
+Location: /new-path
+</code></pre>
 
 
 </section>
@@ -456,7 +454,7 @@ Location: /new-path</code></pre>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt (Wikipedia)</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
