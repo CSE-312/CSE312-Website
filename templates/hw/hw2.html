@@ -317,22 +317,22 @@
     <br>
     <h3>Claiming Guest Messages</h3>
     <p>
-        When a user registers, any messages that were sent by that browser while it was a guest must be <b>claimed</b>
+        When a user logs in, any messages that were sent by that browser while it was a guest must be <b>claimed</b>
         by the new account. These messages now belong to the new user. Their author must be updated to the user's
         username, and the user
         can update and delete them like any other message they sent.
     </p>
 
     <p>
-        A guest message can only be claimed once. For example, if the same browser registers a second account, that
+        A guest message can only be claimed once. For example, if the same browser logs in using a second account, that
         account must not claim the messages that were already claimed by the first account.
     </p>
 
     <p>Tips:</p>
     <ul>
-        <li>The registration request must include your guest cookie for you to know which messages to claim. Some
+        <li>The login request must include your guest cookie for you to know which messages to claim. Some
             browsers will automatically add a "/api" path to a cookie set from an "/api/..." endpoint, so it will not be
-            sent to "/register". Setting the Path directive of your guest cookie to "/" can prevent this</li>
+            sent to "/login". Setting the Path directive of your guest cookie to "/" can prevent this</li>
         <li>Store the id of the user who owns a message, in addition to (or instead of) the author's name. It will save
             you time in the next objective.</li>
     </ul>
