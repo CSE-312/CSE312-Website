@@ -99,6 +99,10 @@ $code-color: #f0f6ff !default;
   font-weight: 700;
 }
 
+.reveal .yellow {
+  color: hsl(61, 100%, 62%) !important;
+}
+
 .reveal code {
   background: #132a4a;
   color: #f0f6ff !important;

@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -143,14 +143,15 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Authentication Tokens and Sessions</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="authentication-tokens" class="slide level2">
-<h2>Authentication Tokens</h2>
+<section>
+<section id="authentication-tokens" class="title-slide slide level1 center">
+<h1>Authentication Tokens</h1>
+
 </section>
 <section id="authentication-overview" class="slide level2">
 <h2>Authentication Overview</h2>
@@ -159,12 +160,12 @@
 <ul>
 <li>User sends username and password</li>
 <li>Validate password strength</li>
-<li>Store salted hash of the password</li>
+<li>Store bcrypt salted hash of the password</li>
 </ul></li>
 <li>Authentication
 <ul>
 <li>User sends username/password</li>
-<li>Retrieve the stored salted hash</li>
+<li>Retrieve the stored salt and salted hash for the username</li>
 <li>Salt and hash the provided password</li>
 <li>If both salted hashes are identical, the user is authenticated</li>
 </ul></li>
@@ -190,26 +191,27 @@
 <h2>Authentication</h2>
 <ul>
 <li>How does the server verify that you are the one who made a specific request?</li>
-<li>We only have authentication, so...
+<li>We only have authentication</li>
+<li>Users would have to type their username and password with every single protected request
 <ul>
-<li>.. Users type their username and password with every single protected request?..</li>
-<li>Authenticate using the stored [salted hash of the] password?..</li>
 <li>No! Terrible user experience</li>
-<li>You would not use this site</li>
+<li>Some apps make authenticated requests every few seconds to load more content while users doom scroll</li>
+<li><strong>You would not use this app</strong> if you have to type your password constantly</li>
 </ul></li>
 </ul>
 </section>
 <section id="authentication-2" class="slide level2">
 <h2>Authentication</h2>
 <ul>
-<li>Insecure Idea:
+<li><span class="yellow">Insecure Idea:</span> <del>Store the username/password in cookies and send them on every request</del>
 <ul>
-<li>.. Store the username/password in cookies and send them on every request?..</li>
 <li>Password is stored client-side in plain text</li>
 <li>No! Never store passwords in plain text
 <ul>
 <li>Not even client-side! Don't do it.</li>
+<li>Never trust your users, not even with their own security</li>
 </ul></li>
+<li>Best case, increases attack surface area since the password is handled much more often in requests</li>
 </ul></li>
 </ul>
 </section>
@@ -221,9 +223,12 @@
 <li>Issue an authentication token</li>
 </ul></li>
 <li>When a user is authenticated, generate a random authentication token</li>
-<li>Store this token in your database and mark the username of the account that was authenticated</li>
+<li>Store [a hash of] this token in your database and mark the username of the account that was authenticated</li>
 <li>Set the token as a cookie for that user</li>
-<li>Whenever a request comes with that token, treat them as the user associated with that token</li>
+<li>Whenever a request comes with that token, treat them as the user associated with that token
+<ul>
+<li>By looking up the token in your database</li>
+</ul></li>
 </ul>
 </section>
 <section id="authentication-tokens-2" class="slide level2">
@@ -231,35 +236,22 @@
 <ul>
 <li>With authentication tokens:
 <ul>
-<li>We have a login system</li>
+<li>We now have a login system! 🎉</li>
 </ul></li>
-<li>🎉</li>
-<li>As long as the user has the authentication token as their cookie, they are logged in*
+<li>As long as the user has the authentication token as their cookie, they are logged in
 <ul>
 <li>All their requests are authenticated by the server</li>
 </ul></li>
-</ul>
-<pre><code>*You can/should set these tokens to expire either client-side
-(cookie expiration), server-side (storing an expiration timestamp in
-your database and ignoring the token after that timestamp), or both</code></pre>
-
-<img data-src="assets/slide07-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="authentication-tokens-3" class="slide level2">
-<h2>Authentication Tokens</h2>
+<li>You can/should set these tokens to expire
 <ul>
-<li>Authentication tokens need to be random
-<ul>
-<li>The token must have enough entropy that they cannot be guessed</li>
-<li>Eg. An attacker should not be able to send requests with random tokens until one matches a logged in user</li>
+<li>Expire client-side (cookie expiration)</li>
+<li>Expire server-side (storing an expiration timestamp in your database and ignoring the token after that timestamp)</li>
 </ul></li>
-<li>Generally, there should be at least 2^80 unique tokens that could be generated (80 bits of entropy)
-<ul>
-<li>More is better!</li>
-</ul></li>
+<li>The token might expire in years, depending on your application</li>
 </ul>
 </section>
-<section id="authentication-3" class="slide level2">
-<h2>Authentication</h2>
+<section id="authentication-w-tokens" class="slide level2">
+<h2>Authentication w/ Tokens</h2>
 <ul>
 <li>Once a token is generated, set it as a cookie</li>
 <li>Now the token will be sent with all subsequent requests</li>
@@ -267,23 +259,7 @@ your database and ignoring the token after that timestamp), or both</code></pre>
 <li>The possession of the token verifies that this user did authenticate in the past</li>
 </ul>
 </section>
-<section id="storing-authentication-tokens" class="slide level2">
-<h2>Storing Authentication Tokens</h2>
-<ul>
-<li>Caution: These tokens need to be stored on the server</li>
-<li>These tokens are as sensitive as passwords!
-<ul>
-<li>Stealing a token and setting a cookie with that value grants access to an account without even needing a password</li>
-</ul></li>
-<li>Solution: Only store hashes of the tokens</li>
-<li>Do not salt these tokens
-<ul>
-<li>Salting makes DB lookups more difficult</li>
-<li>Salting not necessary since the entropy is so high</li>
-</ul></li>
-</ul>
-</section>
-<section id="authentication-w-tokens" class="slide level2">
+<section id="authentication-w-tokens-1" class="slide level2">
 <h2>Authentication w/ Tokens</h2>
 <ul>
 <li>Check each request for a cookie with a token
@@ -321,466 +297,67 @@ your database and ignoring the token after that timestamp), or both</code></pre>
 </ul></li>
 <li>Delete the cookie
 <ul>
-<li>Set it with an expiration date in the past</li>
-<li>The browser is supposed to delete the cookie</li>
+<li>Set it with an expiration date in the past, or max-age of 0</li>
+<li>The browser should delete the cookie</li>
 </ul></li>
 </ul></li>
 </ul>
 </section>
-<section id="registration-and-login" class="slide level2">
-<h2>Registration and Login</h2>
+<section id="authentication-tokens-3" class="slide level2">
+<h2>Authentication Tokens</h2>
 <ul>
-<li>Let's look at the whole process of creating an account and logging in</li>
-</ul>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide13-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-1" class="slide level2">
-<h2>Registration and Login</h2>
+<li>Authentication tokens need to be random and unguessable
 <ul>
-<li>User registers a new account</li>
-</ul>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide14-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-2" class="slide level2">
-<h2>Registration and Login</h2>
+<li>The token must have enough entropy that they cannot be guessed by an attacker</li>
+<li>Eg. An attacker should not be able to send requests with random tokens until one matches a logged in user</li>
+</ul></li>
+<li>Generally, there should be at least 2^80 unique tokens that could be generated (80 bits of entropy)
 <ul>
-<li>Server generates a random salt</li>
-</ul>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide15-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-3" class="slide level2">
-<h2>Registration and Login</h2>
+<li>More is better!</li>
+</ul></li>
+<li>Since you are generating these tokens, and no human has to remember them, you can simply choose the entropy
 <ul>
-<li>Append the salt to the password and hash</li>
-</ul>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>hash</p>
-<p>f(P@$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
-<p>==</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fdd8b86b84a94b8
-5c7cb91e9e10008ec8</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide16-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-4" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
+<li>Generate a random hex value of length 10?
 <ul>
-<li>Discard the plain text password</li>
-<li>Store username, salt, and salted hash in DB</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<p>username</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide17-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-5" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<ul>
-<li>When using bcrypt, salt and hash are stored as a single value</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>bcrypt salt + hash</p>
-<pre><code>$2b$12$9IoK6aMp5snMH2Fv
-Z8rcWexyveqs8mFKojG7Jvq
-VhfRxSDmwfAZHW</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide18-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-6" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<ul>
-<li>User wants to login</li>
-<li>Provide username and password</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<p>0144c52c5b68f662f4529fd43093873fd</p>
-<p>username</p>
-<p>d8b86b84a94b85c7cb91e9e10008ec8</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide19-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-7" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<ul>
-<li>Server pulls the hash and salt for this username</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>find({"username", "XX_UBStudent_XX"})</p>
-<p>username</p>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>salt</p>
-<p>P@$$w0rd</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>hash</p>
-<p>Server</p>
-<p>Database</p>
-<p>User/Client</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-
-<img data-src="assets/slide20-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-8" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<ul>
-<li>Server now has everything it needs for authentication</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<p>username</p>
-<p>0144c52c5b68f662f4529fd43093873fd</p>
-<p>d8b86b84a94b85c7cb91e9e10008ec8</p>
-<p>XX_UBStudent_XX</p>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>Server</p>
-<p>Database</p>
-<p>User/Client</p>
-
-<img data-src="assets/slide21-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-9" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<ul>
-<li>Append the salt to the password provided at login and hash</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>username</p>
-<p>password hash</p>
-<p>XX_UBStudent_XX</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>new hash</p>
-<p>f(P@$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
-<p>==</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
-6b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>Server</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
-6b84a94b85c7cb91e9e10008ec8</code></pre>
-
-<img data-src="assets/slide22-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-10" class="slide level2">
-<h2>Registration and Login</h2>
-<ul>
-<li>If the two hashes do not match exactly, the user is not authenticated</li>
-<li>This password is changed to be 1 char off
-<ul>
-<li>The hashes are completely different</li>
+<li>You already have 160 bits of entropy</li>
+</ul></li>
+<li>Why not generate length 50 and have 800 bits of entropy 🤷</li>
 </ul></li>
 </ul>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>username</p>
-<p>password hash</p>
-<p>XX_UBStudent_XX</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>password</p>
-<p>Pa$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>new hash</p>
-<p>f(Pa$$w0rdhJ33fqAwscJmp3MacoQ8uO)</p>
-<p>==</p>
-<pre><code>296069c8595a636361af0c65acfd819178ee1
-f9ce235c554ce1a0c37598138f5</code></pre>
-<p>Server</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fdd8b8
-6b84a94b85c7cb91e9e10008ec8</code></pre>
-
-<img data-src="assets/slide23-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-11" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
+</section>
+<section id="storing-authentication-tokens" class="slide level2">
+<h2>Storing Authentication Tokens</h2>
 <ul>
-<li>If the two hashes match, the user is authenticated with this username</li>
-<li>Server is done with all values related to the password</li>
-</ul>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>username</p>
-<p>password hash</p>
-<p>XX_UBStudent_XX</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>password</p>
-<p>P@$$w0rd</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>new hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hash</p>
-<p>Server</p>
-<p>Database</p>
-<p>User/Client</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-
-<img data-src="assets/slide24-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-12" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
+<li>(Caution: These tokens need to be stored on the server){.yellow}</li>
+<li>These tokens are <em>about</em> as sensitive as passwords!
 <ul>
-<li>Generate an authentication token</li>
-<li>Store a hash of the token in your DB</li>
+<li>Stealing a token and setting a cookie with that value grants access to an account without even needing a password</li>
+</ul></li>
+<li>Protection: Only store hashes of the tokens</li>
+<li>Anyone with access to the database cannot hijack anyone's Sessions</li>
+<li>With such high entropy, no known attacks can find the tokens given the hashes</li>
 </ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<p>username</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>XX_UBStudent_XX</p>
-<p>authentication token</p>
-<p>jixFFgT1xPhXKcLrOavlQO</p>
-<p>update XX_UBStudent_XX's record with</p>
-<pre><code>{"hashed authentication token":
-"754b1fb1b5ab6787441bfb410a40a7b99
-29f712497fb1f57788f4a6b699e1d7b"}</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide25-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-13" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
+</section>
+<section id="storing-authentication-tokens-1" class="slide level2">
+<h2>Storing Authentication Tokens</h2>
 <ul>
-<li>Set the plain text of the token to a cookie</li>
-<li>The user is now logged in</li>
-</ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>Set authentication cookie</p>
-<p>jixFFgT1xPhXKcLrOavlQO</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide26-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-14" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
+<li><strong>Do not salt auth tokens</strong></li>
+<li>With arbitrarily high entropy, even rainbow tables are useless
 <ul>
-<li>Token is sent on all subsequent requests</li>
-</ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<pre><code>Request containing
-authentication cookie</code></pre>
-<p>jixFFgT1xPhXKcLrOavlQO</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide27-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-15" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
+<li>Salting does not add any protection when attacks are already effectively <em>impossible</em></li>
+</ul></li>
+<li>Salting would make your job more difficult
 <ul>
-<li>Read the token from the cookie and hash it</li>
-<li>If the cookie does not exist, the user is not logged in</li>
-</ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>token to verify</p>
-<p>jixFFgT1xPhXKcLrOavlQO</p>
-<p>hash of token to verify</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b9929
-f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide28-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-16" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
+<li>You id a user based solely on their token</li>
+<li>You don't know the salt for a user without looking up their account</li>
+<li>You need to test all users in your database making every request O(n) where n is the number of registered users</li>
+</ul></li>
+<li>brcrypt is made for passwords. Don't use it for tokens
 <ul>
-<li>Look up the hash in the DB</li>
-<li>If a record is returned, that's the logged in user and the request is authenticated</li>
+<li>SHA256 is preferred</li>
+</ul></li>
 </ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<pre><code>find({"hashed authentication token":
-"754b1fb1b5ab6787441bfb410a40a7b9
-929f712497fb1f57788f4a6b699e1d7b"})</code></pre>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide29-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-17" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<ul>
-<li>We now have the verified username of the requester</li>
-</ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide30-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="registration-and-login-18" class="slide level2">
-<h2>Registration and Login</h2>
-<p>username</p>
-<p>XX_UBStudent_XX</p>
-<p>salt</p>
-<ul>
-<li>We now have the verified username of the requester</li>
-</ul>
-<p>hJ33fqAwscJmp3MacoQ8uO</p>
-<p>password hash</p>
-<pre><code>0144c52c5b68f662f4529fd43093873fd
-d8b86b84a94b85c7cb91e9e10008ec8</code></pre>
-<p>hashed authentication token</p>
-<pre><code>754b1fb1b5ab6787441bfb410a40a7b
-9929f712497fb1f57788f4a6b699e1d7b</code></pre>
-<pre><code>Response that can contain
-XX_UBStudent_XX's private data</code></pre>
-<p>Database</p>
-<p>User/Client</p>
-<p>Server</p>
-
-<img data-src="assets/slide31-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
+</section>
 <section id="cookie-hijacking" class="slide level2">
 <h2>Cookie Hijacking</h2>
 <ul>
@@ -791,9 +368,54 @@ XX_UBStudent_XX's private data</code></pre>
 <li>They can authenticate as you without needing your password!</li>
 </ul></li>
 </ul>
-
-
 </section>
+<section id="recall-the-samesite-directive" class="slide level2">
+<h2>Recall the SameSite Directive</h2>
+<ul>
+<li><code>SameSite</code>
+<ul>
+<li>Determines when the cookie will be sent on 3rd party requests</li>
+<li><code>Lax</code> - Cookie only sent when navigating to your page -and- all 1st party requests
+<ul>
+<li>The default setting if <code>SameSite</code> is not set</li>
+</ul></li>
+<li><code>Strict</code> - The cookie is only sent on 1st party requests
+<ul>
+<li>ie. The cookie is only sent to your server when browsing your page</li>
+</ul></li>
+<li><code>None</code> - The cookie is always sent. Requires the <code>Secure</code> directive to also be set</li>
+</ul></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=Lax</code></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=Strict</code></li>
+<li><code>Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure</code></li>
+</ul>
+</section>
+<section id="samesite-specifics" class="slide level2">
+<h2>SameSite Specifics</h2>
+<ul>
+<li>Auth tokens are typically lax, so we must understand the rules of when the token is sent</li>
+<li>All 1st party requests contain lax cookies
+<ul>
+<li>As long as the site making the request is the same as the site that set the cookie, it will be sent</li>
+<li>Here "site" means the protocol and host combination. Not the port
+<ul>
+<li>Example: A request from localhost:5000 to localhost:8080 is considered SameSite</li>
+</ul></li>
+</ul></li>
+<li>A 3rd party requests contain lax cookies if it both:
+<ol type="1">
+<li>Is a GET request</li>
+<li>Navigates to your app</li>
+</ol></li>
+<li>This is a major reason why GET requests should not change the state of your app
+<ul>
+<li>A GET request should only <em>get</em> information</li>
+<li>Since the user is navigating to your app, an attacker cannot see the response</li>
+</ul></li>
+</ul>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
