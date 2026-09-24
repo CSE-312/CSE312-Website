@@ -454,7 +454,7 @@
     <p>
         Your users' browsers automatically attach their auth_token cookie to every request sent to your server, even
         certain cross-site requests. In this objective you will make sure that
-        only requests that were made by <i>your</i> front end can make changes on behalf of a logged in
+        only requests that were made by <i>your</i> front end can make changes on behalf of a
         user.
     </p>
 
@@ -466,32 +466,32 @@
             user</b>. This includes:
     </p>
     <ul>
-        <li>Creating, updating, and deleting chat messages while logged in (Not required for guest users)</li>
+        <li>Creating, updating, and deleting chat messages</li>
         <li>Updating settings (POST "/api/users/settings")</li>
+        <li>Logging in</li>
         <li>Logging out (see below)</li>
     </ul>
 
     <p>Your implementation must meet all of the following:</p>
     <ul>
-        <li>Generate a XSRF token, with at least 80 bits of entropy, for each logged in user (e.g. when they log in)
+        <li>Generate a XSRF token, with at least 80 bits of entropy, for each user 
             and store
-            it on your server so it is linked to that user's session. It must be different for every user and for
-            every login</li>
+            it on your server so it is linked to that user's session. It must be different for every user
+            </li>
+            <li>
+                Since login also needs to be protected, tokens must be generated for both guest users and authenticated users
+            </li>
         <li>Send the token to the user when you render pages for them, and modify your front end so it sends the token
             back with every state-changing request. For a form, this is typically a hidden input. For requests sent
             with JavaScript (e.g. chat requests), read the token from the page and send it in the body or in a header
         </li>
-        <li>When a state-changing request is received from an authenticated user, verify that the token in the request
+        <li>When a state-changing request is received, verify that the token in the request
             is the one your server issued to <i>that</i> user. If the token is missing or incorrect, reject the request
             with a 403 Forbidden and do not perform the action</li>
-        <li>The token must be invalid after the user logs out (When they log back in, generate a new token for them)
+        <li>The token must be invalid after the user logs out (Generate a new token for them when they return to your app)
         </li>
     </ul>
 
-    <p>
-        Requests from users who are not logged in do not need XSRF tokens. This includes guest chat, registration, and
-        login.
-    </p>
 
     <br>
     <h3>Logging Out</h3>
