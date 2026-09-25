@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="How another site can forge requests from your users’ browsers, what the browser’s Same-Origin Policy and SameSite cookies do to stop it, and XSRF tokens for when the browser isn’t enough">
 
-<title>XSRF – CSE312 Lectures</title>
+<title>XSRF and the Same-Origin Policy – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -35,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,32 +118,46 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#xsrf" id="toc-xsrf" class="nav-link active" data-scroll-target="#xsrf">XSRF</a></li>
-  <li><a href="#xsrf-1" id="toc-xsrf-1" class="nav-link" data-scroll-target="#xsrf-1">XSRF</a></li>
-  <li><a href="#xsrf---example" id="toc-xsrf---example" class="nav-link" data-scroll-target="#xsrf---example">XSRF - Example</a></li>
-  <li><a href="#xsrf-2" id="toc-xsrf-2" class="nav-link" data-scroll-target="#xsrf-2">XSRF</a></li>
-  <li><a href="#xsrf-3" id="toc-xsrf-3" class="nav-link" data-scroll-target="#xsrf-3">XSRF</a></li>
-  <li><a href="#xsrf-4" id="toc-xsrf-4" class="nav-link" data-scroll-target="#xsrf-4">XSRF</a></li>
-  <li><a href="#xsrf-5" id="toc-xsrf-5" class="nav-link" data-scroll-target="#xsrf-5">XSRF</a></li>
-  <li><a href="#xsrf-6" id="toc-xsrf-6" class="nav-link" data-scroll-target="#xsrf-6">XSRF</a></li>
-  <li><a href="#xsrf-7" id="toc-xsrf-7" class="nav-link" data-scroll-target="#xsrf-7">XSRF</a></li>
-  <li><a href="#xsrf-8" id="toc-xsrf-8" class="nav-link" data-scroll-target="#xsrf-8">XSRF</a></li>
-  <li><a href="#xsrf-9" id="toc-xsrf-9" class="nav-link" data-scroll-target="#xsrf-9">XSRF</a></li>
-  <li><a href="#how-do-we-protect-against-xsrf-attacks" id="toc-how-do-we-protect-against-xsrf-attacks" class="nav-link" data-scroll-target="#how-do-we-protect-against-xsrf-attacks">How do we protect against XSRF attacks?</a></li>
-  <li><a href="#referrer" id="toc-referrer" class="nav-link" data-scroll-target="#referrer">Referrer?</a></li>
-  <li><a href="#sop" id="toc-sop" class="nav-link" data-scroll-target="#sop">SOP</a></li>
-  <li><a href="#sop-1" id="toc-sop-1" class="nav-link" data-scroll-target="#sop-1">SOP</a></li>
-  <li><a href="#slide-16" id="toc-slide-16" class="nav-link" data-scroll-target="#slide-16">Slide 16</a></li>
-  <li><a href="#recall-samesite---cookie-directive" id="toc-recall-samesite---cookie-directive" class="nav-link" data-scroll-target="#recall-samesite---cookie-directive">Recall SameSite - Cookie Directive</a></li>
-  <li><a href="#sop-limitations" id="toc-sop-limitations" class="nav-link" data-scroll-target="#sop-limitations">SOP Limitations</a></li>
-  <li><a href="#slide-19" id="toc-slide-19" class="nav-link" data-scroll-target="#slide-19">Slide 19</a></li>
-  <li><a href="#xsrf---tokens" id="toc-xsrf---tokens" class="nav-link" data-scroll-target="#xsrf---tokens">XSRF - Tokens</a></li>
-  <li><a href="#xsrf---tokens-1" id="toc-xsrf---tokens-1" class="nav-link" data-scroll-target="#xsrf---tokens-1">XSRF - Tokens</a></li>
-  <li><a href="#xsrf-token" id="toc-xsrf-token" class="nav-link" data-scroll-target="#xsrf-token">XSRF Token</a></li>
-  <li><a href="#xsrf-10" id="toc-xsrf-10" class="nav-link" data-scroll-target="#xsrf-10">XSRF</a></li>
-  <li><a href="#cors" id="toc-cors" class="nav-link" data-scroll-target="#cors">CORS</a></li>
-  <li><a href="#cors-1" id="toc-cors-1" class="nav-link" data-scroll-target="#cors-1">CORS</a></li>
-  <li><a href="#slide-26" id="toc-slide-26" class="nav-link" data-scroll-target="#slide-26">Slide 26</a></li>
+  <li><a href="#the-attack" id="toc-the-attack" class="nav-link active" data-scroll-target="#the-attack">The Attack</a>
+  <ul class="collapse">
+  <li><a href="#the-browser-acts-on-your-behalf" id="toc-the-browser-acts-on-your-behalf" class="nav-link" data-scroll-target="#the-browser-acts-on-your-behalf">The Browser Acts on Your Behalf</a></li>
+  <li><a href="#potential-attack" id="toc-potential-attack" class="nav-link" data-scroll-target="#potential-attack">Potential Attack</a></li>
+  <li><a href="#cross-site-request-forgery" id="toc-cross-site-request-forgery" class="nav-link" data-scroll-target="#cross-site-request-forgery">Cross-Site Request Forgery</a></li>
+  <li><a href="#xsrf---the-attack" id="toc-xsrf---the-attack" class="nav-link" data-scroll-target="#xsrf---the-attack">XSRF - The Attack</a></li>
+  <li><a href="#sending-the-forged-request" id="toc-sending-the-forged-request" class="nav-link" data-scroll-target="#sending-the-forged-request">Sending the Forged Request</a></li>
+  </ul></li>
+  <li><a href="#the-same-origin-policy" id="toc-the-same-origin-policy" class="nav-link" data-scroll-target="#the-same-origin-policy">The Same-Origin Policy</a>
+  <ul class="collapse">
+  <li><a href="#same-origin-policy" id="toc-same-origin-policy" class="nav-link" data-scroll-target="#same-origin-policy">Same-Origin Policy</a></li>
+  <li><a href="#origin" id="toc-origin" class="nav-link" data-scroll-target="#origin">Origin</a></li>
+  <li><a href="#site" id="toc-site" class="nav-link" data-scroll-target="#site">Site</a></li>
+  <li><a href="#reading-vs.-sending" id="toc-reading-vs.-sending" class="nav-link" data-scroll-target="#reading-vs.-sending">Reading vs. Sending</a></li>
+  <li><a href="#writes-and-embeds" id="toc-writes-and-embeds" class="nav-link" data-scroll-target="#writes-and-embeds">Writes and Embeds</a></li>
+  <li><a href="#the-request-still-arrives" id="toc-the-request-still-arrives" class="nav-link" data-scroll-target="#the-request-still-arrives">The Request Still Arrives</a></li>
+  <li><a href="#can-any-page-send-any-request" id="toc-can-any-page-send-any-request" class="nav-link" data-scroll-target="#can-any-page-send-any-request">Can Any Page Send Any Request?</a></li>
+  <li><a href="#simple-requests" id="toc-simple-requests" class="nav-link" data-scroll-target="#simple-requests">Simple Requests</a></li>
+  <li><a href="#why-these-rules" id="toc-why-these-rules" class="nav-link" data-scroll-target="#why-these-rules">Why These Rules?</a></li>
+  <li><a href="#preflight" id="toc-preflight" class="nav-link" data-scroll-target="#preflight">Preflight</a></li>
+  <li><a href="#samesite-cookies" id="toc-samesite-cookies" class="nav-link" data-scroll-target="#samesite-cookies">SameSite Cookies</a></li>
+  <li><a href="#samesite---which-requests-include-the-cookie" id="toc-samesite---which-requests-include-the-cookie" class="nav-link" data-scroll-target="#samesite---which-requests-include-the-cookie">SameSite - Which Requests Include the Cookie?</a></li>
+  <li><a href="#get-requests-must-not-change-state" id="toc-get-requests-must-not-change-state" class="nav-link" data-scroll-target="#get-requests-must-not-change-state">GET Requests Must Not Change State</a></li>
+  </ul></li>
+  <li><a href="#xsrf-tokens" id="toc-xsrf-tokens" class="nav-link" data-scroll-target="#xsrf-tokens">XSRF Tokens</a>
+  <ul class="collapse">
+  <li><a href="#when-the-browser-isnt-enough" id="toc-when-the-browser-isnt-enough" class="nav-link" data-scroll-target="#when-the-browser-isnt-enough">When the Browser Isn't Enough</a></li>
+  <li><a href="#xsrf-tokens-1" id="toc-xsrf-tokens-1" class="nav-link" data-scroll-target="#xsrf-tokens-1">XSRF Tokens</a></li>
+  <li><a href="#xsrf-tokens---the-flow" id="toc-xsrf-tokens---the-flow" class="nav-link" data-scroll-target="#xsrf-tokens---the-flow">XSRF Tokens - The Flow</a></li>
+  <li><a href="#xsrf-tokens---in-the-form" id="toc-xsrf-tokens---in-the-form" class="nav-link" data-scroll-target="#xsrf-tokens---in-the-form">XSRF Tokens - In the Form</a></li>
+  <li><a href="#xsrf-tokens---verifying" id="toc-xsrf-tokens---verifying" class="nav-link" data-scroll-target="#xsrf-tokens---verifying">XSRF Tokens - Verifying</a></li>
+  <li><a href="#xsrf-tokens---the-attack-fails" id="toc-xsrf-tokens---the-attack-fails" class="nav-link" data-scroll-target="#xsrf-tokens---the-attack-fails">XSRF Tokens - The Attack Fails</a></li>
+  <li><a href="#why-not-put-the-xsrf-token-in-a-cookie" id="toc-why-not-put-the-xsrf-token-in-a-cookie" class="nav-link" data-scroll-target="#why-not-put-the-xsrf-token-in-a-cookie">Why Not Put the XSRF Token in a Cookie?</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#summary-1" id="toc-summary-1" class="nav-link" data-scroll-target="#summary-1">Summary</a></li>
+  <li><a href="#next-time" id="toc-next-time" class="nav-link" data-scroll-target="#next-time">Next Time</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -116,10 +166,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">XSRF</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
+<h1 class="title">XSRF and the Same-Origin Policy</h1>
 </div>
 
+<div>
+  <div class="description">
+    How another site can forge requests from your users’ browsers, what the browser’s Same-Origin Policy and SameSite cookies do to stop it, and XSRF tokens for when the browser isn’t enough
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -134,366 +188,561 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="xsrf" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf">XSRF</h2>
-<p>Cross-Site Request Forgery</p>
-</section>
-<section id="xsrf-1" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-1">XSRF</h2>
+<section id="the-attack" class="level1">
+<h1>The Attack</h1>
+<section id="the-browser-acts-on-your-behalf" class="level2">
+<h2 class="anchored" data-anchor-id="the-browser-acts-on-your-behalf">The Browser Acts on Your Behalf</h2>
 <ul>
-<li>Cross-Site Request Forgery</li>
-<li>A request that is sent from a different "origin"</li>
-<li>Origin:
+<li>Recall: After you log in, your auth token is stored in a cookie</li>
+<li>The browser attaches that cookie to <strong>every</strong> request sent to your server
 <ul>
-<li>The combination of protocol, host, and port</li>
-<li>If all three do not match, it is a cross-site request</li>
+<li>No matter which page caused the request to be sent</li>
+<li>The request is authenticated as you, even if you didn't choose to send it</li>
 </ul></li>
-<li>What's the danger?</li>
-</ul>
-</section>
-<section id="xsrf---example" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf---example">XSRF - Example</h2>
-<p>Potential outcomes:</p>
+<li>Your browser has many tabs open to many different sites at once
 <ul>
-<li>An attack page can make a request to AutoLab
-<ul>
-<li>Requests your grades</li>
-<li>Makes a submission on your behalf</li>
-</ul></li>
-<li>Attack page makes a request to your bank and transfers your funds to the attacker's account</li>
-<li>Attack page makes embarrassing posts on social media</li>
-</ul>
-</section>
-<section id="xsrf-2" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-2">XSRF</h2>
-<ul>
-<li>We have a form that sends authenticated POST requests to our server
-<ul>
-<li>You host this app at mycoolproject.com</li>
-</ul></li>
-<li>The format of these POST requests is known (Anyone can visit and view your front end)</li>
-<li>An attacker makes their own web app</li>
-<li>The app will send a POST request to mycoolproject.com in the proper format
-<ul>
-<li>They host this app at freebitcoin.com and get someone to goto their site</li>
-<li>The site sends the POST request on behalf of the user -&gt; Hacked!</li>
+<li>Some you trust (Your bank, Autolab)</li>
+<li>Some you shouldn't (Clicking a link in a shady email)</li>
 </ul></li>
 </ul>
 </section>
-<section id="xsrf-3" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-3">XSRF</h2>
+<section id="potential-attack" class="level2">
+<h2 class="anchored" data-anchor-id="potential-attack">Potential Attack</h2>
 <ul>
-<li>Client Creates an account on your app</li>
-<li>Client logs in and you issue an auth token in a cookie</li>
-<li>They enjoy your site very much and trust you with private information</li>
+<li>You are logged into your bank in one tab and have a cookie for your auth token</li>
+<li>You click a link for <code>freemoney4you.com</code></li>
+<li><code>freemoney4you.com</code> serves you this JavaScript which runs in your browser:</li>
 </ul>
-<p>mycoolproject.com</p>
-<p>User/Client</p>
-<p>freebitcoin.com</p>
-<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="xsrf-4" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-4">XSRF</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="st">"https://bank.com/account"</span><span class="op">,</span> {<span class="dt">credentials</span><span class="op">:</span> <span class="st">"include"</span>})<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> accountDetails <span class="op">=</span> <span class="cf">await</span> response<span class="op">.</span><span class="fu">text</span>()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Client gets an email
+<li>This request comes from your browser
 <ul>
-<li>ALL YOUR DREAMS WILL COME TRUE!! JUST CLICK HERE!!!</li>
-</ul></li>
-<li>Naive client clicks the link and gets the attackers HTML/CSS/Javascript</li>
-</ul>
-<p>mycoolproject.com</p>
-<p>User/Client</p>
-<p>freebitcoin.com</p>
-<p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="xsrf-5" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-5">XSRF</h2>
-<ul>
-<li>The attack site sends a cross-site request to your app</li>
-<li>The origin is freebitcoin.com</li>
-<li>The request is sent to mycoolproject.com</li>
-<li>The attacker controls this request
-<ul>
-<li>Client may not even know it was sent until it's too late</li>
-</ul></li>
-</ul>
-<p>mycoolproject.com</p>
-<p>User/Client</p>
-<p>freebitcoin.com</p>
-<p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="xsrf-6" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-6">XSRF</h2>
-<ul>
-<li>Since the request did come from your user
-<ul>
-<li>It may contain auth cookies</li>
-<li>It may look real to your server</li>
-<li>Your server will process it as a legitimate, authenticated, request if you don't have protections in place</li>
-</ul></li>
-</ul>
-<p>mycoolproject.com</p>
-<p>User/Client</p>
-<p>freebitcoin.com</p>
-<p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="xsrf-7" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-7">XSRF</h2>
-<ul>
-<li>How to send a XSRF attack?</li>
-<li>As the src of an image
-<ul>
-<li>Can send a GET request
-<ul>
-<li>If your server uses query strings, these can be set by the attacker</li>
-</ul></li>
-<li>Easy to setup. Embed an image in an email
-<ul>
-<li>Client only has to open the email (Doesn't even require them to click a shady link)</li>
-<li>This is why images are often blocked in email</li>
-</ul></li>
+<li>Will this attack work?</li>
+<li>Will a request be sent to your bank that contains your auth token?</li>
+<li>Can an attacker use this attack to transfer your money to their account?</li>
 </ul></li>
 </ul>
 </section>
-<section id="xsrf-8" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-8">XSRF</h2>
+<section id="cross-site-request-forgery" class="level2">
+<h2 class="anchored" data-anchor-id="cross-site-request-forgery">Cross-Site Request Forgery</h2>
 <ul>
-<li>How to send a XSRF attack?</li>
-<li>Submit an HTML form
+<li><strong>Cross-Site Request Forgery (XSRF)</strong> - A malicious site causes your browser to send a request to another site
 <ul>
-<li>Get the user to navigate to your page</li>
-<li>The page automatically submits and HTML form on their behalf (They don't have to click a button. Send it with JS)</li>
-<li>The user will be navigated to the site that was attacked</li>
-<li>Can send GET and POST requests</li>
-<li>Must follow specific encodings supported by HTML forms</li>
-<li>Attacker cannot see the response of the request (No stealing private data with this method)</li>
+<li>The browser attaches your cookies</li>
+<li>The server sees an authenticated request from you and processes it</li>
+<li>You never intended to send it</li>
+</ul></li>
+<li>The attacker doesn't need to see the response. The damage is done when the request is processed
+<ul>
+<li>Transfer your money, make an Autolab submission, post in your name, change your email address</li>
 </ul></li>
 </ul>
 </section>
-<section id="xsrf-9" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-9">XSRF</h2>
+<section id="xsrf---the-attack" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf---the-attack">XSRF - The Attack</h2>
+<p><img src="assets/xsrf_1.svg" class="img-fluid" alt="The user logs in to bank.com. The server responds with Set-Cookie: auth_token=8f3a91c2, and the browser stores the cookie."></p>
 <ul>
-<li>How to send a XSRF attack?</li>
-<li>Make an AJAX request
+<li>You log in to bank.com and get an auth token in a cookie</li>
+</ul>
+</section>
+<section id="xsrf---the-attack-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf---the-attack-1">XSRF - The Attack</h2>
+<p><img src="assets/xsrf_2.svg" class="img-fluid" alt="The user visits freemoney4you.com, maybe from a link in an email. freemoney4you.com responds with the attacker's HTML and JavaScript."></p>
 <ul>
-<li>Get the user to navigate to your page</li>
-<li>Page automatically sends an AJAX request, or several, onload</li>
-<li>Attacker has full control
+<li>You click a link in an email: ALL YOUR DREAMS WILL COME TRUE!! JUST CLICK HERE!!!</li>
+<li>Your browser loads the attacker's HTML/JavaScript</li>
+</ul>
+</section>
+<section id="xsrf---the-attack-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf---the-attack-2">XSRF - The Attack</h2>
+<p><img src="assets/xsrf_3.svg" class="img-fluid" alt="The attacker's page makes the browser send POST /transfer to bank.com with the body to=attacker&amp;amount=10000. The browser attaches the user's bank.com auth cookie automatically."></p>
 <ul>
-<li>They can read the responses and have multiple interactions with the attacked site</li>
-<li>They can use any HTTP method</li>
-<li>They can put anything in the body of the requests</li>
-</ul></li>
+<li>The attacker's page sends a transfer request to bank.com, and your browser attaches your auth cookie
+<ul>
+<li>The attacker knows the format of the request. Anyone can read bank.com's front end</li>
 </ul></li>
 </ul>
 </section>
-<section id="how-do-we-protect-against-xsrf-attacks" class="level2">
-<h2 class="anchored" data-anchor-id="how-do-we-protect-against-xsrf-attacks">How do we protect against XSRF attacks?</h2>
-</section>
-<section id="referrer" class="level2">
-<h2 class="anchored" data-anchor-id="referrer">Referrer?</h2>
+<section id="xsrf---the-attack-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf---the-attack-3">XSRF - The Attack</h2>
+<p><img src="assets/xsrf_4.svg" class="img-fluid" alt="bank.com sees a valid auth token, treats the request as coming from the user, and completes the transfer. The attacker never saw the response but the damage is done."></p>
 <ul>
-<li>Every request should have a referrer header
-<ul>
-<li>Specifies the origin of the request</li>
-</ul></li>
-<li>If the referrer doesn't match your app
-<ul>
-<li>Deny the request</li>
-</ul></li>
-<li>Simple enough</li>
-<li>Unfortunately, the referrer can be spoofed and must not be relied upon for security reasons</li>
+<li>bank.com sees a valid auth token and processes the request. Hacked!</li>
 </ul>
 </section>
-<section id="sop" class="level2">
-<h2 class="anchored" data-anchor-id="sop">SOP</h2>
+<section id="sending-the-forged-request" class="level2">
+<h2 class="anchored" data-anchor-id="sending-the-forged-request">Sending the Forged Request</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> id</span><span class="op">=</span><span class="st">"attack"</span><span class="ot"> action</span><span class="op">=</span><span class="st">"https://bank.com/transfer"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="dt">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"hidden"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"to"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"attacker"</span><span class="dt">&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"hidden"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"amount"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"10000"</span><span class="dt">&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span><span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">"attack"</span>)<span class="op">.</span><span class="fu">submit</span>()<span class="op">;</span><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Same-Origin Policy (SOP)</li>
-<li>The SOP is implemented in modern browsers and blocks many cross-origin requests by default</li>
-<li>All AJAX responses are blocked by the SOP
+<li>A hidden form that submits itself as soon as the page loads. No click needed</li>
+<li>Or an image tag, which sends a GET request (Works in emails too!)
 <ul>
-<li>This is a relief since AJAX is so powerful</li>
+<li><code>&lt;img src="https://bank.com/transfer?to=attacker&amp;amount=10000"&gt;</code></li>
+</ul></li>
+<li>Or <code>fetch</code>, like the potential attack</li>
+<li>Will any of these work? It depends on what the browser allows</li>
+</ul>
+</section>
+</section>
+<section id="the-same-origin-policy" class="level1">
+<h1>The Same-Origin Policy</h1>
+<section id="same-origin-policy" class="level2">
+<h2 class="anchored" data-anchor-id="same-origin-policy">Same-Origin Policy</h2>
+<ul>
+<li>The <strong>Same-Origin Policy (SOP)</strong> is a set of rules enforced by every modern browser</li>
+<li><strong>Content from one origin cannot read content from a different origin</strong>
+<ul>
+<li><code>freemoney4you.com</code>'s JavaScript cannot read the response from <code>bank.com</code></li>
+</ul></li>
+<li>SOP sometimes blocks the entire request</li>
+<li>To understand the rules, we first need to define "origin"</li>
+</ul>
+</section>
+<section id="origin" class="level2">
+<h2 class="anchored" data-anchor-id="origin">Origin</h2>
+<ul>
+<li>An origin is the combination of:
+<ul>
+<li>Protocol - <code>http</code>, <code>https</code>, <code>ws</code>, <code>ftp</code></li>
+<li>Host - <code>cse312.com</code></li>
+<li>Port - <code>443</code></li>
+</ul></li>
+<li>Two URLs have the same origin if all three match exactly</li>
+<li>The path is not part of the Origin</li>
+<li>Origin is what the SOP checks</li>
+</ul>
+</section>
+<section id="site" class="level2">
+<h2 class="anchored" data-anchor-id="site">Site</h2>
+<ul>
+<li>A <strong>site</strong> is broader than an origin</li>
+<li>Site = protocol + domain (Not host)</li>
+<li>Ports and subdomains are ignored
+<ul>
+<li><code>https://api.cse312.com</code> and <code>https://cse312.com</code> are the same site</li>
+<li><code>https://autograder.cse.buffalo.edu</code> and <code>https://buffalo.edu</code> are the same site</li>
+<li><code>http://localhost:8080</code> and <code>http://localhost:5000</code> are the same site</li>
+</ul></li>
+<li>For local testing, you can use <code>http://localhost:8080</code> and <code>http://127.0.0.1:8080</code> which are different sites, but both reach your server</li>
+<li>This is the definition of site used by the <code>SameSite</code> cookie directive</li>
+</ul>
+</section>
+<section id="reading-vs.-sending" class="level2">
+<h2 class="anchored" data-anchor-id="reading-vs.-sending">Reading vs. Sending</h2>
+<ul>
+<li>The SOP does not always stop cross-origin requests from being <strong>sent</strong></li>
+<li>It stops cross-origin responses from being <strong>read</strong></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Cross-origin...</th>
+<th>Examples</th>
+<th>SOP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Writes</td>
+<td>Links, redirects, form submissions</td>
+<td>Allowed</td>
+</tr>
+<tr class="even">
+<td>Embeds</td>
+<td>Multimedia, JS Scripts, links, CSS</td>
+<td>Allowed</td>
+</tr>
+<tr class="odd">
+<td>Reads</td>
+<td>Reading a <code>fetch</code> response</td>
+<td>Blocked</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Writes and embeds are allowed for backward compatibility</li>
+</ul>
+</section>
+<section id="writes-and-embeds" class="level2">
+<h2 class="anchored" data-anchor-id="writes-and-embeds">Writes and Embeds</h2>
+<ul>
+<li>Writes navigate the browser to the other origin
+<ul>
+<li>The response replaces the page that sent the request</li>
+<li>The page that sent the request never sees the response</li>
+</ul></li>
+<li>Embeds can be <strong>used</strong>, but not <strong>read</strong> [via JS. You can still read them in your console]
+<ul>
+<li>The page can display the image, run the script, and apply the styles</li>
+<li>The page's JavaScript can't read the image's pixels or the script's source</li>
+</ul></li>
+<li>A script from another origin runs as part of <strong>your page's</strong> origin
+<ul>
+<li>This is how CDNs and analytics scripts work</li>
+<li>It's also why you should only include scripts you trust</li>
 </ul></li>
 </ul>
 </section>
-<section id="sop-1" class="level2">
-<h2 class="anchored" data-anchor-id="sop-1">SOP</h2>
+<section id="the-request-still-arrives" class="level2">
+<h2 class="anchored" data-anchor-id="the-request-still-arrives">The Request Still Arrives</h2>
+<p><img src="assets/sop_1.svg" class="img-fluid" alt="JavaScript on freemoney4you.com calls fetch. The browser sends GET /account to bank.com with the header Origin: https://freemoney4you.com and the user's bank.com session cookie."></p>
 <ul>
-<li>The SOP does NOT block "safe" requests</li>
-<li>Safe requests include
+<li>Cookies will follow the <code>SameSite</code> directive rules (A lax cookie would not be sent on this request)</li>
+</ul>
+</section>
+<section id="the-request-still-arrives-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-request-still-arrives-1">The Request Still Arrives</h2>
+<p><img src="assets/sop_2.svg" class="img-fluid" alt="bank.com processes the request and responds 200 OK with the user's name and balance. The response travels back to the browser."></p>
+</section>
+<section id="the-request-still-arrives-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-request-still-arrives-2">The Request Still Arrives</h2>
+<p><img src="assets/sop_3.svg" class="img-fluid" alt="The response has no Access-Control-Allow-Origin header, so the browser refuses to give it to freemoney4you.com's JavaScript. The request was still sent and processed."></p>
+</section>
+<section id="the-request-still-arrives-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-request-still-arrives-3">The Request Still Arrives</h2>
 <ul>
-<li>Any GET request</li>
-<li>Any request that navigates away from the origin (Including HTML Form submissions using POST)</li>
+<li>Try it: From a page on one origin, <code>fetch</code> a URL on another origin
+<ul>
+<li>Console: <code>Access to fetch at '...' from origin '...' blocked by CORS</code></li>
+<li>Misleading error message: Devs often blame CORS for SOP behavior</li>
 </ul></li>
-<li>A GET request should be idempotent AND not change the state of the server
+<li>Now check the Network tab and your server's logs
 <ul>
-<li>Your GET requests should only retrieve data since they are not protected by CORS</li>
+<li>The request was sent</li>
+<li>Your server processed it and sent a 200 response</li>
+<li>The browser received the response and refused to give it to the JavaScript</li>
+</ul></li>
+<li><span class="yellow">The SOP protects the response. It does not protect your server</span></li>
+</ul>
+</section>
+<section id="can-any-page-send-any-request" class="level2">
+<h2 class="anchored" data-anchor-id="can-any-page-send-any-request">Can Any Page Send Any Request?</h2>
+<ul>
+<li>If the request is still sent, can <code>freemoney4you.com</code> send <code>bank.com</code>:
+<ul>
+<li>A <code>DELETE</code> request?</li>
+<li>A JSON body?</li>
+<li>Any headers they want?</li>
+</ul></li>
+<li>No! The browser splits cross-origin requests into 2 kinds:
+<ul>
+<li><strong>Simple requests</strong> - Sent immediately. The SOP blocks reading the response</li>
+<li><strong>Preflighted requests</strong> - The browser asks the server for permission before sending</li>
 </ul></li>
 </ul>
 </section>
-<section id="slide-16" class="level2">
-<h2 class="anchored" data-anchor-id="slide-16">Slide 16</h2>
-<p>SOP</p>
+<section id="simple-requests" class="level2">
+<h2 class="anchored" data-anchor-id="simple-requests">Simple Requests</h2>
+<p>A cross-origin request is <strong>simple</strong> if all of these are true:</p>
 <ul>
-<li>The SOP does NOT block "safe" requests</li>
-<li>HTML form submissions are more difficult to protect against since they can make POST requests
+<li>The method is <code>GET</code>, <code>HEAD</code>, or <code>POST</code></li>
+<li>Only sets "CORS-safelisted" headers
 <ul>
-<li>We need better protections</li>
+<li><code>Accept</code>, <code>Accept-Language</code>, <code>Content-Language</code>, <code>Content-Type</code></li>
+</ul></li>
+<li>The <code>Content-Type</code>, if set, is one of:
+<ul>
+<li><code>application/x-www-form-urlencoded</code></li>
+<li><code>multipart/form-data</code></li>
+<li><code>text/plain</code></li>
+</ul></li>
+</ul>
+<p>Every other request is "to be preflighted"</p>
+</section>
+<section id="why-these-rules" class="level2">
+<h2 class="anchored" data-anchor-id="why-these-rules">Why These Rules?</h2>
+<ul>
+<li>A simple request is a request that an HTML form could already send without any JavaScript
+<ul>
+<li>Forms could send these cross-origin long before <code>AJAX</code> existed</li>
+<li>Blocking them in <code>fetch</code> wouldn't make anything safer. An attacker would simply use a form</li>
+</ul></li>
+<li>Anything else (<code>PUT</code>, <code>DELETE</code>, a JSON body, a custom header) were <strong>impossible</strong> to send cross-origin before <code>AJAX</code>
+<ul>
+<li>Servers were written assuming they would never receive these cross-origin</li>
+<li>SOP predates <code>AJAX</code> so it was able to block these without breaking existing apps</li>
+<li>Browsers won't send them without the server's permission</li>
 </ul></li>
 </ul>
 </section>
-<section id="recall-samesite---cookie-directive" class="level2">
-<h2 class="anchored" data-anchor-id="recall-samesite---cookie-directive">Recall SameSite - Cookie Directive</h2>
+<section id="preflight" class="level2">
+<h2 class="anchored" data-anchor-id="preflight">Preflight</h2>
 <ul>
-<li>SameSite
+<li>Before sending a non-simple cross-origin request, the browser sends a <strong>preflight</strong> request
 <ul>
-<li>Determines when the cookie will be sent on 3rd party requests</li>
-<li>Lax - Cookie only sent when navigating to your page (Includes HTML form submissions)
-<ul>
-<li>Or "safe" requests including all GET requests (Except Cross-Site AJAX GET requests)</li>
-<li>The default setting if SameSite is not set</li>
+<li>Method <code>OPTIONS</code>, same path</li>
+<li>Asks the server whether the real request is allowed</li>
 </ul></li>
-<li>Strict - The cookie is only sent on 1st party requests
-<ul>
-<li>ie. The cookie is only sent to your server</li>
-</ul></li>
-<li>None - The cookie is always sent. Requires the secure directive to also be set</li>
-</ul></li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Lax</li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=Strict</li>
-<li>Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure</li>
+<li>If the server does not allow it, <span class="yellow">the real request is never sent</span></li>
 </ul>
 </section>
-<section id="sop-limitations" class="level2">
-<h2 class="anchored" data-anchor-id="sop-limitations">SOP Limitations</h2>
+<section id="preflight-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="preflight-1">Preflight</h2>
+<p><img src="assets/preflight_denied.svg" class="img-fluid" alt="The server responds to the OPTIONS preflight with 404 Not Found and no Access-Control-Allow headers. The browser never sends the real PUT request."></p>
+</section>
+<section id="preflight-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="preflight-2">Preflight</h2>
 <ul>
-<li>Since the SOP is enforced by the browser, we have limited control over its enforcement
+<li>This is how your HW server behaves
 <ul>
-<li>What if a user has a very outdated browser that doesn't implement the SOP?</li>
-<li>What if the user installed a plug-in that disables the SOP?</li>
-<li>What if the user is using an obscure browser that does not implement the SOP properly?</li>
-</ul></li>
-<li>The SOP will protect most users, but not 100%
-<ul>
-<li>And won't protect any users from a GET or HTML form attack</li>
+<li>It doesn't handle <code>OPTIONS</code>, so every preflight fails</li>
+<li>No page on another origin can send your server a JSON <code>POST</code>, a <code>PUT</code>, or a <code>DELETE</code></li>
+<li>Any page on another origin can still send your server a <strong>simple</strong> request</li>
 </ul></li>
 </ul>
 </section>
-<section id="slide-19" class="level2">
-<h2 class="anchored" data-anchor-id="slide-19">Slide 19</h2>
-<p>XSRF - Tokens</p>
+<section id="samesite-cookies" class="level2">
+<h2 class="anchored" data-anchor-id="samesite-cookies">SameSite Cookies</h2>
 <ul>
-<li>Let's add server-side protection from XSRF attacks</li>
-<li>Will work for all users and all XSRF attacks</li>
+<li>The SOP stops the attacker from reading. What stops the browser from attaching your cookies?</li>
+<li>Recall the <code>SameSite</code> cookie directive. It controls whether a cookie is sent on <strong>cross-site</strong> requests
+<ul>
+<li><code>Strict</code> - Never sent on a cross-site request</li>
+<li><code>Lax</code> - Only sent on a cross-site request if it navigates to your site with a GET request</li>
+<li><code>None; Secure</code> - Always sent</li>
+</ul></li>
+<li>Browsers can have different default behavior (Usually set to lax)
+<ul>
+<li>To be sure, you can set the directive explicitly</li>
+</ul></li>
 </ul>
 </section>
-<section id="xsrf---tokens" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf---tokens">XSRF - Tokens</h2>
+<section id="samesite---which-requests-include-the-cookie" class="level2">
+<h2 class="anchored" data-anchor-id="samesite---which-requests-include-the-cookie">SameSite - Which Requests Include the Cookie?</h2>
+<p>Requests sent from a page on a <strong>different site</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Cross-site request</th>
+<th><code>Strict</code></th>
+<th><code>Lax</code></th>
+<th><code>None</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Clicking a link (GET navigation)</td>
+<td>Not sent</td>
+<td>Sent</td>
+<td>Sent</td>
+</tr>
+<tr class="even">
+<td>Form submission with GET</td>
+<td>Not sent</td>
+<td>Sent</td>
+<td>Sent</td>
+</tr>
+<tr class="odd">
+<td>Form submission with POST</td>
+<td>Not sent</td>
+<td>Not sent</td>
+<td>Sent</td>
+</tr>
+<tr class="even">
+<td><code>&lt;img&gt;</code>, <code>&lt;script&gt;</code></td>
+<td>Not sent</td>
+<td>Not sent</td>
+<td>Sent</td>
+</tr>
+<tr class="odd">
+<td><code>fetch</code>, <code>&lt;iframe&gt;</code></td>
+<td>Not sent</td>
+<td>Not sent</td>
+<td>Sent</td>
+</tr>
+</tbody>
+</table>
 <ul>
-<li>On the Server:
+<li>All requests from a page on the <strong>same site</strong> include the cookie</li>
+</ul>
+</section>
+<section id="get-requests-must-not-change-state" class="level2">
+<h2 class="anchored" data-anchor-id="get-requests-must-not-change-state">GET Requests Must Not Change State</h2>
 <ul>
-<li>Generate a long random XSRF token on page load (Attacker must not be able to guess the token)</li>
+<li><code>GET</code> requests must never change the state of your server
+<ul>
+<li>GETs only <em>get</em> data</li>
+</ul></li>
+<li>Any page can send them: links, image tags, redirects</li>
+<li><code>Lax</code> cookies are sent when the user follows a link from another site
+<ul>
+<li>So <code>GET /transfer?to=attacker&amp;amount=10000</code> is exploitable even with modern browser defaults</li>
+</ul></li>
+<li>Browsers also prefetch links, and search engines follow them
+<ul>
+<li>A crawler following your links should not delete anything</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="xsrf-tokens" class="level1">
+<h1>XSRF Tokens</h1>
+<section id="when-the-browser-isnt-enough" class="level2">
+<h2 class="anchored" data-anchor-id="when-the-browser-isnt-enough">When the Browser Isn't Enough</h2>
+<ul>
+<li>The SOP and <code>SameSite</code> are enforced by the <strong>user's browser</strong>. We have limited control
+<ul>
+<li>An outdated or obscure browser might not implement them properly</li>
+<li>A browser extension might disable them</li>
+<li>Browsers disagree on the default <code>SameSite</code> value</li>
+</ul></li>
+<li>They don't cover every case either
+<ul>
+<li>Some apps need <code>SameSite=None</code> (Embedded widgets, cross-site sign-in)</li>
+<li><code>SameSite</code> checks the site, not the origin. Any subdomain of your site can attack you</li>
+</ul></li>
+<li>They protect most users, but not 100%</li>
+<li>We need protection on <strong>our server</strong> that works for every user, in every browser</li>
+</ul>
+</section>
+<section id="xsrf-tokens-1" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-tokens-1">XSRF Tokens</h2>
+<ul>
+<li>The attacker can send requests, but they can't read your pages (SOP)</li>
+<li>So: Put a secret in your pages that the request must send back</li>
+<li>On the server:
+<ul>
+<li>Generate a long random XSRF token when serving a page with a form
+<ul>
+<li>The attacker must not be able to guess the token</li>
+</ul></li>
+<li>Store this XSRF token as issued to this user</li>
 <li>Embed this XSRF token in the page</li>
-<li>Store this XSRF token as being sent to this user</li>
 </ul></li>
 <li>In the browser:
 <ul>
-<li>XSRF token can be a hidden input on the form</li>
-<li>Send this XSRF token along with form submissions</li>
+<li>The XSRF token is a hidden input on the form</li>
+<li>The token is sent with the form submission</li>
 </ul></li>
 </ul>
 </section>
-<section id="xsrf---tokens-1" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf---tokens-1">XSRF - Tokens</h2>
+<section id="xsrf-tokens---the-flow" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-tokens---the-flow">XSRF Tokens - The Flow</h2>
+<p><img src="assets/token_1.svg" class="img-fluid" alt="bank.com serves a page with a transfer form. A hidden input holds an XSRF token, Qm9iIGlz, that the server generated and stored for this user."></p>
+</section>
+<section id="xsrf-tokens---the-flow-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf-tokens---the-flow-1">XSRF Tokens - The Flow</h2>
+<p><img src="assets/token_2.svg" class="img-fluid" alt="The user submits the form. The request contains the auth cookie and the XSRF token Qm9iIGlz in the body. The server confirms this token was issued to this user and accepts the request."></p>
+</section>
+<section id="xsrf-tokens---in-the-form" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-tokens---in-the-form">XSRF Tokens - In the Form</h2>
 <ul>
-<li>Back to the Server on HTTP requests:
+<li>Add a new hidden input to your form for the token</li>
+<li>Generate and inject the token as the value using HTML templates</li>
+<li>Read the token from the request and verify it</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1"></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/image-upload"</span><span class="ot"> id</span><span class="op">=</span><span class="st">"image-form"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> enctype</span><span class="op">=</span><span class="st">"multipart/form-data"</span><span class="dt">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"hidden"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"xsrf_token"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"AQAAAjppCA8mhugn2UvwOTaKnVY"</span><span class="dt">&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"form-file"</span><span class="dt">&gt;</span>Image: <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"form-file"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"file"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"upload"</span><span class="dt">&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="ot"> for</span><span class="op">=</span><span class="st">"image-form-name"</span><span class="dt">&gt;</span>Caption: <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> id</span><span class="op">=</span><span class="st">"image-form-name"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"name"</span><span class="dt">&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="xsrf-tokens---verifying" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-tokens---verifying">XSRF Tokens - Verifying</h2>
 <ul>
-<li>Read the XSRF token value and the auth token from the request</li>
-<li>Authenticate the user based on their auth token</li>
-<li>Verify that this XSRF token was sent to this user</li>
+<li>On every request that changes state:
+<ul>
+<li>Authenticate the user with their auth token</li>
+<li>Read the XSRF token from the request body</li>
+<li>Verify that this XSRF token was issued to <em>this</em> user</li>
 </ul></li>
-<li>If the XSRF token was issues to this user
+<li>If the XSRF token was issued to this user
 <ul>
 <li>Accept the request as valid</li>
 </ul></li>
-<li>If the XSRF token was NOT issued to this user
+<li>If the XSRF token is missing or was NOT issued to this user
 <ul>
-<li>This is an invalid request and might be a XSRF attack</li>
+<li>This is an invalid request and might be an XSRF attack</li>
+<li>Respond with <code>403 Forbidden</code></li>
 </ul></li>
 </ul>
 </section>
-<section id="xsrf-token" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-token">XSRF Token</h2>
-<ul>
-<li>Add a new input to your form for the token</li>
-<li>Generate and inject the token as a value using HTML templates</li>
-<li>Add the hidden attribute so the token is not displayed to the user</li>
-<li>Read the token from the request and verify</li>
-</ul>
-<pre><code>&lt;form action="/image-upload" id="image-form" method="post" enctype="multipart/form-data"&gt;
-&lt;input value="AQAAAjppCA8mhugn2UvwOTaKnVY" name="xsrf_token" hidden&gt;
-&lt;label for="form-file"&gt;Image: &lt;/label&gt;
-&lt;input id="form-file" type="file" name="upload"&gt;
-&lt;br/&gt;
-&lt;label for="image-form-name"&gt;Caption: &lt;/label&gt;
-&lt;input id="image-form-name" type="text" name="name"&gt;
-&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+<section id="xsrf-tokens---the-attack-fails" class="level2">
+<h2 class="anchored" data-anchor-id="xsrf-tokens---the-attack-fails">XSRF Tokens - The Attack Fails</h2>
+<p><img src="assets/xsrf_5.svg" class="img-fluid" alt="The attacker's page sends POST /transfer again. The browser attaches the auth cookie, but the body has no XSRF token because the attacker cannot read the user's pages to learn it."></p>
 </section>
-<section id="xsrf-10" class="level2">
-<h2 class="anchored" data-anchor-id="xsrf-10">XSRF</h2>
-<ul>
-<li>Now, when freebitcoin.com send their request it cannot contain your XSRF token</li>
-<li>Your server will reject the request</li>
-<li>Attacker can get their own token linked to their account
-<ul>
-<li>Since they can get a valid token for the users account, they cannot send a valid cross-site request</li>
-</ul></li>
-</ul>
-<p>mycoolproject.com</p>
-<p>User/Client</p>
-<p>freebitcoin.com</p>
-<p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<section id="xsrf-tokens---the-attack-fails-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf-tokens---the-attack-fails-1">XSRF Tokens - The Attack Fails</h2>
+<p><img src="assets/xsrf_6.svg" class="img-fluid" alt="bank.com finds no valid XSRF token for this user and rejects the request with 403 Forbidden. The attack fails."></p>
 </section>
-<section id="cors" class="level2">
-<h2 class="anchored" data-anchor-id="cors">CORS</h2>
+<section id="xsrf-tokens---the-attack-fails-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="xsrf-tokens---the-attack-fails-2">XSRF Tokens - The Attack Fails</h2>
 <ul>
-<li>The SOP can be too restrictive is some cases
+<li>Even if the browser attaches the cookie, the forged request can't contain your XSRF token
 <ul>
-<li>eg. You host an API that is consumed by other apps via AJAX</li>
+<li>The SOP stops <code>freemoney4you.com</code> from reading your pages</li>
 </ul></li>
-<li>Cross-Origin Resource Sharing
+<li>The server rejects the request</li>
+<li>The attacker can get a valid XSRF token for their own account
 <ul>
-<li>A policy that lets you relax the SOP</li>
+<li>But that token was not issued to you, so it's rejected too</li>
 </ul></li>
-<li>Can explicitly allow cross-origin requests with the header:</li>
+<li>Works in every browser, with any <code>SameSite</code> setting</li>
 </ul>
-<p>Access-Control-Allow-Origin: *</p>
 </section>
-<section id="cors-1" class="level2">
-<h2 class="anchored" data-anchor-id="cors-1">CORS</h2>
+<section id="why-not-put-the-xsrf-token-in-a-cookie" class="level2">
+<h2 class="anchored" data-anchor-id="why-not-put-the-xsrf-token-in-a-cookie">Why Not Put the XSRF Token in a Cookie?</h2>
 <ul>
-<li>The * is a wildcard that allows all cross-site requests
+<li>Cookies are attached to requests automatically, even forged requests
 <ul>
-<li>It is very dangerous and exposes you to XSRF attacks</li>
+<li>A token that only arrives in a cookie proves nothing. The forged request has it too</li>
 </ul></li>
-<li>Can specify specific origins as well
+<li>The token must arrive in something the attacker's page can't produce:
 <ul>
-<li>Common if you have an app with multiple servers</li>
+<li>A form field</li>
+<li>A custom request header (Which also triggers a preflight)</li>
+</ul></li>
+<li>The user's page must be able to <strong>read</strong> the token to send it</li>
+<li>The attacker's page must <strong>not</strong> be able to read the token
+<ul>
+<li>This is exactly what the SOP gives us</li>
 </ul></li>
 </ul>
-<p>Access-Control-Allow-Origin: cse312.com</p>
 </section>
-<section id="slide-26" class="level2">
-<h2 class="anchored" data-anchor-id="slide-26">Slide 26</h2>
-<p>CORS</p>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="summary-1" class="level2">
+<h2 class="anchored" data-anchor-id="summary-1">Summary</h2>
 <ul>
-<li>CORS determines which cross-origin requests are allowed and which are blocked</li>
-<li>By default, browsers will block many cross-origin requests</li>
+<li>XSRF: Another site makes your browser send a request, with your cookies attached</li>
+<li>The SOP: Cross-origin reads are blocked. Writes and embeds are allowed
+<ul>
+<li>Simple requests are always sent. Non-simple requests are preflighted</li>
+</ul></li>
+<li><code>SameSite</code> controls whether cookies are attached to cross-site requests</li>
+<li><code>GET</code> requests never change state</li>
+<li>XSRF tokens: A secret in your pages that the attacker can't read
+<ul>
+<li>Required on every request that changes state</li>
+<li>Protects every user, in every browser</li>
+</ul></li>
 </ul>
-<p>Access-Control-Allow-Origin: *</p>
+</section>
+<section id="next-time" class="level2">
+<h2 class="anchored" data-anchor-id="next-time">Next Time</h2>
+<ul>
+<li>CORS: Letting other origins in, on purpose</li>
+<li>More attacks, and more layers of defense</li>
+</ul>
 
 
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">Same-Origin Policy (MDN)</a></li>
+</ul>
+</section>
 </section>
 
 </main> <!-- /main -->

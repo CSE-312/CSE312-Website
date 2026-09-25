@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Letting users grant your app access to a third-party API: the authorization code flow, the state parameter, PKCE, and refresh tokens">
 
-<title>OAuth 2.0 - Implementation Details – CSE312 Lectures</title>
+<title>OAuth 2.0 – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -35,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,39 +118,70 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#oauth-2.0---details" id="toc-oauth-2.0---details" class="nav-link active" data-scroll-target="#oauth-2.0---details">OAuth 2.0 - Details</a></li>
-  <li><a href="#oauth-2.0---authorization-code-flow" id="toc-oauth-2.0---authorization-code-flow" class="nav-link" data-scroll-target="#oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</a></li>
-  <li><a href="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" id="toc-well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" class="nav-link" data-scroll-target="#well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We'll walk through the specific details of a user logging in with the 3rd party</a></li>
-  <li><a href="#slide-4" id="toc-slide-4" class="nav-link" data-scroll-target="#slide-4">Slide 4</a></li>
-  <li><a href="#slide-5" id="toc-slide-5" class="nav-link" data-scroll-target="#slide-5">Slide 5</a></li>
-  <li><a href="#parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect" id="toc-parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect" class="nav-link" data-scroll-target="#parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect">• Parameters: Response type, client id, scopes, redirect URI • We need to tell the user to send these 4 parameters to the API • How? Use a redirect!</a></li>
-  <li><a href="#slide-7" id="toc-slide-7" class="nav-link" data-scroll-target="#slide-7">Slide 7</a></li>
-  <li><a href="#slide-8" id="toc-slide-8" class="nav-link" data-scroll-target="#slide-8">Slide 8</a></li>
-  <li><a href="#slide-9" id="toc-slide-9" class="nav-link" data-scroll-target="#slide-9">Slide 9</a></li>
-  <li><a href="#slide-10" id="toc-slide-10" class="nav-link" data-scroll-target="#slide-10">Slide 10</a></li>
-  <li><a href="#slide-11" id="toc-slide-11" class="nav-link" data-scroll-target="#slide-11">Slide 11</a></li>
-  <li><a href="#slide-12" id="toc-slide-12" class="nav-link" data-scroll-target="#slide-12">Slide 12</a></li>
-  <li><a href="#slide-13" id="toc-slide-13" class="nav-link" data-scroll-target="#slide-13">Slide 13</a></li>
-  <li><a href="#authorization-grant---redirect-uri" id="toc-authorization-grant---redirect-uri" class="nav-link" data-scroll-target="#authorization-grant---redirect-uri">Authorization Grant - Redirect URI</a></li>
-  <li><a href="#slide-15" id="toc-slide-15" class="nav-link" data-scroll-target="#slide-15">Slide 15</a></li>
-  <li><a href="#our-app-parses-the-query-string-and-extracts-this-authorization-this-is-a-1-time-code-and-is-assumed-to-be-comprisable-since" id="toc-our-app-parses-the-query-string-and-extracts-this-authorization-this-is-a-1-time-code-and-is-assumed-to-be-comprisable-since" class="nav-link" data-scroll-target="#our-app-parses-the-query-string-and-extracts-this-authorization-this-is-a-1-time-code-and-is-assumed-to-be-comprisable-since">• Our app parses the query string and extracts this authorization • This is a 1-time code and is assumed to be comprisable since</a></li>
-  <li><a href="#slide-17" id="toc-slide-17" class="nav-link" data-scroll-target="#slide-17">Slide 17</a></li>
-  <li><a href="#slide-18" id="toc-slide-18" class="nav-link" data-scroll-target="#slide-18">Slide 18</a></li>
-  <li><a href="#the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret" id="toc-the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret" class="nav-link" data-scroll-target="#the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret">• The API needs to authenticate our app during this step • Note: Steps 1-4 can all be spoofed by an attacker • We authenticate by sending the server our client secret</a></li>
-  <li><a href="#slide-20" id="toc-slide-20" class="nav-link" data-scroll-target="#slide-20">Slide 20</a></li>
-  <li><a href="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" id="toc-apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" class="nav-link" data-scroll-target="#apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send "{client_id}:{client_secret}" base64 encoded</a></li>
-  <li><a href="#authorization-grant---authorization-header" id="toc-authorization-grant---authorization-header" class="nav-link" data-scroll-target="#authorization-grant---authorization-header">Authorization Grant - Authorization Header</a></li>
-  <li><a href="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" id="toc-authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" class="nav-link" data-scroll-target="#authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to "authorization_code" • Code: The value of the authorization code we're sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</a></li>
-  <li><a href="#slide-24" id="toc-slide-24" class="nav-link" data-scroll-target="#slide-24">Slide 24</a></li>
-  <li><a href="#slide-25" id="toc-slide-25" class="nav-link" data-scroll-target="#slide-25">Slide 25</a></li>
-  <li><a href="#slide-26" id="toc-slide-26" class="nav-link" data-scroll-target="#slide-26">Slide 26</a></li>
-  <li><a href="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" id="toc-the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" class="nav-link" data-scroll-target="#the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an "access_token"</a></li>
-  <li><a href="#slide-28" id="toc-slide-28" class="nav-link" data-scroll-target="#slide-28">Slide 28</a></li>
-  <li><a href="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" id="toc-api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" class="nav-link" data-scroll-target="#api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can't use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</a></li>
-  <li><a href="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" id="toc-now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" class="nav-link" data-scroll-target="#now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We'll make an API request for the user's profile information • This allows us to identify the user with a unique id (Usually email)</a></li>
-  <li><a href="#slide-31" id="toc-slide-31" class="nav-link" data-scroll-target="#slide-31">Slide 31</a></li>
-  <li><a href="#slide-32" id="toc-slide-32" class="nav-link" data-scroll-target="#slide-32">Slide 32</a></li>
-  <li><a href="#slide-33" id="toc-slide-33" class="nav-link" data-scroll-target="#slide-33">Slide 33</a></li>
+  <li><a href="#third-party-apis" id="toc-third-party-apis" class="nav-link active" data-scroll-target="#third-party-apis">Third-Party APIs</a>
+  <ul class="collapse">
+  <li><a href="#web-apis" id="toc-web-apis" class="nav-link" data-scroll-target="#web-apis">Web APIs</a></li>
+  <li><a href="#bad-idea-ask-for-their-password" id="toc-bad-idea-ask-for-their-password" class="nav-link" data-scroll-target="#bad-idea-ask-for-their-password">Bad Idea: Ask for Their Password</a></li>
+  <li><a href="#bad-idea-ask-for-their-api-key" id="toc-bad-idea-ask-for-their-api-key" class="nav-link" data-scroll-target="#bad-idea-ask-for-their-api-key">Bad Idea: Ask for Their API Key</a></li>
+  <li><a href="#oauth-2.0" id="toc-oauth-2.0" class="nav-link" data-scroll-target="#oauth-2.0">OAuth 2.0</a></li>
+  <li><a href="#oauth-roles" id="toc-oauth-roles" class="nav-link" data-scroll-target="#oauth-roles">OAuth Roles</a></li>
+  <li><a href="#client-registration" id="toc-client-registration" class="nav-link" data-scroll-target="#client-registration">Client Registration</a></li>
+  <li><a href="#oauth-flows" id="toc-oauth-flows" class="nav-link" data-scroll-target="#oauth-flows">OAuth Flows</a></li>
+  </ul></li>
+  <li><a href="#the-authorization-code-flow" id="toc-the-authorization-code-flow" class="nav-link" data-scroll-target="#the-authorization-code-flow">The Authorization Code Flow</a>
+  <ul class="collapse">
+  <li><a href="#the-authorization-code-flow-1" id="toc-the-authorization-code-flow-1" class="nav-link" data-scroll-target="#the-authorization-code-flow-1">The Authorization Code Flow</a></li>
+  <li><a href="#steps-1-2-authorization-request" id="toc-steps-1-2-authorization-request" class="nav-link" data-scroll-target="#steps-1-2-authorization-request">Steps 1-2: Authorization Request</a></li>
+  <li><a href="#authorization-request" id="toc-authorization-request" class="nav-link" data-scroll-target="#authorization-request">Authorization Request</a></li>
+  <li><a href="#authorization-request---parameters" id="toc-authorization-request---parameters" class="nav-link" data-scroll-target="#authorization-request---parameters">Authorization Request - Parameters</a></li>
+  <li><a href="#at-github" id="toc-at-github" class="nav-link" data-scroll-target="#at-github">At GitHub</a></li>
+  <li><a href="#scopes" id="toc-scopes" class="nav-link" data-scroll-target="#scopes">Scopes</a></li>
+  <li><a href="#steps-3-4-authorization-grant" id="toc-steps-3-4-authorization-grant" class="nav-link" data-scroll-target="#steps-3-4-authorization-grant">Steps 3-4: Authorization Grant</a></li>
+  <li><a href="#authorization-grant" id="toc-authorization-grant" class="nav-link" data-scroll-target="#authorization-grant">Authorization Grant</a></li>
+  <li><a href="#the-authorization-code" id="toc-the-authorization-code" class="nav-link" data-scroll-target="#the-authorization-code">The Authorization Code</a></li>
+  <li><a href="#steps-5-6-token-exchange" id="toc-steps-5-6-token-exchange" class="nav-link" data-scroll-target="#steps-5-6-token-exchange">Steps 5-6: Token Exchange</a></li>
+  <li><a href="#token-exchange" id="toc-token-exchange" class="nav-link" data-scroll-target="#token-exchange">Token Exchange</a></li>
+  <li><a href="#client-authentication" id="toc-client-authentication" class="nav-link" data-scroll-target="#client-authentication">Client Authentication</a></li>
+  <li><a href="#token-response" id="toc-token-response" class="nav-link" data-scroll-target="#token-response">Token Response</a></li>
+  <li><a href="#steps-7-8-api-access" id="toc-steps-7-8-api-access" class="nav-link" data-scroll-target="#steps-7-8-api-access">Steps 7-8: API Access</a></li>
+  <li><a href="#api-access" id="toc-api-access" class="nav-link" data-scroll-target="#api-access">API Access</a></li>
+  <li><a href="#login-with-github" id="toc-login-with-github" class="nav-link" data-scroll-target="#login-with-github">Login With GitHub</a></li>
+  <li><a href="#storing-access-tokens" id="toc-storing-access-tokens" class="nav-link" data-scroll-target="#storing-access-tokens">Storing Access Tokens</a></li>
+  </ul></li>
+  <li><a href="#state" id="toc-state" class="nav-link" data-scroll-target="#state">State</a>
+  <ul class="collapse">
+  <li><a href="#recall-login-xsrf" id="toc-recall-login-xsrf" class="nav-link" data-scroll-target="#recall-login-xsrf">Recall: Login XSRF</a></li>
+  <li><a href="#the-attack" id="toc-the-attack" class="nav-link" data-scroll-target="#the-attack">The Attack</a></li>
+  <li><a href="#the-state-parameter" id="toc-the-state-parameter" class="nav-link" data-scroll-target="#the-state-parameter">The State Parameter</a></li>
+  <li><a href="#binding-state-to-the-browser" id="toc-binding-state-to-the-browser" class="nav-link" data-scroll-target="#binding-state-to-the-browser">Binding State to the Browser</a></li>
+  </ul></li>
+  <li><a href="#pkce" id="toc-pkce" class="nav-link" data-scroll-target="#pkce">PKCE</a>
+  <ul class="collapse">
+  <li><a href="#stolen-authorization-codes" id="toc-stolen-authorization-codes" class="nav-link" data-scroll-target="#stolen-authorization-codes">Stolen Authorization Codes</a></li>
+  <li><a href="#stolen-codes---the-damage" id="toc-stolen-codes---the-damage" class="nav-link" data-scroll-target="#stolen-codes---the-damage">Stolen Codes - The Damage</a></li>
+  <li><a href="#pkce-1" id="toc-pkce-1" class="nav-link" data-scroll-target="#pkce-1">PKCE</a></li>
+  <li><a href="#pkce---step-by-step" id="toc-pkce---step-by-step" class="nav-link" data-scroll-target="#pkce---step-by-step">PKCE - Step by Step</a></li>
+  <li><a href="#pkce---the-stolen-code" id="toc-pkce---the-stolen-code" class="nav-link" data-scroll-target="#pkce---the-stolen-code">PKCE - The Stolen Code</a></li>
+  <li><a href="#why-pkce-works" id="toc-why-pkce-works" class="nav-link" data-scroll-target="#why-pkce-works">Why PKCE Works</a></li>
+  <li><a href="#pkce-in-python" id="toc-pkce-in-python" class="nav-link" data-scroll-target="#pkce-in-python">PKCE in Python</a></li>
+  <li><a href="#state-vs.-pkce" id="toc-state-vs.-pkce" class="nav-link" data-scroll-target="#state-vs.-pkce">State vs. PKCE</a></li>
+  </ul></li>
+  <li><a href="#tokens" id="toc-tokens" class="nav-link" data-scroll-target="#tokens">Tokens</a>
+  <ul class="collapse">
+  <li><a href="#refresh-tokens" id="toc-refresh-tokens" class="nav-link" data-scroll-target="#refresh-tokens">Refresh Tokens</a></li>
+  <li><a href="#why-refresh-tokens" id="toc-why-refresh-tokens" class="nav-link" data-scroll-target="#why-refresh-tokens">Why Refresh Tokens?</a></li>
+  <li><a href="#what-if-it-leaks" id="toc-what-if-it-leaks" class="nav-link" data-scroll-target="#what-if-it-leaks">What If It Leaks?</a></li>
+  </ul></li>
+  <li><a href="#other-flows" id="toc-other-flows" class="nav-link" data-scroll-target="#other-flows">Other Flows</a>
+  <ul class="collapse">
+  <li><a href="#other-flows-1" id="toc-other-flows-1" class="nav-link" data-scroll-target="#other-flows-1">Other Flows</a></li>
+  <li><a href="#oauth-is-authorization-not-authentication" id="toc-oauth-is-authorization-not-authentication" class="nav-link" data-scroll-target="#oauth-is-authorization-not-authentication">OAuth Is Authorization, Not Authentication</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#login-with-github---checklist" id="toc-login-with-github---checklist" class="nav-link" data-scroll-target="#login-with-github---checklist">Login With GitHub - Checklist</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -123,10 +190,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">OAuth 2.0 - Implementation Details</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
+<h1 class="title">OAuth 2.0</h1>
 </div>
 
+<div>
+  <div class="description">
+    Letting users grant your app access to a third-party API: the authorization code flow, the state parameter, PKCE, and refresh tokens
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -141,843 +212,814 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="oauth-2.0---details" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0---details">OAuth 2.0 - Details</h2>
-</section>
-<section id="oauth-2.0---authorization-code-flow" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</h2>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide02-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party" class="level2">
-<h2 class="anchored" data-anchor-id="well-walk-through-the-specific-details-of-a-user-logging-in-with-the-3rd-party">We'll walk through the specific details of a user logging in with the 3rd party</h2>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-4" class="level2">
-<h2 class="anchored" data-anchor-id="slide-4">Slide 4</h2>
-<p>Authorization Request - App</p>
+<section id="third-party-apis" class="level1">
+<h1>Third-Party APIs</h1>
+<section id="web-apis" class="level2">
+<h2 class="anchored" data-anchor-id="web-apis">Web APIs</h2>
 <ul>
-<li>The user sends a request to our server by clicking the "login with ..." button</li>
-<li>Our app will need access to the user's account from the 3rd party API</li>
-<li>We ask the user for permission to use the API on their behalf</li>
-<li>The API will need several parameters in this request</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>Your App / Client</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-5" class="level2">
-<h2 class="anchored" data-anchor-id="slide-5">Slide 5</h2>
-<p>Authorization Request - Parameters</p>
+<li>Many apps have APIs that let programs access user data with HTTP requests
 <ul>
-<li>Response type: Equal to "code" to indicate that we are requesting an authorization code</li>
-<li>Our client id: To identify our app</li>
-<li>scopes: A space-separated list of permissions we want from the user</li>
-<li>redirect URI: Must match the redirect URI when you registered your app</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>Your App / Client</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect" class="level2">
-<h2 class="anchored" data-anchor-id="parameters-response-type-client-id-scopes-redirect-uri-we-need-to-tell-the-user-to-send-these-4-parameters-to-the-api-how-use-a-redirect">• Parameters: Response type, client id, scopes, redirect URI • We need to tell the user to send these 4 parameters to the API • How? Use a redirect!</h2>
-<p>Authorization Request - Redirect</p>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-7" class="level2">
-<h2 class="anchored" data-anchor-id="slide-7">Slide 7</h2>
-<p>Authorization Request - Redirect</p>
-<ul>
-<li>We respond to the "login with ..." button press request with a 302 redirect</li>
-<li>The location header of the redirect is the URL of the api's authentication server and the "/authorize" path</li>
-<li>The 4 parameters are added to the query string of the request</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-8" class="level2">
-<h2 class="anchored" data-anchor-id="slide-8">Slide 8</h2>
-<p>Authorization Request - Redirect</p>
-<ul>
-<li>By using a redirect, all the parameters are in the URL itself
-<ul>
-<li>They won't be removed/blocked by the browser during redirection</li>
+<li><code>GET api.github.com/user</code> - The logged-in user's profile</li>
+<li><code>GET api.github.com/user/repos</code> - Their repositories, including private ones</li>
+<li><code>POST api.github.com/repos/&lt;owner&gt;/&lt;repo&gt;/issues</code> - Create an issue</li>
 </ul></li>
-<li>This means all values must be URL encoded, using percent-encoding</li>
+<li>You want <strong>your app</strong> to use this API on behalf of <strong>your users</strong>
+<ul>
+<li>A scrum board app that creates GitHub issues for your users</li>
+<li>A "Login with GitHub" button (Your HW!)</li>
+</ul></li>
+<li>How can your users let your app access their GitHub accounts securely?</li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="slide-9" class="level2">
-<h2 class="anchored" data-anchor-id="slide-9">Slide 9</h2>
-<p>Authorization Request - API</p>
+<section id="bad-idea-ask-for-their-password" class="level2">
+<h2 class="anchored" data-anchor-id="bad-idea-ask-for-their-password">Bad Idea: Ask for Their Password</h2>
 <ul>
-<li>Their browser redirects the user to the API with all the required parameters</li>
-<li>The API authenticates the request using an auth token in a cookie (Implies this cookie is not SameSite: strict)
+<li><del>Have your users give you their GitHub username and password</del></li>
+<li>Never ask for a password to someone else's site
 <ul>
-<li>If no token, ask for username/password</li>
+<li>You'd have to store it in plain text to reuse it</li>
+<li>Your app gets full access to their account. Not just what you need</li>
+<li>The user can't revoke your access without changing their password</li>
+<li>It trains users to type their passwords into random sites</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="slide-10" class="level2">
-<h2 class="anchored" data-anchor-id="slide-10">Slide 10</h2>
-<p>Authorization Request - API</p>
+<section id="bad-idea-ask-for-their-api-key" class="level2">
+<h2 class="anchored" data-anchor-id="bad-idea-ask-for-their-api-key">Bad Idea: Ask for Their API Key</h2>
 <ul>
-<li>The API now authenticated the user's identity and can pull their profile</li>
-<li>The API knows our identity via the client id, but this is not authenticated</li>
-<li>The API knows the scopes that are being requested</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-11" class="level2">
-<h2 class="anchored" data-anchor-id="slide-11">Slide 11</h2>
-<p>Authorization Request - API</p>
+<li><del>Have the user create an API key on GitHub and paste it into your app</del></li>
+<li>Better than a password, but:
 <ul>
-<li>So the API knows everything it needs to know</li>
-<li>Ask the user to authorize our app</li>
-<li>User is shown the name of the app and the list of scopes that are being requests</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-12" class="level2">
-<h2 class="anchored" data-anchor-id="slide-12">Slide 12</h2>
-<p>Authorization Grant - API redirect</p>
+<li>The user has to handle a secret. Never trust your users, not even with their own security</li>
+<li>Requests from your app look exactly like requests from the user
 <ul>
-<li>Assuming the user accepts, the API will respond to their "agree" button press with a redirect to our redirect URI
-<ul>
-<li>If the user does not agree, the process ends and our app does not get API access</li>
+<li>No accountability. If your app misbehaves, GitHub can't tell it was you</li>
+<li>If the key leaks, there's no way to tell who is using it</li>
 </ul></li>
-<li>If the user has already agreed in the past, they are redirected immediately</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-13" class="level2">
-<h2 class="anchored" data-anchor-id="slide-13">Slide 13</h2>
-<p>Authorization Grant - API redirect</p>
-<ul>
-<li>Since our response type was "code", the redirect will contain an authorization code</li>
-<li>The API needs to send our app information through the user just like we did in step 1
-<ul>
-<li>The API will use a 302 redirect with the code in a query string</li>
-</ul></li>
-<li>The browser will redirect the user back to our app by following this location header</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide13-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="authorization-grant---redirect-uri" class="level2">
-<h2 class="anchored" data-anchor-id="authorization-grant---redirect-uri">Authorization Grant - Redirect URI</h2>
-<ul>
-<li>Our app receives the redirected request containing the authorization code</li>
-<li>http://localhost:8080/spotify? code=AQAS7s9-7krg_hO5jdO1mKOLKTmgoG4p9U25QpdcNPrFwDS9YIyfjqDmRg97gEfSJ vQ5Ri3AyzyNiWVFxLEWJDm7G4poswnXs_AQuSkerCQ7_8ghIbwYTXoWE2BJFVGae5rpSH nHbAL_MxYiyTJqNMtXaClXSv7QfCviNJpRaOd51z4ga5jQzRoVaaSikR8hQwjkjCuXydvjSHIp 9_ARiNJJrcDuKMshIs7VfCggwLX9yMH80lnvkMsA5GxXtSU</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide14-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-15" class="level2">
-<h2 class="anchored" data-anchor-id="slide-15">Slide 15</h2>
-<p>Authorization Grant - Authorization Code</p>
-<ul>
-<li>This code, and all tokens/codes, will have very high entropy</li>
-<li>The RFC requires &gt;128 bits of entropy; recommends &gt; 160</li>
-<li>[Assuming uniform randomness] This 255 character code has 1536 bits of entropy!</li>
-</ul>
-<pre><code>AQAS7s9-7krg_hO5jdO1mKOLKTmgoG4p9U25QpdcNPrFwDS9YIyfjqDmRg97gEfSJvQ5Ri3AyzyNiWVFxLEWJDm7G4poswnXs_AQuSkerCQ7_8ghIbwYTXoWE2BJFV
-Gae5rpSHnHbAL_MxYiyTJqNMtXaClXSv7QfCviNJpRaOd51z4ga5jQzRoVaaSikR8hQwjkjCuXydvjSHIp9_ARiNJJrcDuKMshIs7VfCggwLX9yMH80lnvkMsA5GxXtSU</code></pre>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="our-app-parses-the-query-string-and-extracts-this-authorization-this-is-a-1-time-code-and-is-assumed-to-be-comprisable-since" class="level2">
-<h2 class="anchored" data-anchor-id="our-app-parses-the-query-string-and-extracts-this-authorization-this-is-a-1-time-code-and-is-assumed-to-be-comprisable-since">• Our app parses the query string and extracts this authorization • This is a 1-time code and is assumed to be comprisable since</h2>
-<p>Authorization Grant - Authorization Code</p>
-<pre><code>code
-the user handled it</code></pre>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide16-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-17" class="level2">
-<h2 class="anchored" data-anchor-id="slide-17">Slide 17</h2>
-<p>Authorization Grant - Request for Access Token</p>
-<ul>
-<li>The user will sit out the next few rounds and wait for our server to respond to the authorization grant redirect</li>
-<li>Our app will connect directly to the API server while the user waits</li>
-<li>The next goal is to trade the authorization token for an access token</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-18" class="level2">
-<h2 class="anchored" data-anchor-id="slide-18">Slide 18</h2>
-<p>Authorization Grant - Request for Access Token</p>
-<ul>
-<li>Our server needs to send HTTP requests to the API
-<ul>
-<li>Recommendation: Use the requests library (This is allowed for your HW)</li>
-</ul></li>
-<li>Since we don't have to go through the user via redirects, we can use POST requests and add parameters to the body of the requests</li>
-</ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret" class="level2">
-<h2 class="anchored" data-anchor-id="the-api-needs-to-authenticate-our-app-during-this-step-note-steps-1-4-can-all-be-spoofed-by-an-attacker-we-authenticate-by-sending-the-server-our-client-secret">• The API needs to authenticate our app during this step • Note: Steps 1-4 can all be spoofed by an attacker • We authenticate by sending the server our client secret</h2>
-<p>Authorization Grant - Request for Access Token</p>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide19-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-20" class="level2">
-<h2 class="anchored" data-anchor-id="slide-20">Slide 20</h2>
-<p>Authorization Grant - Client Authentication</p>
-<ul>
-<li>The RFC requires both client id and client secret for authentication of our app
-<ul>
-<li>Recommends adding the secret in an "Authorization" header</li>
-<li>Allows the secret to be sent in the body if unable to use headers</li>
-<li>The secret cannot be sent in the URL</li>
+<li>Your usage counts against the user's rate limits (Or bill!)</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide20-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded" class="level2">
-<h2 class="anchored" data-anchor-id="apis-will-vary-in-the-exact-method-of-sending-the-id-and-secret-spotify-send-client_idclient_secret-base64-encoded">• APIs will vary in the exact method of sending the id and secret • Spotify: Send "{client_id}:{client_secret}" base64 encoded</h2>
-<p>Authorization Grant - Authorization Header</p>
-<p>using an Authorization header of type Basic</p>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="authorization-grant---authorization-header" class="level2">
-<h2 class="anchored" data-anchor-id="authorization-grant---authorization-header">Authorization Grant - Authorization Header</h2>
+<section id="oauth-2.0" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-2.0">OAuth 2.0</h2>
 <ul>
-<li>If client_id == "abc" and client_secret == "123"</li>
-<li>"{client_id}:{client_secret}" == "abc:123"</li>
-<li>base64("abc:123") == "YWJjOjEyMw==" &lt;-- base64 works with bytes so encode/decode before/after base64 encoding</li>
-<li>And your header is "Authorization: Basic YWJjOjEyMw=="</li>
+<li><strong>OAuth 2.0</strong> (Open Authorization) - The standard way for a user to grant an app limited access to their account on another service</li>
+<li>The user approves your app on GitHub's site
+<ul>
+<li>Your app never sees their password</li>
+</ul></li>
+<li>GitHub issues an <strong>access token</strong> directly to your app
+<ul>
+<li>The user never handles the access token</li>
+<li>The token is tied to your app. GitHub knows it's you (Accountability)</li>
+<li>The token is limited to the permissions (<strong>scopes</strong>) the user approved</li>
+<li>The user can revoke your app's access at any time</li>
+</ul></li>
+<li>The user still has to trust your app with the data they approve</li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide22-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code" class="level2">
-<h2 class="anchored" data-anchor-id="authorization-grant---content-the-api-needs-the-following-values-in-the-content-of-the-request-grant-type-set-to-authorization_code-code-the-value-of-the-authorization-code-were-sending-redirect-uri-must-exactly-match-the-redirect-uri-we-used-to-obtain-this-code">Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to "authorization_code" • Code: The value of the authorization code we're sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code</h2>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide23-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<section id="oauth-roles" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-roles">OAuth Roles</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 25%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Role</th>
+<th>Who</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Resource Owner</td>
+<td>The user</td>
+<td>You</td>
+</tr>
+<tr class="even">
+<td>Client</td>
+<td>The app that wants access</td>
+<td>Your app</td>
+</tr>
+<tr class="odd">
+<td>Authorization Server</td>
+<td>Authenticates the user and issues tokens</td>
+<td><code>github.com/login/oauth</code></td>
+</tr>
+<tr class="even">
+<td>Resource Server</td>
+<td>Hosts the protected data (The API)</td>
+<td><code>api.github.com</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The authorization and resource servers are often run by the same company, but they are different servers with different jobs</li>
+</ul>
 </section>
-<section id="slide-24" class="level2">
-<h2 class="anchored" data-anchor-id="slide-24">Slide 24</h2>
-<p>Authorization Grant - Content</p>
+<section id="client-registration" class="level2">
+<h2 class="anchored" data-anchor-id="client-registration">Client Registration</h2>
 <ul>
-<li>Parameters: Grant type, code, and redirect URI</li>
-<li>These values and sent as the content of the request
+<li>Before any user can log in, you register your app with GitHub</li>
+<li><strong>Client ID</strong> - Identifies your app. Public</li>
+<li><strong>Client Secret</strong> - A password for your app
 <ul>
-<li>Formats vary. Spotify uses URL encoding (eg. same format as a query string, but in the body of a POST request)</li>
+<li>Proves that a request came from your server</li>
+<li>Only ever stored on your server (In your <code>.env</code> file). Never in your front end or your git repo</li>
+</ul></li>
+<li><strong>Redirect URI</strong> - Where GitHub sends users after they approve your app
+<ul>
+<li><code>http://localhost:8080/authcallback</code> on the HW</li>
+<li>GitHub only redirects to the URI you registered</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="slide-25" class="level2">
-<h2 class="anchored" data-anchor-id="slide-25">Slide 25</h2>
-<p>Authorization Grant - Final Request</p>
+<section id="oauth-flows" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-flows">OAuth Flows</h2>
 <ul>
-<li>Send the final request to the "/token" endpoint of the API using a POST request
+<li>OAuth has several <strong>flows</strong> for different kinds of apps</li>
+<li>We'll use the <strong>Authorization Code Flow</strong>
 <ul>
-<li>Authorization header for authentication</li>
-<li>Content in the body for details about the request</li>
+<li>For apps with a server that can keep a secret</li>
+<li>The most common flow, and the most secure</li>
+</ul></li>
+<li>Other flows at the end of the lecture</li>
+</ul>
+</section>
+</section>
+<section id="the-authorization-code-flow" class="level1">
+<h1>The Authorization Code Flow</h1>
+<section id="the-authorization-code-flow-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-authorization-code-flow-1">The Authorization Code Flow</h2>
+<p><img src="assets/flow_all.svg" class="img-fluid" alt="The full authorization code flow. 1: your app sends an authorization request to the user's browser. 2: the browser forwards it to GitHub. 3: GitHub sends an authorization grant back to the browser. 4: the browser delivers the grant to your app. 5: your app sends the code and its client secret to GitHub. 6: GitHub returns an access token. 7: your app makes an API request with the access token. 8: GitHub returns private data."></p>
+</section>
+<section id="the-authorization-code-flow-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-authorization-code-flow-2">The Authorization Code Flow</h2>
+<ul>
+<li>Steps 1-4: The <strong>front channel</strong>
+<ul>
+<li>Messages are passed through the user's browser using redirects</li>
+<li>The user (or an attacker) can see and change everything here</li>
+</ul></li>
+<li>Steps 5-8: The <strong>back channel</strong>
+<ul>
+<li>Your server sends HTTP requests directly to GitHub</li>
+<li>The user never sees these requests</li>
+</ul></li>
+<li>The flow is designed so that the important secrets (Client secret, access token) only travel on the back channel</li>
+</ul>
+</section>
+<section id="steps-1-2-authorization-request" class="level2">
+<h2 class="anchored" data-anchor-id="steps-1-2-authorization-request">Steps 1-2: Authorization Request</h2>
+<p><img src="assets/flow_12.svg" class="img-fluid" alt="Steps 1 and 2 highlighted: your app redirects the user's browser to GitHub with an authorization request."></p>
+</section>
+<section id="authorization-request" class="level2">
+<h2 class="anchored" data-anchor-id="authorization-request">Authorization Request</h2>
+<ul>
+<li>The user clicks "Login with GitHub," which sends <code>GET /authgithub</code> to your server</li>
+<li>Your server responds with a <code>302</code> redirect to GitHub's authorization endpoint:</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 302 Found
+Location: https://github.com/login/oauth/authorize
+            ?client_id=8a61f9b3a7aba766
+            &amp;redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauthcallback
+            &amp;scope=read%3Auser
+            &amp;state=Xk3fR9...</code></pre>
+<ul>
+<li>(Split across lines to fit on the slide. It's one URL in the real header)</li>
+</ul>
+</section>
+<section id="authorization-request---parameters" class="level2">
+<h2 class="anchored" data-anchor-id="authorization-request---parameters">Authorization Request - Parameters</h2>
+<ul>
+<li><code>client_id</code> - Which app is asking</li>
+<li><code>redirect_uri</code> - Where to send the user back to</li>
+<li><code>scope</code> - A space-separated list of the permissions you're asking for</li>
+<li><code>state</code> - XSRF protection (Coming soon)</li>
+<li><code>response_type=code</code> - Required by the RFC to request a code (GitHub doesn't require it)</li>
+<li>All values must be percent-encoded (<code>urllib.parse.urlencode</code> does this for you)</li>
+</ul>
+</section>
+<section id="at-github" class="level2">
+<h2 class="anchored" data-anchor-id="at-github">At GitHub</h2>
+<ul>
+<li>The browser follows the redirect to GitHub</li>
+<li>GitHub authenticates the user
+<ul>
+<li>With their GitHub auth token cookie, or by asking them to log in</li>
+<li>This is GitHub's job. Your app never sees any of it</li>
+</ul></li>
+<li>GitHub shows the user your app's name and the scopes you asked for
+<ul>
+<li>The user chooses to approve or deny</li>
+<li>If they already approved your app with these scopes, they skip straight to the redirect</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide25-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="slide-26" class="level2">
-<h2 class="anchored" data-anchor-id="slide-26">Slide 26</h2>
-<p>Access Token</p>
+<section id="scopes" class="level2">
+<h2 class="anchored" data-anchor-id="scopes">Scopes</h2>
 <ul>
-<li>The API will verify all the information we sent</li>
-<li>Assuming everything is verified:
+<li>Scopes limit what the access token can do
 <ul>
-<li>Respond with an access token that we can use to access the API on behalf of our user</li>
+<li><code>repo</code> - Full access to public and private repositories</li>
+<li><code>read:user</code> - Read the user's profile</li>
+<li><code>user:email</code> - Read the user's email addresses</li>
+</ul></li>
+<li><strong>Least privilege</strong>: Only request the scopes you need
+<ul>
+<li>The user sees the list. Asking for too much is scary</li>
+<li>If your app leaks the access token, the damage is limited to these scopes</li>
+</ul></li>
+<li>The HW: Only request what's needed to identify the user</li>
+</ul>
+</section>
+<section id="steps-3-4-authorization-grant" class="level2">
+<h2 class="anchored" data-anchor-id="steps-3-4-authorization-grant">Steps 3-4: Authorization Grant</h2>
+<p><img src="assets/flow_34.svg" class="img-fluid" alt="Steps 3 and 4 highlighted: GitHub redirects the user's browser back to your app's redirect URI with an authorization code."></p>
+</section>
+<section id="authorization-grant" class="level2">
+<h2 class="anchored" data-anchor-id="authorization-grant">Authorization Grant</h2>
+<ul>
+<li>If the user approves, GitHub responds with a <code>302</code> redirect to your redirect URI:</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 302 Found
+Location: http://localhost:8080/authcallback?code=9b1c4e0f2a7d6c83b5e1&amp;state=Xk3fR9...</code></pre>
+<ul>
+<li>The browser follows the redirect to your server
+<ul>
+<li>The user's browser is carrying a message from GitHub to your app</li>
+</ul></li>
+<li>Your server reads the <code>code</code> from the query string
+<ul>
+<li>If the user denied access, you get <code>error=access_denied</code> instead of a code</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide26-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token" class="level2">
-<h2 class="anchored" data-anchor-id="the-body-of-this-response-will-contain-the-access-token-will-often-also-contain-a-refresh-token-a-topic-for-another-lecture-spotify-response-is-a-json-object-with-an-access_token">• The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an "access_token"</h2>
-<p>Access Token - Response</p>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide27-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-28" class="level2">
-<h2 class="anchored" data-anchor-id="slide-28">Slide 28</h2>
-<p>API Access</p>
+<section id="the-authorization-code" class="level2">
+<h2 class="anchored" data-anchor-id="the-authorization-code">The Authorization Code</h2>
 <ul>
-<li>We can now access the API on behalf of our user</li>
-<li>Each request must contain the access token</li>
-<li>Spotify: Access token is sent via an Authorization header of type Bearer
+<li>The code is <strong>not</strong> an access token
 <ul>
-<li>eg. If the token is "abc" Your header is "Authorization: Bearer abc"</li>
+<li>It's a one-time code that your server can trade for an access token</li>
+</ul></li>
+<li>High entropy (The RFC requires at least 128 bits)</li>
+<li>Short-lived (GitHub codes expire after 10 minutes)</li>
+<li>Assume the code has been compromised
+<ul>
+<li>It traveled through the browser in a URL: history, logs, extensions</li>
+</ul></li>
+<li>So the code alone must not be enough to get an access token
+<ul>
+<li>Step 5 also requires your client secret</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case" class="level2">
-<h2 class="anchored" data-anchor-id="api-access-notice-that-we-cant-use-cookies-to-authenticate-api-access-our-app-will-be-making-requests-for-different-users-would-need-a-cookie-for-every-user-or-change-the-cookie-value-for-each-user-headers-are-a-much-cleaner-solution-for-this-use-case">API Access • Notice that we can't use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case</h2>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide29-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<section id="steps-5-6-token-exchange" class="level2">
+<h2 class="anchored" data-anchor-id="steps-5-6-token-exchange">Steps 5-6: Token Exchange</h2>
+<p><img src="assets/flow_56.svg" class="img-fluid" alt="Steps 5 and 6 highlighted: your server sends the code and client secret directly to GitHub and receives an access token."></p>
 </section>
-<section id="now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email" class="level2">
-<h2 class="anchored" data-anchor-id="now-that-we-have-api-access-we-can-finally-log-the-user-in-well-make-an-api-request-for-the-users-profile-information-this-allows-us-to-identify-the-user-with-a-unique-id-usually-email">• Now that we have API access, we can finally log the user in • We'll make an API request for the user's profile information • This allows us to identify the user with a unique id (Usually email)</h2>
-<p>API Access - Login with ...</p>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="slide-31" class="level2">
-<h2 class="anchored" data-anchor-id="slide-31">Slide 31</h2>
-<p>Private Data - Login with ...</p>
+<section id="token-exchange" class="level2">
+<h2 class="anchored" data-anchor-id="token-exchange">Token Exchange</h2>
 <ul>
-<li>Once we have an ID for the user verified by the 3rd party:
+<li>Your server sends a POST request directly to GitHub
 <ul>
-<li>Create an account for the user with this ID (Just like the registered with your app, except you don't store a password)</li>
-<li>Issue them an authentication token and set it as a cookie (Just like they logged into your app with a username/password)</li>
+<li>The user is still waiting for your response to <code>/authcallback</code></li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide31-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.post(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://github.com/login/oauth/access_token"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>{</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"client_id"</span>: CLIENT_ID,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"client_secret"</span>: CLIENT_SECRET,  <span class="co"># read from .env</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"code"</span>: code,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"redirect_uri"</span>: <span class="st">"http://localhost:8080/authcallback"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"Accept"</span>: <span class="st">"application/json"</span>},</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>access_token <span class="op">=</span> response.json()[<span class="st">"access_token"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>This is the step where your app proves it's your app</li>
+</ul>
 </section>
-<section id="slide-32" class="level2">
-<h2 class="anchored" data-anchor-id="slide-32">Slide 32</h2>
-<p>Login with ...</p>
+<section id="client-authentication" class="level2">
+<h2 class="anchored" data-anchor-id="client-authentication">Client Authentication</h2>
 <ul>
-<li>When a user logs in again with a 3rd party (Assuming their auth token expired)
+<li>GitHub must verify that it's really your app redeeming the code
 <ul>
-<li>Check if they already have an account</li>
-<li>If this is not their first time logging in, make sure you use their existing account</li>
+<li>Steps 1-4 went through the browser. Anyone could have sent them</li>
+</ul></li>
+<li>Your app authenticates with its client ID and client secret
+<ul>
+<li>The RFC recommends HTTP Basic authentication:
+<ul>
+<li><code>Authorization: Basic base64(client_id:client_secret)</code></li>
+</ul></li>
+<li>It also allows them in the body of the POST request (What GitHub uses)</li>
+<li>Never in the URL</li>
+</ul></li>
+<li>APIs vary in these details. Read their documentation</li>
+</ul>
+</section>
+<section id="token-response" class="level2">
+<h2 class="anchored" data-anchor-id="token-response">Token Response</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"access_token"</span><span class="fu">:</span> <span class="st">"gho_16C7e42F292c6912E7710c838347Ae178B4a"</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"token_type"</span><span class="fu">:</span> <span class="st">"bearer"</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"scope"</span><span class="fu">:</span> <span class="st">"read:user"</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The access token went straight from GitHub to your server
+<ul>
+<li>It never touched the user's browser</li>
+</ul></li>
+<li>Some APIs also send:
+<ul>
+<li><code>expires_in</code> - How many seconds until the access token expires</li>
+<li><code>refresh_token</code> - Used to get a new access token later (More on this later)</li>
+</ul></li>
+<li>GitHub sends the response as URL-encoded unless you send <code>Accept: application/json</code></li>
+</ul>
+</section>
+<section id="steps-7-8-api-access" class="level2">
+<h2 class="anchored" data-anchor-id="steps-7-8-api-access">Steps 7-8: API Access</h2>
+<p><img src="assets/flow_78.svg" class="img-fluid" alt="Steps 7 and 8 highlighted: your server calls the GitHub API with the access token and receives the user's private data."></p>
+</section>
+<section id="api-access" class="level2">
+<h2 class="anchored" data-anchor-id="api-access">API Access</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://api.github.com/user"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    headers<span class="op">=</span>{<span class="st">"Authorization"</span>: <span class="ss">f"Bearer </span><span class="sc">{</span>access_token<span class="sc">}</span><span class="ss">"</span>},</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>github_user <span class="op">=</span> response.json()  <span class="co"># {"id": 1234567, "login": "octocat", ...}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Send the access token in the <code>Authorization</code> header with type <code>Bearer</code>
+<ul>
+<li>"Bearer" - Whoever holds (bears) the token has access</li>
+</ul></li>
+<li>Why not a cookie?
+<ul>
+<li>Your server is sending requests on behalf of many different users</li>
+<li>Cookies are how <em>browsers</em> store tokens. A header is simpler for a server</li>
 </ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
-</ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide32-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="slide-33" class="level2">
-<h2 class="anchored" data-anchor-id="slide-33">Slide 33</h2>
-<p>Login with ...</p>
+<section id="login-with-github" class="level2">
+<h2 class="anchored" data-anchor-id="login-with-github">Login With GitHub</h2>
 <ul>
-<li>Store their access token in their account
+<li>You now know who the user is on GitHub</li>
+<li>Identify them by GitHub's <strong>unique, permanent</strong> ID
 <ul>
-<li>Don't need to go through this whole process every time you need API access</li>
+<li>GitHub's numeric <code>id</code>. Usernames and emails can change</li>
+<li>Don't let GitHub users collide with your username/password users</li>
 </ul></li>
-<li>Note: These token cannot be hashed since you need to send the original value to the API (Be careful! Don't ask for more scopes than you need to limit the risk)</li>
+<li>First login: Create an account linked to their GitHub ID (No password)</li>
+<li>Later logins: Find their existing account by GitHub ID</li>
+<li>Then log them in exactly like a password login
+<ul>
+<li>Issue <strong>your own</strong> auth token in a cookie</li>
+<li>Never use GitHub's access token as your auth token</li>
+</ul></li>
 </ul>
-<ol start="5" type="1">
-<li><p>Authorization Grant</p></li>
-<li><p>Access Token</p></li>
-<li><p>API Access</p></li>
-<li><p>Private Data</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Request</p></li>
-<li><p>Authorization Grant</p></li>
+</section>
+<section id="storing-access-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="storing-access-tokens">Storing Access Tokens</h2>
+<ul>
+<li>Only store the access token if you need to call the API again later
+<ul>
+<li>If you only needed to identify the user, don't store it. You can't leak what you don't have</li>
+</ul></li>
+<li>If you do store it:
+<ul>
+<li>It must be stored in plain text. You can't hash it, since you have to send the original value to the API</li>
+<li>Treat it like a password. It's access to the user's GitHub account</li>
+<li>Another reason to request as few scopes as possible</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="state" class="level1">
+<h1>State</h1>
+<section id="recall-login-xsrf" class="level2">
+<h2 class="anchored" data-anchor-id="recall-login-xsrf">Recall: Login XSRF</h2>
+<ul>
+<li>Login XSRF: The attacker logs the victim into the <strong>attacker's</strong> account</li>
+<li>Your <code>/authcallback</code> endpoint is a login endpoint!</li>
+<li>The usual XSRF defenses don't help here:
+<ul>
+<li><code>/authcallback</code> is <em>designed</em> to receive cross-site requests (A redirect from github.com)</li>
+<li>It's a top-level GET navigation, so <code>SameSite=Lax</code> cookies are sent</li>
+<li>GitHub builds the request, not your front end. There's no form to add an XSRF token to</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-attack" class="level2">
+<h2 class="anchored" data-anchor-id="the-attack">The Attack</h2>
+<p><img src="assets/state_attack_1.svg" class="img-fluid" alt="The attacker starts a login to your app with their own GitHub account. GitHub redirects them with an authorization code, EVIL123, for the attacker's account. The attacker stops and keeps the unused code."></p>
+<ul>
+<li>The attacker starts "Login with GitHub" on your app using their own GitHub account</li>
+<li>They stop before following the final redirect and keep the unused code</li>
+</ul>
+</section>
+<section id="the-attack-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-attack-1">The Attack</h2>
+<p><img src="assets/state_attack_2.svg" class="img-fluid" alt="The attacker gets the victim to open a link that points to your app's callback with the attacker's code: /authcallback?code=EVIL123."></p>
+<ul>
+<li>The attacker gets the victim to open a link to your callback with the attacker's code</li>
+</ul>
+</section>
+<section id="the-attack-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-attack-2">The Attack</h2>
+<p><img src="assets/state_attack_3.svg" class="img-fluid" alt="The victim's browser sends GET /authcallback?code=EVIL123 to your app, with the victim's cookies."></p>
+<ul>
+<li>To your app, this looks exactly like the end of a normal login</li>
+</ul>
+</section>
+<section id="the-attack-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-attack-3">The Attack</h2>
+<p><img src="assets/state_attack_4.svg" class="img-fluid" alt="Your app redeems EVIL123 with its client secret. GitHub returns an access token for the attacker's GitHub account."></p>
+<ul>
+<li>Your app redeems the code with its own client secret. Everything checks out</li>
+</ul>
+</section>
+<section id="the-attack-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-attack-4">The Attack</h2>
+<p><img src="assets/state_attack_5.svg" class="img-fluid" alt="Your app logs the victim in to the attacker's account, or links the attacker's GitHub account to the victim's account."></p>
+<ul>
+<li>The victim is now logged in to the attacker's account
+<ul>
+<li>Everything they save goes to an account the attacker controls</li>
+</ul></li>
+<li>Worse: If your app lets logged-in users "connect" a GitHub account
+<ul>
+<li>The attacker's GitHub account is now linked to the <strong>victim's</strong> account</li>
+<li>The attacker clicks "Login with GitHub" and is logged in as the victim</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-state-parameter" class="level2">
+<h2 class="anchored" data-anchor-id="the-state-parameter">The State Parameter</h2>
+<ul>
+<li>Before redirecting to GitHub (Step 1):
+<ul>
+<li>Generate a random, unguessable <code>state</code> value</li>
+<li>Bind it to <strong>this browser</strong></li>
+<li>Add it to the authorization request</li>
+</ul></li>
+<li>GitHub sends the same <code>state</code> back with the code (Step 4)</li>
+<li>At <code>/authcallback</code>:
+<ul>
+<li>Check that the <code>state</code> matches the one bound to this browser</li>
+<li>If it's missing or doesn't match: <code>400 Bad Request</code> and stop. Never redeem the code</li>
+<li>Delete the state after checking. Each state is single use</li>
+</ul></li>
+<li>The state is an XSRF token for your OAuth callback</li>
+</ul>
+</section>
+<section id="the-state-parameter-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-state-parameter-1">The State Parameter</h2>
+<p><img src="assets/state_1.svg" class="img-fluid" alt="Steps 1 and 2 with state: your app generates state Xk3f, stores it for this browser, and includes it in the authorization request to GitHub."></p>
+</section>
+<section id="the-state-parameter-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-state-parameter-2">The State Parameter</h2>
+<p><img src="assets/state_2.svg" class="img-fluid" alt="Steps 3 and 4 with state: GitHub returns the code along with state Xk3f. Your app checks that the state matches the one stored for this browser."></p>
+</section>
+<section id="the-state-parameter-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-state-parameter-3">The State Parameter</h2>
+<p><img src="assets/state_3.svg" class="img-fluid" alt="The attack with state: the victim's browser sends the attacker's link, GET /authcallback?code=EVIL123&amp;state=Qp9z, the attacker's state. Nothing matches the victim's browser, so your app responds 400 Bad Request and never redeems the code."></p>
+<ul>
+<li>The attacker's link carries the attacker's state (Or none at all)</li>
+<li>That state was bound to the attacker's browser, not the victim's</li>
+<li>The attacker can't learn or guess the victim's state</li>
+</ul>
+</section>
+<section id="binding-state-to-the-browser" class="level2">
+<h2 class="anchored" data-anchor-id="binding-state-to-the-browser">Binding State to the Browser</h2>
+<ul>
+<li>The user usually isn't logged in yet, so there's no session to attach the state to</li>
+<li>One approach: Store it in a cookie before the redirect
+<ul>
+<li><code>Set-Cookie: oauth_state=Xk3fR9...; HttpOnly; Max-Age=600; SameSite=Lax</code></li>
+<li>At the callback, compare the query string <code>state</code> to the cookie</li>
+</ul></li>
+<li>Must be <code>SameSite=Lax</code>, not <code>Strict</code>
+<ul>
+<li>The callback is a cross-site navigation from github.com. A <code>Strict</code> cookie wouldn't be sent!</li>
+</ul></li>
+<li>Generate it like any other token: <code>secrets.token_urlsafe(32)</code></li>
+<li>You have some freedom in how you implement this on the HW, as long as it stops the attack</li>
+</ul>
+</section>
+</section>
+<section id="pkce" class="level1">
+<h1>PKCE</h1>
+<section id="stolen-authorization-codes" class="level2">
+<h2 class="anchored" data-anchor-id="stolen-authorization-codes">Stolen Authorization Codes</h2>
+<ul>
+<li>The authorization code travels through the browser in a URL</li>
+<li>It can leak:
+<ul>
+<li>Browser history, server and proxy logs, the <code>Referer</code> header, browser extensions</li>
+<li>Mobile and desktop apps: The redirect URI is a custom URL scheme (<code>myapp://callback</code>)
+<ul>
+<li>Any app on the device can register the same scheme and receive the code</li>
+</ul></li>
+</ul></li>
+<li>What can an attacker do with a stolen code?</li>
+</ul>
+</section>
+<section id="stolen-codes---the-damage" class="level2">
+<h2 class="anchored" data-anchor-id="stolen-codes---the-damage">Stolen Codes - The Damage</h2>
+<ul>
+<li><strong>Public clients</strong> (Mobile apps, desktop apps, front-end-only apps)
+<ul>
+<li>Can't keep a secret. Anyone can extract a secret from the app's code</li>
+<li>So there's no client secret, and the attacker can redeem the stolen code themselves</li>
+<li>Game over</li>
+</ul></li>
+<li><strong>Confidential clients</strong> (Your server)
+<ul>
+<li>The attacker can't redeem the code without your client secret</li>
+<li>But they can <strong>inject</strong> it: Start a login on your app in their own browser, then swap in the stolen code at your callback
+<ul>
+<li>The state matches (It's the attacker's own login!)</li>
+<li>Your server redeems the victim's code with your secret</li>
+<li>The attacker is logged in as the victim</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="pkce-1" class="level2">
+<h2 class="anchored" data-anchor-id="pkce-1">PKCE</h2>
+<ul>
+<li><strong>Proof Key for Code Exchange</strong> (PKCE, pronounced "pixy")</li>
+<li>Idea: Prove that whoever redeems the code is the same one who started the login</li>
+<li>A brand-new secret for every login
+<ul>
+<li>Created by your server at step 1</li>
+<li>Never sent through the browser</li>
+<li>Only revealed to GitHub in step 5, on the back channel</li>
+</ul></li>
+<li>Think of it as a one-time client secret that exists for a single login</li>
+</ul>
+</section>
+<section id="pkce---step-by-step" class="level2">
+<h2 class="anchored" data-anchor-id="pkce---step-by-step">PKCE - Step by Step</h2>
+<ol type="1">
+<li>Your server generates a random <strong>code verifier</strong> and stores it with this browser (Just like the state)</li>
+<li>Your server computes the <strong>code challenge</strong>: <code>BASE64URL(SHA256(code_verifier))</code></li>
+<li>The authorization request includes <code>code_challenge</code> and <code>code_challenge_method=S256</code></li>
+<li>GitHub stores the challenge with the code it issues</li>
+<li>The token request includes the <code>code_verifier</code></li>
+<li>GitHub hashes the verifier and compares it to the stored challenge
+<ul>
+<li>No match: No access token</li>
+</ul></li>
 </ol>
-<p>Your App / Client</p>
-<ol start="4" type="1">
-<li>Authorization Grant</li>
-</ol>
-<p>3rd Party API /</p>
-<p>Auth Server /</p>
-<p>Resource Server</p>
-<p>User / Resource Owner</p>
-<p><img src="assets/slide33-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+</section>
+<section id="pkce-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="pkce-2">PKCE</h2>
+<p><img src="assets/pkce_1.svg" class="img-fluid" alt="PKCE steps 1 and 2: your app generates a random code_verifier and keeps it on the server. The authorization request carries code_challenge, the SHA-256 hash of the verifier."></p>
+</section>
+<section id="pkce-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="pkce-3">PKCE</h2>
+<p><img src="assets/pkce_2.svg" class="img-fluid" alt="PKCE steps 3 and 4: GitHub stores the code_challenge with the authorization code it issues, and the code travels back through the browser as usual."></p>
+</section>
+<section id="pkce-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="pkce-4">PKCE</h2>
+<p><img src="assets/pkce_3.svg" class="img-fluid" alt="PKCE steps 5 and 6: your server sends the code, client secret, and code_verifier. GitHub hashes the verifier, confirms it matches the stored challenge, and returns the access token."></p>
+</section>
+<section id="pkce---the-stolen-code" class="level2">
+<h2 class="anchored" data-anchor-id="pkce---the-stolen-code">PKCE - The Stolen Code</h2>
+<p><img src="assets/pkce_4.svg" class="img-fluid" alt="An attacker who stole the authorization code tries to redeem it at GitHub's token endpoint. They don't have the code_verifier, so GitHub rejects the request."></p>
+<ul>
+<li>An injected code fails the same way: Your server sends the verifier from the <em>attacker's</em> login, which doesn't match the challenge from the <em>victim's</em> login</li>
+</ul>
+</section>
+<section id="why-pkce-works" class="level2">
+<h2 class="anchored" data-anchor-id="why-pkce-works">Why PKCE Works</h2>
+<ul>
+<li>The challenge travels through the browser. Assume the attacker sees it
+<ul>
+<li>SHA-256 is a one-way function. The attacker can't compute the verifier from the challenge</li>
+</ul></li>
+<li>The verifier is only sent in step 5
+<ul>
+<li>A direct HTTPS request from your server to GitHub. The attacker never sees it</li>
+</ul></li>
+<li>Every login has a new verifier, so there's nothing to steal ahead of time</li>
+<li><code>code_challenge_method=plain</code> sends the verifier itself as the challenge
+<ul>
+<li>Only safe if the attacker can't see step 1. Always use <code>S256</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="pkce-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="pkce-in-python">PKCE in Python</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> base64</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> secrets</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>code_verifier <span class="op">=</span> secrets.token_urlsafe(<span class="dv">64</span>)  <span class="co"># 86 characters (43-128 allowed)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>digest <span class="op">=</span> hashlib.sha256(code_verifier.encode()).digest()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>code_challenge <span class="op">=</span> base64.urlsafe_b64encode(digest).rstrip(<span class="st">b"="</span>).decode()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Store <code>code_verifier</code> with this browser (Like the state)</li>
+<li>Step 1: Add <code>code_challenge</code> and <code>code_challenge_method=S256</code> to the authorization URL</li>
+<li>Step 5: Add <code>code_verifier</code> to the token request</li>
+<li><code>BASE64URL</code> uses <code>-</code> and <code>_</code> instead of <code>+</code> and <code>/</code>, and has no <code>=</code> padding</li>
+</ul>
+</section>
+<section id="state-vs.-pkce" class="level2">
+<h2 class="anchored" data-anchor-id="state-vs.-pkce">State vs. PKCE</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 50%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>State</th>
+<th>PKCE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Checked by</td>
+<td>Your app (At the callback)</td>
+<td>GitHub (At the token endpoint)</td>
+</tr>
+<tr class="even">
+<td>Stops</td>
+<td>Login XSRF (A code you didn't ask for)</td>
+<td>Stolen and injected codes</td>
+</tr>
+<tr class="odd">
+<td>Sent through the browser</td>
+<td>The state, both ways</td>
+<td>Only the challenge (A hash)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Current best practice (RFC 9700, 2025): Use PKCE for <strong>every</strong> client, even ones with a client secret
+<ul>
+<li>OAuth 2.1, the next version of OAuth, requires it</li>
+</ul></li>
+<li>The HW requires state. PKCE is recommended</li>
+</ul>
+</section>
+</section>
+<section id="tokens" class="level1">
+<h1>Tokens</h1>
+<section id="refresh-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="refresh-tokens">Refresh Tokens</h2>
+<ul>
+<li>Many APIs make access tokens expire quickly (eg. 1 hour)</li>
+<li>Along with the access token, they issue a long-lived <strong>refresh token</strong></li>
+<li>When the access token expires, trade the refresh token for a new one:
+<ul>
+<li><code>POST</code> to the token endpoint with <code>grant_type=refresh_token</code>, the refresh token, and your client credentials</li>
+<li>You get a new access token (And sometimes a new refresh token)</li>
+</ul></li>
+<li>The user doesn't have to do anything</li>
+<li>GitHub OAuth App tokens don't expire, so you won't need this on the HW</li>
+</ul>
+</section>
+<section id="why-refresh-tokens" class="level2">
+<h2 class="anchored" data-anchor-id="why-refresh-tokens">Why Refresh Tokens?</h2>
+<ul>
+<li>Security
+<ul>
+<li>The access token is sent to the resource server on every API request. It's the most exposed token</li>
+<li>A stolen access token only works until it expires</li>
+<li>The refresh token only goes to the authorization server, and is useless without the client secret</li>
+</ul></li>
+<li>Performance
+<ul>
+<li>Access tokens can be <strong>self-contained</strong>: Signed so the resource server can verify them without asking the authorization server or a database (eg. JWTs, coming in a later HW)</li>
+<li>Fast, but a self-contained token can't be revoked before it expires</li>
+<li>So they're kept short-lived, and the refresh step is where the authorization server can say no</li>
+</ul></li>
+</ul>
+</section>
+<section id="what-if-it-leaks" class="level2">
+<h2 class="anchored" data-anchor-id="what-if-it-leaks">What If It Leaks?</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 40%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Leaked value</th>
+<th>The attacker can</th>
+<th>Protection</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Authorization code</td>
+<td>Nothing on its own</td>
+<td>Single use, expires in minutes, needs the client secret (And PKCE verifier)</td>
+</tr>
+<tr class="even">
+<td>Access token</td>
+<td>Call the API as the user, within its scopes</td>
+<td>Short expiration. Request few scopes</td>
+</tr>
+<tr class="odd">
+<td>Refresh token</td>
+<td>Nothing without the client secret</td>
+<td>Authorization server can revoke it</td>
+</tr>
+<tr class="even">
+<td>Client secret</td>
+<td>Redeem stolen codes and refresh tokens as your app</td>
+<td>Can't get new codes (They're sent to your redirect URI). Regenerate the secret</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Access tokens, refresh tokens, and the client secret must be stored in plain text. Keep them on your server only</li>
+</ul>
+</section>
+</section>
+<section id="other-flows" class="level1">
+<h1>Other Flows</h1>
+<section id="other-flows-1" class="level2">
+<h2 class="anchored" data-anchor-id="other-flows-1">Other Flows</h2>
+<ul>
+<li><strong>Client Credentials</strong> - Your app accesses the API as itself, with no user involved
+<ul>
+<li>Public data or app-level endpoints. Can't access any user's private data</li>
+</ul></li>
+<li><strong>Device Authorization</strong> - For devices without a good browser (TVs, command line tools)
+<ul>
+<li>The device shows a short code. The user approves it on their phone or computer</li>
+<li>eg. <code>gh auth login</code></li>
+</ul></li>
+<li><strong>Authorization Code + PKCE, without a secret</strong> - For public clients (Mobile apps, front-end-only apps)
+<ul>
+<li>PKCE is what makes this safe</li>
+</ul></li>
+<li><strong>Implicit</strong> (Deprecated) - The access token was sent directly to the browser in the redirect
+<ul>
+<li>No code, no secret, and the token is exposed in the URL. Removed in OAuth 2.1</li>
+</ul></li>
+<li>The HW: GitHub's Web Application Flow (Authorization Code) only</li>
+</ul>
+</section>
+<section id="oauth-is-authorization-not-authentication" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-is-authorization-not-authentication">OAuth Is Authorization, Not Authentication</h2>
+<ul>
+<li>OAuth answers "Can this app access this API?"
+<ul>
+<li>It doesn't define "Who is this user?"</li>
+</ul></li>
+<li>"Login with GitHub" = OAuth + an API call to identify the user (<code>GET /user</code>)</li>
+<li><strong>OpenID Connect</strong> (OIDC) is a standard layer on top of OAuth for login
+<ul>
+<li>Adds an <strong>ID token</strong>: A signed JWT that says who the user is</li>
+<li>Used by Google, Microsoft, Apple, and many others</li>
+</ul></li>
+<li>GitHub uses plain OAuth, so you call the API to identify the user</li>
+</ul>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="login-with-github---checklist" class="level2">
+<h2 class="anchored" data-anchor-id="login-with-github---checklist">Login With GitHub - Checklist</h2>
+<ul>
+<li>Register your app. Client secret in <code>.env</code> only</li>
+<li><code>/authgithub</code>: Generate a state (And PKCE verifier), bind it to the browser, and redirect to GitHub</li>
+<li><code>/authcallback</code>: Check the state. No match? <code>400</code> and stop</li>
+<li>Trade the code (+ client secret, + verifier) for an access token on the back channel</li>
+<li><code>GET /user</code> with the access token to identify the user</li>
+<li>Find or create their account by GitHub's numeric ID</li>
+<li>Issue your own auth token cookie</li>
+<li>Don't keep the access token unless you need it</li>
+</ul>
 
 
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps">Authorizing OAuth Apps (GitHub Docs)</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc6749">RFC 6749 - OAuth 2.0</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7636">RFC 7636 - PKCE</a></li>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc9700">RFC 9700 - OAuth 2.0 Security Best Current Practice</a></li>
+</ul>
+</section>
 </section>
 
 </main> <!-- /main -->
