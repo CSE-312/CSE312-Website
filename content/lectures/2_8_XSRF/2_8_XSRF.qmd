@@ -1,294 +1,133 @@
 ---
-title: "XSRF"
-subtitle: "CSE312 — Web Development"
+title: "CORS and Other Web Attacks"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "CORS to loosen SOP, login XSRF"
 
-reading-list: []
+reading-list:
+  - url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+    text: "Cross-Origin Resource Sharing (MDN)"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## XSRF
 
-Cross-Site Request Forgery
-
-## XSRF
-
-- Cross-Site Request Forgery
-- A request that is sent from a different "origin"
-- Origin:
-  - The combination of protocol, host, and port
-  - If all three do not match, it is a cross-site request
-- What's the danger?
-
-## XSRF - Example
-
-Potential outcomes:
-
-- An attack page can make a request to AutoLab
-  - Requests your grades
-  - Makes a submission on your behalf
-- Attack page makes a request to your bank and transfers your funds to the attacker's account
-- Attack page makes embarrassing posts on social media
-
-## XSRF
-
-- We have a form that sends authenticated POST requests to our server
-  - You host this app at mycoolproject.com
-- The format of these POST requests is known (Anyone can visit and view your front end)
-- An attacker makes their own web app
-- The app will send a POST request to mycoolproject.com in the proper format
-  - They host this app at freebitcoin.com and get someone to goto their site
-  - The site sends the POST request on behalf of the user -> Hacked!
-
-## XSRF
-
-
-- Client Creates an account on your app
-- Client logs in and you issue an auth token in a cookie
-- They enjoy your site very much and trust you with private information
-
-mycoolproject.com
-
-User/Client
-
-freebitcoin.com
-
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## XSRF
-
-
-- Client gets an email
-  - ALL YOUR DREAMS WILL COME TRUE!! JUST CLICK HERE!!!
-- Naive client clicks the link and gets the attackers HTML/CSS/Javascript
-
-mycoolproject.com
-
-User/Client
-
-freebitcoin.com
-
-![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## XSRF
-
-
-- The attack site sends a cross-site request to your app
-- The origin is freebitcoin.com
-- The request is sent to mycoolproject.com
-- The attacker controls this request
-  - Client may not even know it was sent until it's too late
-
-mycoolproject.com
-
-User/Client
-
-freebitcoin.com
-
-![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## XSRF
-
-
-- Since the request did come from your user
-  - It may contain auth cookies
-  - It may look real to your server
-  - Your server will process it as a legitimate, authenticated, request if you don't have protections in place
-
-mycoolproject.com
-
-User/Client
-
-freebitcoin.com
-
-![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## XSRF
-
-- How to send a XSRF attack?
-- As the src of an image
-  - Can send a GET request
-    - If your server uses query strings, these can be set by the attacker
-  - Easy to setup. Embed an image in an email
-    - Client only has to open the email (Doesn't even require them to click a shady link)
-    - This is why images are often blocked in email
-
-## XSRF
-
-- How to send a XSRF attack?
-- Submit an HTML form
-  - Get the user to navigate to your page
-  - The page automatically submits and HTML form on their behalf (They don't have to click a button. Send it with JS)
-  - The user will be navigated to the site that was attacked
-  - Can send GET and POST requests
-  - Must follow specific encodings supported by HTML forms
-  - Attacker cannot see the response of the request (No stealing private data with this method)
-
-## XSRF
-
-- How to send a XSRF attack?
-- Make an AJAX request
-  - Get the user to navigate to your page
-  - Page automatically sends an AJAX request, or several, onload
-  - Attacker has full control
-    - They can read the responses and have multiple interactions with the attacked site
-    - They can use any HTTP method
-    - They can put anything in the body of the requests
-
-## How do we protect against XSRF attacks?
-
-## Referrer?
-
-- Every request should have a referrer header
-  - Specifies the origin of the request
-- If the referrer doesn't match your app
-  - Deny the request
-- Simple enough
-- Unfortunately, the referrer can be spoofed and must not be relied upon for security reasons
-
-## SOP
-
-- Same-Origin Policy (SOP)
-- The SOP is implemented in modern browsers and blocks many cross-origin requests by default
-- All AJAX responses are blocked by the SOP
-  - This is a relief since AJAX is so powerful
-
-## SOP
-
-- The SOP does NOT block "safe" requests
-- Safe requests include
-  - Any GET request
-  - Any request that navigates away from the origin (Including HTML Form submissions using POST)
-- A GET request should be idempotent AND not change the state of the server
-  - Your GET requests should only retrieve data since they are not protected by CORS
-
-## Slide 16
-
-
-SOP
-
-- The SOP does NOT block "safe" requests
-- HTML form submissions are more difficult to protect against since they can make POST requests
-  - We need better protections
-
-## Recall SameSite - Cookie Directive
-
-- SameSite
-  - Determines when the cookie will be sent on 3rd party requests
-  - Lax - Cookie only sent when navigating to your page (Includes HTML form submissions)
-    - Or "safe" requests including all GET requests (Except Cross-Site AJAX GET requests)
-    - The default setting if SameSite is not set
-  - Strict - The cookie is only sent on 1st party requests
-    - ie. The cookie is only sent to your server
-  - None - The cookie is always sent. Requires the secure directive to also be set
-- Set-Cookie: id=X6kAwpgW29M; SameSite=Lax
-- Set-Cookie: id=X6kAwpgW29M; SameSite=Strict
-- Set-Cookie: id=X6kAwpgW29M; SameSite=None; Secure
-
-## SOP Limitations
-
-- Since the SOP is enforced by the browser, we have limited control over its enforcement
-  - What if a user has a very outdated browser that doesn't implement the SOP?
-  - What if the user installed a plug-in that disables the SOP?
-  - What if the user is using an obscure browser that does not implement the SOP properly?
-- The SOP will protect most users, but not 100%
-  - And won't protect any users from a GET or HTML form attack
-
-## Slide 19
-
-
-XSRF - Tokens
-
-- Let's add server-side protection from XSRF attacks
-- Will work for all users and all XSRF attacks
-
-## XSRF - Tokens
-
-- On the Server:
-  - Generate a long random XSRF token on page load (Attacker must not be able to guess the token)
-  - Embed this XSRF token in the page
-  - Store this XSRF token as being sent to this user
-- In the browser:
-  - XSRF token can be a hidden input on the form
-  - Send this XSRF token along with form submissions
-
-## XSRF - Tokens
-
-- Back to the Server on HTTP requests:
-  - Read the XSRF token value and the auth token from the request
-  - Authenticate the user based on their auth token
-  - Verify that this XSRF token was sent to this user
-- If the XSRF token was issues to this user
-  - Accept the request as valid
-- If the XSRF token was NOT issued to this user
-  - This is an invalid request and might be a XSRF attack
-
-## XSRF Token
-
-- Add a new input to your form for the token
-- Generate and inject the token as a value using HTML templates
-- Add the hidden attribute so the token is not displayed to the user
-- Read the token from the request and verify
-
+# CORS
+
+## Cross-Origin Resource Sharing
+
+- The SOP is sometimes too restrictive
+  - You host a public API that other sites call from their front ends
+  - Your front end is at `cse312.com` and your API is at `api.cse312.com` (Different origins!)
+- **Cross-Origin Resource Sharing (CORS)** lets a server relax the SOP for its own responses
+  - The server approves preflights, and marks which origins may read its responses
+  - Uses `Access-Control-Allow-*` headers
+- CORS never makes anything more strict. It only allows things that the SOP would usually block
+
+## Preflight - Request
+
+```http
+OPTIONS /api/posts/42 HTTP/1.1
+Host: api.cse312.com
+Origin: https://cse312.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: content-type
 ```
-<form action="/image-upload" id="image-form" method="post" enctype="multipart/form-data">
-<input value="AQAAAjppCA8mhugn2UvwOTaKnVY" name="xsrf_token" hidden>
-<label for="form-file">Image: </label>
-<input id="form-file" type="file" name="upload">
-<br/>
-<label for="image-form-name">Caption: </label>
-<input id="image-form-name" type="text" name="name">
-<input type="submit" value="Submit">
+
+- `Origin` - The origin of the page that wants to send the request
+- `Access-Control-Request-Method` - The method of the real request
+- `Access-Control-Request-Headers` - The non-safelisted headers the real request will include
+  - `Content-Type` is listed here since `application/json` is not one of the 3 simple types
+
+## Preflight - Response
+
+```http
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://cse312.com
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Max-Age: 600
+```
+
+- `Access-Control-Allow-Origin` must match the requesting origin (or `*` to allow all origins)
+- The requested method and headers must be in the allowed lists
+- `Access-Control-Max-Age` - The browser can cache this approval for 600 seconds
+- The real response must *also* include `Access-Control-Allow-Origin`
+  - Otherwise, the real request is sent, but JavaScript still can't read its response
+
+## Access-Control-Allow-Origin
+
+- `Access-Control-Allow-Origin: https://cse312.com`
+  - JavaScript on `https://cse312.com` may read this response
+  - Must be a full origin: protocol + host + port
+  - `Access-Control-Allow-Origin: cse312.com` does not work
+  - Only one origin is allowed in this header
+- `Access-Control-Allow-Origin: *`
+  - JavaScript on any origin may read this response
+  - Fine for truly public data (A public API, fonts, a CDN)
+  - [Do not use this as a hammer to get rid of your CORS errors!]{.yellow}
+
+
+# Other Attacks
+
+## Login XSRF
+
+- Normal XSRF: Act as the victim on the victim's account
+- **Login XSRF**: Log the victim into the *attacker's* account
+  - The attack page submits your login form with the attacker's username and password
+  - The victim doesn't notice they're logged into someone else's account
+  - Everything the victim does is saved to the attacker's account
+    - Search history, uploaded files, a saved credit card number
+  - The attacker logs in later and reads it all
+- Your login form needs XSRF protection too, even though the user has no authenticated session yet
+  - Foreshadow: You'll see this again with OAuth and the `state` parameter
+
+## Forging JSON With a Form
+
+```html
+<form action="https://bank.com/api/transfer" method="post" enctype="text/plain">
+  <input type="hidden" name='{"to": "attacker", "amount": 10000, "x": "' value='"}'>
 </form>
 ```
 
-## XSRF
+- A `text/plain` form sends `name=value` with no encoding
+- The body of this request:
+  - `{"to": "attacker", "amount": 10000, "x": "="}`
+  - Valid JSON! And it's a simple request, so there's no preflight
+- If your server parses the body as JSON without checking for `Content-Type: application/json`
+  - The attack works, even though your front end only sends JSON with `fetch`
+- Although this attack will not contain lax cookies, so it's not too threatening
 
 
-- Now, when freebitcoin.com send their request it cannot contain your XSRF token
-- Your server will reject the request
-- Attacker can get their own token linked to their account
-  - Since they can get a valid token for the users account, they cannot send a valid cross-site request
+## XSS Defeats XSRF Defenses
 
-mycoolproject.com
+- Recall HTML injection (XSS): The attacker's JavaScript runs on **your** origin
+- JavaScript running on your origin can:
+  - Read your pages, including the XSRF token
+  - Send same-origin requests that include your cookies
+- Every XSRF defense assumes the attacker's code runs on a different origin
+- [Always escape HTML in user-submitted content]{.yellow}
 
-User/Client
-
-freebitcoin.com
-
-![](assets/slide23-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## CORS
-
-- The SOP can be too restrictive is some cases
-  - eg. You host an API that is consumed by other apps via AJAX
-- Cross-Origin Resource Sharing
-  - A policy that lets you relax the SOP
-- Can explicitly allow cross-origin requests with the header:
-
-Access-Control-Allow-Origin: *
-
-## CORS
-
-- The * is a wildcard that allows all cross-site requests
-  - It is very dangerous and exposes you to XSRF attacks
-- Can specify specific origins as well
-  - Common if you have an app with multiple servers
-
-Access-Control-Allow-Origin: cse312.com
-
-## Slide 26
+# Other Protections
 
 
-CORS
+## Double-Submit Cookies
 
-- CORS determines which cross-origin requests are allowed and which are blocked
-- By default, browsers will block many cross-origin requests
+- In practice, XSRF tokens are sometimes *also* stored in cookies
+- The server sets the XSRF token in a cookie (Not `HttpOnly`, so JavaScript can read it)
+- The server sends the same token in a form field or header
+- The server checks that the two values match. No need to store tokens on the server
+- The cookie might still be sent, but the attacker cannot read it so they can't add it to their forged form submission
+  - The cookie is only where the token is **stored**, instead of in your database. The proof is the copy in the body or header
 
-Access-Control-Allow-Origin: *
+
+## Re-Authentication
+
+- For the most sensitive actions, require the user's current password:
+  - Changing their password or email address
+  - Disabling two-factor authentication
+- The attacker doesn't know the password, so they can't forge the request
+- A confirmation step or CAPTCHA for high-value actions (eg. large transfers)
+- These hurt usability. Save them for the actions that matter most
+
+
