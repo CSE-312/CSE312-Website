@@ -3,22 +3,18 @@ title: "OAuth 2.0 - Overview"
 subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Motivation and explanation of OAuth 2.0"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://datatracker.ietf.org/doc/html/rfc6749"
     text: "RFC 6749 - OAuth 2.0"
   - url: "https://datatracker.ietf.org/doc/html/rfc6750"
     text: "RFC 6750 - OAuth 2.0 Tokens"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## OAuth 2.0 - Overview
+# OAuth 2.0
 
 ## Web API
 

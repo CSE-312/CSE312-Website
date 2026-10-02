@@ -1,1179 +1,249 @@
 ---
-title: "OAuth 2.0 - Implementation Details"
-subtitle: "CSE312 — Web Development"
+title: "OAuth 2.0"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Motivation and explanation of OAuth 2.0"
 
-reading-list: []
+reading-list:
+  - url: "https://datatracker.ietf.org/doc/html/rfc6749"
+    text: "RFC 6749 - OAuth 2.0"
+  - url: "https://datatracker.ietf.org/doc/html/rfc6750"
+    text: "RFC 6750 - OAuth 2.0 Tokens"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## OAuth 2.0 - Details
+# Third-Party APIs
 
-## OAuth 2.0 - Authorization Code Flow
+## Web APIs
 
+- Many apps have APIs that let programs access user data with HTTP requests
+  - `GET api.github.com/user` - The logged-in user's profile
+  - `GET api.github.com/user/repos` - Their repositories, including private ones
+  - `POST api.github.com/repos/<owner>/<repo>/issues` - Create an issue
+- Sometimes, you want **your app** to use this API on behalf of **your users**
+  - A scrum board app that creates GitHub issues when your users' create cards
+  - A "Login with GitHub" button (Which you'll implement on HW2)
+- How can your users let your app access their GitHub accounts securely?
 
-5. Authorization Grant
+## Bad Ideas: Ask for Their Password
 
-6. Access Token
+- ~~Have your users give you their GitHub username and password~~
+- Never ask for a password to someone else's site
+  - You'd have to store it in plain text to reuse it
+  - Your app gets full access to their account. Not just what you need
+  - The user can't revoke your access without changing their password
+  - It trains users to type their passwords into random sites
 
-7. API Access
+## Bad Idea: Ask for Their API Key
 
-8. Private Data
+- ~~Have the user create an API key on GitHub and paste it into your app~~
+- Better than a password, but:
+  - The user has to handle a secret. Never trust your users, not even with their own security
+  - Requests from your app look exactly like requests from the user
+    - No accountability. If your app misbehaves, GitHub can't tell it was you
+    - If the key leaks, there's no way to tell who is using it
+  - Your usage counts against the user's rate limits (Or bill!)
 
-1. Authorization Request
+## OAuth 2.0
 
-2. Authorization Request
+- **OAuth 2.0** (Open Authorization) - The standard way for a user to grant an app limited access to their account on another service
+- The user approves your app on GitHub's site
+  - Your app never sees their password
+- GitHub issues an **access token** directly to your app
+  - The user never handles the access token
+  - The token is tied to your app. GitHub knows it's you (Accountability)
+  - The token is limited to the permissions (**scopes**) the user approved
+  - The user can revoke your app's access at any time
+- The user still has to trust your app with the data they approve
 
-4. Authorization Grant
 
-3. Authorization Grant
+## Client Registration
 
-Your App / Client
+- Before any user can log in, you register **your app** with GitHub
+  - You get/set at least 3 important values during registration
+- **Client ID** - Identifies your app. Public
+- **Client Secret** - Effectively a *password* for your app
+  - Only ever stored on your server (In your `.env` file). Never in your front end or your git repo
+- **Redirect URI** - Where GitHub sends users after they approve your app
+  - `http://localhost:8080/authcallback` on the HW
+  - GitHub only redirects to the URI you registered
 
-3rd Party API /
+## OAuth Flows
 
-Auth Server /
+- OAuth has several **flows** for different kinds of apps
+- We'll use the **Authorization Code Flow**
+  - For apps with a server that can keep a secret
+  - The most common flow
 
-Resource Server
+# The Authorization Code Flow
 
-User / Resource Owner
+## The Authorization Code Flow
 
-![](assets/slide02-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/flow_all.svg){fig-alt="The full authorization code flow. 1: your app sends an authorization request to the user's browser. 2: the browser forwards it to GitHub. 3: GitHub sends an authorization grant back to the browser. 4: the browser delivers the grant to your app. 5: your app sends the code and its client secret to GitHub. 6: GitHub returns an access token. 7: your app makes an API request with the access token. 8: GitHub returns private data."}
 
-## We'll walk through the specific details of a user logging in with the 3rd party
 
+## Steps 1-2: Authorization Request
 
-5. Authorization Grant
+![](assets/flow_12.svg){fig-alt="Steps 1 and 2 highlighted: your app redirects the user's browser to GitHub with an authorization request."}
 
-6. Access Token
+## Authorization Request
 
-7. API Access
+- The user clicks "Login with GitHub," which sends a GET request to your server
+- Your server responds with a `302` redirect to GitHub's authorization endpoint:
+  - The location of the redirect is a github url
+  - This redirect is a cross-origin request!
 
-8. Private Data
+## Authorization Request - Parameters
 
-1. Authorization Request
+- Need to send several parameters in the query string of this redirect
+- `client_id` - Which app is asking
+- `redirect_uri` - Where to send the user back to
+- `scope` - A space-separated list of the permissions you're asking for
+- `state` - XSRF protection (More details later)
+- `response_type=code` - Required by the RFC to request a code (GitHub doesn't require it)
+- All values must be percent-encoded (Although none of these values should contain characters that need to be percent-encoded)
 
-2. Authorization Request
+## At GitHub
 
-4. Authorization Grant
+- The browser follows the redirect to GitHub
+- GitHub authenticates the user
+  - With their GitHub auth token cookie, or by asking them to log in
+  - This is GitHub's job. Your app never sees any of it
+- GitHub shows the user your app's name and the scopes you asked for
+  - The user chooses to approve or deny
+  - If they already approved your app with these scopes, they skip straight to the redirect
 
-3. Authorization Grant
+## Why Redirects?
 
-Your App / Client
+- In steps 1-4, your app and GitHub communicate through the user's browser
+- These requests need to have lax cookies attached  
+  - Must be GET requests that navigate to the other site
+- Need to send information in these requests
+  - Use a cross-site redirect with a query string
+
+## Steps 3-4: Authorization Grant
+
+![](assets/flow_34.svg){fig-alt="Steps 3 and 4 highlighted: GitHub redirects the user's browser back to your app's redirect URI with an authorization code."}
 
-3rd Party API /
+## Authorization Grant
+
+- If the user approves, GitHub responds with a `302` redirect to your redirect URI
+- The redirect url will contain a `code` in a query string  
+  - It will also contain the `state` value (Discussed later)
+- This code is a one-time value that your server can trade for an access token
+- High entropy (The RFC requires at least 128 bits)
+- Short-lived (GitHub codes expire after 10 minutes)
+- Assume the code has been compromised
+  - It traveled through the browser in a URL: history, logs, extensions
+  - The user handled it (Should you trust them?)
+- So the code alone must not be enough to get an access token
 
-Auth Server /
+## Steps 5-6: Token Exchange
 
-Resource Server
+![](assets/flow_56.svg){fig-alt="Steps 5 and 6 highlighted: your server sends the code and client secret directly to GitHub and receives an access token."}
+
+## Token Exchange
+
+- Your server sends a request directly to GitHub (You can use libraries to send request to GitHub on your HW)
+  - Since this is direct communication, we can use any HTTP method and format (Enter JSON)
+- You will "trade in" the code for an access token
+- GitHub must verify that it's really your app redeeming the code
+- Your app authenticates with its client secret
+  - The RFC recommends HTTP Basic authentication:
+    - `Authorization: Basic base64(client_id:client_secret)`
+  - It also allows them in the body of the POST request
+  - Never in the URL
+- APIs vary in these details. Read their documentation
+
+## Token Response
+
+- The access token went straight from GitHub to your server
+  - It never touched the user's browser
+  - The user does not know the value of this token
+- No need to trust the user!
+
+
+## Steps 7-8: API Access
+
+![](assets/flow_78.svg){fig-alt="Steps 7 and 8 highlighted: your server calls the GitHub API with the access token and receives the user's private data."}
+
+## API Access
+
+- Send the access token in the `Authorization` header with type `Bearer`
+  - "Bearer" - Whoever holds (bears) the token has access
+- Why not a cookie?
+  - Your server is sending requests on behalf of many different users
+  - Cookies are how *browsers* store tokens. A header is simpler for a server
+
+## Login With GitHub
+
+- You can now use the GitHub API to access the user's account information 
+  - Find a suitable unique id and use it to identify this user
+- First login: Create an account linked to their GitHub ID (No password)
+- Later logins: Find their existing account by GitHub ID
+- Then log them in exactly like a password login
+  - Issue **your own** auth token in a cookie
+  - Never use GitHub's access token as your auth token
+- If you're only using OAuth for login, no need to even store the access token
+  - Requires a new access token for each login though (Tradeoff)
+
+# State
+
+## Recall: Login XSRF
+
+- Login XSRF: The attacker logs the victim into the **attacker's** account
+- Your `/authcallback` endpoint is a login endpoint!
+- The usual XSRF defenses don't help here:
+  - `/authcallback` is *designed* to receive cross-site requests (A redirect from github.com)
+  - It's a GET navigation, so `SameSite=Lax` cookies are sent
+  - GitHub builds the request, not your front end. There's no chance to add a XSRF token
+
+## The Attack
+
+- The attacker starts "Login with GitHub" on your app using their own GitHub account
+- They stop before following the final redirect and keep the unused code
+- The attacker gets the victim to open a link to your callback with the attacker's code
+- To your app, this looks exactly like the end of a normal login
+- Your app redeems the code with its own client secret. Everything checks out
+- The victim is now logged in to the attacker's account!
+  - Everything they save goes to an account the attacker controls
+
+## The State Parameter
+
+- Before redirecting to GitHub (Step 1):
+  - Generate a random, unguessable `state` value
+  - Bind it to **this browser**
+  - Add it to the authorization request
+- GitHub sends the same `state` back with the code (Step 4)
+- At `/authcallback`:
+  - Check that the `state` matches the one bound to this browser
+  - If it's missing or doesn't match: `400 Bad Request` and stop. Never redeem the code
+  - Delete the state after checking. Each state is single use
+- The state is a XSRF token for your OAuth callback
+
+## Binding State to the Browser
+
+- The user usually isn't logged in yet, so there's no session to attach the state to
+- One approach: Store it in a cookie before the redirect
+  - `Set-Cookie: oauth_state=Xk3fR9...; HttpOnly; Max-Age=600; SameSite=Lax`
+  - At the callback, compare the query string `state` to the cookie
+- Attacker cannot set a cookie for our site
+- Attacker can't read this cookie since our site never redirects to the attack site
+- SOP will block responses so they can't fake a request and read the set-cookie header
+- You have some freedom in how you implement this on the HW, as long as it stops the attack
+
+
+# Refresh Tokens
+
+## Refresh Tokens
+
+- Many APIs make access tokens expire quickly (e.g. 1 hour)
+- Along with the access token, they issue a long-lived **refresh token**
+- When the access token expires, use the refresh token to obtain a new one:
+  - You get a new access token (And sometimes a new refresh token)
+- The user doesn't have to do anything
+- Why not just have the access tokens be long-lived?
+  - More secure when the auth server and resource server are not the same server
+    - More on this much later when we discus JWTs
 
-User / Resource Owner
-
-![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 4
-
-
-
-Authorization Request - App
-
-- The user sends a request to our server by clicking the "login with ..." button
-- Our app will need access to the user's account from the 3rd party API
-- We ask the user for permission to use the API on their behalf
-- The API will need several parameters in this request
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-4. Authorization Grant
-
-3. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-Your App / Client
-
-User / Resource Owner
-
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 5
-
-
-
-Authorization Request - Parameters
-
-- Response type: Equal to "code" to indicate that we are requesting an authorization code
-- Our client id: To identify our app
-- scopes: A space-separated list of permissions we want from the user
-- redirect URI: Must match the redirect URI when you registered your app
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-4. Authorization Grant
-
-3. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-Your App / Client
-
-User / Resource Owner
-
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • Parameters: Response type, client id, scopes, redirect URI • We need to tell the user to send these 4 parameters to the API • How? Use a redirect!
-
-
-Authorization Request - Redirect
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 7
-
-
-
-Authorization Request - Redirect
-
-- We respond to the "login with ..." button press request with a 302 redirect
-- The location header of the redirect is the URL of the api's authentication server and the "/authorize" path
-- The 4 parameters are added to the query string of the request
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 8
-
-
-
-Authorization Request - Redirect
-
-- By using a redirect, all the parameters are in the URL itself
-  - They won't be removed/blocked by the browser during redirection
-- This means all values must be URL encoded, using percent-encoding
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 9
-
-
-
-Authorization Request - API
-
-- Their browser redirects the user to the API with all the required parameters
-- The API authenticates the request using an auth token in a cookie (Implies this cookie is not SameSite: strict)
-  - If no token, ask for username/password
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 10
-
-
-
-Authorization Request - API
-
-- The API now authenticated the user's identity and can pull their profile
-- The API knows our identity via the client id, but this is not authenticated
-- The API knows the scopes that are being requested
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide10-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 11
-
-
-
-Authorization Request - API
-
-- So the API knows everything it needs to know
-- Ask the user to authorize our app
-- User is shown the name of the app and the list of scopes that are being requests
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-User / Resource Owner
-
-![](assets/slide11-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 12
-
-
-
-Authorization Grant - API redirect
-
-- Assuming the user accepts, the API will respond to their "agree" button press with a redirect to our redirect URI
-  - If the user does not agree, the process ends and our app does not get API access
-- If the user has already agreed in the past, they are redirected immediately
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide12-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 13
-
-
-
-Authorization Grant - API redirect
-
-- Since our response type was "code", the redirect will contain an authorization code
-- The API needs to send our app information through the user just like we did in step 1
-  - The API will use a 302 redirect with the code in a query string
-- The browser will redirect the user back to our app by following this location header
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide13-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Authorization Grant - Redirect URI
-
-
-- Our app receives the redirected request containing the authorization code
-- http://localhost:8080/spotify? code=AQAS7s9-7krg_hO5jdO1mKOLKTmgoG4p9U25QpdcNPrFwDS9YIyfjqDmRg97gEfSJ vQ5Ri3AyzyNiWVFxLEWJDm7G4poswnXs_AQuSkerCQ7_8ghIbwYTXoWE2BJFVGae5rpSH nHbAL_MxYiyTJqNMtXaClXSv7QfCviNJpRaOd51z4ga5jQzRoVaaSikR8hQwjkjCuXydvjSHIp 9_ARiNJJrcDuKMshIs7VfCggwLX9yMH80lnvkMsA5GxXtSU
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide14-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 15
-
-
-
-Authorization Grant - Authorization Code
-
-- This code, and all tokens/codes, will have very high entropy
-- The RFC requires >128 bits of entropy; recommends > 160
-- [Assuming uniform randomness] This 255 character code has 1536 bits of entropy!
-
-```
-AQAS7s9-7krg_hO5jdO1mKOLKTmgoG4p9U25QpdcNPrFwDS9YIyfjqDmRg97gEfSJvQ5Ri3AyzyNiWVFxLEWJDm7G4poswnXs_AQuSkerCQ7_8ghIbwYTXoWE2BJFV
-Gae5rpSHnHbAL_MxYiyTJqNMtXaClXSv7QfCviNJpRaOd51z4ga5jQzRoVaaSikR8hQwjkjCuXydvjSHIp9_ARiNJJrcDuKMshIs7VfCggwLX9yMH80lnvkMsA5GxXtSU
-```
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • Our app parses the query string and extracts this authorization • This is a 1-time code and is assumed to be comprisable since
-
-
-Authorization Grant - Authorization Code
-
-```
-code
-the user handled it
-```
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide16-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 17
-
-
-
-Authorization Grant - Request for Access Token
-
-- The user will sit out the next few rounds and wait for our server to respond to the authorization grant redirect
-- Our app will connect directly to the API server while the user waits
-- The next goal is to trade the authorization token for an access token
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide17-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 18
-
-
-
-Authorization Grant - Request for Access Token
-
-- Our server needs to send HTTP requests to the API
-  - Recommendation: Use the requests library (This is allowed for your HW)
-- Since we don't have to go through the user via redirects, we can use POST requests and add parameters to the body of the requests
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • The API needs to authenticate our app during this step • Note: Steps 1-4 can all be spoofed by an attacker • We authenticate by sending the server our client secret
-
-
-Authorization Grant - Request for Access Token
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide19-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 20
-
-
-
-Authorization Grant - Client Authentication
-
-- The RFC requires both client id and client secret for authentication of our app
-  - Recommends adding the secret in an "Authorization" header
-  - Allows the secret to be sent in the body if unable to use headers
-  - The secret cannot be sent in the URL
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide20-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • APIs will vary in the exact method of sending the id and secret • Spotify: Send "{client_id}:{client_secret}" base64 encoded
-
-
-Authorization Grant - Authorization Header
-
-using an Authorization header of type Basic
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide21-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Authorization Grant - Authorization Header
-
-
-- If client_id == "abc" and client_secret == "123"
-- "{client_id}:{client_secret}" == "abc:123"
-- base64("abc:123") == "YWJjOjEyMw==" <-- base64 works with bytes so encode/decode before/after base64 encoding
-- And your header is "Authorization: Basic YWJjOjEyMw=="
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide22-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Authorization Grant - Content • The API needs the following values in the content of the request • Grant type: set to "authorization_code" • Code: The value of the authorization code we're sending • Redirect URI: Must exactly match the redirect URI we used to obtain this code
-
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide23-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 24
-
-
-
-Authorization Grant - Content
-
-- Parameters: Grant type, code, and redirect URI
-- These values and sent as the content of the request
-  - Formats vary. Spotify uses URL encoding (eg. same format as a query string, but in the body of a POST request)
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 25
-
-
-
-Authorization Grant - Final Request
-
-- Send the final request to the "/token" endpoint of the API using a POST request
-  - Authorization header for authentication
-  - Content in the body for details about the request
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide25-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 26
-
-
-
-Access Token
-
-- The API will verify all the information we sent
-- Assuming everything is verified:
-  - Respond with an access token that we can use to access the API on behalf of our user
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide26-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • The body of this response will contain the access token • Will often also contain a refresh token (A topic for another lecture) • Spotify: Response is a JSON object with an "access_token"
-
-
-Access Token - Response
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide27-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 28
-
-
-
-API Access
-
-- We can now access the API on behalf of our user
-- Each request must contain the access token
-- Spotify: Access token is sent via an Authorization header of type Bearer
-  - eg. If the token is "abc" Your header is "Authorization: Bearer abc"
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide28-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## API Access • Notice that we can't use cookies to authenticate API access • Our app will be making requests for different users • Would need a cookie for every user, or change the cookie value for each user • Headers are a much cleaner solution for this use case
-
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide29-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## • Now that we have API access, we can finally log the user in • We'll make an API request for the user's profile information • This allows us to identify the user with a unique id (Usually email)
-
-
-API Access - Login with ...
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide30-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 31
-
-
-
-Private Data - Login with ...
-
-- Once we have an ID for the user verified by the 3rd party:
-  - Create an account for the user with this ID (Just like the registered with your app, except you don't store a password)
-  - Issue them an authentication token and set it as a cookie (Just like they logged into your app with a username/password)
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide31-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 32
-
-
-
-Login with ...
-
-- When a user logs in again with a 3rd party (Assuming their auth token expired)
-  - Check if they already have an account
-  - If this is not their first time logging in, make sure you use their existing account
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide32-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Slide 33
-
-
-
-Login with ...
-
-- Store their access token in their account
-  - Don't need to go through this whole process every time you need API access
-- Note: These token cannot be hashed since you need to send the original value to the API (Be careful! Don't ask for more scopes than you need to limit the risk)
-
-5. Authorization Grant
-
-6. Access Token
-
-7. API Access
-
-8. Private Data
-
-1. Authorization Request
-
-2. Authorization Request
-
-3. Authorization Grant
-
-Your App / Client
-
-4. Authorization Grant
-
-3rd Party API /
-
-Auth Server /
-
-Resource Server
-
-User / Resource Owner
-
-![](assets/slide33-diagram.jpg){fig-alt="TODO: describe this image"}
