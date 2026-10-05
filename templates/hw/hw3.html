@@ -145,6 +145,10 @@
 
     <p>Tips:</p>
     <ul>
+        <li>
+            Thoroughly test your parsing code and ensure that it is correct down to exact bytes. Having an extra CRLF 
+            at the end of you data for a part might corrupt your images and videos later in this assignment
+        </li>
         <li>The content of a part may be binary data (e.g. an image or video). Never convert it to a string or you will
             corrupt the data</li>
         <li>The content of a part may contain the sequences "\r\n\r\n" and "\r\n". Be sure you are not splitting or

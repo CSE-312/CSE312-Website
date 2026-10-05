@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="RTMP ingest, live HLS playlists, stream keys, and sharing files between containers with Docker volumes">
 
-<title>Video - Adaptive Bit-Rate (ABR) – CSE312 Lectures</title>
+<title>Live Streaming – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -35,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,40 +118,51 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#video---abr" id="toc-video---abr" class="nav-link active" data-scroll-target="#video---abr">Video - ABR</a></li>
-  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
-  <li><a href="#chunking" id="toc-chunking" class="nav-link" data-scroll-target="#chunking">Chunking</a></li>
-  <li><a href="#chunking---range" id="toc-chunking---range" class="nav-link" data-scroll-target="#chunking---range">Chunking - Range</a></li>
-  <li><a href="#chunking---range-1" id="toc-chunking---range-1" class="nav-link" data-scroll-target="#chunking---range-1">Chunking - Range</a></li>
-  <li><a href="#chunking---multiple-files" id="toc-chunking---multiple-files" class="nav-link" data-scroll-target="#chunking---multiple-files">Chunking - Multiple Files</a></li>
-  <li><a href="#hls-vs-mpeg-dash" id="toc-hls-vs-mpeg-dash" class="nav-link" data-scroll-target="#hls-vs-mpeg-dash">HLS vs MPEG-DASH</a></li>
-  <li><a href="#hls" id="toc-hls" class="nav-link" data-scroll-target="#hls">HLS</a></li>
-  <li><a href="#hls---transcoding" id="toc-hls---transcoding" class="nav-link" data-scroll-target="#hls---transcoding">HLS - Transcoding</a></li>
-  <li><a href="#mpeg-dash" id="toc-mpeg-dash" class="nav-link" data-scroll-target="#mpeg-dash">MPEG-DASH</a></li>
-  <li><a href="#mpeg-dash-1" id="toc-mpeg-dash-1" class="nav-link" data-scroll-target="#mpeg-dash-1">MPEG-DASH</a></li>
-  <li><a href="#mpeg-dash---transcoding" id="toc-mpeg-dash---transcoding" class="nav-link" data-scroll-target="#mpeg-dash---transcoding">MPEG-DASH - Transcoding</a></li>
-  <li><a href="#adaptive-bit-rate-streaming" id="toc-adaptive-bit-rate-streaming" class="nav-link" data-scroll-target="#adaptive-bit-rate-streaming">Adaptive Bit-Rate Streaming</a></li>
-  <li><a href="#the-problem-1" id="toc-the-problem-1" class="nav-link" data-scroll-target="#the-problem-1">The Problem</a></li>
-  <li><a href="#adaptive-bit-rate" id="toc-adaptive-bit-rate" class="nav-link" data-scroll-target="#adaptive-bit-rate">Adaptive Bit-Rate</a></li>
-  <li><a href="#adaptive-bit-rate-1" id="toc-adaptive-bit-rate-1" class="nav-link" data-scroll-target="#adaptive-bit-rate-1">Adaptive Bit-Rate</a></li>
-  <li><a href="#adaptive-bit-rate-2" id="toc-adaptive-bit-rate-2" class="nav-link" data-scroll-target="#adaptive-bit-rate-2">Adaptive Bit-Rate</a></li>
-  <li><a href="#adaptive-bit-rate---hls" id="toc-adaptive-bit-rate---hls" class="nav-link" data-scroll-target="#adaptive-bit-rate---hls">Adaptive Bit-Rate - HLS</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash" id="toc-adaptive-bit-rate---mpeg-dash" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash-1" id="toc-adaptive-bit-rate---mpeg-dash-1" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash-1">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash-2" id="toc-adaptive-bit-rate---mpeg-dash-2" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash-2">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash-3" id="toc-adaptive-bit-rate---mpeg-dash-3" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash-3">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash-4" id="toc-adaptive-bit-rate---mpeg-dash-4" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash-4">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate---mpeg-dash-5" id="toc-adaptive-bit-rate---mpeg-dash-5" class="nav-link" data-scroll-target="#adaptive-bit-rate---mpeg-dash-5">Adaptive Bit-Rate - MPEG-DASH</a></li>
-  <li><a href="#adaptive-bit-rate-3" id="toc-adaptive-bit-rate-3" class="nav-link" data-scroll-target="#adaptive-bit-rate-3">Adaptive Bit-Rate</a></li>
-  <li><a href="#video-players" id="toc-video-players" class="nav-link" data-scroll-target="#video-players">Video Players</a></li>
-  <li><a href="#video-players-1" id="toc-video-players-1" class="nav-link" data-scroll-target="#video-players-1">Video Players</a></li>
-  <li><a href="#video-players-2" id="toc-video-players-2" class="nav-link" data-scroll-target="#video-players-2">Video Players</a></li>
+  <li><a href="#how-live-streaming-works" id="toc-how-live-streaming-works" class="nav-link active" data-scroll-target="#how-live-streaming-works">How Live Streaming Works</a>
+  <ul class="collapse">
   <li><a href="#live-streaming" id="toc-live-streaming" class="nav-link" data-scroll-target="#live-streaming">Live Streaming</a></li>
-  <li><a href="#live-streaming-1" id="toc-live-streaming-1" class="nav-link" data-scroll-target="#live-streaming-1">Live Streaming</a></li>
-  <li><a href="#live-streaming-2" id="toc-live-streaming-2" class="nav-link" data-scroll-target="#live-streaming-2">Live Streaming</a></li>
-  <li><a href="#live-streaming-3" id="toc-live-streaming-3" class="nav-link" data-scroll-target="#live-streaming-3">Live Streaming</a></li>
-  <li><a href="#live-streaming-4" id="toc-live-streaming-4" class="nav-link" data-scroll-target="#live-streaming-4">Live Streaming</a></li>
+  <li><a href="#the-pipeline" id="toc-the-pipeline" class="nav-link" data-scroll-target="#the-pipeline">The Pipeline</a></li>
+  <li><a href="#rtmp" id="toc-rtmp" class="nav-link" data-scroll-target="#rtmp">RTMP</a></li>
+  <li><a href="#the-ingest-server" id="toc-the-ingest-server" class="nav-link" data-scroll-target="#the-ingest-server">The Ingest Server</a></li>
+  </ul></li>
+  <li><a href="#the-ingest-server-1" id="toc-the-ingest-server-1" class="nav-link" data-scroll-target="#the-ingest-server-1">The Ingest Server</a>
+  <ul class="collapse">
+  <li><a href="#nginx.conf" id="toc-nginx.conf" class="nav-link" data-scroll-target="#nginx.conf">nginx.conf</a></li>
+  <li><a href="#on_publish" id="toc-on_publish" class="nav-link" data-scroll-target="#on_publish">on_publish</a></li>
+  <li><a href="#who-calls-these-endpoints" id="toc-who-calls-these-endpoints" class="nav-link" data-scroll-target="#who-calls-these-endpoints">Who Calls These Endpoints?</a></li>
+  <li><a href="#live-playlists" id="toc-live-playlists" class="nav-link" data-scroll-target="#live-playlists">Live Playlists</a></li>
+  <li><a href="#why-the-delay" id="toc-why-the-delay" class="nav-link" data-scroll-target="#why-the-delay">Why the Delay?</a></li>
+  </ul></li>
+  <li><a href="#multiple-containers" id="toc-multiple-containers" class="nav-link" data-scroll-target="#multiple-containers">Multiple Containers</a>
+  <ul class="collapse">
+  <li><a href="#three-containers" id="toc-three-containers" class="nav-link" data-scroll-target="#three-containers">Three Containers</a></li>
+  <li><a href="#the-ingest-container" id="toc-the-ingest-container" class="nav-link" data-scroll-target="#the-ingest-container">The Ingest Container</a></li>
+  <li><a href="#startup-order" id="toc-startup-order" class="nav-link" data-scroll-target="#startup-order">Startup Order</a></li>
+  </ul></li>
+  <li><a href="#docker-volumes" id="toc-docker-volumes" class="nav-link" data-scroll-target="#docker-volumes">Docker Volumes</a>
+  <ul class="collapse">
+  <li><a href="#containers-have-their-own-files" id="toc-containers-have-their-own-files" class="nav-link" data-scroll-target="#containers-have-their-own-files">Containers Have Their Own Files</a></li>
+  <li><a href="#volumes" id="toc-volumes" class="nav-link" data-scroll-target="#volumes">Volumes</a></li>
+  <li><a href="#volume-gotchas" id="toc-volume-gotchas" class="nav-link" data-scroll-target="#volume-gotchas">Volume Gotchas</a></li>
+  </ul></li>
+  <li><a href="#stream-keys" id="toc-stream-keys" class="nav-link" data-scroll-target="#stream-keys">Stream Keys</a>
+  <ul class="collapse">
+  <li><a href="#stream-keys-1" id="toc-stream-keys-1" class="nav-link" data-scroll-target="#stream-keys-1">Stream Keys</a></li>
+  <li><a href="#showing-the-key" id="toc-showing-the-key" class="nav-link" data-scroll-target="#showing-the-key">Showing the Key</a></li>
+  <li><a href="#dont-leak-the-key" id="toc-dont-leak-the-key" class="nav-link" data-scroll-target="#dont-leak-the-key">Don't Leak the Key</a></li>
+  <li><a href="#serving-a-stream" id="toc-serving-a-stream" class="nav-link" data-scroll-target="#serving-a-stream">Serving a Stream</a></li>
+  </ul></li>
+  <li><a href="#the-front-end" id="toc-the-front-end" class="nav-link" data-scroll-target="#the-front-end">The Front End</a>
+  <ul class="collapse">
+  <li><a href="#watching-live-streams" id="toc-watching-live-streams" class="nav-link" data-scroll-target="#watching-live-streams">Watching Live Streams</a></li>
+  </ul></li>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a>
+  <ul class="collapse">
+  <li><a href="#streaming-with-obs" id="toc-streaming-with-obs" class="nav-link" data-scroll-target="#streaming-with-obs">Streaming with OBS</a></li>
+  <li><a href="#debugging-a-stream" id="toc-debugging-a-stream" class="nav-link" data-scroll-target="#debugging-a-stream">Debugging a Stream</a></li>
+  <li><a href="#demo" id="toc-demo" class="nav-link" data-scroll-target="#demo">Demo</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -124,10 +171,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Video - Adaptive Bit-Rate (ABR)</h1>
+<h1 class="title">Live Streaming</h1>
 <p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    RTMP ingest, live HLS playlists, stream keys, and sharing files between containers with Docker volumes
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -142,439 +194,629 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="video---abr" class="level2">
-<h2 class="anchored" data-anchor-id="video---abr">Video - ABR</h2>
-</section>
-<section id="the-problem" class="level2">
-<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
-<ul>
-<li>You host a video on your web app</li>
-<li>You want high quality so you host a large 1080p mp4
-<ul>
-<li>The entire file is 100's of MB</li>
-</ul></li>
-<li>Every user visiting your page has to download the entire video before playback can begin
-<ul>
-<li>Very slow to load</li>
-<li>Entire file must download even for users who will only watch for a few seconds</li>
-</ul></li>
-</ul>
-</section>
-<section id="chunking" class="level2">
-<h2 class="anchored" data-anchor-id="chunking">Chunking</h2>
-<ul>
-<li>Avoid the requirement of downloading the entire video before it plays</li>
-<li>Provided a way to request short segments of the video</li>
-<li>Download one "chunk" of the video at a time
-<ul>
-<li>Typically ~2-10 seconds of playback</li>
-</ul></li>
-<li>Advantages:
-<ul>
-<li>Only a few seconds need to be downloaded before playback starts</li>
-<li>If the user skips around in the video, only request they chunk they skipped to</li>
-<li>If the user leaves the page without finishing the video, the entire file doesn't have to be downloaded</li>
-</ul></li>
-</ul>
-</section>
-<section id="chunking---range" class="level2">
-<h2 class="anchored" data-anchor-id="chunking---range">Chunking - Range</h2>
-<ul>
-<li>Even mp4 videos can be chunked</li>
-<li>The browser may end a request for a large file that includes a Range header
-<ul>
-<li>The Range header specifies a range of bytes being requested</li>
-<li>eg. A request for "/video.mp4" with a header "Range: 10000-20000" is request the 9999th through 19999th bytes of video.mp4</li>
-</ul></li>
-<li>The response code should be 206 Partial content</li>
-<li>The response should contain a Content-Range header
-<ul>
-<li>Contains the range of bytes being sent and the to total size of the file</li>
-<li>eg. Content-Range: 10000-20000/500000</li>
-<li>eg. Content-Range: 0-499999/500000 if the entire file is sent</li>
-</ul></li>
-</ul>
-</section>
-<section id="chunking---range-1" class="level2">
-<h2 class="anchored" data-anchor-id="chunking---range-1">Chunking - Range</h2>
-<ul>
-<li>Using the Range header can be effective in some cases, however:
-<ul>
-<li>It adds extra complexity to the server</li>
-<li>It relies on the browser to request useful ranges</li>
-<li>Some browsers might not implement Range and ask for the entire file</li>
-</ul></li>
-<li>We would like a more robust solution</li>
-</ul>
-</section>
-<section id="chunking---multiple-files" class="level2">
-<h2 class="anchored" data-anchor-id="chunking---multiple-files">Chunking - Multiple Files</h2>
-<ul>
-<li>Instead of relying on the browser asking for a specific range of bytes..</li>
-<li>We host a single video in multiple files</li>
-<li>Each file contains a few seconds of playback</li>
-<li>The browser requests each segment as needed
-<ul>
-<li>User only watches a few seconds -&gt; Only need to request the first few segments</li>
-<li>User skips to the middle of the video -&gt; Request the middle segment</li>
-</ul></li>
-</ul>
-</section>
-<section id="hls-vs-mpeg-dash" class="level2">
-<h2 class="anchored" data-anchor-id="hls-vs-mpeg-dash">HLS vs MPEG-DASH</h2>
-<ul>
-<li>Two major protocols support the idea of breaking a video into smaller segments/chunks: HLS and MPEG-DASH</li>
-<li>HTTP Live Streaming (HLS)
-<ul>
-<li>Developed by Apple</li>
-<li>Only supports the H.264 encoding for video</li>
-<li>Wide-spread adaptation</li>
-<li>Spec freely available in RFC8216</li>
-</ul></li>
-<li>Dynamic Adaptive Streaming over HTTP (MPEG-DASH)
-<ul>
-<li>Developed by Moving Picture Experts Group (MPEG)</li>
-<li>Supports any video encodings</li>
-<li>No support on Apple devices</li>
-<li>Spec published as ISO/IEC 23009-1:2022 - Available for $245 (!)</li>
-</ul></li>
-</ul>
-</section>
-<section id="hls" class="level2">
-<h2 class="anchored" data-anchor-id="hls">HLS</h2>
-<ul>
-<li>Divide the video into multiple .ts files
-<ul>
-<li>MPEG Transport Stream files</li>
-</ul></li>
-<li>One .m3u8 index file containing information about each .ts file and how they combine into a single video</li>
-<li>Your server hosts all files</li>
-<li>Set the video source as the index file</li>
-<li>Browser reads the index file to know when to request each ts file</li>
-</ul>
-<p><img src="assets/slide08-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="hls---transcoding" class="level2">
-<h2 class="anchored" data-anchor-id="hls---transcoding">HLS - Transcoding</h2>
-<p>ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8</p>
-<ul>
-<li>Use ffmpeg to convert to HLS</li>
-<li>"-f hls" to specify the output format as HLS</li>
-<li>"-hls_list_size 0" to keep all ts files in the index
-<ul>
-<li>By deafult, ffmpeg will only keep the last 5 ts files in the index file</li>
-<li>This is good if you are live-streaming (This is the HTTP Live Streaming protocol after all)</li>
-<li>Since our use case is hosting Video on Demand (VOD), we want to keep every ts file in the index</li>
-<li>Setting the list size to 0 means the size is not limited</li>
-</ul></li>
-</ul>
-</section>
-<section id="mpeg-dash" class="level2">
-<h2 class="anchored" data-anchor-id="mpeg-dash">MPEG-DASH</h2>
-<ul>
-<li>Divide the video into multiple files that can use a variety of formats (m4s by default in ffmpeg output which is mp4 encoded)</li>
-<li>One .mpd (Media Presentation Description) index file containing tons of information in an XML format</li>
-<li>Hosts all files and set the video source as the index file</li>
-<li>Browser reads the index file to find an init file and naming convention for content files to request</li>
-</ul>
-<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="mpeg-dash-1" class="level2">
-<h2 class="anchored" data-anchor-id="mpeg-dash-1">MPEG-DASH</h2>
-<ul>
-<li>Full mpd file from the example</li>
-</ul>
-<p><img src="assets/slide11-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="mpeg-dash---transcoding" class="level2">
-<h2 class="anchored" data-anchor-id="mpeg-dash---transcoding">MPEG-DASH - Transcoding</h2>
-<p>ffmpeg -i space.mp4 -f dash space.mpd</p>
-<ul>
-<li>Use ffmpeg to convert to MPEG-DASH</li>
-<li>"-f dash" to specify the output format as MPEG-DASH</li>
-<li>Creates an mpd with the name you provide
-<ul>
-<li>All other files follow a default naming convention</li>
-<li>May want to create a new directory for each video to avoid naming conflicts</li>
-</ul></li>
-</ul>
-</section>
-<section id="adaptive-bit-rate-streaming" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate-streaming">Adaptive Bit-Rate Streaming</h2>
-</section>
-<section id="the-problem-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-problem-1">The Problem</h2>
-<ul>
-<li>You host a video on your web app
-<ul>
-<li>You even use HLS or MPEG-DASH to segment the video into 2-10 seconds chunks</li>
-</ul></li>
-<li>You want high quality so you host chunks in 4K@60Hz
-<ul>
-<li>Can require ~25Mb/s bandwidth to stream</li>
-</ul></li>
-<li>And someone visits your site using eduroam on a bad day..
-<ul>
-<li>The video buffers, stutters, or doesn't play at all</li>
-</ul></li>
-<li>We need a solution that:
-<ul>
-<li>Allows users with slow connections to enjoy your content</li>
-<li>Delivers high quality to users with high-speed Internet</li>
-</ul></li>
-</ul>
-</section>
-<section id="adaptive-bit-rate" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate">Adaptive Bit-Rate</h2>
-<ul>
-<li>Instead of hosting the a single video at a single resolution
-<ul>
-<li>Host multiple versions of the same video at different resolutions</li>
-<li>Each resolution requires a different bit rate to stream</li>
-</ul></li>
-<li>User visits your page
-<ul>
-<li>Their browser adapts to the current download bandwidth available</li>
-<li>Stream the highest bit rate video that fits the bandwidth</li>
-</ul></li>
-</ul>
-</section>
-<section id="adaptive-bit-rate-1" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate-1">Adaptive Bit-Rate</h2>
-<ul>
-<li>Using HLS or MPEG-DASH
-<ul>
-<li>Create chunks at several different resolutions/bit rates</li>
-<li>Add information about all resolutions in the index file</li>
-</ul></li>
-<li>With the video segmented into ~2-10 second chucks
-<ul>
-<li>Easy for the browser to switch between resolutions</li>
-</ul></li>
-</ul>
-</section>
-<section id="adaptive-bit-rate-2" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate-2">Adaptive Bit-Rate</h2>
-<ul>
-<li>The browser can adapt the requested bit-rate based on current conditions</li>
-<li>Limited interruption for the user, though quality can change over time</li>
-</ul>
-<p>4k</p>
-<p>1080p</p>
-<p>480p</p>
-<p>potato</p>
-<p>wifi slows down</p>
-<p>wifi speeds up</p>
-</section>
-<section id="adaptive-bit-rate---hls" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---hls">Adaptive Bit-Rate - HLS</h2>
-<ul>
-<li>Using HLS, m3u8 index files can be nested</li>
-<li>Convert your video into multiple HLS resolutions</li>
-<li>Combine them into a single index file with references to the others</li>
-<li>This example contains references to 2 video index files at different resolutions, and 1 audio index file</li>
-</ul>
-<p><img src="assets/slide18-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>The mpd file can contain multiple resolutions</li>
-<li>The media is represented in multiple layers
-<ul>
-<li>Period</li>
-<li>Adaptation Set</li>
-<li>Representation</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide19-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash-1" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-1">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>Period</li>
-<li>Allows the division of a media file into multiple parts
-<ul>
-<li>ie. Chapters</li>
-</ul></li>
-<li>For our purposes, we only need 1 period</li>
-</ul>
-<p><img src="assets/slide19-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash-2" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-2">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>Adaptation Set</li>
-<li>Represents different parts of the media that will all be combined into one experience</li>
-<li>Can contain multiple video/audio adaptation sets
-<ul>
-<li>eg. One for video, one for audio, and another for closed captions</li>
-</ul></li>
-<li>The example below has one for video and one for audio</li>
-</ul>
-<p><img src="assets/slide19-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash-3" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-3">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>Representation</li>
-<li>Each adaptation set can have multiple representations</li>
-<li>This is where we add multiple different bit-rates of the media</li>
-<li>The browser will choose one representation for each adaptation set at a given time based on bandwidth</li>
-</ul>
-<p><img src="assets/slide19-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash-4" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-4">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>Representation</li>
-<li>This example has 2 resolutions for video that the browser can choose
-<ul>
-<li>480kb of 1Mb bandwidth</li>
-</ul></li>
-<li>This example only has one representation of the audio track
-<ul>
-<li>Only 128kb bandwidth</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide19-1.png" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate---mpeg-dash-5" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate---mpeg-dash-5">Adaptive Bit-Rate - MPEG-DASH</h2>
-<ul>
-<li>Each representation has it's own set of content files
-<ul>
-<li>eg. "chunk-stream0-0000X.m4s" and "init-stream0.m4s" are the files containing the video representation with id == 0</li>
-<li>The browser dynamically requests the specific files desired given the circumstances</li>
-<li>Your server hosts all files</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide24-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="adaptive-bit-rate-3" class="level2">
-<h2 class="anchored" data-anchor-id="adaptive-bit-rate-3">Adaptive Bit-Rate</h2>
-<ul>
-<li>Your task [For AO2]:
-<ul>
-<li>Choose between HLS and MPEG-DASH</li>
-<li>Programmatically convert an uploaded mp4 into the format you choose with multiple resolutions</li>
-<li>Serve those videos by setting the source of a video to the index file for that video</li>
-</ul></li>
-<li>Hint: Get ffmpeg to do all the work for you
-<ul>
-<li>You should not manually write any of these files</li>
-<li>Do research to find the command(s)/flags you need to send to ffmpeg to do the job</li>
-</ul></li>
-</ul>
-</section>
-<section id="video-players" class="level2">
-<h2 class="anchored" data-anchor-id="video-players">Video Players</h2>
-<ul>
-<li>Most built-in video players do not support HLS or MPEG- DASH
-<ul>
-<li>You cannot rely on the browser having a player for either of these formats (eg. During grading we will not use a browser with built-in support for HLS or MPEG- DASH)</li>
-</ul></li>
-<li>We must use a 3rd party video player
-<ul>
-<li>Several players available (eg. dash.js)</li>
-<li>Examples in the following slides will use video.js</li>
-</ul></li>
-</ul>
-</section>
-<section id="video-players-1" class="level2">
-<h2 class="anchored" data-anchor-id="video-players-1">Video Players</h2>
-<ul>
-<li>This example downloads the css and js for video.js from a CDN</li>
-<li>Uses "class" and "data-setup" attributes on a video element to tell the library to do its thing</li>
-<li>You now have a video player that supports both HLS and MPEG-DASH</li>
-</ul>
-<p><img src="assets/slide27-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
-<section id="video-players-2" class="level2">
-<h2 class="anchored" data-anchor-id="video-players-2">Video Players</h2>
-<ul>
-<li>Your video player will now have a consistent look across all browsers</li>
-<li>Don't have to worry about what formats each browser supports
-<ul>
-<li>You support any format supported by video.js</li>
-</ul></li>
-</ul>
-<p><img src="assets/slide28-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
-</section>
+<section id="how-live-streaming-works" class="level1">
+<h1>How Live Streaming Works</h1>
 <section id="live-streaming" class="level2">
 <h2 class="anchored" data-anchor-id="live-streaming">Live Streaming</h2>
-</section>
-<section id="live-streaming-1" class="level2">
-<h2 class="anchored" data-anchor-id="live-streaming-1">Live Streaming</h2>
 <ul>
-<li>We've talked about uploading and host mp4 videos using a streaming protocol
+<li>We can upload and host videos using a streaming protocol
 <ul>
-<li>A VOD service</li>
+<li>A Video on Demand (VOD) service</li>
 </ul></li>
-<li>What about live streaming?</li>
+<li>What about live streaming?
+<ul>
+<li>The video doesn't exist yet when viewers start watching</li>
+<li>Segments are created while the streamer is streaming</li>
+</ul></li>
 <li>Most live streaming isn't truly live
 <ul>
 <li>There will be several seconds of delay in the stream</li>
-<li>Acceptable loss to gain accuracy</li>
+<li>Acceptable loss to gain reliability and scale</li>
 </ul></li>
 </ul>
 </section>
-<section id="live-streaming-2" class="level2">
-<h2 class="anchored" data-anchor-id="live-streaming-2">Live Streaming</h2>
+<section id="the-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="the-pipeline">The Pipeline</h2>
 <ul>
 <li>Typical setup (eg. Twitch/YouTube Live/etc.)</li>
-<li>User streams their video into an ingest server using the Real-Time Messaging Protocol (RTMP)
+</ul>
+<pre class="text"><code>  Streamer (OBS)
+        │   RTMP: rtmp://localhost:1935/live + stream key
+        ▼
+  Ingest server
+        │   Converts the stream to HLS: A playlist + segments
+        ▼
+  Web server  (Your app)
+        │   HTTP: Normal GET requests for the playlist and segments
+        ▼
+  Viewers (hls.js)</code></pre>
 <ul>
-<li>RTMP is a container for any real-time communication</li>
-<li>The content of RTMP happens to be a media stream in this case</li>
-</ul></li>
-<li>The server transcodes the video into a streaming format (eg. HLS/MPEG-DASH) and continually updates/ generates index files</li>
+<li>Viewers never talk to the ingest server</li>
 </ul>
 </section>
-<section id="live-streaming-3" class="level2">
-<h2 class="anchored" data-anchor-id="live-streaming-3">Live Streaming</h2>
+<section id="rtmp" class="level2">
+<h2 class="anchored" data-anchor-id="rtmp">RTMP</h2>
 <ul>
-<li>When a viewer visits a live stream
+<li>Real-Time Messaging Protocol
 <ul>
-<li>The browsers asks for the latest index file and starts requesting content</li>
-<li>When it nears the end of that index file, request a new index file</li>
-<li>Repeat until the stream ends</li>
+<li>Runs over TCP. Default port 1935</li>
+<li>The streamer pushes a continuous stream of video and audio to the server</li>
 </ul></li>
-<li>When a viewer visits the VOD of a past live-stream
+<li>Streaming software (OBS, ffmpeg, phones, consoles) speaks RTMP</li>
+<li>Browsers don't
 <ul>
-<li>Serve an index file for then entire stream</li>
-<li>No different than watching the stream live</li>
+<li>Viewers need HLS, served over HTTP</li>
+<li>HTTP also works with caches and CDNs, which is how big platforms reach millions of viewers</li>
+</ul></li>
+<li>RTMP is used for ingest: Getting the stream into your system</li>
+</ul>
+</section>
+<section id="the-ingest-server" class="level2">
+<h2 class="anchored" data-anchor-id="the-ingest-server">The Ingest Server</h2>
+<ul>
+<li>Receives RTMP streams and turns them into HLS
+<ul>
+<li>Writes a playlist and segments to disk for each stream</li>
+<li>Keeps updating them as long as the stream is live</li>
+</ul></li>
+<li>Asks your app whether each stream is allowed</li>
+<li>For the HW, you don't write this
+<ul>
+<li>Use the <code>tiangolo/nginx-rtmp</code> image</li>
+<li>Same idea as using the <code>postgres</code> image instead of writing a database</li>
+</ul></li>
+<li>Your job is everything around it
+<ul>
+<li>Stream keys, deciding who can stream, serving streams to viewers, the front end</li>
 </ul></li>
 </ul>
 </section>
-<section id="live-streaming-4" class="level2">
-<h2 class="anchored" data-anchor-id="live-streaming-4">Live Streaming</h2>
+</section>
+<section id="the-ingest-server-1" class="level1">
+<h1>The Ingest Server</h1>
+<section id="nginx.conf" class="level2">
+<h2 class="anchored" data-anchor-id="nginx.conf">nginx.conf</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
-<li>Since the transcoding process of the ingest server takes some time:
+<li>The ingest server is configured with an <code>nginx.conf</code> file</li>
+<li>Copy it into the container at <code>/etc/nginx/nginx.conf</code></li>
+</ul>
+</div><div class="column" style="width:60%;">
+<pre class="nginx"><code>events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+</section>
+<section id="nginx.conf-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="nginx.conf-1">nginx.conf</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
-<li>The stream is not truly live</li>
+<li>Accept RTMP streams on port 1935 for the application named <code>live</code></li>
+<li>Streamers enter:
+<ul>
+<li>Server: <code>rtmp://localhost:1935/live</code></li>
+<li>Stream Key: Their key</li>
 </ul></li>
-<li>The streamed content is downloaded via TCP/HTTP
+<li>The stream key becomes the name of the stream</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>events {}</span>
+<span id="cb3-2"><a href="#cb3-2"></a>rtmp {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    server {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        listen 1935;</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        application live {</span>
+<span id="cb3-6"><a href="#cb3-6"></a>            live on;</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>            # Called when a stream starts and ends</span>
+<span id="cb3-9"><a href="#cb3-9"></a>            on_publish http://app:8080/api/live/start;</span>
+<span id="cb3-10"><a href="#cb3-10"></a>            on_publish_done http://app:8080/api/live/end;</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a>            # Write each stream as HLS to /hls/{stream_key}/index.m3u8</span>
+<span id="cb3-13"><a href="#cb3-13"></a>            hls on;</span>
+<span id="cb3-14"><a href="#cb3-14"></a>            hls_path /hls;</span>
+<span id="cb3-15"><a href="#cb3-15"></a>            hls_nested on;</span>
+<span id="cb3-16"><a href="#cb3-16"></a>        }</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    }</span>
+<span id="cb3-18"><a href="#cb3-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="nginx.conf-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="nginx.conf-2">nginx.conf</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
-<li>Reliable. You will not miss a second of video</li>
+<li>When a stream starts, the ingest server sends a request to your app</li>
+<li><code>app</code> is the name of your app's service in your compose file
+<ul>
+<li>Service names are hostnames between containers</li>
 </ul></li>
-<li>If the delay is unacceptable (eg. Zoom):
+<li>Change the paths to the endpoints you choose</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>events {}</span>
+<span id="cb4-2"><a href="#cb4-2"></a>rtmp {</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    server {</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        listen 1935;</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        application live {</span>
+<span id="cb4-6"><a href="#cb4-6"></a>            live on;</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>            # Called when a stream starts and ends</span>
+<span id="cb4-9"><a href="#cb4-9"></a>            on_publish http://app:8080/api/live/start;</span>
+<span id="cb4-10"><a href="#cb4-10"></a>            on_publish_done http://app:8080/api/live/end;</span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a>            # Write each stream as HLS to /hls/{stream_key}/index.m3u8</span>
+<span id="cb4-13"><a href="#cb4-13"></a>            hls on;</span>
+<span id="cb4-14"><a href="#cb4-14"></a>            hls_path /hls;</span>
+<span id="cb4-15"><a href="#cb4-15"></a>            hls_nested on;</span>
+<span id="cb4-16"><a href="#cb4-16"></a>        }</span>
+<span id="cb4-17"><a href="#cb4-17"></a>    }</span>
+<span id="cb4-18"><a href="#cb4-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="nginx.conf-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="nginx.conf-3">nginx.conf</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
-<li>Use UDP instead of TCP</li>
-<li>Do not transcode</li>
-<li>Accept dropped packets as a part of life</li>
+<li>Write every live stream as HLS in <code>/hls</code>
+<ul>
+<li>Inside the ingest container</li>
+</ul></li>
+<li><code>hls_nested</code>: Each stream gets its own directory named after its stream key
+<ul>
+<li><code>/hls/{stream_key}/index.m3u8</code></li>
+<li><code>/hls/{stream_key}/0.ts</code>, <code>1.ts</code>, ...</li>
 </ul></li>
 </ul>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>events {}</span>
+<span id="cb5-2"><a href="#cb5-2"></a>rtmp {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    server {</span>
+<span id="cb5-4"><a href="#cb5-4"></a>        listen 1935;</span>
+<span id="cb5-5"><a href="#cb5-5"></a>        application live {</span>
+<span id="cb5-6"><a href="#cb5-6"></a>            live on;</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a>            # Called when a stream starts and ends</span>
+<span id="cb5-9"><a href="#cb5-9"></a>            on_publish http://app:8080/api/live/start;</span>
+<span id="cb5-10"><a href="#cb5-10"></a>            on_publish_done http://app:8080/api/live/end;</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a>            # Write each stream as HLS to /hls/{stream_key}/index.m3u8</span>
+<span id="cb5-13"><a href="#cb5-13"></a>            hls on;</span>
+<span id="cb5-14"><a href="#cb5-14"></a>            hls_path /hls;</span>
+<span id="cb5-15"><a href="#cb5-15"></a>            hls_nested on;</span>
+<span id="cb5-16"><a href="#cb5-16"></a>        }</span>
+<span id="cb5-17"><a href="#cb5-17"></a>    }</span>
+<span id="cb5-18"><a href="#cb5-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="on_publish" class="level2">
+<h2 class="anchored" data-anchor-id="on_publish">on_publish</h2>
+<ul>
+<li>When a streamer connects, the ingest server sends a POST request to your app</li>
+<li>The body is url-encoded
+<ul>
+<li>Same format as the HTML forms from HW2</li>
+<li>Several fields. <code>name</code> is the stream key the streamer entered</li>
+</ul></li>
+</ul>
+<pre class="http"><code>POST /api/live/start HTTP/1.1
+Host: app:8080
+Content-Type: application/x-www-form-urlencoded
+
+app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;type=live</code></pre>
+<ul>
+<li>Respond <code>200 OK</code> to allow the stream</li>
+<li>Respond <code>403 Forbidden</code> to reject it. The ingest server disconnects the streamer</li>
+</ul>
+</section>
+<section id="on_publish-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="on_publish-1">on_publish</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// POST /api/live/start (Called by the ingest server)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>form <span class="op">:=</span> parseURLEncoded<span class="op">(</span>request<span class="op">.</span>Body<span class="op">)</span>          <span class="co">// Your code from HW2</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>user<span class="op">,</span> found <span class="op">:=</span> findUserByStreamKey<span class="op">(</span>form<span class="op">[</span><span class="st">"name"</span><span class="op">])</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">!</span>found <span class="op">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    sendResponse<span class="op">(</span>connection<span class="op">,</span> <span class="dv">403</span><span class="op">)</span>              <span class="co">// Reject: Streamer is disconnected</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>addLiveStream<span class="op">(</span>user<span class="op">,</span> form<span class="op">[</span><span class="st">"name"</span><span class="op">])</span>              <span class="co">// Track active streams</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sendResponse<span class="op">(</span>connection<span class="op">,</span> <span class="dv">200</span><span class="op">)</span>                  <span class="co">// Allow the stream</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Any stream key that doesn't belong to a user must be rejected</li>
+<li><code>on_publish_done</code> sends the same format when the stream ends
+<ul>
+<li>Remove the stream from your active streams</li>
+</ul></li>
+<li>Multiple streams can start at the same time
+<ul>
+<li>If you track active streams in memory, protect them with a mutex</li>
+</ul></li>
+</ul>
+</section>
+<section id="who-calls-these-endpoints" class="level2">
+<h2 class="anchored" data-anchor-id="who-calls-these-endpoints">Who Calls These Endpoints?</h2>
+<ul>
+<li>The ingest server, not a browser
+<ul>
+<li>No Same-Origin Policy or CORS concerns</li>
+</ul></li>
+<li>Anyone can still send requests to them
+<ul>
+<li>An attacker could send <code>name=&lt;guess&gt;</code> to check whether a stream key is valid</li>
+<li>With at least 80 bits of entropy, guessing is hopeless</li>
+</ul></li>
+<li>Never trust the request to identify a user by anything other than the stream key</li>
+</ul>
+</section>
+<section id="live-playlists" class="level2">
+<h2 class="anchored" data-anchor-id="live-playlists">Live Playlists</h2>
+<ul>
+<li>Live HLS playlists change while you watch
+<ul>
+<li>New segments are added every few seconds</li>
+<li>Old segments are removed from the playlist and deleted</li>
+<li>No <code>#EXT-X-ENDLIST</code> until the stream is over</li>
+</ul></li>
+<li>The player re-requests the playlist every few seconds to find new segments</li>
+</ul>
+<pre class="text"><code>#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:41
+#EXT-X-TARGETDURATION:5
+#EXTINF:5.000,
+41.ts
+#EXTINF:5.000,
+42.ts
+#EXTINF:5.000,
+43.ts</code></pre>
+</section>
+<section id="live-playlists-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="live-playlists-1">Live Playlists</h2>
+<ul>
+<li><span class="yellow">Caching</span>: The playlist changes every few seconds
+<ul>
+<li>Your caching headers from HW1 might cause browsers to reuse an old playlist</li>
+<li>Send <code>Cache-Control: no-store</code> for live playlists</li>
+</ul></li>
+<li>Segments never change once written
+<ul>
+<li>Caching them is fine</li>
+</ul></li>
+<li>One rendition per stream
+<ul>
+<li>Whatever quality the streamer sends. No ABR for this HW</li>
+</ul></li>
+</ul>
+</section>
+<section id="why-the-delay" class="level2">
+<h2 class="anchored" data-anchor-id="why-the-delay">Why the Delay?</h2>
+<ul>
+<li>The ingest server can't write a segment until it has several seconds of video</li>
+<li>The player downloads a few segments before it starts playing
+<ul>
+<li>So it doesn't stall if the next segment is slow</li>
+</ul></li>
+<li>Plus the time to encode, upload, and download</li>
+<li>Result: Viewers are commonly 10-30 seconds behind the streamer
+<ul>
+<li>Don't panic if your stream takes a while to appear</li>
+</ul></li>
+<li>If that delay is unacceptable (eg. Video calls)
+<ul>
+<li>Use UDP instead of TCP, skip the segments, accept dropped packets</li>
+<li>More on this with WebRTC</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="multiple-containers" class="level1">
+<h1>Multiple Containers</h1>
+<section id="three-containers" class="level2">
+<h2 class="anchored" data-anchor-id="three-containers">Three Containers</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<ul>
+<li>Your app now has three services
+<ul>
+<li><code>app</code>: Your Go server. Port 8080</li>
+<li><code>db</code>: Your database</li>
+<li><code>ingest</code>: nginx-rtmp. Port 1935 for streamers</li>
+</ul></li>
+<li><code>docker compose up</code> must start all three</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./ingest</span><span class="co">    # Has a Dockerfile and nginx.conf</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"1935:1935"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> app</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="the-ingest-container" class="level2">
+<h2 class="anchored" data-anchor-id="the-ingest-container">The Ingest Container</h2>
+<ul>
+<li>Build the ingest image from its own Dockerfile in a subdirectory</li>
+<li>Start from the nginx-rtmp image and add your config</li>
+</ul>
+<pre class="text"><code>ingest/
+├── Dockerfile
+└── nginx.conf</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> tiangolo/nginx-rtmp</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> nginx.conf /etc/nginx/nginx.conf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>build: ./ingest</code> in your compose file</li>
+</ul>
+</section>
+<section id="startup-order" class="level2">
+<h2 class="anchored" data-anchor-id="startup-order">Startup Order</h2>
+<ul>
+<li>nginx looks up the hostname <code>app</code> when it starts
+<ul>
+<li>If your app's container doesn't exist yet, the ingest server fails</li>
+</ul></li>
+<li><code>depends_on</code> starts your app's container first</li>
+<li><code>depends_on</code> doesn't wait until your server is ready
+<ul>
+<li>Your Go server starts quickly, so this is usually fine</li>
+</ul></li>
+<li>For more assurance, add a <code>healthcheck</code> to your app and use <code>condition: service_healthy</code>
+<ul>
+<li>The same pattern you may have used to wait for your database</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="docker-volumes" class="level1">
+<h1>Docker Volumes</h1>
+<section id="containers-have-their-own-files" class="level2">
+<h2 class="anchored" data-anchor-id="containers-have-their-own-files">Containers Have Their Own Files</h2>
+<ul>
+<li>Each container has its own filesystem</li>
+<li>The ingest server writes streams to <code>/hls</code> in the ingest container
+<ul>
+<li>Your app can't see them</li>
+</ul></li>
+<li>Files written inside a container are lost when the container is recreated
+<ul>
+<li><code>docker compose up --force-recreate</code></li>
+<li>Uploaded avatars and videos disappear</li>
+</ul></li>
+<li>We need storage that lives outside the container</li>
+</ul>
+</section>
+<section id="volumes" class="level2">
+<h2 class="anchored" data-anchor-id="volumes">Volumes</h2>
+<ul>
+<li>A volume maps storage outside the container to a directory inside the container</li>
+<li>Mount the same storage into two containers and they share the files</li>
+<li>Bind mount: A directory on your machine (<code>./hls</code>)
+<ul>
+<li>You can see the files on your machine. Great for debugging</li>
+</ul></li>
+<li>Named volume: Storage managed by Docker (<code>uploads</code>)</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./hls:/hls</span><span class="co">                  # Host ./hls appears at /hls in ingest</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./hls:/app/hls</span><span class="co">              # Same host directory, appears at /app/hls in app</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> uploads:/app/public/uploads</span><span class="co"> # Named volume for avatars and videos</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">uploads</span><span class="kw">:</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="volume-gotchas" class="level2">
+<h2 class="anchored" data-anchor-id="volume-gotchas">Volume Gotchas</h2>
+<ul>
+<li><code>--renew-anon-volumes</code> deletes anonymous volumes when testing and grading
+<ul>
+<li>Bind mounts and named volumes persist</li>
+</ul></li>
+<li>A volume hides what the image had at that path
+<ul>
+<li>Mount <code>./uploads</code> at <code>/app/public</code> and your front end disappears</li>
+<li>Mount only the directories that hold uploaded or streamed files</li>
+</ul></li>
+<li>Directories must exist before you write to them
+<ul>
+<li>Create them in your code at startup (eg. <code>os.MkdirAll</code>)</li>
+</ul></li>
+<li>Don't submit uploaded videos or HLS files with your HW
+<ul>
+<li>Your code must still work when those directories start empty</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="stream-keys" class="level1">
+<h1>Stream Keys</h1>
+<section id="stream-keys-1" class="level2">
+<h2 class="anchored" data-anchor-id="stream-keys-1">Stream Keys</h2>
+<ul>
+<li>A stream key is a secret that lets someone stream as a user
+<ul>
+<li>Anyone with the key can stream as that user</li>
+<li>Treat it like a password</li>
+</ul></li>
+<li>Every user gets their own key</li>
+<li>Generate it randomly with at least 80 bits of entropy
+<ul>
+<li>Use <code>crypto/rand</code>. Never <code>math/rand</code></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>keyBytes <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">16</span><span class="op">)</span>          <span class="co">// 128 bits</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>_<span class="op">,</span> err <span class="op">:=</span> rand<span class="op">.</span>Read<span class="op">(</span>keyBytes<span class="op">)</span>         <span class="co">// crypto/rand</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>streamKey <span class="op">:=</span> hex<span class="op">.</span>EncodeToString<span class="op">(</span>keyBytes<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="showing-the-key" class="level2">
+<h2 class="anchored" data-anchor-id="showing-the-key">Showing the Key</h2>
+<ul>
+<li>Only the owner may ever see their stream key</li>
+<li>Show it somewhere obvious, like the settings page
+<ul>
+<li>Requires front end changes</li>
+<li>Return it only to the logged in user it belongs to</li>
+</ul></li>
+<li>Never include it in any response other users can see
+<ul>
+<li>eg. The active streams list, chat messages, user search</li>
+</ul></li>
+<li>Unlike passwords, you can't store only a hash
+<ul>
+<li>You need to show the key to its owner</li>
+</ul></li>
+<li>Real apps let users reset their key if it leaks</li>
+</ul>
+</section>
+<section id="dont-leak-the-key" class="level2">
+<h2 class="anchored" data-anchor-id="dont-leak-the-key">Don't Leak the Key</h2>
+<ul>
+<li>The ingest server names each stream's directory after its stream key
+<ul>
+<li><code>/hls/f3a9c2e17b4d80a65e2f1c9d3b7a4e08/index.m3u8</code></li>
+</ul></li>
+<li>If you host that directory as-is, the key is in the URL of every playlist and segment
+<ul>
+<li>Visible in the Network tab of every viewer</li>
+<li><span class="yellow">Any viewer could stream as that user</span></li>
+</ul></li>
+<li>The key must never appear in any URL, playlist, or segment path requested by viewers</li>
+<li>Host each stream at a public path instead
+<ul>
+<li>eg. <code>/live/{username}/index.m3u8</code></li>
+<li>Your server maps the public name to the stream key</li>
+</ul></li>
+</ul>
+</section>
+<section id="serving-a-stream" class="level2">
+<h2 class="anchored" data-anchor-id="serving-a-stream">Serving a Stream</h2>
+<ul>
+<li>The playlist refers to segments by relative paths (<code>41.ts</code>)
+<ul>
+<li>The browser requests <code>/live/{username}/41.ts</code></li>
+<li>The key is never sent to the browser</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GET /live/{username}/{file}</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>username<span class="op">,</span> file <span class="op">:=</span> parseLivePath<span class="op">(</span>request<span class="op">.</span>Path<span class="op">)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>streamKey<span class="op">,</span> live <span class="op">:=</span> activeStreamKey<span class="op">(</span>username<span class="op">)</span>   <span class="co">// Server-side lookup only</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">!</span>live <span class="op">||</span> <span class="op">!</span>isPlaylistOrSegment<span class="op">(</span>file<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    send404<span class="op">(</span>connection<span class="op">)</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>serveFile<span class="op">(</span>connection<span class="op">,</span> <span class="st">"hls/"</span><span class="op">+</span>streamKey<span class="op">+</span><span class="st">"/"</span><span class="op">+</span>file<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Only allow <code>index.m3u8</code> and segment names
+<ul>
+<li>Path traversal applies here too</li>
+</ul></li>
+<li>Viewers only ever connect to port 8080</li>
+</ul>
+</section>
+</section>
+<section id="the-front-end" class="level1">
+<h1>The Front End</h1>
+<section id="watching-live-streams" class="level2">
+<h2 class="anchored" data-anchor-id="watching-live-streams">Watching Live Streams</h2>
+<ul>
+<li>Viewers need to find the streams that are live
+<ul>
+<li>Keep a list of active streams from <code>on_publish</code> and <code>on_publish_done</code></li>
+<li>Add an endpoint or page to list them</li>
+<li>Or add them to the VideoTube list with an appropriate title</li>
+</ul></li>
+<li>Playing a live stream is the same as playing any other HLS video
+<ul>
+<li>hls.js sees there is no <code>#EXT-X-ENDLIST</code> and keeps refreshing the playlist</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hls <span class="op">=</span> <span class="kw">new</span> <span class="fu">Hls</span>()<span class="op">;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>hls<span class="op">.</span><span class="fu">loadSource</span>(<span class="vs">`/live/</span><span class="sc">${</span>username<span class="sc">}</span><span class="vs">/index.m3u8`</span>)<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>hls<span class="op">.</span><span class="fu">attachMedia</span>(videoPlayer)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>When a stream ends, it must disappear from the list</li>
+</ul>
+</section>
+</section>
+<section id="testing" class="level1">
+<h1>Testing</h1>
+<section id="streaming-with-obs" class="level2">
+<h2 class="anchored" data-anchor-id="streaming-with-obs">Streaming with OBS</h2>
+<ul>
+<li>Settings → Stream → Service: Custom
+<ul>
+<li>Server: <code>rtmp://localhost:1935/live</code></li>
+<li>Stream Key: The key from your settings page</li>
+</ul></li>
+<li>Or stream a video file with ffmpeg (Less fun)</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ffmpeg</span> <span class="at">-re</span> <span class="at">-i</span> video.mp4 <span class="at">-c:v</span> libx264 <span class="at">-preset</span> veryfast <span class="at">-c:a</span> aac <span class="at">-f</span> flv rtmp://localhost:1935/live/{stream_key}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="debugging-a-stream" class="level2">
+<h2 class="anchored" data-anchor-id="debugging-a-stream">Debugging a Stream</h2>
+<ul>
+<li>Follow the stream through the pipeline</li>
+<li>Did the ingest server receive it?
+<ul>
+<li><code>docker compose logs ingest</code></li>
+</ul></li>
+<li>Did your <code>on_publish</code> endpoint respond with a 200?</li>
+<li>Are files appearing in <code>./hls/{stream_key}/</code> on your machine?
+<ul>
+<li>The bind mount makes this easy to check</li>
+</ul></li>
+<li>Can you request the playlist from your app?
+<ul>
+<li>Correct MIME type? <code>Cache-Control: no-store</code>?</li>
+</ul></li>
+<li>Is the stream in your active streams list?</li>
+</ul>
+</section>
+<section id="demo" class="level2">
+<h2 class="anchored" data-anchor-id="demo">Demo</h2>
 
 
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
-<li><a href="https://datatracker.ietf.org/doc/html/rfc8216">RFC8216 - HLS</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP">MPEG-DASH [Wikipedia]</a></li>
-<li><a href="https://videojs.com/getting-started">video.js</a></li>
+<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives">nginx-rtmp Directives</a></li>
+<li><a href="https://hub.docker.com/r/tiangolo/nginx-rtmp/">tiangolo/nginx-rtmp</a></li>
+<li><a href="https://docs.docker.com/engine/storage/volumes/">Docker Volumes</a></li>
+<li><a href="https://obsproject.com">OBS Studio</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->

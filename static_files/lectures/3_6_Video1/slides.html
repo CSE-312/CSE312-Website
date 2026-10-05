@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8dcd8563ea6803ab7cbb3d71ca5772e1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.34">
 
-  <title>CSE312 Lectures – Video Processing</title>
+  <title>CSE312 Lectures – Video - ABR and Background Jobs</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -28,8 +28,74 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -142,15 +208,17 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Video Processing</h1>
+  <h1 class="title">Video - ABR and Background Jobs</h1>
   <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="video" class="slide level2">
-<h2>Video</h2>
+<section>
+<section id="video-uploads" class="title-slide slide level1 center">
+<h1>Video Uploads</h1>
+
 </section>
 <section id="uploading-video" class="slide level2">
 <h2>Uploading Video</h2>
@@ -163,258 +231,719 @@
 <ul>
 <li>The same exact way as images!</li>
 <li>Files are just bytes</li>
-<li>Images and videos are handled as bytes</li>
+</ul></li>
+<li>HW3 upload form: A multipart request with parts named "title", "description", and "video"
+<ul>
+<li>Parse the parts, save the video to disk, store its path in your database</li>
+<li>Host it with <code>Content-Type: video/mp4</code> and support Range requests</li>
 </ul></li>
 </ul>
 </section>
-<section id="displaying-video" class="slide level2">
-<h2>Displaying Video</h2>
+<section id="the-problem" class="slide level2">
+<h2>The Problem</h2>
 <ul>
-<li>How do we display a video on our page?
+<li>You host a video on your web app</li>
+<li>You want high quality so you host a large 1080p mp4
 <ul>
-<li>Not the same as images (Can't use the <code>&lt;img&gt;</code> element)</li>
+<li>The entire file is 100's of MB</li>
 </ul></li>
-<li>Use the <code>&lt;video&gt;</code> element!</li>
-</ul>
-<pre><code>&lt;video width="400" controls autoplay muted&gt;
-&lt;source src="space.mp4" type="video/mp4"&gt;
-&lt;/video&gt;</code></pre>
-
-<img data-src="assets/slide03-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="displaying-video-1" class="slide level2">
-<h2>Displaying Video</h2>
+<li>Range requests let users start watching without downloading the entire file</li>
+<li>But every user gets the same quality
 <ul>
-<li>Can add a variety of attributes to the video
+<li>Someone visits your site using eduroam on a bad day..</li>
+<li>The video buffers, stutters, or doesn't play at all</li>
+</ul></li>
+<li>We need a solution that:
 <ul>
-<li>controls: displays the control buttons for the user</li>
-<li>autoplay: plays on page load [if allowed by the browser]</li>
-<li>muted: mute the audio (Required in Chromium for autoplay)</li>
+<li>Allows users with slow connections to enjoy your content</li>
+<li>Delivers high quality to users with high-speed Internet</li>
 </ul></li>
 </ul>
-<pre><code>&lt;video width="400" controls autoplay muted&gt;
-&lt;source src="space.mp4" type="video/mp4"&gt;
-&lt;/video&gt;</code></pre>
+</section></section>
+<section>
+<section id="adaptive-bit-rate-streaming" class="title-slide slide level1 center">
+<h1>Adaptive Bit-Rate Streaming</h1>
 
-<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="displaying-video-2" class="slide level2">
-<h2>Displaying Video</h2>
-<ul>
-<li>Specify the source file in a source element</li>
-<li>If the MIME type is omitted, the browser might be able to sniff the type (Don't rely on this)</li>
-<li>This element will request "space.mp4" just like the src of an img</li>
-</ul>
-<pre><code>&lt;video width="400" controls autoplay muted&gt;
-&lt;source src="space.mp4" type="video/mp4"&gt;
-&lt;/video&gt;</code></pre>
-
-<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="displaying-video-3" class="slide level2">
-<h2>Displaying Video</h2>
-<ul>
-<li>Using the src attribute in the video element is allowed
-<ul>
-<li>This is discouraged</li>
-<li>Cannot specify MIME type</li>
-<li>Can only have one source</li>
-</ul></li>
-</ul>
-<pre><code>&lt;video width="400" src="space.mp4" controls autoplay muted&gt;
-&lt;/video&gt;</code></pre>
-
-<img data-src="assets/slide06-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="displaying-video-4" class="slide level2">
-<h2>Displaying Video</h2>
-<ul>
-<li>Using the source element allows us to specify multiple formats
-<ul>
-<li>Browser will use the first source in the list that it supports</li>
-<li>Most browsers do not support mpd or m3u8 and will play the mp4</li>
-</ul></li>
-<li>Add text that is displayed for very old browsers that don't support the HTML5 video element</li>
-</ul>
-<pre><code>&lt;video width="400" src="space.mp4" controls autoplay muted&gt;
-&lt;/video&gt;</code></pre>
-<pre><code>&lt;video width="400" controls autoplay muted&gt;
-&lt;source src="space.mpd" type="application/x-mpegURL"&gt;
-&lt;source src="space.m3u8" type="video/hls"&gt;
-&lt;source src="space.mp4" type="video/mp4"&gt;
-Your browser does not support video playback
-&lt;/video&gt;</code></pre>
-
-<img data-src="assets/slide07-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="displaying-video-5" class="slide level2">
-<h2>Displaying Video</h2>
-<ul>
-<li>Expectation for HW3 when a video is uploaded:
-<ul>
-<li>Save the video to disk and store the filename in your DB</li>
-<li>Host the video at a path matching the filename</li>
-<li>The frontend will see the filename, request the video, then add the video bytes to a video element</li>
-</ul></li>
-</ul>
-<pre><code>&lt;video width="400" controls autoplay muted&gt;
-&lt;source src="space.mp4" type="video/mp4"&gt;
-&lt;/video&gt;</code></pre>
-
-<img data-src="assets/slide08-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="file-formats" class="slide level2">
-<h2>File Formats</h2>
 </section>
-<section id="file-formats-1" class="slide level2">
-<h2>File Formats</h2>
+<section id="segments" class="slide level2">
+<h2>Segments</h2>
 <ul>
-<li>How can we find the type of file that was uploaded?</li>
-<li>Check the file extension?</li>
-<li>File extension pros:
+<li>Split the video into many short files called segments
 <ul>
-<li>Helpful for us humans to identify the type</li>
-<li>Let's our OS recommend which program to use to open the file</li>
+<li>Typically ~2-10 seconds of playback each</li>
 </ul></li>
-<li>File extensions cons:
+<li>The browser downloads one segment at a time
 <ul>
-<li>They are part of the filename and can be set to anything by renaming the file (Or removed entirely)</li>
-<li>They are not part of the file itself (No filename when working with only the content of the file)</li>
+<li>Only a few seconds need to be downloaded before playback starts</li>
+<li>If the user skips around in the video, only request the segment they skipped to</li>
+<li>If the user leaves the page without finishing the video, the rest is never downloaded</li>
+</ul></li>
+<li>Each segment is a small, regular file
+<ul>
+<li>No Range requests needed</li>
 </ul></li>
 </ul>
 </section>
-<section id="file-formats-2" class="slide level2">
-<h2>File Formats</h2>
+<section id="adaptive-bit-rate" class="slide level2">
+<h2>Adaptive Bit-Rate</h2>
 <ul>
-<li>How can we find the type of file that was uploaded?</li>
-<li>Check the Content-Type of the part of the request?</li>
-<li>The browser might use the file extension to determine the Content-Type of an uploaded file
+<li>Instead of hosting a single video at a single resolution
 <ul>
-<li>Cannot be fully trusted</li>
+<li>Host multiple versions of the same video at different resolutions</li>
+<li>Each resolution requires a different bit-rate to stream</li>
+</ul></li>
+<li>Create segments for every version</li>
+<li>With the video split into ~2-10 second segments
+<ul>
+<li>The browser can switch to a different version at any segment</li>
+<li>It chooses the highest bit-rate that fits its current bandwidth</li>
 </ul></li>
 </ul>
 </section>
-<section id="file-signatures" class="slide level2">
-<h2>File Signatures</h2>
+<section id="adaptive-bit-rate-1" class="slide level2 unnumbered unlisted">
+<h2>Adaptive Bit-Rate</h2>
 <ul>
-<li>The first bytes of each file contain a signature
+<li>The browser adapts the requested bit-rate based on current conditions</li>
+<li>Limited interruption for the user, though quality can change over time</li>
+</ul>
+<div style="height: 1.5em">
+
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Segment</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bandwidth</td>
+<td>Fast</td>
+<td>Fast</td>
+<td>Drops</td>
+<td>Slow</td>
+<td>Slow</td>
+<td>Recovers</td>
+<td>Fast</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>1080p</td>
+<td>1080p</td>
+<td>480p</td>
+<td>potato</td>
+<td>potato</td>
+<td>480p</td>
+<td>1080p</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hls-vs-mpeg-dash" class="slide level2">
+<h2>HLS vs MPEG-DASH</h2>
 <ul>
-<li>Identifies the type of the file</li>
-<li>Reliable(ish) since it's part of the content of the file itself instead of the filename</li>
+<li>Two major protocols for segmented, adaptive bit-rate video
+<ul>
+<li>Both use an index file listing the segments. The browser requests segments as it needs them</li>
 </ul></li>
-<li>When the file extension can't be trusted
+<li>HTTP Live Streaming (HLS) - Developed by Apple
 <ul>
-<li>Read the first bytes of the file</li>
-<li>Lookup the signature of these bytes</li>
+<li>Index files are <code>.m3u8</code> playlists. Segments are commonly <code>.ts</code> files</li>
+<li>Wide-spread support. Spec freely available in RFC8216</li>
 </ul></li>
-<li>Common file types will always start with the same bytes
+<li>Dynamic Adaptive Streaming over HTTP (MPEG-DASH) - Developed by MPEG
 <ul>
-<li>eg. JPEG images will start with
-<ul>
-<li>b'10JFIF'</li>
+<li>Index file is an XML <code>.mpd</code> file</li>
+<li>Not supported on Apple devices</li>
+<li>Spec published as ISO/IEC 23009-1 - Available for $245 (!)</li>
 </ul></li>
-</ul></li>
-<li>Find the signatures for each file type you support and determine the MIME type matching the signature</li>
+<li>We'll use HLS</li>
 </ul>
 </section>
-<section id="video-processing" class="slide level2">
-<h2>Video Processing</h2>
+<section id="hls-files" class="slide level2">
+<h2>HLS Files</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>A master playlist lists every version (rendition) of the video</li>
+<li>Each rendition has its own media playlist listing its segments</li>
+<li>Each segment is a few seconds of video and audio</li>
+<li>Your server hosts all of these files</li>
+<li>The browser only needs the URL of the master playlist</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>public/videos/abc123/</span>
+<span id="cb1-2"><a></a>├── master.m3u8</span>
+<span id="cb1-3"><a></a>├── 0/</span>
+<span id="cb1-4"><a></a>│   ├── index.m3u8</span>
+<span id="cb1-5"><a></a>│   ├── index0.ts</span>
+<span id="cb1-6"><a></a>│   ├── index1.ts</span>
+<span id="cb1-7"><a></a>│   └── index2.ts</span>
+<span id="cb1-8"><a></a>└── 1/</span>
+<span id="cb1-9"><a></a>    ├── index.m3u8</span>
+<span id="cb1-10"><a></a>    ├── index0.ts</span>
+<span id="cb1-11"><a></a>    ├── index1.ts</span>
+<span id="cb1-12"><a></a>    └── index2.ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</section>
+<section id="master-playlist" class="slide level2">
+<h2>Master Playlist</h2>
+<ul>
+<li><code>master.m3u8</code> lists each rendition
+<ul>
+<li>Its bandwidth, resolution, and codecs</li>
+<li>The path to its media playlist, relative to this file</li>
+</ul></li>
+<li>The browser chooses a rendition based on its bandwidth</li>
+</ul>
+<div class="sourceCode" id="cb2" data-code-line-numbers="3-4,6-7"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>#EXTM3U</span>
+<span id="cb2-2"><a></a>#EXT-X-VERSION:3</span>
+<span id="cb2-3"><a></a>#EXT-X-STREAM-INF:BANDWIDTH=2825900,RESOLUTION=1280x720,CODECS="avc1.f4001f,mp4a.40.2"</span>
+<span id="cb2-4"><a></a>0/index.m3u8</span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>#EXT-X-STREAM-INF:BANDWIDTH=955900,RESOLUTION=640x360,CODECS="avc1.f4001e,mp4a.40.2"</span>
+<span id="cb2-7"><a></a>1/index.m3u8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="media-playlist" class="slide level2">
+<h2>Media Playlist</h2>
+<ul>
+<li><code>1/index.m3u8</code> lists the segments of the 360p rendition
+<ul>
+<li><code>#EXTINF</code> is the duration of the next segment in seconds</li>
+<li><code>#EXT-X-ENDLIST</code> means there are no more segments</li>
+</ul></li>
+<li>Segment paths are relative to the playlist</li>
+</ul>
+<div class="sourceCode" id="cb3" data-code-line-numbers="6-11"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>#EXTM3U</span>
+<span id="cb3-2"><a></a>#EXT-X-VERSION:3</span>
+<span id="cb3-3"><a></a>#EXT-X-TARGETDURATION:8</span>
+<span id="cb3-4"><a></a>#EXT-X-MEDIA-SEQUENCE:0</span>
+<span id="cb3-5"><a></a>#EXT-X-PLAYLIST-TYPE:VOD</span>
+<span id="cb3-6"><a></a>#EXTINF:8.333333,</span>
+<span id="cb3-7"><a></a>index0.ts</span>
+<span id="cb3-8"><a></a>#EXTINF:8.333333,</span>
+<span id="cb3-9"><a></a>index1.ts</span>
+<span id="cb3-10"><a></a>#EXTINF:3.333333,</span>
+<span id="cb3-11"><a></a>index2.ts</span>
+<span id="cb3-12"><a></a>#EXT-X-ENDLIST</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="watching-an-hls-video" class="slide level2">
+<h2>Watching an HLS Video</h2>
+<ul>
+<li>The browser requests each file as it needs it</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a></a>GET /public/videos/abc123/master.m3u8          Pick a rendition</span>
+<span id="cb4-2"><a></a>GET /public/videos/abc123/1/index.m3u8         Start with 360p</span>
+<span id="cb4-3"><a></a>GET /public/videos/abc123/1/index0.ts</span>
+<span id="cb4-4"><a></a>GET /public/videos/abc123/1/index1.ts          Bandwidth looks good</span>
+<span id="cb4-5"><a></a>GET /public/videos/abc123/0/index.m3u8         Switch to 720p</span>
+<span id="cb4-6"><a></a>GET /public/videos/abc123/0/index2.ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>These are all normal GET requests for files
+<ul>
+<li>Your server doesn't need to know anything about HLS to host them</li>
+<li>Just the right MIME types</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="converting-video" class="title-slide slide level1 center">
+<h1>Converting Video</h1>
+
 </section>
 <section id="media-processing" class="slide level2">
 <h2>Media Processing</h2>
 <ul>
 <li>You do not always want to store user uploaded media as-is
 <ul>
-<li>Users can upload anything</li>
-<li>What they upload might break your server</li>
-<li>Never trust your users!</li>
+<li>Users can upload anything. Never trust your users!</li>
+<li>Even your most trustworthy users will upload large media files</li>
 </ul></li>
-<li>Even your most trustworthy users will upload large media files
-<ul>
-<li>High storage cost</li>
-<li>Slower load times</li>
-</ul></li>
-</ul>
-</section>
-<section id="media-processing-1" class="slide level2">
-<h2>Media Processing</h2>
-<ul>
 <li>Process the media when it's uploaded
 <ul>
-<li>Convert/Compress the image/video</li>
-<li>Only store and serve the converted files</li>
-<li>Limits storage costs when compressing</li>
-<li>All media stored in the same format</li>
+<li>Convert/Compress the video</li>
+<li>Store and serve the converted files</li>
+<li>All media stored in formats you choose</li>
 </ul></li>
-<li>*Typically also limit the file size on the front end
-<ul>
-<li>Can always be bypassed</li>
-</ul></li>
-</ul>
-</section>
-<section id="aspect-ratios" class="slide level2">
-<h2>Aspect Ratios</h2>
-<ul>
-<li>It's important to preserve the original aspect ratio of the media</li>
-<li>In our examples, we'll have a target maximum number of pixels for the height or width</li>
-<li>The Process:
-<ul>
-<li>Read the dimensions of the media to find the aspect ratio</li>
-<li>Set the larger dimension equal to your maximum height/ width</li>
-<li>Compute the other dimension based on the aspect ratio</li>
-<li>Scale the media to this new height and width</li>
-</ul></li>
-</ul>
-</section>
-<section id="video-processing-1" class="slide level2">
-<h2>Video Processing</h2>
-<ul>
-<li>Recommended (Pretty much required) to use ffmpeg</li>
-<li>ffmpeg is the answer for video manipulation</li>
-<li>Need to install ffmpeg
-<ul>
-<li>Include the installation in your Dockerfile if using docker</li>
-</ul></li>
-<li>You may use any library you'd like to process videos</li>
+<li>For ABR: Convert each upload into HLS at several bit-rates</li>
 </ul>
 </section>
 <section id="ffmpeg" class="slide level2">
 <h2>ffmpeg</h2>
 <ul>
-<li>To run ffmpeg in your code</li>
-<li>Option 1: Make a system call
+<li>ffmpeg is the answer for video manipulation</li>
+<li>A command line program
 <ul>
-<li>Same as typing a command into the command line</li>
-<li>Build into every language</li>
+<li>Your Go code runs it with a system call</li>
+<li>Same as typing the command into the command line</li>
 </ul></li>
-<li>Option 2: Use ffmpeg bindings (Library)
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a></a>exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> <span class="st">"input.avi"</span><span class="op">,</span> <span class="st">"-f"</span><span class="op">,</span> <span class="st">"mp4"</span><span class="op">,</span> <span class="st">"output.mp4"</span><span class="op">).</span>Run<span class="op">()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Simplifies the syntax by calling methods instead of working with command line arguments</li>
-<li>Makes the system calls for you</li>
+<li>ffmpeg must be installed in your container
+<ul>
+<li>Add this near the top of your Dockerfile so it's cached and you only wait for the install once</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> ffmpeg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-provided-conversion" class="slide level2">
+<h2>The Provided Conversion</h2>
+<ul>
+<li>You are not expected to research ffmpeg for the HW</li>
+<li>This function converts an mp4 into HLS with 2 renditions: 720p and 360p</li>
+<li>Let's see what each argument does</li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb7-2"><a></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb7-3"><a></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb7-4"><a></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb7-5"><a></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb7-6"><a></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb7-7"><a></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb7-8"><a></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb7-9"><a></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb7-10"><a></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb7-11"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-provided-conversion-1" class="slide level2 unnumbered unlisted">
+<h2>The Provided Conversion</h2>
+<ul>
+<li><code>-i</code> is the input file</li>
+<li><code>-map</code> selects streams from the input for the output
+<ul>
+<li><code>0:v:0</code> is the first video stream of the first (only) input. <code>0:a:0</code> is its first audio stream</li>
+<li>Mapped twice: Video and audio for each rendition</li>
+</ul></li>
+<li>If the input has no audio, <code>0:a:0</code> matches nothing and ffmpeg fails</li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb8" data-code-line-numbers="2-3"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb8-1"><a></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb8-2"><a></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb8-3"><a></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb8-4"><a></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb8-5"><a></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb8-6"><a></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb8-7"><a></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb8-8"><a></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb8-9"><a></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb8-10"><a></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb8-11"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-provided-conversion-2" class="slide level2 unnumbered unlisted">
+<h2>The Provided Conversion</h2>
+<ul>
+<li>Output video stream 0: Scaled to 720 pixels tall at 2500 kb/s</li>
+<li>Output video stream 1: Scaled to 360 pixels tall at 800 kb/s</li>
+<li><code>-2</code> for the width: Compute the width that preserves the aspect ratio
+<ul>
+<li>Rounded to an even number (Required by the encoder)</li>
+</ul></li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb9" data-code-line-numbers="4-5"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb9-2"><a></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb9-3"><a></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb9-4"><a></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb9-5"><a></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb9-6"><a></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb9-7"><a></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb9-8"><a></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb9-9"><a></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb9-10"><a></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb9-11"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-provided-conversion-3" class="slide level2 unnumbered unlisted">
+<h2>The Provided Conversion</h2>
+<ul>
+<li><code>-f hls</code>: Output HLS</li>
+<li><code>-hls_playlist_type vod</code>: Video on Demand
+<ul>
+<li>Keep every segment in the playlist and end it with <code>#EXT-X-ENDLIST</code></li>
+<li>(As opposed to a live stream)</li>
+</ul></li>
+<li><code>-master_pl_name</code>: Also write a master playlist named <code>master.m3u8</code></li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb10" data-code-line-numbers="6-7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb10-1"><a></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb10-2"><a></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb10-3"><a></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb10-4"><a></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb10-5"><a></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb10-6"><a></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb10-7"><a></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb10-8"><a></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb10-9"><a></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb10-10"><a></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb10-11"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-provided-conversion-4" class="slide level2 unnumbered unlisted">
+<h2>The Provided Conversion</h2>
+<ul>
+<li><code>-var_stream_map</code>: Group the streams into renditions
+<ul>
+<li>Rendition 0: video 0 with audio 0. Rendition 1: video 1 with audio 1</li>
+</ul></li>
+<li><code>%v</code> in the output path is replaced by the rendition number
+<ul>
+<li><code>outputDir/0/index.m3u8</code> and <code>outputDir/1/index.m3u8</code></li>
+</ul></li>
+<li><code>Run</code> waits until ffmpeg finishes and returns an error if it failed</li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb11" data-code-line-numbers="8-10"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb11-2"><a></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb11-3"><a></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb11-4"><a></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb11-5"><a></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb11-6"><a></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb11-7"><a></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb11-8"><a></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb11-9"><a></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb11-10"><a></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb11-11"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hosting-hls-files" class="slide level2">
+<h2>Hosting HLS Files</h2>
+<ul>
+<li>Two new file types to host</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Extension</th>
+<th>MIME type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.m3u8</code></td>
+<td><code>application/vnd.apple.mpegurl</code></td>
+</tr>
+<tr class="even">
+<td><code>.ts</code></td>
+<td><code>video/mp2t</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The files are in nested directories
+<ul>
+<li>eg. <code>/public/videos/abc123/0/index0.ts</code></li>
+<li>If you prevent path traversal by removing every <code>/</code>, these paths will break</li>
+<li>Reject any path containing <code>..</code> instead (Or only serve files you know exist)</li>
+</ul></li>
+<li>Store the path to <code>master.m3u8</code> in your database as the video's <code>hls_path</code></li>
+</ul>
+</section></section>
+<section>
+<section id="background-jobs" class="title-slide slide level1 center">
+<h1>Background Jobs</h1>
+
+</section>
+<section id="conversions-are-slow" class="slide level2">
+<h2>Conversions Are Slow</h2>
+<ul>
+<li>Converting a video to multiple bit-rates takes a long time
+<ul>
+<li>Seconds for a short clip. Minutes for a long video</li>
+<li>Uses a lot of CPU</li>
+</ul></li>
+<li>If your server converts the video while handling the upload request:
+<ul>
+<li>The user waits on the upload page with no response</li>
+<li>The browser may give up and time out</li>
+<li>Nothing else can happen on that keep-alive connection until the conversion finishes</li>
+</ul></li>
+<li>Respond first, process later</li>
+</ul>
+</section>
+<section id="respond-first-process-later" class="slide level2">
+<h2>Respond First, Process Later</h2>
+<ol type="1">
+<li>Receive and buffer the upload</li>
+<li>Save the mp4 to disk and add the video to your database</li>
+<li>Start the conversion in the background</li>
+<li>Respond to the user immediately</li>
+<li>When the conversion finishes, update the video in your database</li>
+</ol>
+<ul>
+<li>The video can be watched as an mp4 while it's being converted</li>
+<li>Users see the HLS version once it's ready</li>
+</ul>
+</section>
+<section id="goroutines" class="slide level2">
+<h2>Goroutines</h2>
+<ul>
+<li><code>go</code> starts a function in a new goroutine and does not wait for it to finish</li>
+<li>The handler responds while the conversion runs in the background</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb12-1"><a></a>videoID<span class="op">,</span> mp4Path <span class="op">:=</span> saveUpload<span class="op">(</span>request<span class="op">)</span>        <span class="co">// Save to disk + database (your code)</span></span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a><span class="cf">go</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-4"><a></a>    outputDir <span class="op">:=</span> <span class="st">"public/videos/"</span> <span class="op">+</span> videoID</span>
+<span id="cb12-5"><a></a>    err <span class="op">:=</span> MP4ToHLS<span class="op">(</span>mp4Path<span class="op">,</span> outputDir<span class="op">)</span></span>
+<span id="cb12-6"><a></a>    <span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb12-7"><a></a>        markFailed<span class="op">(</span>videoID<span class="op">)</span>                     <span class="co">// There's no request to respond to</span></span>
+<span id="cb12-8"><a></a>        <span class="cf">return</span></span>
+<span id="cb12-9"><a></a>    <span class="op">}</span></span>
+<span id="cb12-10"><a></a>    setHLSPath<span class="op">(</span>videoID<span class="op">,</span> <span class="st">"/"</span><span class="op">+</span>outputDir<span class="op">+</span><span class="st">"/master.m3u8"</span><span class="op">)</span></span>
+<span id="cb12-11"><a></a><span class="op">}()</span></span>
+<span id="cb12-12"><a></a></span>
+<span id="cb12-13"><a></a>respondWithID<span class="op">(</span>connection<span class="op">,</span> videoID<span class="op">)</span>             <span class="co">// Respond immediately</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tracking-job-status" class="slide level2">
+<h2>Tracking Job Status</h2>
+<ul>
+<li>Each video is processing, ready, or failed
+<ul>
+<li>Store this in your database with the video</li>
+</ul></li>
+<li>Add <code>hls_path</code> to the video only after the conversion succeeds</li>
+<li>Clearly show users that a video is being processed
+<ul>
+<li>Simple option: Add "-- processing" to the title, and remove it when done</li>
+<li>Or add a status field and edit the front end to display it</li>
+</ul></li>
+<li>What happens if your server restarts during a conversion?
+<ul>
+<li>The goroutine is gone, and the status is stuck on processing</li>
+<li>Real apps restart unfinished jobs on startup</li>
 </ul></li>
 </ul>
 </section>
-<section id="ffmpeg-1" class="slide level2">
-<h2>ffmpeg</h2>
-<p>ffmpeg -i inputVideo.avi -f mp4 outputVideo.mp4</p>
+<section id="errors-in-the-background" class="slide level2">
+<h2>Errors in the Background</h2>
 <ul>
-<li>Example of command line ffmpeg usage
+<li>A background job has no request to respond to
 <ul>
-<li>Converts inputVideo.avi into an mp4</li>
+<li>Record the failure in your database so users can see it</li>
+<li>Log it so you can debug it</li>
 </ul></li>
-<li>The -i flag indicates the input filename</li>
-<li>The -f flag indicates the output format</li>
-<li>The last argument is always the output filename
+<li>eg. The provided conversion fails on videos without audio:</li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>Stream map '0:a:0' matches no streams.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>No flag for the output filename</li>
+<li><span class="yellow">An unrecovered panic in any goroutine crashes your entire server</span>
+<ul>
+<li>Every user is disconnected because one video was bad</li>
+<li>Check every error. Don't <code>panic</code> or <code>log.Fatal</code> in a job</li>
 </ul></li>
 </ul>
 </section>
-<section id="ffmpeg-2" class="slide level2">
-<h2>ffmpeg</h2>
-<p>ffmpeg -i inputVideo.avi -s 640x360 -f mp4 outputVideo.mp4</p>
+<section id="limiting-concurrent-jobs" class="slide level2">
+<h2>Limiting Concurrent Jobs</h2>
 <ul>
-<li>We can add more arguments for more control
+<li>What if 50 users upload videos at the same time?
 <ul>
-<li>Output filename is still the last argument</li>
+<li>50 copies of ffmpeg compete for the CPU</li>
+<li>Every conversion and every request slows down</li>
+<li>An easy denial of service for an attacker</li>
 </ul></li>
-<li>The -s flag is sets the resolution of the output file
+<li>Use a fixed number of workers and a queue of jobs
 <ul>
-<li>We convert the file to 640x360</li>
+<li>Upload handlers add jobs to the queue</li>
+<li>Each worker takes the next job when it finishes the last one</li>
+<li>Extra uploads wait in the queue</li>
+</ul></li>
+<li>Optional for the HW: At most 2 conversions at a time</li>
+</ul>
+</section>
+<section id="worker-pool" class="slide level2">
+<h2>Worker Pool</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb14-1"><a></a><span class="kw">type</span> ConversionJob <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb14-2"><a></a>    VideoID <span class="dt">string</span></span>
+<span id="cb14-3"><a></a>    MP4Path <span class="dt">string</span></span>
+<span id="cb14-4"><a></a><span class="op">}</span></span>
+<span id="cb14-5"><a></a></span>
+<span id="cb14-6"><a></a><span class="kw">var</span> jobs <span class="op">=</span> <span class="bu">make</span><span class="op">(</span><span class="kw">chan</span> ConversionJob<span class="op">,</span> <span class="dv">100</span><span class="op">)</span>  <span class="co">// The queue</span></span>
+<span id="cb14-7"><a></a></span>
+<span id="cb14-8"><a></a><span class="kw">func</span> startWorkers<span class="op">(</span>count <span class="dt">int</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-9"><a></a>    <span class="cf">for</span> i <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> i<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb14-10"><a></a>        <span class="cf">go</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb14-11"><a></a>            <span class="cf">for</span> job <span class="op">:=</span> <span class="kw">range</span> jobs <span class="op">{</span>           <span class="co">// Waits for the next job</span></span>
+<span id="cb14-12"><a></a>                convert<span class="op">(</span>job<span class="op">)</span></span>
+<span id="cb14-13"><a></a>            <span class="op">}</span></span>
+<span id="cb14-14"><a></a>        <span class="op">}()</span></span>
+<span id="cb14-15"><a></a>    <span class="op">}</span></span>
+<span id="cb14-16"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>At startup: <code>startWorkers(2)</code></li>
+<li>In the upload handler: <code>jobs &lt;- ConversionJob{videoID, mp4Path}</code>
+<ul>
+<li>If the queue is full, this line waits until there is room</li>
+</ul></li>
+</ul>
+</section>
+<section id="workers-in-the-real-world" class="slide level2">
+<h2>Workers in the Real World</h2>
+<ul>
+<li>Background jobs are everywhere
+<ul>
+<li>Video processing, sending emails, generating reports, resizing images</li>
+</ul></li>
+<li>Production apps often run workers as separate processes or containers
+<ul>
+<li>Web servers stay responsive. Workers can use all the CPU they want</li>
+<li>Add more workers when the queue gets long</li>
+</ul></li>
+<li>The queue is a separate service (eg. Redis, RabbitMQ, Amazon SQS)
+<ul>
+<li>Jobs survive a restart</li>
+<li>Failed jobs can be retried</li>
+</ul></li>
+<li>Optional for the HW: Run conversions in a separate container</li>
+</ul>
+</section></section>
+<section>
+<section id="video-on-the-front-end" class="title-slide slide level1 center">
+<h1>Video on the Front End</h1>
+
+</section>
+<section id="the-video-element" class="slide level2">
+<h2>The Video Element</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Can't use <code>&lt;img&gt;</code> for video</li>
+<li>Use the <code>&lt;video&gt;</code> element!</li>
+<li>Attributes:
+<ul>
+<li><code>controls</code>: Displays the control buttons for the user</li>
+<li><code>autoplay</code>: Plays on page load [if allowed by the browser]</li>
+<li><code>muted</code>: Mute the audio (Required in Chromium for autoplay)</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb15-1"><a></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb15-2"><a></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb15-3"><a></a>    Your browser does not support video playback</span>
+<span id="cb15-4"><a></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</section>
+<section id="the-video-element-1" class="slide level2 unnumbered unlisted">
+<h2>The Video Element</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>Specify the file in a <code>&lt;source&gt;</code> element
+<ul>
+<li>Requested just like the <code>src</code> of an <code>&lt;img&gt;</code></li>
+</ul></li>
+<li>Can list multiple sources
+<ul>
+<li>The browser uses the first one it supports</li>
+</ul></li>
+<li>The text is displayed by very old browsers that don't support video</li>
+<li>Can also set <code>src</code> on the video element
+<ul>
+<li>The provided front end does this in JavaScript</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb16-1"><a></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb16-2"><a></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb16-3"><a></a>    Your browser does not support video playback</span>
+<span id="cb16-4"><a></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div style="height: 1.0em">
+
+</div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb17-1"><a></a>videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+</section>
+<section id="playing-hls" class="slide level2">
+<h2>Playing HLS</h2>
+<ul>
+<li>Most browsers cannot play HLS using only the <code>&lt;video&gt;</code> element
+<ul>
+<li>Safari can. Many others can't</li>
+<li>You cannot rely on the browser to support it</li>
+</ul></li>
+<li>Use a JavaScript video player
+<ul>
+<li>It downloads the playlists and segments, and feeds them to the <code>&lt;video&gt;</code> element</li>
+</ul></li>
+<li>The provided front end uses hls.js
+<ul>
+<li>Included in <code>layout.html</code></li>
+</ul></li>
+<li>Other players: video.js, dash.js (for MPEG-DASH)</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb18-1"><a></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-provided-front-end" class="slide level2">
+<h2>The Provided Front End</h2>
+<ul>
+<li>The video page requests the video from your API</li>
+<li>If the video has an <code>hls_path</code>, play it with hls.js</li>
+<li>Otherwise, play the mp4 directly
+<ul>
+<li>With Range requests if your server supports them</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb19" data-code-line-numbers="4-10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb19-1"><a></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/videos/</span><span class="sc">${</span>videoId<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb19-2"><a></a><span class="kw">const</span> video <span class="op">=</span> (<span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>())<span class="op">.</span><span class="at">video</span><span class="op">;</span></span>
+<span id="cb19-3"><a></a></span>
+<span id="cb19-4"><a></a><span class="cf">if</span> (video<span class="op">.</span><span class="at">hls_path</span>) {</span>
+<span id="cb19-5"><a></a>    <span class="kw">const</span> hls <span class="op">=</span> <span class="kw">new</span> <span class="fu">Hls</span>()<span class="op">;</span></span>
+<span id="cb19-6"><a></a>    hls<span class="op">.</span><span class="fu">loadSource</span>(video<span class="op">.</span><span class="at">hls_path</span>)<span class="op">;</span>   <span class="co">// URL of master.m3u8</span></span>
+<span id="cb19-7"><a></a>    hls<span class="op">.</span><span class="fu">attachMedia</span>(videoPlayer)<span class="op">;</span>     <span class="co">// The &lt;video&gt; element</span></span>
+<span id="cb19-8"><a></a>} <span class="cf">else</span> {</span>
+<span id="cb19-9"><a></a>    videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span>
+<span id="cb19-10"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="quality-selector" class="slide level2">
+<h2>Quality Selector</h2>
+<ul>
+<li>hls.js reads the renditions from the master playlist
+<ul>
+<li>Called "levels" in hls.js</li>
+</ul></li>
+<li>The provided front end adds an option for each level</li>
+<li><code>currentLevel</code> chooses a level. <code>-1</code> lets hls.js adapt automatically</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb20-1"><a></a>hls<span class="op">.</span><span class="fu">on</span>(Hls<span class="op">.</span><span class="at">Events</span><span class="op">.</span><span class="at">MANIFEST_PARSED</span><span class="op">,</span> <span class="kw">function</span> (<span class="bu">event</span><span class="op">,</span> data) {</span>
+<span id="cb20-2"><a></a>    data<span class="op">.</span><span class="at">levels</span><span class="op">.</span><span class="fu">forEach</span>((level<span class="op">,</span> index) <span class="kw">=&gt;</span> {</span>
+<span id="cb20-3"><a></a>        <span class="kw">const</span> option <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"option"</span>)<span class="op">;</span></span>
+<span id="cb20-4"><a></a>        option<span class="op">.</span><span class="at">value</span> <span class="op">=</span> index<span class="op">;</span></span>
+<span id="cb20-5"><a></a>        option<span class="op">.</span><span class="at">text</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>level<span class="op">.</span><span class="at">height</span><span class="sc">}</span><span class="vs">p (</span><span class="sc">${</span>level<span class="op">.</span><span class="at">bitrate</span> <span class="op">/</span> <span class="dv">1000</span><span class="sc">}</span><span class="vs"> kbps)`</span><span class="op">;</span></span>
+<span id="cb20-6"><a></a>        select<span class="op">.</span><span class="fu">appendChild</span>(option)<span class="op">;</span></span>
+<span id="cb20-7"><a></a>    })<span class="op">;</span></span>
+<span id="cb20-8"><a></a>})<span class="op">;</span></span>
+<span id="cb20-9"><a></a></span>
+<span id="cb20-10"><a></a>select<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"change"</span><span class="op">,</span> <span class="kw">function</span> () {</span>
+<span id="cb20-11"><a></a>    hls<span class="op">.</span><span class="at">currentLevel</span> <span class="op">=</span> select<span class="op">.</span><span class="at">value</span> <span class="op">===</span> <span class="st">"auto"</span> <span class="op">?</span> <span class="op">-</span><span class="dv">1</span> <span class="op">:</span> <span class="pp">parseInt</span>(select<span class="op">.</span><span class="at">value</span>)<span class="op">;</span></span>
+<span id="cb20-12"><a></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="showing-processing-status" class="slide level2">
+<h2>Showing Processing Status</h2>
+<ul>
+<li>The provided front end doesn't know about processing
+<ul>
+<li>No <code>hls_path</code>: It plays the mp4</li>
+</ul></li>
+<li>The HW requires that users can clearly see a video is processing</li>
+<li>Options:
+<ul>
+<li>Change the title in your API response (No front end changes)</li>
+<li>Add a status field to your API and display it in <code>view-video.html</code> and <code>videotube.html</code></li>
+</ul></li>
+<li>The front end is yours to change
+<ul>
+<li>Read the provided JavaScript before you edit it</li>
 </ul></li>
 </ul>
 
@@ -423,10 +952,12 @@ Your browser does not support video playback
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc8216">RFC8216 - HLS</a></li>
+<li><a href="https://github.com/video-dev/hls.js">hls.js</a></li>
+<li><a href="https://gobyexample.com/worker-pools">Worker Pools (Go by Example)</a></li>
 <li><a href="https://ffmpeg.org">ffmpeg</a></li>
-<li><a href="https://pypi.org/project/ffmpeg-python/">ffmpeg-python</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

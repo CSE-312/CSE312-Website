@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Buffering large uploads, identifying file types, and serving large files with Range requests">
 
-<title>Buffering HTTP Requests – CSE312 Lectures</title>
+<title>Handling Large Files – CSE312 Lectures</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -35,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,22 +118,38 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#buffers" id="toc-buffers" class="nav-link active" data-scroll-target="#buffers">Buffers</a></li>
+  <li><a href="#buffering-uploads" id="toc-buffering-uploads" class="nav-link active" data-scroll-target="#buffering-uploads">Buffering Uploads</a>
+  <ul class="collapse">
   <li><a href="#tcp-reminder" id="toc-tcp-reminder" class="nav-link" data-scroll-target="#tcp-reminder">TCP Reminder</a></li>
   <li><a href="#buffering-file-uploads" id="toc-buffering-file-uploads" class="nav-link" data-scroll-target="#buffering-file-uploads">Buffering File Uploads</a></li>
-  <li><a href="#buffering-file-uploads-1" id="toc-buffering-file-uploads-1" class="nav-link" data-scroll-target="#buffering-file-uploads-1">Buffering File Uploads</a></li>
-  <li><a href="#buffering-file-uploads-2" id="toc-buffering-file-uploads-2" class="nav-link" data-scroll-target="#buffering-file-uploads-2">Buffering File Uploads</a></li>
-  <li><a href="#buffering-file-uploads-3" id="toc-buffering-file-uploads-3" class="nav-link" data-scroll-target="#buffering-file-uploads-3">Buffering File Uploads</a></li>
-  <li><a href="#buffering-file-uploads-4" id="toc-buffering-file-uploads-4" class="nav-link" data-scroll-target="#buffering-file-uploads-4">Buffering File Uploads</a></li>
-  <li><a href="#buffering-file-uploads-5" id="toc-buffering-file-uploads-5" class="nav-link" data-scroll-target="#buffering-file-uploads-5">Buffering File Uploads</a></li>
-  <li><a href="#buffers-1" id="toc-buffers-1" class="nav-link" data-scroll-target="#buffers-1">Buffers</a></li>
+  <li><a href="#buffers" id="toc-buffers" class="nav-link" data-scroll-target="#buffers">Buffers</a></li>
   <li><a href="#buffer-questions" id="toc-buffer-questions" class="nav-link" data-scroll-target="#buffer-questions">Buffer Questions</a></li>
   <li><a href="#buffer-answer" id="toc-buffer-answer" class="nav-link" data-scroll-target="#buffer-answer">Buffer Answer</a></li>
-  <li><a href="#buffers-2" id="toc-buffers-2" class="nav-link" data-scroll-target="#buffers-2">Buffers</a></li>
   <li><a href="#http-buffers" id="toc-http-buffers" class="nav-link" data-scroll-target="#http-buffers">HTTP Buffers</a></li>
+  <li><a href="#common-buffering-bugs" id="toc-common-buffering-bugs" class="nav-link" data-scroll-target="#common-buffering-bugs">Common Buffering Bugs</a></li>
   <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
-  <li><a href="#buffers-3" id="toc-buffers-3" class="nav-link" data-scroll-target="#buffers-3">Buffers</a></li>
+  <li><a href="#file-signatures" id="toc-file-signatures" class="nav-link" data-scroll-target="#file-signatures">File Signatures</a></li>
+  </ul></li>
+  <li><a href="#serving-large-files" id="toc-serving-large-files" class="nav-link" data-scroll-target="#serving-large-files">Serving Large Files</a>
+  <ul class="collapse">
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#range-requests" id="toc-range-requests" class="nav-link" data-scroll-target="#range-requests">Range Requests</a></li>
+  <li><a href="#accept-ranges" id="toc-accept-ranges" class="nav-link" data-scroll-target="#accept-ranges">Accept-Ranges</a></li>
+  <li><a href="#the-range-header" id="toc-the-range-header" class="nav-link" data-scroll-target="#the-range-header">The Range Header</a></li>
+  <li><a href="#partial-content" id="toc-partial-content" class="nav-link" data-scroll-target="#partial-content">206 Partial Content</a></li>
+  <li><a href="#range-examples" id="toc-range-examples" class="nav-link" data-scroll-target="#range-examples">Range Examples</a></li>
+  <li><a href="#off-by-one" id="toc-off-by-one" class="nav-link" data-scroll-target="#off-by-one">Off By One</a></li>
+  <li><a href="#range-not-satisfiable" id="toc-range-not-satisfiable" class="nav-link" data-scroll-target="#range-not-satisfiable">416 Range Not Satisfiable</a></li>
+  <li><a href="#handling-a-range-request" id="toc-handling-a-range-request" class="nav-link" data-scroll-target="#handling-a-range-request">Handling a Range Request</a></li>
+  <li><a href="#dont-read-the-entire-file" id="toc-dont-read-the-entire-file" class="nav-link" data-scroll-target="#dont-read-the-entire-file">Don't Read the Entire File</a></li>
+  <li><a href="#limiting-response-size" id="toc-limiting-response-size" class="nav-link" data-scroll-target="#limiting-response-size">Limiting Response Size</a></li>
+  <li><a href="#what-the-browser-does" id="toc-what-the-browser-does" class="nav-link" data-scroll-target="#what-the-browser-does">What the Browser Does</a></li>
+  <li><a href="#closed-connections" id="toc-closed-connections" class="nav-link" data-scroll-target="#closed-connections">Closed Connections</a></li>
+  <li><a href="#testing-range-requests" id="toc-testing-range-requests" class="nav-link" data-scroll-target="#testing-range-requests">Testing Range Requests</a></li>
+  <li><a href="#range-requests-vs.-segments" id="toc-range-requests-vs.-segments" class="nav-link" data-scroll-target="#range-requests-vs.-segments">Range Requests vs. Segments</a></li>
   <li><a href="#demos" id="toc-demos" class="nav-link" data-scroll-target="#demos">Demos</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -106,10 +158,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Buffering HTTP Requests</h1>
+<h1 class="title">Handling Large Files</h1>
 <p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Buffering large uploads, identifying file types, and serving large files with Range requests
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -124,9 +181,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="buffers" class="level2">
-<h2 class="anchored" data-anchor-id="buffers">Buffers</h2>
-</section>
+<section id="buffering-uploads" class="level1">
+<h1>Buffering Uploads</h1>
 <section id="tcp-reminder" class="level2">
 <h2 class="anchored" data-anchor-id="tcp-reminder">TCP Reminder</h2>
 <ul>
@@ -147,128 +203,140 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>First, read data from the TCP socket</li>
 </ul></li>
 </ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 746
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>POST /form-path HTTP/1.1</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Content-Length: 746</span>
+<span id="cb2-3"><a href="#cb2-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb2-6"><a href="#cb2-6"></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a>Jesse</span>
+<span id="cb2-9"><a href="#cb2-9"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb2-10"><a href="#cb2-10"></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb2-11"><a href="#cb2-11"></a>Content-Type: image/png</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb2-14"><a href="#cb2-14"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="buffering-file-uploads-1" class="level2">
-<h2 class="anchored" data-anchor-id="buffering-file-uploads-1">Buffering File Uploads</h2>
+<section id="buffering-file-uploads-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="buffering-file-uploads-1">Buffering File Uploads</h2>
 <ul>
-<li>Call the receive method with an int</li>
-<li>The value of this int is the maximum number of bytes that will be read from the TCP socket</li>
+<li>The size of the buffer is the maximum number of bytes that will be read from the TCP socket</li>
+<li><code>bytesRead</code> is how many bytes were actually read</li>
 </ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 746
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>POST /form-path HTTP/1.1</span>
+<span id="cb4-2"><a href="#cb4-2"></a>Content-Length: 746</span>
+<span id="cb4-3"><a href="#cb4-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb4-6"><a href="#cb4-6"></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>Jesse</span>
+<span id="cb4-9"><a href="#cb4-9"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb4-10"><a href="#cb4-10"></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb4-11"><a href="#cb4-11"></a>Content-Type: image/png</span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb4-14"><a href="#cb4-14"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="buffering-file-uploads-2" class="level2">
-<h2 class="anchored" data-anchor-id="buffering-file-uploads-2">Buffering File Uploads</h2>
+<section id="buffering-file-uploads-2" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="buffering-file-uploads-2">Buffering File Uploads</h2>
 <ul>
 <li>What if we receive a fairly large POST request?
 <ul>
 <li>Might not be able to read the entire request in one read from the socket</li>
 </ul></li>
 </ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 91320
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="flamingo.jpg"
-Content-Type: image/jpeg</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>POST /form-path HTTP/1.1</span>
+<span id="cb6-2"><a href="#cb6-2"></a>Content-Length: 91320</span>
+<span id="cb6-3"><a href="#cb6-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb6-6"><a href="#cb6-6"></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a>Jesse</span>
+<span id="cb6-9"><a href="#cb6-9"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb6-10"><a href="#cb6-10"></a>Content-Disposition: form-data; name="upload"; filename="flamingo.jpg"</span>
+<span id="cb6-11"><a href="#cb6-11"></a>Content-Type: image/jpeg</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb6-14"><a href="#cb6-14"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="buffering-file-uploads-3" class="level2">
-<h2 class="anchored" data-anchor-id="buffering-file-uploads-3">Buffering File Uploads</h2>
+<section id="buffering-file-uploads-3" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="buffering-file-uploads-3">Buffering File Uploads</h2>
 <ul>
 <li>What if a very large file is uploaded?</li>
+<li>We read at most 2048 bytes per read</li>
+<li>A bigger buffer doesn't help. The rest of the bytes may not have arrived yet</li>
 </ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 1884206
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="hq_image.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>POST /form-path HTTP/1.1</span>
+<span id="cb8-2"><a href="#cb8-2"></a>Content-Length: 1884206</span>
+<span id="cb8-3"><a href="#cb8-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb8-6"><a href="#cb8-6"></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>Jesse</span>
+<span id="cb8-9"><a href="#cb8-9"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb8-10"><a href="#cb8-10"></a>Content-Disposition: form-data; name="upload"; filename="hq_image.png"</span>
+<span id="cb8-11"><a href="#cb8-11"></a>Content-Type: image/png</span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb8-14"><a href="#cb8-14"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="buffering-file-uploads-4" class="level2">
-<h2 class="anchored" data-anchor-id="buffering-file-uploads-4">Buffering File Uploads</h2>
+<section id="buffering-file-uploads-4" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="buffering-file-uploads-4">Buffering File Uploads</h2>
 <ul>
-<li>When we call receive in this example, we read at most 2048 bytes from the connection</li>
-<li>We could increase this value, but there's no guarantee that al the bytes will be ready when we call receive</li>
+<li><span class="yellow">We must read from the socket multiple times!</span></li>
 </ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 1884206
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="hq_image.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>POST /form-path HTTP/1.1</span>
+<span id="cb10-2"><a href="#cb10-2"></a>Content-Length: 1884206</span>
+<span id="cb10-3"><a href="#cb10-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb10-6"><a href="#cb10-6"></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a>Jesse</span>
+<span id="cb10-9"><a href="#cb10-9"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb10-10"><a href="#cb10-10"></a>Content-Disposition: form-data; name="upload"; filename="hq_image.png"</span>
+<span id="cb10-11"><a href="#cb10-11"></a>Content-Type: image/png</span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb10-14"><a href="#cb10-14"></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="buffering-file-uploads-5" class="level2">
-<h2 class="anchored" data-anchor-id="buffering-file-uploads-5">Buffering File Uploads</h2>
+<section id="buffers" class="level2">
+<h2 class="anchored" data-anchor-id="buffers">Buffers</h2>
 <ul>
-<li>We Must read from the socket multiple times!</li>
-</ul>
-<p>received_data = self.request.recv(2048)</p>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 1884206
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="hq_image.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="buffers-1" class="level2">
-<h2 class="anchored" data-anchor-id="buffers-1">Buffers</h2>
-<ul>
-<li>TCP socket libraries will use buffers</li>
-<li>No matter your language/library you will have a method/ function that reads bytes from the socket
+<li>TCP socket libraries use buffers</li>
+<li>No matter your language/library you will have a method/function that reads bytes from the socket
 <ul>
 <li>Called when there are bytes that arrive over the socket</li>
 <li>Returns some bytes of the request</li>
 </ul></li>
 </ul>
-<p>User sends data to the server</p>
-<p>User</p>
-<p>Server</p>
-<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="A User box with an arrow labeled &quot;User sends data to the server&quot; pointing to a Server box. A single small packet travels along the arrow."></p>
+</div>
 </section>
 <section id="buffer-questions" class="level2">
 <h2 class="anchored" data-anchor-id="buffer-questions">Buffer Questions</h2>
@@ -279,27 +347,25 @@ Content-Type: image/png</code></pre>
 <li>What if the data takes an hour to send?</li>
 <li>What if the data contains streaming video that never ends?</li>
 </ul>
-<p>User sends data to the server</p>
-<p>User</p>
-<p>Server</p>
-<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+</div>
 </section>
 <section id="buffer-answer" class="level2">
 <h2 class="anchored" data-anchor-id="buffer-answer">Buffer Answer</h2>
 <ul>
 <li>The socket notifies your code when there is data to read - even if it's not the entire request</li>
-<li>The socket server will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
+<li>The socket will have a buffer size, typically a few kB, and will read at most that many bytes in a single call
 <ul>
 <li>For GET requests the entire request is smaller than the buffer (Safe assumption in this course)</li>
 </ul></li>
 </ul>
-<p>User sends data to the server</p>
-<p>User</p>
-<p>Server</p>
-<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+</div>
 </section>
-<section id="buffers-2" class="level2">
-<h2 class="anchored" data-anchor-id="buffers-2">Buffers</h2>
+<section id="buffers-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="buffers-1">Buffers</h2>
 <ul>
 <li>Now that we're handling file uploads, we must be aware of these buffers</li>
 <li>The server will need data that persists across multiple calls that read bytes from a socket
@@ -308,10 +374,9 @@ Content-Type: image/png</code></pre>
 <li>Combine the bytes from multiple calls to receive the entire file</li>
 </ul></li>
 </ul>
-<p>User sends data to the server</p>
-<p>User</p>
-<p>Server</p>
-<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+</div>
 </section>
 <section id="http-buffers" class="level2">
 <h2 class="anchored" data-anchor-id="http-buffers">HTTP Buffers</h2>
@@ -321,33 +386,424 @@ Content-Type: image/png</code></pre>
 <li>Read bytes from the socket</li>
 <li>Parse the headers</li>
 <li>Find the Content-Length header and store this value</li>
-<li>Keep reading bytes from the stream until you have read Content-Length after the first "<code>\r\n\r\n</code>"</li>
+<li>Keep reading bytes from the socket until you have read Content-Length bytes after the first <code>\r\n\r\n</code></li>
 <li>Process the request</li>
 </ul></li>
+<li>Remember that the Content-Length does not include the bytes for the headers
+<ul>
+<li>The total number of bytes read for one request will be larger than the Content-Length</li>
+</ul></li>
+</ul>
+</section>
+<section id="common-buffering-bugs" class="level2">
+<h2 class="anchored" data-anchor-id="common-buffering-bugs">Common Buffering Bugs</h2>
+<ul>
+<li><code>Read</code> returns how many bytes it read. Only use that many</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">...)</span>              <span class="co">// Wrong: Always appends 2048 bytes</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">[:</span>bytesRead<span class="op">]...)</span>  <span class="co">// Right: Only the bytes that were read</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>Read</code> reuses the same buffer every time
+<ul>
+<li>Copy the bytes out before the next <code>Read</code> overwrites them (<code>append</code> copies)</li>
+<li>Careful with slices of <code>buffer</code> (eg. the body from your first parse)</li>
+</ul></li>
+<li>If <code>Read</code> returns an error, the client disconnected mid-upload
+<ul>
+<li>Stop reading and close the connection. Don't wait forever for bytes that will never arrive</li>
+</ul></li>
+<li>Never convert the body to a string while buffering. Binary data will be corrupted</li>
 </ul>
 </section>
 <section id="assumptions" class="level2">
 <h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
 <ul>
-<li>Assumptions you may make on the Homework:</li>
-<li>The first read from your buffer will contain all the headers of the HTTP
+<li>Assumptions you may make on the HW:</li>
+<li>The first read will contain all the headers of the request
 <ul>
-<li>If you're not currently buffering, you can safely parse the first bytes as the headers of the request (up to the first "<code>\r\n\r\n</code>")</li>
-<li>This allows you to read the Content-Length</li>
+<li>Use a buffer of at least 2048 bytes</li>
+<li>You can safely parse the first bytes as the headers of the request (up to the first <code>\r\n\r\n</code>)</li>
+<li>This allows you to read the Content-Length before you start buffering</li>
 </ul></li>
-<li>We will test with files larger than your TCP buffer size
+<li>We will test with files much larger than your buffer size
 <ul>
-<li>ie. Do not do this:</li>
+<li>Your buffering must work for any size (eg. A 1 GB video)</li>
+<li>Do not read the entire body with one huge read: <code>make([]byte, 1000000000)</code></li>
+<li>Do not use functions that buffer for you (eg. <code>io.ReadAll</code> or <code>io.ReadFull</code>)</li>
 </ul></li>
 </ul>
-<p>received_data = self.request.recv(1048576)</p>
 </section>
-<section id="buffers-3" class="level2">
-<h2 class="anchored" data-anchor-id="buffers-3">Buffers</h2>
+<section id="file-signatures" class="level2">
+<h2 class="anchored" data-anchor-id="file-signatures">File Signatures</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
 <ul>
-<li>Remember that the Content-Length does not include the bytes for the headers
+<li>Once you have the bytes, what type of file is it?</li>
+<li>The file extension and the part's Content-Type are chosen by the user
 <ul>
-<li>ie. The total number of bytes read for one request will be larger than the Content-Length</li>
+<li>An attacker can upload <code>attack.js</code> renamed to <code>cat.jpg</code></li>
+</ul></li>
+<li>The first bytes of most file types are a fixed signature
+<ul>
+<li>Part of the content, so it's harder to fake</li>
+</ul></li>
+<li>Check the first bytes against the types you allow</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bytes<span class="op">.</span>HasPrefix<span class="op">(</span>content<span class="op">,</span> <span class="op">[]</span><span class="dt">byte</span><span class="op">{</span><span class="bn">0xFF</span><span class="op">,</span> <span class="bn">0xD8</span><span class="op">,</span> <span class="bn">0xFF</span><span class="op">})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:48%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>First bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JPEG</td>
+<td><code>FF D8 FF</code></td>
+</tr>
+<tr class="even">
+<td>PNG</td>
+<td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
+</tr>
+<tr class="odd">
+<td>GIF</td>
+<td><code>GIF87a</code> or <code>GIF89a</code></td>
+</tr>
+<tr class="even">
+<td>MP4</td>
+<td><code>ftyp</code> starting at byte 4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="serving-large-files" class="level1">
+<h1>Serving Large Files</h1>
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<ul>
+<li>Your server hosts a 1 GB mp4</li>
+<li>A user opens the video and immediately skips to the middle
+<ul>
+<li>They should not have to download the first 500 MB</li>
+</ul></li>
+<li>A user watches 10 seconds and leaves
+<ul>
+<li>Your server should not send the other 990 MB</li>
+</ul></li>
+<li>Reading the whole file into memory for every request is also a problem
+<ul>
+<li>20 viewers can be 20 GB of RAM</li>
+</ul></li>
+</ul>
+</section>
+<section id="range-requests" class="level2">
+<h2 class="anchored" data-anchor-id="range-requests">Range Requests</h2>
+<ul>
+<li>HTTP lets the client ask for part of a file</li>
+<li>The client adds a <code>Range</code> header with the bytes it wants</li>
+<li>The server responds with <code>206 Partial Content</code> and only those bytes</li>
+<li>Browsers do this automatically for <code>&lt;video&gt;</code> elements
+<ul>
+<li>Only if your server says it supports ranges</li>
+<li>The browser requests the bytes it needs to start playing, then whichever part of the video the user skips to</li>
+</ul></li>
+</ul>
+</section>
+<section id="accept-ranges" class="level2">
+<h2 class="anchored" data-anchor-id="accept-ranges">Accept-Ranges</h2>
+<ul>
+<li>Tell the browser that your server supports range requests</li>
+<li>Include <code>Accept-Ranges: bytes</code> in every response for an mp4
+<ul>
+<li>Including responses with the entire file</li>
+</ul></li>
+<li>Without this header, the browser may download the entire file and might not let the user skip ahead</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 200 OK
+Content-Type: video/mp4
+Content-Length: 10000
+Accept-Ranges: bytes
+X-Content-Type-Options: nosniff
+
+&lt;all 10000 bytes of the file&gt;</code></pre>
+</section>
+<section id="the-range-header" class="level2">
+<h2 class="anchored" data-anchor-id="the-range-header">The Range Header</h2>
+<pre class="http"><code>GET /public/videos/abc123.mp4 HTTP/1.1
+Range: bytes=0-99</code></pre>
+<ul>
+<li>Positions are byte offsets in the file, starting at 0</li>
+<li>Three forms:</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Range</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>bytes={first}-{last}</code></td>
+<td>Bytes <code>first</code> through <code>last</code>, inclusive</td>
+</tr>
+<tr class="even">
+<td><code>bytes={first}-</code></td>
+<td>Bytes <code>first</code> through the end of the file</td>
+</tr>
+<tr class="odd">
+<td><code>bytes=-{n}</code></td>
+<td>The last <code>n</code> bytes of the file</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A client can ask for several ranges at once (<code>bytes=0-50,100-150</code>)
+<ul>
+<li>Not required for HW. Browsers don't do this for video</li>
+</ul></li>
+</ul>
+</section>
+<section id="partial-content" class="level2">
+<h2 class="anchored" data-anchor-id="partial-content">206 Partial Content</h2>
+<pre class="http"><code>HTTP/1.1 206 Partial Content
+Content-Type: video/mp4
+Content-Length: 100
+Content-Range: bytes 0-99/10000
+Accept-Ranges: bytes
+X-Content-Type-Options: nosniff
+
+&lt;bytes 0 through 99 of the file&gt;</code></pre>
+<ul>
+<li><code>Content-Range: bytes {first}-{last}/{total}</code>
+<ul>
+<li><code>first</code> and <code>last</code> are the bytes you actually sent</li>
+<li><code>total</code> is the size of the entire file</li>
+</ul></li>
+<li><code>Content-Length</code> is the number of bytes in this response, not the size of the file
+<ul>
+<li><code>last - first + 1</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="range-examples" class="level2">
+<h2 class="anchored" data-anchor-id="range-examples">Range Examples</h2>
+<ul>
+<li>For a file that is 10000 bytes:</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Range</th>
+<th>Bytes sent</th>
+<th>Content-Range</th>
+<th>Content-Length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>bytes=0-99</code></td>
+<td>0 - 99</td>
+<td><code>bytes 0-99/10000</code></td>
+<td>100</td>
+</tr>
+<tr class="even">
+<td><code>bytes=9000-</code></td>
+<td>9000 - 9999</td>
+<td><code>bytes 9000-9999/10000</code></td>
+<td>1000</td>
+</tr>
+<tr class="odd">
+<td><code>bytes=-500</code></td>
+<td>9500 - 9999</td>
+<td><code>bytes 9500-9999/10000</code></td>
+<td>500</td>
+</tr>
+<tr class="even">
+<td><code>bytes=9500-20000</code></td>
+<td>9500 - 9999</td>
+<td><code>bytes 9500-9999/10000</code></td>
+<td>500</td>
+</tr>
+<tr class="odd">
+<td><code>bytes=-20000</code></td>
+<td>0 - 9999</td>
+<td><code>bytes 0-9999/10000</code></td>
+<td>10000</td>
+</tr>
+<tr class="even">
+<td><code>bytes=10000-</code></td>
+<td>Nothing</td>
+<td><code>bytes */10000</code></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>If <code>last</code> is past the end of the file, send through the end of the file</li>
+<li>If <code>n</code> is larger than the file, send the entire file</li>
+</ul>
+</section>
+<section id="off-by-one" class="level2">
+<h2 class="anchored" data-anchor-id="off-by-one">Off By One</h2>
+<ul>
+<li><span class="yellow">Ranges are inclusive on both ends</span>
+<ul>
+<li><code>bytes=0-99</code> is 100 bytes, not 99</li>
+<li>The last byte of a 10000 byte file is at position 9999</li>
+</ul></li>
+<li>Go slices are exclusive on the end</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data<span class="op">[</span>first <span class="op">:</span> last<span class="op">+</span><span class="dv">1</span><span class="op">]</span>     <span class="co">// Bytes first through last, inclusive</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>length <span class="op">:=</span> last <span class="op">-</span> first <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Off-by-one errors are the most common bug in range requests
+<ul>
+<li>Your Content-Length won't match the bytes you send</li>
+<li>The video may play for a while, then stop or corrupt</li>
+</ul></li>
+</ul>
+</section>
+<section id="range-not-satisfiable" class="level2">
+<h2 class="anchored" data-anchor-id="range-not-satisfiable">416 Range Not Satisfiable</h2>
+<ul>
+<li>If <code>first</code> is past the end of the file, there are no bytes to send</li>
+<li>Respond with <code>416 Range Not Satisfiable</code></li>
+<li><code>Content-Range</code> uses <code>*</code> for the range and still includes the total size</li>
+</ul>
+<pre class="http"><code>HTTP/1.1 416 Range Not Satisfiable
+Content-Range: bytes */10000
+Content-Length: 0</code></pre>
+</section>
+<section id="handling-a-range-request" class="level2">
+<h2 class="anchored" data-anchor-id="handling-a-range-request">Handling a Range Request</h2>
+<ol type="1">
+<li>Get the size of the file</li>
+<li>If there is no Range header, send the entire file with <code>200 OK</code></li>
+<li>Remove <code>bytes=</code> and split the rest on <code>-</code></li>
+<li>Find <code>first</code> and <code>last</code> based on which form was sent
+<ul>
+<li><code>bytes=-{n}</code>: <code>first = size - n</code> (at least 0), <code>last = size - 1</code></li>
+<li><code>bytes={first}-</code>: <code>last = size - 1</code></li>
+<li><code>bytes={first}-{last}</code>: if <code>last &gt;= size</code>, use <code>size - 1</code></li>
+</ul></li>
+<li>If <code>first &gt;= size</code>, send a <code>416</code></li>
+<li>Send <code>206</code> with <code>Content-Range</code>, <code>Content-Length</code>, and bytes <code>first</code> through <code>last</code></li>
+</ol>
+<ul>
+<li>Functions that handle the Range header for you (eg. <code>http.ServeContent</code>, <code>http.ServeFile</code>) are not allowed on the HW</li>
+</ul>
+</section>
+<section id="dont-read-the-entire-file" class="level2">
+<h2 class="anchored" data-anchor-id="dont-read-the-entire-file">Don't Read the Entire File</h2>
+<ul>
+<li><code>os.ReadFile</code> loads the entire file into memory
+<ul>
+<li>Fine for small images. Not for a 1 GB video</li>
+</ul></li>
+<li>Open the file, jump to <code>first</code>, and copy only the bytes you need</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>file<span class="op">,</span> err <span class="op">:=</span> os<span class="op">.</span>Open<span class="op">(</span>path<span class="op">)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">// handle err</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">defer</span> file<span class="op">.</span>Close<span class="op">()</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>info<span class="op">,</span> err <span class="op">:=</span> file<span class="op">.</span>Stat<span class="op">()</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>size <span class="op">:=</span> info<span class="op">.</span>Size<span class="op">()</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>file<span class="op">.</span>Seek<span class="op">(</span>first<span class="op">,</span> io<span class="op">.</span>SeekStart<span class="op">)</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>io<span class="op">.</span>CopyN<span class="op">(</span>connection<span class="op">,</span> file<span class="op">,</span> last<span class="op">-</span>first<span class="op">+</span><span class="dv">1</span><span class="op">)</span>  <span class="co">// Copies in small chunks</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>io.CopyN</code> reads a few kB at a time from the file and writes them to the connection</li>
+</ul>
+</section>
+<section id="limiting-response-size" class="level2">
+<h2 class="anchored" data-anchor-id="limiting-response-size">Limiting Response Size</h2>
+<ul>
+<li>When a video first loads, browsers often request <code>bytes=0-</code>
+<ul>
+<li>Technically the entire file</li>
+</ul></li>
+<li>You may send fewer bytes than requested for an open-ended range
+<ul>
+<li>eg. At most 2 MB per response</li>
+<li>Content-Range must describe the bytes you actually sent</li>
+</ul></li>
+<li>The browser will request the rest when it needs them</li>
+</ul>
+<pre class="http"><code>GET /public/videos/abc123.mp4 HTTP/1.1
+Range: bytes=0-</code></pre>
+<pre class="http"><code>HTTP/1.1 206 Partial Content
+Content-Range: bytes 0-2097151/1073741824
+Content-Length: 2097152</code></pre>
+</section>
+<section id="what-the-browser-does" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-browser-does">What the Browser Does</h2>
+<ul>
+<li>Requests <code>bytes=0-</code> when the video loads</li>
+<li>Reads enough to start playing, then may close the connection in the middle of your response</li>
+<li>Requests a new range when the user skips ahead</li>
+<li>May request the end of the file
+<ul>
+<li>Some mp4s store their index at the end of the file</li>
+</ul></li>
+<li>Browser behavior varies between browsers and videos
+<ul>
+<li>Handle every form, even if your browser never sends it</li>
+</ul></li>
+</ul>
+</section>
+<section id="closed-connections" class="level2">
+<h2 class="anchored" data-anchor-id="closed-connections">Closed Connections</h2>
+<ul>
+<li>The browser can close the connection while you are still sending</li>
+<li>Writing to a closed connection returns an error
+<ul>
+<li>eg. "broken pipe" or "connection reset by peer"</li>
+</ul></li>
+<li><span class="yellow">Your server must not crash</span>
+<ul>
+<li>Check the error from every write</li>
+<li>Stop sending, close the connection, and return from the handler</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>_<span class="op">,</span> err <span class="op">:=</span> io<span class="op">.</span>CopyN<span class="op">(</span>connection<span class="op">,</span> file<span class="op">,</span> length<span class="op">)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span>  <span class="co">// Client is gone. Clean up and move on</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="testing-range-requests" class="level2">
+<h2 class="anchored" data-anchor-id="testing-range-requests">Testing Range Requests</h2>
+<ul>
+<li>Browser behavior is unpredictable. Use curl to send exactly the Range you want to test</li>
+<li><code>-D -</code> prints the response headers, <code>-o</code> saves the body</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-D</span> <span class="at">-</span> <span class="at">-o</span> part.bin <span class="at">-H</span> <span class="st">"Range: bytes=0-99"</span> http://localhost:8080/public/videos/test.mp4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre class="http"><code>HTTP/1.1 206 Partial Content
+Content-Range: bytes 0-99/10000
+Content-Length: 100</code></pre>
+<ul>
+<li>Check that <code>part.bin</code> is exactly 100 bytes</li>
+<li>Test every form, a range past the end, and a request with no Range header</li>
+<li>The Network tab in your browser's dev tools shows the Range and Content-Range of every video request</li>
+</ul>
+</section>
+<section id="range-requests-vs.-segments" class="level2">
+<h2 class="anchored" data-anchor-id="range-requests-vs.-segments">Range Requests vs. Segments</h2>
+<ul>
+<li>Range requests let us serve one large mp4 efficiently</li>
+<li>But every user still gets the same file
+<ul>
+<li>A 4K video for someone on a slow phone connection</li>
+</ul></li>
+<li>Next: Split the video into many small files at multiple qualities
+<ul>
+<li>HLS and Adaptive Bit-Rate streaming</li>
 </ul></li>
 </ul>
 </section>
@@ -355,6 +811,14 @@ Content-Type: image/png</code></pre>
 <h2 class="anchored" data-anchor-id="demos">Demos</h2>
 
 
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests">HTTP Range Requests (MDN)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9110#name-range-requests">RFC9110 - Range Requests</a></li>
+</ul>
+</section>
 </section>
 
 </main> <!-- /main -->

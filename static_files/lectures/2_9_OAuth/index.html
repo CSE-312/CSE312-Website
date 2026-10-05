@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Motivation and explanation of OAuth 2.0">
 
 <title>OAuth 2.0 - Overview – CSE312 Lectures</title>
 <style>
@@ -35,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-47cd01e9e01e18e6f543d9707ef2677a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -82,7 +83,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#oauth-2.0---overview" id="toc-oauth-2.0---overview" class="nav-link active" data-scroll-target="#oauth-2.0---overview">OAuth 2.0 - Overview</a></li>
+  <li><a href="#oauth-2.0" id="toc-oauth-2.0" class="nav-link active" data-scroll-target="#oauth-2.0">OAuth 2.0</a>
+  <ul class="collapse">
   <li><a href="#web-api" id="toc-web-api" class="nav-link" data-scroll-target="#web-api">Web API</a></li>
   <li><a href="#web-api-1" id="toc-web-api-1" class="nav-link" data-scroll-target="#web-api-1">Web API</a></li>
   <li><a href="#web-api-2" id="toc-web-api-2" class="nav-link" data-scroll-target="#web-api-2">Web API</a></li>
@@ -99,9 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#the-api-has-no-idea-that-the-user-allowed-your-app-to-use-this-the-app-using-the-key-looks-the-same-as-the-user-using-the" id="toc-the-api-has-no-idea-that-the-user-allowed-your-app-to-use-this-the-app-using-the-key-looks-the-same-as-the-user-using-the" class="nav-link" data-scroll-target="#the-api-has-no-idea-that-the-user-allowed-your-app-to-use-this-the-app-using-the-key-looks-the-same-as-the-user-using-the">• The API has no idea that the user allowed your app to use this • The app using the key looks the same as the user using the</a></li>
   <li><a href="#your-server-is-responsible-for-handling-the-api-key-if-the-key-is-compromised-attackers-requests-look" id="toc-your-server-is-responsible-for-handling-the-api-key-if-the-key-is-compromised-attackers-requests-look" class="nav-link" data-scroll-target="#your-server-is-responsible-for-handling-the-api-key-if-the-key-is-compromised-attackers-requests-look">• Your server is responsible for handling the API key • If the key is compromised, attackers requests look</a></li>
   <li><a href="#the-user-has-to-handle-their-own-api-key-key-can-be-compromised-at-this-point-never-trust-your-users.-not-even-with-their-own-security" id="toc-the-user-has-to-handle-their-own-api-key-key-can-be-compromised-at-this-point-never-trust-your-users.-not-even-with-their-own-security" class="nav-link" data-scroll-target="#the-user-has-to-handle-their-own-api-key-key-can-be-compromised-at-this-point-never-trust-your-users.-not-even-with-their-own-security">• The user has to handle their own API key • Key can be compromised at this point • Never trust your users. Not even with their own security</a></li>
-  <li><a href="#oauth-2.0" id="toc-oauth-2.0" class="nav-link" data-scroll-target="#oauth-2.0">OAuth 2.0</a></li>
   <li><a href="#oauth-2.0-1" id="toc-oauth-2.0-1" class="nav-link" data-scroll-target="#oauth-2.0-1">OAuth 2.0</a></li>
   <li><a href="#oauth-2.0-2" id="toc-oauth-2.0-2" class="nav-link" data-scroll-target="#oauth-2.0-2">OAuth 2.0</a></li>
+  <li><a href="#oauth-2.0-3" id="toc-oauth-2.0-3" class="nav-link" data-scroll-target="#oauth-2.0-3">OAuth 2.0</a></li>
   <li><a href="#oauth-2.0---client-registration" id="toc-oauth-2.0---client-registration" class="nav-link" data-scroll-target="#oauth-2.0---client-registration">OAuth 2.0 - Client Registration</a></li>
   <li><a href="#well-update-our-picture-with-the-full" id="toc-well-update-our-picture-with-the-full" class="nav-link" data-scroll-target="#well-update-our-picture-with-the-full">• We'll update our picture with the full</a></li>
   <li><a href="#lets-break-this-down" id="toc-lets-break-this-down" class="nav-link" data-scroll-target="#lets-break-this-down">• Let's break this down</a></li>
@@ -114,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#your-app-can-now-use-the-access-token-to-access-the-api-for-your-user-if-the-user-clicked-login-with-3rd-party-verify-their-identity-through-the-api-create-an-account-for-them-based-on-this-identity" id="toc-your-app-can-now-use-the-access-token-to-access-the-api-for-your-user-if-the-user-clicked-login-with-3rd-party-verify-their-identity-through-the-api-create-an-account-for-them-based-on-this-identity" class="nav-link" data-scroll-target="#your-app-can-now-use-the-access-token-to-access-the-api-for-your-user-if-the-user-clicked-login-with-3rd-party-verify-their-identity-through-the-api-create-an-account-for-them-based-on-this-identity">• 7/8: Your app can now use the access token to access the API for your user • If the user clicked "login with 3rd party", verify their identity through the API • Create an account for them based on this identity</a></li>
   <li><a href="#oauth-2.0---authorization-code-flow" id="toc-oauth-2.0---authorization-code-flow" class="nav-link" data-scroll-target="#oauth-2.0---authorization-code-flow">OAuth 2.0 - Authorization Code Flow</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -126,6 +129,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Motivation and explanation of OAuth 2.0
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -140,9 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="oauth-2.0---overview" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0---overview">OAuth 2.0 - Overview</h2>
-</section>
+<section id="oauth-2.0" class="level1">
+<h1>OAuth 2.0</h1>
 <section id="web-api" class="level2">
 <h2 class="anchored" data-anchor-id="web-api">Web API</h2>
 <ul>
@@ -395,8 +402,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>User / Resource Owner</p>
 <p><img src="assets/slide17-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="oauth-2.0" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0">OAuth 2.0</h2>
+<section id="oauth-2.0-1" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-2.0-1">OAuth 2.0</h2>
 <ul>
 <li>OAuth 2.0 (Open Authorization 2.0)
 <ul>
@@ -413,8 +420,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="oauth-2.0-1" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0-1">OAuth 2.0</h2>
+<section id="oauth-2.0-2" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-2.0-2">OAuth 2.0</h2>
 <ul>
 <li>OAuth 2.0 will fix the security issues with one simple fix</li>
 <li>The API issues API keys (Called access tokens) to your app directly
@@ -424,8 +431,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </section>
-<section id="oauth-2.0-2" class="level2">
-<h2 class="anchored" data-anchor-id="oauth-2.0-2">OAuth 2.0</h2>
+<section id="oauth-2.0-3" class="level2">
+<h2 class="anchored" data-anchor-id="oauth-2.0-3">OAuth 2.0</h2>
 <ul>
 <li>There are several ways to use OAuth 2.0 called flows</li>
 <li>We'll use the authorization code flow
@@ -635,6 +642,7 @@ directly to your app</code></pre>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc6749">RFC 6749 - OAuth 2.0</a></li>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc6750">RFC 6750 - OAuth 2.0 Tokens</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->

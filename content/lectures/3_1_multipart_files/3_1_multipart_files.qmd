@@ -1,195 +1,191 @@
 ---
 title: "Multipart and File Uploads"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Multipart form encoding, parsing file uploads as bytes, and safely hosting uploaded files"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://tools.ietf.org/html/rfc1521"
     text: "RFC1521 - Multipart Form"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## Multipart Parsing and File Uploads
+# Multipart Forms
 
 ## HTML Forms - POST
 
+:::: {.columns}
+::: {.column width="50%"}
 - Last time we saw forms:
   - Submit the content of the form in the body of the POST request
-
-```
-<form action="/form-path" method="post">
-<label>Enter your name: <br/>
-<input type="text" name="commenter"><br/>
-</label>
-```
-
-```
+:::
+::: {.column width="50%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 27
 Content-Type: application/x-www-form-urlencoded
-```
-
-```
-<label>Comment: <br/>
-<input type="text" name="comment"><br/>
-</label>
-```
 
 commenter=Jesse&comment=Good+morning%21
-
 ```
-<input type="submit" value="Submit">
+:::
+::::
+
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.html code-line-numbers="1-1"}
+<form action="/form-path" method="post">
+    <label>Enter your name: <br/>
+        <input type="text" name="commenter"><br/>
+    </label>
+
+    <label>Comment: <br/>
+        <input type="text" name="comment"><br/>
+    </label>
+
+    <input type="submit" value="Submit">
 </form>
 ```
+:::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
+:::: {.columns}
+::: {.column width="50%"}
 - You can specify the encoding type for form submissions
 - Default is url encoded (Special characters are % encoded)
-
-```
+:::
+::: {.column width="50%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 27
 Content-Type: application/x-www-form-urlencoded
-```
 
 commenter=Jesse&comment=Good+morning%21
-
 ```
+:::
+::::
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.html code-line-numbers="1-1"}
 <form action="/form-path" method="post" enctype="application/x-www-form-urlencoded">
-<label>Enter your name: <br/>
-<input type="text" name="commenter"><br/>
-</label>
-```
+    <label>Enter your name: <br/>
+        <input type="text" name="commenter"><br/>
+    </label>
 
-```
-<label>Comment: <br/>
-<input type="text" name="comment"><br/>
-</label>
-```
+    <label>Comment: <br/>
+        <input type="text" name="comment"><br/>
+    </label>
 
-```
-<input type="submit" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 ```
+:::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
+:::: {.columns}
+::: {.column width="50%"}
 - url encoding cannot be used to upload files from a form!
-
-```
-POST /form-path HTTP/1.1
-Content-Length: 27
-Content-Type: application/x-www-form-urlencoded
-```
-
   - The browser will only send the filename, not the contents of the file
 - We need something else for file uploads
+:::
+::: {.column width="50%"}
+```http
+POST /form-path HTTP/1.1
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded
 
 commenter=Jesse&comment=Good+morning%21
-
 ```
+:::
+::::
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.html code-line-numbers="1-1"}
 <form action="/form-path" method="post" enctype="application/x-www-form-urlencoded">
-<label>Enter your name: <br/>
-<input type="text" name="commenter"><br/>
-</label>
-```
+    <label>Enter your name: <br/>
+        <input type="text" name="commenter"><br/>
+    </label>
 
-```
-<label>Comment: <br/>
-<input type="text" name="comment"><br/>
-</label>
-```
+    <label>Comment: <br/>
+        <input type="text" name="comment"><br/>
+    </label>
 
-```
-<input type="submit" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 ```
+:::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
 - Specify multipart encoding to receive each input separately in the body of the request
 - With multipart encoding, the browser will send the contents of files
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.html code-line-numbers="1-1"}
 <form action="/form-path" method="post" enctype="multipart/form-data">
-<label>Enter your name: <br/>
-<input type="text" name="commenter"><br/>
-</label>
-```
+    <label>Enter your name: <br/>
+        <input type="text" name="commenter"><br/>
+    </label>
 
-```
-<label>Comment: <br/>
-<input type="text" name="comment"><br/>
-</label>
-```
+    <label>Comment: <br/>
+        <input type="text" name="comment"><br/>
+    </label>
 
-```
-<input type="submit" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 ```
+:::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
 - Our server receives a multipart form request in this format
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 252
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4
-```
 
-```
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4
 Content-Disposition: form-data; name="comment"
-```
 
-```
 Good morning!
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4--
 ```
+:::
 
-## HTML Forms - POST
+## HTML Forms - POST {.unnumbered .unlisted}
 
 - Content-Type specifies a string that separates each input
 - Each input has its own headers
 - Great for submitting different types of data in the same form
   - Required for file uploads
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 252
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4
-```
 
-```
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4
 Content-Disposition: form-data; name="comment"
-```
 
-```
 Good morning!
 ------WebKitFormBoundaryfkz9sCA6fR3CAHN4--
 ```
+:::
+
+# File Uploads
 
 ## File Uploads
 
@@ -199,55 +195,53 @@ Good morning!
   - The browser does the rest
   - Users will be able to choose a file to send
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.html code-line-numbers="1,7"}
 <form action="/form-path" method="post" enctype="multipart/form-data">
-<label>Enter your name: <br/>
-<input type="text" name="commenter"><br/>
-</label>
-```
+    <label>Enter your name: <br/>
+        <input type="text" name="commenter"><br/>
+    </label>
 
-```
-<label>File: <br/>
-<input type="file" name="upload"><br/>
-</label>
-```
+    <label>File: <br/>
+        <input type="file" name="upload"><br/>
+    </label>
 
-```
-<input type="submit" value="Submit">
+    <input type="submit" value="Submit">
 </form>
 ```
+:::
 
-## File Uploads
+## File Uploads {.unnumbered .unlisted}
 
-- When our server receives the file, it will appear in one of the parts of the multi-part POST request
+- When our server receives the file, it will appear in one of the parts of the multipart POST request
 - The content type will tell us the type of file
 - The body of the part will contain all the bytes of that file
   - Can write these bytes to a new file on our server to save that file
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 ------WebKitFormBoundarygVWEOc5JIyJ1qthO
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarygVWEOc5JIyJ1qthO
 Content-Disposition: form-data; name="upload"; filename="discord2.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarygVWEOc5JIyJ1qthO--
 ```
+:::
 
-## File Uploads
+## File Uploads {.unnumbered .unlisted}
 
 - When receiving the bytes of a binary file, do not apply any encodings
   - When we received bytes representing text, we decoded it by interpreting the bytes as UTF-8 encoded text
   - When receiving files, we are often interested in the raw bytes (Ex. Images, videos)
   - The files will be encoded with algorithms other than UTF-8 (Ex. png, jpeg, mp4)
-- Attempting to treat a binary file as a UTF-8 String will corrupt the data!
+- [Attempting to treat a binary file as a UTF-8 String will corrupt the data!]{.yellow}
+
+# Parsing Multipart
 
 ## Parsing Multipart
 
@@ -255,685 +249,460 @@ Content-Type: image/png
   - Without corrupting the image
 - Let's walk through the steps you'll need to take
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Identify the request using the method and path
-- This is a post request request for form-path
+- This is a POST request for /form-path
 - Based on our HTML, we know to treat this as a form submission
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="1-1"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Parse the headers and read the length of the content
 - This will be the number of bytes that need to be read from the body
 - Follows the same protocol as your HTTP responses
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="2"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Refer to your content length and read that many bytes from the body of the request
-- Important: Do not attempt to parse anything until you've read this many bytes from the body (More details in the buffering lecture)
+- [Important]{.yellow}: Do not attempt to parse the body until you've read this many bytes from the body (More details in the next lecture)
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="2,5-14"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
-- Read the type of the content to get the boundary
+- Read the Content-Type header to get the boundary
 - Boundary is specified in addition to the MIME type
   - Recall that we used the same format to specify charset=utf-8
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="3"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
-- The body will consist of multiple parts, each separated by the boundary
+- The body will consist any number of parts, each separated by the boundary
 - The browser will guarantee that the boundary is not contained in any of the data being sent
 - This example has 2 parts
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="6-8,10-13"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
-- The parts are separated by the boundary with two leading dash characters "--"
+- The parts are separated by the boundary with two leading dash characters `--`
 - Each boundary must be at the beginning of a line
-- The full boundary is CRLF + "--" + `<boundary>`
+- The full boundary is CRLF + `--` + `<boundary>`
   - Except the first one which is already preceded by a CRLF from the blank line separating the headers and body
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="5,9"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
-- The end of the last boundary is marked by the full boundary plus two trailing "-" characters
-- The last boundary is CRLF + "--" + `<boundary>` + "--"
+- The end of the last boundary is marked by the full boundary plus two trailing `-` characters
+- The last boundary is CRLF + `--` + `<boundary>` + `--`
 - Can have a trailing CRLF after the last boundary that should be ignored
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="14"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Each part of the request will follow a similar format to HTTP requests:
   - Any number of headers
   - One blank line
   - The content of the part
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="10-13"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - The headers should include a Content-Disposition
   - Provides the name of the part in quotes
   - Name matches the name from your form
   - For files, the original filename is provided in quotes
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="6,10"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Content-Type is optional for parts
 - If excluded, the default MIME type is text/plain
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="11"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Content-Length is not included in the parts
 - The purpose of Content-Length is to ensure we've received the full body before parsing
-- Already read the full body using the HTTP Content-Length
+  - Already read the full body using the HTTP Content-Length
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - When reading the bytes of a [non-text] file
-  - Never, never, never encode the bytes as a string!
+  - Never, [never]{.yellow}, [never]{style="color: #ff6b6b"} encode the bytes as a string!
 - But wait.. how do I parse all this stuff without making it a String?..
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="13"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - Parse in bytes!
 - When parsing bytes that contain non-text data:
   - We'll use byte-parsing, not String-parsing
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
 - You receive the request as an array of bytes
 - Scan this array for the bytes you're looking for
 - Create sub-arrays to extract data
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```http
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
+## Parsing Multipart {.unnumbered .unlisted}
 
-- Example: To extract the headers you would find the first instance of the "`\r\n\r\n`" String and read everything before it
-- Encode "`\r\n\r\n`" into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence
+- Example: To extract the headers you would find the first instance of the `\r\n\r\n` String and read everything before it
+- **Encode** `\r\n\r\n` into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence
+- Recall that headers are ASCII only and can safely be treated as text
 
-```
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.http code-line-numbers="1-3"}
 POST /form-path HTTP/1.1
 Content-Length: 9937
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
 
-```
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="commenter"
-```
 
-```
 Jesse
 ------WebKitFormBoundarycriD3u6M0UuPR1ia
 Content-Disposition: form-data; name="upload"; filename="discord.png"
 Content-Type: image/png
-```
 
-```
 <bytes_of_the_file>
 ------WebKitFormBoundarycriD3u6M0UuPR1ia--
 ```
+:::
 
-## Parsing Multipart
 
-- When you have a sub-array containing only the headers
-  - Decode using ASCII/UTF-8 and parse the headers
 
-```
-POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
-
-```
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"
-```
-
-```
-Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png
-```
-
-```
-<bytes_of_the_file>
-------WebKitFormBoundarycriD3u6M0UuPR1ia--
-```
-
-## Parsing Multipart
-
-- Use a similar approach with the boundary
-- Encode the boundary into bytes
-- Look for that sequence of bytes in the body
-
-```
-POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
-
-```
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"
-```
-
-```
-Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png
-```
-
-```
-<bytes_of_the_file>
-------WebKitFormBoundarycriD3u6M0UuPR1ia--
-```
-
-## Parsing Multipart
-
-- Repeat for each part
-- Encode "`\r\n\r\n`" into bytes, scan the part for this sequence of bytes, read the headers
-
-```
-POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
-
-```
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"
-```
-
-```
-Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png
-```
-
-```
-<bytes_of_the_file>
-------WebKitFormBoundarycriD3u6M0UuPR1ia--
-```
-
-## Parsing Multipart
-
-- If the headers for a part specify a non-text encoding
-  - Handle the body of that part as raw bytes
-  - The bytes are never decoded using a text encoding
-
-```
-POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
-
-```
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"
-```
-
-```
-Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png
-```
-
-```
-<bytes_of_the_file>
-------WebKitFormBoundarycriD3u6M0UuPR1ia--
-```
-
-## Parsing Multipart
-
-- Once you read the raw bytes of the file/image
-  - Save these bytes in a file
-  - Serve these files for users to enjoy
-
-```
-POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia
-```
-
-```
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"
-```
-
-```
-Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png
-```
-
-```
-<bytes_of_the_file>
-------WebKitFormBoundarycriD3u6M0UuPR1ia--
-```
+# Saving and Hosting Files
 
 ## File Uploads
 
-- To save a file on your server:
+To save a file on your server:
+
 - Save the file to disk
   - Bad practice to store files in a database
   - Generate a naming convention for your saved files
-    - Do not use the user supplied filename
-- Store the filename in your database
+- [Do not use the user supplied filename]{.yellow}
+  - Attacker could choose a filename of `/path/to/secret` to read any file from your server
+  - Even trustworthy users might create name collisions with each other (e.g. Two users upload `pfp.png`)
+- Store only the filename in your database
   - When you pull a record from the database, it will tell you which filename to use and that file can be read from disk
 
 ## Image Uploads
 
 - To host user supplied images on your site:
-- Pull the filename from the database and use this as the src of the img element in your HTML (Using HTML templates)
+- Pull the filename from the database and use this as the src of the img element in your HTML
+  - Using HTML templates (rendered either back end or front end)
 - The browser will read the src attribute and send a request for the file path
 - Host the bytes of the file at that path
 
-## We Now Support File Sharing!
+# Potential Attacks
 
-## Hosting Files
 
-- We can make all uploaded files available to our users
-- We create a url scheme to accomplish this
-  - Ex. GET /public/image/cool-picture.png
-  - Ex. GET /public/image?filename=cool-picture.png
-- Parse the request to find which image is being requested
-  - Open that file and send the bytes
-  - Can send a 404 if the file doesn't exist on the server
 
-## Hosting Files - Security
+## File Signatures
 
-- You'll have code that effectively does this:
-  - Receive request for /public/image/`<filename>`
-  - Parse the path to extract `<filename>`
-  - Read the bytes of the file
-  - Send those bytes to the user in your HTTP response
+:::: {.columns}
+::: {.column width="52%"}
+- Once you have the bytes, what type of file is it?
+- The file extension and the part's Content-Type are chosen by the user
+  - An attacker can upload `attack.js` renamed to `cat.jpg`
+- The first bytes of most file types are a fixed signature
+  - Part of the content, so it's harder to fake
+- Check the first bytes against the types you allow
 
-## Hosting Files - Security
+```go
+bytes.HasPrefix(content, []byte{0xFF, 0xD8, 0xFF})
+```
+:::
+::: {.column width="48%"}
+| Type | First bytes |
+|------|-------------|
+| JPEG | `FF D8 FF` |
+| PNG | `89 50 4E 47 0D 0A 1A 0A` |
+| GIF | `GIF87a` or `GIF89a` |
+| MP4 | `ftyp` starting at byte 4 |
+:::
+::::
 
-- You'll have code that effectively does this:
-  - Receive request for /public/image/`<filename>`
-  - Parse the path to extract `<filename>`
-  - Read the bytes of the file
-  - Send those bytes to the user in your HTTP response
-- ... and someone makes the following request:
-  - GET /public/image/~/.ssh/id_rsa
+## Requesting Arbitrary Files
 
-## Hosting Files - Security
-
-- GET /image/~/.ssh/id_rsa
-  - This attacker requested your private encryption key!
-- We cannot allow users to request arbitrary files from the server
-- Add logic to ensure users can't access files outside the public directories
-  - Removing all "/" characters will suffice for the HW
-
-## Hosting Files - Security
-
-- GET /image/~/.ssh/id_rsa
-  - This attacker requested your private encryption key!
-- Strongest defense:
-  - Maintain a list of all valid files that can be requested
-  - return a 400-level response if any other file is requested
-
-## Hosting Files - Security
-
-- Testing for this vulnerability
-
-curl --path-as-is http://localhost:8080/public/image/../../server.py
-
-- Following the structure of the HW server, this request with ask the server for server.py
-- Your server must not respect this request
-  - Sending your server code alone is a security issue, but this is also a proof of concept that they can request arbitrary files
-- Uses curl in the command line
-- The browser and curl will simplify paths by default and chance the path to "/ server.py"
-- --path-as-is prevents the path simplification
-
-## Hosting Files - Security
-
-- Don't forget to disable MIME type sniffing
-- At this point an attacker can upload Javascript instead of an image
-  - Don't let the browser sniff the JS MIME type and run the attack script
+- You have a path that effectively takes requests `/public/[filename]` and servers `filename`
+  - An attacker requests `/public/~/.ssh/id_ed25519`
+  - [You happily server them your private encryption key]{.yellow}
+- Prevent the attack by ensuring that all requests for files are in a public directory *after* resolving the file path
+  - Get the absolute directory of the path and ensure that you are still in the `/path/to/project/public` directory
+  - If not, return a 400-level response (Probably 400 Bad Request)

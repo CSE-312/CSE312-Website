@@ -28,8 +28,74 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-232fd6f6997438578b9f78a6e0c6e8b0.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -143,113 +209,150 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Multipart and File Uploads</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="multipart-parsing-and-file-uploads" class="slide level2">
-<h2>Multipart Parsing and File Uploads</h2>
+<section>
+<section id="multipart-forms" class="title-slide slide level1 center">
+<h1>Multipart Forms</h1>
+
 </section>
 <section id="html-forms---post" class="slide level2">
 <h2>HTML Forms - POST</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Last time we saw forms:
 <ul>
 <li>Submit the content of the form in the body of the POST request</li>
 </ul></li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="post"&gt;
-&lt;label&gt;Enter your name: &lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 27
-Content-Type: application/x-www-form-urlencoded</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<p>commenter=Jesse&amp;comment=Good+morning%21</p>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb1-2"><a></a>Content-Length: 27</span>
+<span id="cb1-3"><a></a>Content-Type: application/x-www-form-urlencoded</span>
+<span id="cb1-4"><a></a></span>
+<span id="cb1-5"><a></a>commenter=Jesse&amp;comment=Good+morning%21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb2" data-code-line-numbers="1-1"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="dt">&gt;</span></span>
+<span id="cb2-2"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb2-3"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb2-4"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb2-5"><a></a></span>
+<span id="cb2-6"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb2-7"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb2-8"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb2-9"><a></a></span>
+<span id="cb2-10"><a></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb2-11"><a></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="html-forms---post-1" class="slide level2">
+<section id="html-forms---post-1" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>You can specify the encoding type for form submissions</li>
 <li>Default is url encoded (Special characters are % encoded)</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 27
-Content-Type: application/x-www-form-urlencoded</code></pre>
-<p>commenter=Jesse&amp;comment=Good+morning%21</p>
-<pre><code>&lt;form action="/form-path" method="post" enctype="application/x-www-form-urlencoded"&gt;
-&lt;label&gt;Enter your name: &lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb3-2"><a></a>Content-Length: 27</span>
+<span id="cb3-3"><a></a>Content-Type: application/x-www-form-urlencoded</span>
+<span id="cb3-4"><a></a></span>
+<span id="cb3-5"><a></a>commenter=Jesse&amp;comment=Good+morning%21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb4" data-code-line-numbers="1-1"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> enctype</span><span class="op">=</span><span class="st">"application/x-www-form-urlencoded"</span><span class="dt">&gt;</span></span>
+<span id="cb4-2"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb4-3"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb4-4"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb4-5"><a></a></span>
+<span id="cb4-6"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb4-7"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb4-8"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb4-9"><a></a></span>
+<span id="cb4-10"><a></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb4-11"><a></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="html-forms---post-2" class="slide level2">
+<section id="html-forms---post-2" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
-<li>url encoding cannot be used to upload files from a form!</li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 27
-Content-Type: application/x-www-form-urlencoded</code></pre>
+<li>url encoding cannot be used to upload files from a form!
 <ul>
 <li>The browser will only send the filename, not the contents of the file</li>
+</ul></li>
 <li>We need something else for file uploads</li>
 </ul>
-<p>commenter=Jesse&amp;comment=Good+morning%21</p>
-<pre><code>&lt;form action="/form-path" method="post" enctype="application/x-www-form-urlencoded"&gt;
-&lt;label&gt;Enter your name: &lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb5-2"><a></a>Content-Length: 27</span>
+<span id="cb5-3"><a></a>Content-Type: application/x-www-form-urlencoded</span>
+<span id="cb5-4"><a></a></span>
+<span id="cb5-5"><a></a>commenter=Jesse&amp;comment=Good+morning%21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb6" data-code-line-numbers="1-1"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb6-1"><a></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> enctype</span><span class="op">=</span><span class="st">"application/x-www-form-urlencoded"</span><span class="dt">&gt;</span></span>
+<span id="cb6-2"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb6-3"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb6-4"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-5"><a></a></span>
+<span id="cb6-6"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb6-7"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb6-8"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb6-9"><a></a></span>
+<span id="cb6-10"><a></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb6-11"><a></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="html-forms---post-3" class="slide level2">
+<section id="html-forms---post-3" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
 <ul>
 <li>Specify multipart encoding to receive each input separately in the body of the request</li>
 <li>With multipart encoding, the browser will send the contents of files</li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="post" enctype="multipart/form-data"&gt;
-&lt;label&gt;Enter your name: &lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;Comment: &lt;br/&gt;
-&lt;input type="text" name="comment"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb7" data-code-line-numbers="1-1"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> enctype</span><span class="op">=</span><span class="st">"multipart/form-data"</span><span class="dt">&gt;</span></span>
+<span id="cb7-2"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb7-3"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb7-4"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb7-5"><a></a></span>
+<span id="cb7-6"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Comment: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb7-7"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"comment"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb7-8"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb7-9"><a></a></span>
+<span id="cb7-10"><a></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb7-11"><a></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="html-forms---post-4" class="slide level2">
+<section id="html-forms---post-4" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
 <ul>
 <li>Our server receives a multipart form request in this format</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 252
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</code></pre>
-<pre><code>------WebKitFormBoundaryfkz9sCA6fR3CAHN4
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundaryfkz9sCA6fR3CAHN4
-Content-Disposition: form-data; name="comment"</code></pre>
-<pre><code>Good morning!
-------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb8-2"><a></a>Content-Length: 252</span>
+<span id="cb8-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb8-4"><a></a></span>
+<span id="cb8-5"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb8-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb8-7"><a></a></span>
+<span id="cb8-8"><a></a>Jesse</span>
+<span id="cb8-9"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb8-10"><a></a>Content-Disposition: form-data; name="comment"</span>
+<span id="cb8-11"><a></a></span>
+<span id="cb8-12"><a></a>Good morning!</span>
+<span id="cb8-13"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="html-forms---post-5" class="slide level2">
+<section id="html-forms---post-5" class="slide level2 unnumbered unlisted">
 <h2>HTML Forms - POST</h2>
 <ul>
 <li>Content-Type specifies a string that separates each input</li>
@@ -259,18 +362,28 @@ Content-Disposition: form-data; name="comment"</code></pre>
 <li>Required for file uploads</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 252
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</code></pre>
-<pre><code>------WebKitFormBoundaryfkz9sCA6fR3CAHN4
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundaryfkz9sCA6fR3CAHN4
-Content-Disposition: form-data; name="comment"</code></pre>
-<pre><code>Good morning!
-------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb9-2"><a></a>Content-Length: 252</span>
+<span id="cb9-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb9-4"><a></a></span>
+<span id="cb9-5"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb9-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb9-7"><a></a></span>
+<span id="cb9-8"><a></a>Jesse</span>
+<span id="cb9-9"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4</span>
+<span id="cb9-10"><a></a>Content-Disposition: form-data; name="comment"</span>
+<span id="cb9-11"><a></a></span>
+<span id="cb9-12"><a></a>Good morning!</span>
+<span id="cb9-13"><a></a>------WebKitFormBoundaryfkz9sCA6fR3CAHN4--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section id="file-uploads" class="title-slide slide level1 center">
+<h1>File Uploads</h1>
+
 </section>
-<section id="file-uploads" class="slide level2">
+<section id="file-uploads-1" class="slide level2">
 <h2>File Uploads</h2>
 <ul>
 <li>We must use multipart/form-data to upload files
@@ -283,36 +396,44 @@ Content-Disposition: form-data; name="comment"</code></pre>
 <li>Users will be able to choose a file to send</li>
 </ul></li>
 </ul>
-<pre><code>&lt;form action="/form-path" method="post" enctype="multipart/form-data"&gt;
-&lt;label&gt;Enter your name: &lt;br/&gt;
-&lt;input type="text" name="commenter"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;label&gt;File: &lt;br/&gt;
-&lt;input type="file" name="upload"&gt;&lt;br/&gt;
-&lt;/label&gt;</code></pre>
-<pre><code>&lt;input type="submit" value="Submit"&gt;
-&lt;/form&gt;</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb10" data-code-line-numbers="1,7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1"><a></a><span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> action</span><span class="op">=</span><span class="st">"/form-path"</span><span class="ot"> method</span><span class="op">=</span><span class="st">"post"</span><span class="ot"> enctype</span><span class="op">=</span><span class="st">"multipart/form-data"</span><span class="dt">&gt;</span></span>
+<span id="cb10-2"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>Enter your name: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-3"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"text"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"commenter"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-4"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb10-5"><a></a></span>
+<span id="cb10-6"><a></a>    <span class="dt">&lt;</span><span class="kw">label</span><span class="dt">&gt;</span>File: <span class="dt">&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-7"><a></a>        <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"file"</span><span class="ot"> name</span><span class="op">=</span><span class="st">"upload"</span><span class="dt">&gt;&lt;</span><span class="kw">br</span><span class="dt">/&gt;</span></span>
+<span id="cb10-8"><a></a>    <span class="dt">&lt;/</span><span class="kw">label</span><span class="dt">&gt;</span></span>
+<span id="cb10-9"><a></a></span>
+<span id="cb10-10"><a></a>    <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">"submit"</span><span class="ot"> value</span><span class="op">=</span><span class="st">"Submit"</span><span class="dt">&gt;</span></span>
+<span id="cb10-11"><a></a><span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="file-uploads-1" class="slide level2">
+<section id="file-uploads-2" class="slide level2 unnumbered unlisted">
 <h2>File Uploads</h2>
 <ul>
-<li>When our server receives the file, it will appear in one of the parts of the multi-part POST request</li>
+<li>When our server receives the file, it will appear in one of the parts of the multipart POST request</li>
 <li>The content type will tell us the type of file</li>
 <li>The body of the part will contain all the bytes of that file
 <ul>
 <li>Can write these bytes to a new file on our server to save that file</li>
 </ul></li>
 </ul>
-<pre><code>------WebKitFormBoundarygVWEOc5JIyJ1qthO
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarygVWEOc5JIyJ1qthO
-Content-Disposition: form-data; name="upload"; filename="discord2.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarygVWEOc5JIyJ1qthO--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a></a>------WebKitFormBoundarygVWEOc5JIyJ1qthO</span>
+<span id="cb11-2"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb11-3"><a></a></span>
+<span id="cb11-4"><a></a>Jesse</span>
+<span id="cb11-5"><a></a>------WebKitFormBoundarygVWEOc5JIyJ1qthO</span>
+<span id="cb11-6"><a></a>Content-Disposition: form-data; name="upload"; filename="discord2.png"</span>
+<span id="cb11-7"><a></a>Content-Type: image/png</span>
+<span id="cb11-8"><a></a></span>
+<span id="cb11-9"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb11-10"><a></a>------WebKitFormBoundarygVWEOc5JIyJ1qthO--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="file-uploads-2" class="slide level2">
+<section id="file-uploads-3" class="slide level2 unnumbered unlisted">
 <h2>File Uploads</h2>
 <ul>
 <li>When receiving the bytes of a binary file, do not apply any encodings
@@ -321,10 +442,15 @@ Content-Type: image/png</code></pre>
 <li>When receiving files, we are often interested in the raw bytes (Ex. Images, videos)</li>
 <li>The files will be encoded with algorithms other than UTF-8 (Ex. png, jpeg, mp4)</li>
 </ul></li>
-<li>Attempting to treat a binary file as a UTF-8 String will corrupt the data!</li>
+<li><span class="yellow">Attempting to treat a binary file as a UTF-8 String will corrupt the data!</span></li>
 </ul>
+</section></section>
+<section>
+<section id="parsing-multipart" class="title-slide slide level1 center">
+<h1>Parsing Multipart</h1>
+
 </section>
-<section id="parsing-multipart" class="slide level2">
+<section id="parsing-multipart-1" class="slide level2">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Your goal is to parse HTTP POST requests in this format
@@ -333,156 +459,196 @@ Content-Type: image/png</code></pre>
 </ul></li>
 <li>Let's walk through the steps you'll need to take</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb12-2"><a></a>Content-Length: 9937</span>
+<span id="cb12-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb12-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb12-7"><a></a></span>
+<span id="cb12-8"><a></a>Jesse</span>
+<span id="cb12-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb12-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb12-11"><a></a>Content-Type: image/png</span>
+<span id="cb12-12"><a></a></span>
+<span id="cb12-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb12-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-1" class="slide level2">
+<section id="parsing-multipart-2" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Identify the request using the method and path</li>
-<li>This is a post request request for form-path</li>
+<li>This is a POST request for /form-path</li>
 <li>Based on our HTML, we know to treat this as a form submission</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb13" data-code-line-numbers="1-1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb13-2"><a></a>Content-Length: 9937</span>
+<span id="cb13-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb13-4"><a></a></span>
+<span id="cb13-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb13-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb13-7"><a></a></span>
+<span id="cb13-8"><a></a>Jesse</span>
+<span id="cb13-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb13-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb13-11"><a></a>Content-Type: image/png</span>
+<span id="cb13-12"><a></a></span>
+<span id="cb13-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb13-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-2" class="slide level2">
+<section id="parsing-multipart-3" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Parse the headers and read the length of the content</li>
 <li>This will be the number of bytes that need to be read from the body</li>
 <li>Follows the same protocol as your HTTP responses</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb14" data-code-line-numbers="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb14-2"><a></a>Content-Length: 9937</span>
+<span id="cb14-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb14-4"><a></a></span>
+<span id="cb14-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb14-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb14-7"><a></a></span>
+<span id="cb14-8"><a></a>Jesse</span>
+<span id="cb14-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb14-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb14-11"><a></a>Content-Type: image/png</span>
+<span id="cb14-12"><a></a></span>
+<span id="cb14-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb14-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-3" class="slide level2">
+<section id="parsing-multipart-4" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Refer to your content length and read that many bytes from the body of the request</li>
-<li>Important: Do not attempt to parse anything until you've read this many bytes from the body (More details in the buffering lecture)</li>
+<li><span class="yellow">Important</span>: Do not attempt to parse the body until you've read this many bytes from the body (More details in the next lecture)</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb15" data-code-line-numbers="2,5-14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb15-2"><a></a>Content-Length: 9937</span>
+<span id="cb15-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb15-4"><a></a></span>
+<span id="cb15-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb15-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb15-7"><a></a></span>
+<span id="cb15-8"><a></a>Jesse</span>
+<span id="cb15-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb15-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb15-11"><a></a>Content-Type: image/png</span>
+<span id="cb15-12"><a></a></span>
+<span id="cb15-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb15-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-4" class="slide level2">
+<section id="parsing-multipart-5" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>Read the type of the content to get the boundary</li>
+<li>Read the Content-Type header to get the boundary</li>
 <li>Boundary is specified in addition to the MIME type
 <ul>
 <li>Recall that we used the same format to specify charset=utf-8</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb16" data-code-line-numbers="3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb16-2"><a></a>Content-Length: 9937</span>
+<span id="cb16-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb16-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb16-7"><a></a></span>
+<span id="cb16-8"><a></a>Jesse</span>
+<span id="cb16-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb16-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb16-11"><a></a>Content-Type: image/png</span>
+<span id="cb16-12"><a></a></span>
+<span id="cb16-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb16-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-5" class="slide level2">
+<section id="parsing-multipart-6" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>The body will consist of multiple parts, each separated by the boundary</li>
+<li>The body will consist any number of parts, each separated by the boundary</li>
 <li>The browser will guarantee that the boundary is not contained in any of the data being sent</li>
 <li>This example has 2 parts</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb17" data-code-line-numbers="6-8,10-13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb17-2"><a></a>Content-Length: 9937</span>
+<span id="cb17-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb17-4"><a></a></span>
+<span id="cb17-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb17-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb17-7"><a></a></span>
+<span id="cb17-8"><a></a>Jesse</span>
+<span id="cb17-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb17-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb17-11"><a></a>Content-Type: image/png</span>
+<span id="cb17-12"><a></a></span>
+<span id="cb17-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb17-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-6" class="slide level2">
+<section id="parsing-multipart-7" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>The parts are separated by the boundary with two leading dash characters "--"</li>
+<li>The parts are separated by the boundary with two leading dash characters <code>--</code></li>
 <li>Each boundary must be at the beginning of a line</li>
-<li>The full boundary is CRLF + "--" + <code>&lt;boundary&gt;</code>
+<li>The full boundary is CRLF + <code>--</code> + <code>&lt;boundary&gt;</code>
 <ul>
 <li>Except the first one which is already preceded by a CRLF from the blank line separating the headers and body</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb18" data-code-line-numbers="5,9"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb18-2"><a></a>Content-Length: 9937</span>
+<span id="cb18-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb18-4"><a></a></span>
+<span id="cb18-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb18-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb18-7"><a></a></span>
+<span id="cb18-8"><a></a>Jesse</span>
+<span id="cb18-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb18-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb18-11"><a></a>Content-Type: image/png</span>
+<span id="cb18-12"><a></a></span>
+<span id="cb18-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb18-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-7" class="slide level2">
+<section id="parsing-multipart-8" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>The end of the last boundary is marked by the full boundary plus two trailing "-" characters</li>
-<li>The last boundary is CRLF + "--" + <code>&lt;boundary&gt;</code> + "--"</li>
+<li>The end of the last boundary is marked by the full boundary plus two trailing <code>-</code> characters</li>
+<li>The last boundary is CRLF + <code>--</code> + <code>&lt;boundary&gt;</code> + <code>--</code></li>
 <li>Can have a trailing CRLF after the last boundary that should be ignored</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb19" data-code-line-numbers="14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb19-2"><a></a>Content-Length: 9937</span>
+<span id="cb19-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb19-4"><a></a></span>
+<span id="cb19-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb19-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb19-7"><a></a></span>
+<span id="cb19-8"><a></a>Jesse</span>
+<span id="cb19-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb19-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb19-11"><a></a>Content-Type: image/png</span>
+<span id="cb19-12"><a></a></span>
+<span id="cb19-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb19-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-8" class="slide level2">
+<section id="parsing-multipart-9" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Each part of the request will follow a similar format to HTTP requests:
@@ -492,19 +658,24 @@ Content-Type: image/png</code></pre>
 <li>The content of the part</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb20" data-code-line-numbers="10-13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb20-2"><a></a>Content-Length: 9937</span>
+<span id="cb20-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb20-4"><a></a></span>
+<span id="cb20-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb20-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb20-7"><a></a></span>
+<span id="cb20-8"><a></a>Jesse</span>
+<span id="cb20-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb20-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb20-11"><a></a>Content-Type: image/png</span>
+<span id="cb20-12"><a></a></span>
+<span id="cb20-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb20-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-9" class="slide level2">
+<section id="parsing-multipart-10" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>The headers should include a Content-Disposition
@@ -514,77 +685,99 @@ Content-Type: image/png</code></pre>
 <li>For files, the original filename is provided in quotes</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb21" data-code-line-numbers="6,10"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb21-2"><a></a>Content-Length: 9937</span>
+<span id="cb21-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb21-4"><a></a></span>
+<span id="cb21-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb21-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb21-7"><a></a></span>
+<span id="cb21-8"><a></a>Jesse</span>
+<span id="cb21-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb21-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb21-11"><a></a>Content-Type: image/png</span>
+<span id="cb21-12"><a></a></span>
+<span id="cb21-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb21-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-10" class="slide level2">
+<section id="parsing-multipart-11" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Content-Type is optional for parts</li>
 <li>If excluded, the default MIME type is text/plain</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb22" data-code-line-numbers="11"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb22-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb22-2"><a></a>Content-Length: 9937</span>
+<span id="cb22-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb22-4"><a></a></span>
+<span id="cb22-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb22-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb22-7"><a></a></span>
+<span id="cb22-8"><a></a>Jesse</span>
+<span id="cb22-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb22-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb22-11"><a></a>Content-Type: image/png</span>
+<span id="cb22-12"><a></a></span>
+<span id="cb22-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb22-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-11" class="slide level2">
+<section id="parsing-multipart-12" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Content-Length is not included in the parts</li>
-<li>The purpose of Content-Length is to ensure we've received the full body before parsing</li>
+<li>The purpose of Content-Length is to ensure we've received the full body before parsing
+<ul>
 <li>Already read the full body using the HTTP Content-Length</li>
+</ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb23-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb23-2"><a></a>Content-Length: 9937</span>
+<span id="cb23-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb23-4"><a></a></span>
+<span id="cb23-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb23-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb23-7"><a></a></span>
+<span id="cb23-8"><a></a>Jesse</span>
+<span id="cb23-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb23-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb23-11"><a></a>Content-Type: image/png</span>
+<span id="cb23-12"><a></a></span>
+<span id="cb23-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb23-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-12" class="slide level2">
+<section id="parsing-multipart-13" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>When reading the bytes of a [non-text] file
 <ul>
-<li>Never, never, never encode the bytes as a string!</li>
+<li>Never, <span class="yellow">never</span>, <span style="color: #ff6b6b">never</span> encode the bytes as a string!</li>
 </ul></li>
 <li>But wait.. how do I parse all this stuff without making it a String?..</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb24" data-code-line-numbers="13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb24-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb24-2"><a></a>Content-Length: 9937</span>
+<span id="cb24-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb24-4"><a></a></span>
+<span id="cb24-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb24-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb24-7"><a></a></span>
+<span id="cb24-8"><a></a>Jesse</span>
+<span id="cb24-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb24-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb24-11"><a></a>Content-Type: image/png</span>
+<span id="cb24-12"><a></a></span>
+<span id="cb24-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb24-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-13" class="slide level2">
+<section id="parsing-multipart-14" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>Parse in bytes!</li>
@@ -593,167 +786,91 @@ Content-Type: image/png</code></pre>
 <li>We'll use byte-parsing, not String-parsing</li>
 </ul></li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb25"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb25-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb25-2"><a></a>Content-Length: 9937</span>
+<span id="cb25-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb25-4"><a></a></span>
+<span id="cb25-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb25-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb25-7"><a></a></span>
+<span id="cb25-8"><a></a>Jesse</span>
+<span id="cb25-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb25-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb25-11"><a></a>Content-Type: image/png</span>
+<span id="cb25-12"><a></a></span>
+<span id="cb25-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb25-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-14" class="slide level2">
+<section id="parsing-multipart-15" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
 <li>You receive the request as an array of bytes</li>
 <li>Scan this array for the bytes you're looking for</li>
 <li>Create sub-arrays to extract data</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb26"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb26-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb26-2"><a></a>Content-Length: 9937</span>
+<span id="cb26-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb26-4"><a></a></span>
+<span id="cb26-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb26-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb26-7"><a></a></span>
+<span id="cb26-8"><a></a>Jesse</span>
+<span id="cb26-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb26-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb26-11"><a></a>Content-Type: image/png</span>
+<span id="cb26-12"><a></a></span>
+<span id="cb26-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb26-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="parsing-multipart-15" class="slide level2">
+<section id="parsing-multipart-16" class="slide level2 unnumbered unlisted">
 <h2>Parsing Multipart</h2>
 <ul>
-<li>Example: To extract the headers you would find the first instance of the "<code>\r\n\r\n</code>" String and read everything before it</li>
-<li>Encode "<code>\r\n\r\n</code>" into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence</li>
+<li>Example: To extract the headers you would find the first instance of the <code>\r\n\r\n</code> String and read everything before it</li>
+<li><strong>Encode</strong> <code>\r\n\r\n</code> into bytes and search the byte array for this sequence of bytes, then create a new array with everything before that sequence</li>
+<li>Recall that headers are ASCII only and can safely be treated as text</li>
 </ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<div class="sourceCode" id="cb27" data-code-line-numbers="1-3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb27-1"><a></a>POST /form-path HTTP/1.1</span>
+<span id="cb27-2"><a></a>Content-Length: 9937</span>
+<span id="cb27-3"><a></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb27-4"><a></a></span>
+<span id="cb27-5"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb27-6"><a></a>Content-Disposition: form-data; name="commenter"</span>
+<span id="cb27-7"><a></a></span>
+<span id="cb27-8"><a></a>Jesse</span>
+<span id="cb27-9"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia</span>
+<span id="cb27-10"><a></a>Content-Disposition: form-data; name="upload"; filename="discord.png"</span>
+<span id="cb27-11"><a></a>Content-Type: image/png</span>
+<span id="cb27-12"><a></a></span>
+<span id="cb27-13"><a></a>&lt;bytes_of_the_file&gt;</span>
+<span id="cb27-14"><a></a>------WebKitFormBoundarycriD3u6M0UuPR1ia--</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section id="saving-and-hosting-files" class="title-slide slide level1 center">
+<h1>Saving and Hosting Files</h1>
+
 </section>
-<section id="parsing-multipart-16" class="slide level2">
-<h2>Parsing Multipart</h2>
-<ul>
-<li>When you have a sub-array containing only the headers
-<ul>
-<li>Decode using ASCII/UTF-8 and parse the headers</li>
-</ul></li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="parsing-multipart-17" class="slide level2">
-<h2>Parsing Multipart</h2>
-<ul>
-<li>Use a similar approach with the boundary</li>
-<li>Encode the boundary into bytes</li>
-<li>Look for that sequence of bytes in the body</li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="parsing-multipart-18" class="slide level2">
-<h2>Parsing Multipart</h2>
-<ul>
-<li>Repeat for each part</li>
-<li>Encode "<code>\r\n\r\n</code>" into bytes, scan the part for this sequence of bytes, read the headers</li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="parsing-multipart-19" class="slide level2">
-<h2>Parsing Multipart</h2>
-<ul>
-<li>If the headers for a part specify a non-text encoding
-<ul>
-<li>Handle the body of that part as raw bytes</li>
-<li>The bytes are never decoded using a text encoding</li>
-</ul></li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="parsing-multipart-20" class="slide level2">
-<h2>Parsing Multipart</h2>
-<ul>
-<li>Once you read the raw bytes of the file/image
-<ul>
-<li>Save these bytes in a file</li>
-<li>Serve these files for users to enjoy</li>
-</ul></li>
-</ul>
-<pre><code>POST /form-path HTTP/1.1
-Content-Length: 9937
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</code></pre>
-<pre><code>------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="commenter"</code></pre>
-<pre><code>Jesse
-------WebKitFormBoundarycriD3u6M0UuPR1ia
-Content-Disposition: form-data; name="upload"; filename="discord.png"
-Content-Type: image/png</code></pre>
-<pre><code>&lt;bytes_of_the_file&gt;
-------WebKitFormBoundarycriD3u6M0UuPR1ia--</code></pre>
-</section>
-<section id="file-uploads-3" class="slide level2">
+<section id="file-uploads-4" class="slide level2">
 <h2>File Uploads</h2>
+<p>To save a file on your server:</p>
 <ul>
-<li>To save a file on your server:</li>
 <li>Save the file to disk
 <ul>
 <li>Bad practice to store files in a database</li>
-<li>Generate a naming convention for your saved files
+<li>Generate a naming convention for your saved files</li>
+</ul></li>
+<li><span class="yellow">Do not use the user supplied filename</span>
 <ul>
-<li>Do not use the user supplied filename</li>
+<li>Attacker could choose a filename of <code>/path/to/secret</code> to read any file from your server</li>
+<li>Even trustworthy users might create name collisions with each other (e.g. Two users upload <code>pfp.png</code>)</li>
 </ul></li>
-</ul></li>
-<li>Store the filename in your database
+<li>Store only the filename in your database
 <ul>
 <li>When you pull a record from the database, it will tell you which filename to use and that file can be read from disk</li>
 </ul></li>
@@ -763,112 +880,59 @@ Content-Type: image/png</code></pre>
 <h2>Image Uploads</h2>
 <ul>
 <li>To host user supplied images on your site:</li>
-<li>Pull the filename from the database and use this as the src of the img element in your HTML (Using HTML templates)</li>
+<li>Pull the filename from the database and use this as the src of the img element in your HTML
+<ul>
+<li>Using HTML templates (rendered either back end or front end)</li>
+</ul></li>
 <li>The browser will read the src attribute and send a request for the file path</li>
 <li>Host the bytes of the file at that path</li>
 </ul>
 </section>
-<section id="we-now-support-file-sharing" class="slide level2">
-<h2>We Now Support File Sharing!</h2>
-</section>
-<section id="hosting-files" class="slide level2">
-<h2>Hosting Files</h2>
+<section id="file-signatures" class="slide level2">
+<h2>File Signatures</h2>
+<div class="columns">
+<div class="column" style="width:52%;">
 <ul>
-<li>We can make all uploaded files available to our users</li>
-<li>We create a url scheme to accomplish this
+<li>Once you have the bytes, what type of file is it?</li>
+<li>The file extension and the part's Content-Type are chosen by the user
 <ul>
-<li>Ex. GET /public/image/cool-picture.png</li>
-<li>Ex. GET /public/image?filename=cool-picture.png</li>
+<li>An attacker can upload <code>attack.js</code> renamed to <code>cat.jpg</code></li>
 </ul></li>
-<li>Parse the request to find which image is being requested
+<li>The first bytes of most file types are a fixed signature
 <ul>
-<li>Open that file and send the bytes</li>
-<li>Can send a 404 if the file doesn't exist on the server</li>
+<li>Part of the content, so it's harder to fake</li>
 </ul></li>
+<li>Check the first bytes against the types you allow</li>
 </ul>
-</section>
-<section id="hosting-files---security" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>You'll have code that effectively does this:
-<ul>
-<li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
-<li>Parse the path to extract <code>&lt;filename&gt;</code></li>
-<li>Read the bytes of the file</li>
-<li>Send those bytes to the user in your HTTP response</li>
-</ul></li>
-</ul>
-</section>
-<section id="hosting-files---security-1" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>You'll have code that effectively does this:
-<ul>
-<li>Receive request for /public/image/<code>&lt;filename&gt;</code></li>
-<li>Parse the path to extract <code>&lt;filename&gt;</code></li>
-<li>Read the bytes of the file</li>
-<li>Send those bytes to the user in your HTTP response</li>
-</ul></li>
-<li>... and someone makes the following request:
-<ul>
-<li>GET /public/image/~/.ssh/id_rsa</li>
-</ul></li>
-</ul>
-</section>
-<section id="hosting-files---security-2" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>GET /image/~/.ssh/id_rsa
-<ul>
-<li>This attacker requested your private encryption key!</li>
-</ul></li>
-<li>We cannot allow users to request arbitrary files from the server</li>
-<li>Add logic to ensure users can't access files outside the public directories
-<ul>
-<li>Removing all "/" characters will suffice for the HW</li>
-</ul></li>
-</ul>
-</section>
-<section id="hosting-files---security-3" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>GET /image/~/.ssh/id_rsa
-<ul>
-<li>This attacker requested your private encryption key!</li>
-</ul></li>
-<li>Strongest defense:
-<ul>
-<li>Maintain a list of all valid files that can be requested</li>
-<li>return a 400-level response if any other file is requested</li>
-</ul></li>
-</ul>
-</section>
-<section id="hosting-files---security-4" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>Testing for this vulnerability</li>
-</ul>
-<p>curl --path-as-is http://localhost:8080/public/image/../../server.py</p>
-<ul>
-<li>Following the structure of the HW server, this request with ask the server for server.py</li>
-<li>Your server must not respect this request
-<ul>
-<li>Sending your server code alone is a security issue, but this is also a proof of concept that they can request arbitrary files</li>
-</ul></li>
-<li>Uses curl in the command line</li>
-<li>The browser and curl will simplify paths by default and chance the path to "/ server.py"</li>
-<li>--path-as-is prevents the path simplification</li>
-</ul>
-</section>
-<section id="hosting-files---security-5" class="slide level2">
-<h2>Hosting Files - Security</h2>
-<ul>
-<li>Don't forget to disable MIME type sniffing</li>
-<li>At this point an attacker can upload Javascript instead of an image
-<ul>
-<li>Don't let the browser sniff the JS MIME type and run the attack script</li>
-</ul></li>
-</ul>
+<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb28-1"><a></a>bytes<span class="op">.</span>HasPrefix<span class="op">(</span>content<span class="op">,</span> <span class="op">[]</span><span class="dt">byte</span><span class="op">{</span><span class="bn">0xFF</span><span class="op">,</span> <span class="bn">0xD8</span><span class="op">,</span> <span class="bn">0xFF</span><span class="op">})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:48%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>First bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>JPEG</td>
+<td><code>FF D8 FF</code></td>
+</tr>
+<tr class="even">
+<td>PNG</td>
+<td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
+</tr>
+<tr class="odd">
+<td>GIF</td>
+<td><code>GIF87a</code> or <code>GIF89a</code></td>
+</tr>
+<tr class="even">
+<td>MP4</td>
+<td><code>ftyp</code> starting at byte 4</td>
+</tr>
+</tbody>
+</table>
+</div></div>
 
 
 </section>
@@ -877,7 +941,7 @@ Content-Type: image/png</code></pre>
 <ul>
 <li><a href="https://tools.ietf.org/html/rfc1521">RFC1521 - Multipart Form</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
