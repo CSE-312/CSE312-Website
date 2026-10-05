@@ -887,6 +887,11 @@
 <li>The browser will read the src attribute and send a request for the file path</li>
 <li>Host the bytes of the file at that path</li>
 </ul>
+</section></section>
+<section>
+<section id="potential-attacks" class="title-slide slide level1 center">
+<h1>Potential Attacks</h1>
+
 </section>
 <section id="file-signatures" class="slide level2">
 <h2>File Signatures</h2>
@@ -933,6 +938,21 @@
 </tbody>
 </table>
 </div></div>
+</section>
+<section id="requesting-arbitrary-files" class="slide level2">
+<h2>Requesting Arbitrary Files</h2>
+<ul>
+<li>You have a path that effectively takes requests <code>/public/[filename]</code> and servers <code>filename</code>
+<ul>
+<li>An attacker requests <code>/public/~/.ssh/id_ed25519</code></li>
+<li><span class="yellow">You happily server them your private encryption key</span></li>
+</ul></li>
+<li>Prevent the attack by ensuring that all requests for files are in a public directory <em>after</em> resolving the file path
+<ul>
+<li>Get the absolute directory of the path and ensure that you are still in the <code>/path/to/project/public</code> directory</li>
+<li>If not, return a 400-level response (Probably 400 Bad Request)</li>
+</ul></li>
+</ul>
 
 
 </section>

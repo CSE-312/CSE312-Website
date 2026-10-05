@@ -134,7 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#file-uploads-4" id="toc-file-uploads-4" class="nav-link" data-scroll-target="#file-uploads-4">File Uploads</a></li>
   <li><a href="#image-uploads" id="toc-image-uploads" class="nav-link" data-scroll-target="#image-uploads">Image Uploads</a></li>
+  </ul></li>
+  <li><a href="#potential-attacks" id="toc-potential-attacks" class="nav-link" data-scroll-target="#potential-attacks">Potential Attacks</a>
+  <ul class="collapse">
   <li><a href="#file-signatures" id="toc-file-signatures" class="nav-link" data-scroll-target="#file-signatures">File Signatures</a></li>
+  <li><a href="#requesting-arbitrary-files" id="toc-requesting-arbitrary-files" class="nav-link" data-scroll-target="#requesting-arbitrary-files">Requesting Arbitrary Files</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -835,6 +839,9 @@ Content-Type: image/png
 <li>Host the bytes of the file at that path</li>
 </ul>
 </section>
+</section>
+<section id="potential-attacks" class="level1">
+<h1>Potential Attacks</h1>
 <section id="file-signatures" class="level2">
 <h2 class="anchored" data-anchor-id="file-signatures">File Signatures</h2>
 <div class="columns">
@@ -881,6 +888,21 @@ Content-Type: image/png
 </table>
 </div>
 </div>
+</section>
+<section id="requesting-arbitrary-files" class="level2">
+<h2 class="anchored" data-anchor-id="requesting-arbitrary-files">Requesting Arbitrary Files</h2>
+<ul>
+<li>You have a path that effectively takes requests <code>/public/[filename]</code> and servers <code>filename</code>
+<ul>
+<li>An attacker requests <code>/public/~/.ssh/id_ed25519</code></li>
+<li><span class="yellow">You happily server them your private encryption key</span></li>
+</ul></li>
+<li>Prevent the attack by ensuring that all requests for files are in a public directory <em>after</em> resolving the file path
+<ul>
+<li>Get the absolute directory of the path and ensure that you are still in the <code>/path/to/project/public</code> directory</li>
+<li>If not, return a 400-level response (Probably 400 Bad Request)</li>
+</ul></li>
+</ul>
 
 
 </section>
