@@ -3,599 +3,824 @@
 {% block title %}CSE312: Homework 3{% endblock %}
 
 {% block header %}
-    <h1>Homework 3 - Multimedia Uploads</h1>
-    <hr/>
+<h1>Homework 3 - Multimedia</h1>
+<hr />
 {% endblock %}
 
 {% block task %}
 
 
-
-    <div class="card-header section-testing">
-        <div></div>
-    </div>
-
-    <div class="section-card card-testing hw-content">
-
-        <hr/>
-        <h3>
-            Introduction
-        </h3>
-        <hr/>
-        <p>
-            You will continue to add features to your app.
-        </p>
-        <p>
-            Sample Deployment: <a href="https://312demo.nico.engineer/">https://312demo.nico.engineer/</a>
-        </p>
-
-        <hr/>
-        <h3>
-            Learning Objective - Image and Video Uploads
-        </h3>
-        <hr/>
-        <p>
-            By the end of this
-            objective, your users will be able to upload an image to use as their profile picture and share videos
-            with other users. To enable these features, we'll first need a multipart parser.
-        </p>
-
-        <br>
-        <h4>Helper Method: parse_multipart</h4>
-
-
-        <p>
-            Create a file named util/multipart.py containing the following function.
-            In this file,
-            write a function named "parse_multipart" that takes a Request object as a parameter and returns an object. This
-            function will assume that the input Request is a multipart request and will extract all the relevant values
-            of
-            the request. This function returns an object containing the following fields (You have some freedom in how
-            you
-            design the classes for the objects as long as they have the required fields. Please note that a dict with
-            these keys is not an object. You must create a class, then create objects using that class).
-        </p>
-
-
-        <ul>
-            <li>
-                boundary
-                <ul>
-                    <li>
-                        The value of the boundary from the Content-Type header as a string
-
-                    </li>
-                </ul>
-            </li>
-            <li>
-                parts
-                <ul>
-                    <li>
-                        A list of all the parts of the request in the order in which they appear in the request.
-                        Each part must be an object (You'll need to create a second class) with the following fields:
-                        <ul>
-                            <li>
-                                headers
-                                <ul>
-                                    <li>
-                                        A dictionary of all the headers for the part in the same format as a Request
-                                        object (dictionary of string to string)
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                name
-                                <ul>
-                                    <li>
-                                        The name from the Content-Disposition header that matches the name of that part
-                                        in the HTML form as a string
-
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                content
-                                <ul>
-                                    <li>
-                                        The content of the part in bytes
-                                    </li>
-                                    <li>Note: The content may be binary (eg. An image or video) and must never be
-                                        decoded as a string.
-                                    </li>
-                                    <li>Note: The content may contain the sequence b"\r\n\r\n" or b"\r\n" and there will
-                                        be a test
-                                        case for this. Be sure that
-                                        you
-                                        are not corrupting your data when this sequence is in the content of a part
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-        <p>
-            Note that while you'll create a class to complete this feature, the parse_multipart function itself is not
-            a method of your class.
-        </p>
-        
-
-        <br>
-        <hr>
-        <h4>Avatar Uploads</h4>
-
-        <p>
-            Add functionality to allow users to change their avatar (profile picture). Add the following path to render
-            a new
-            page using layout.html.
-        </p>
-
-        <ul>
-            <li>"/change-avatar" - Render change-avatar.html</li>
-        </ul>
-
-        <p>
-            Visit the Change Avatar page to find a form that sends multipart requests to your server containing an image
-            chosen by the user. Your server must listen for POST requests at the "/api/users/avatar" endpoint and
-            process
-            the uploaded images. This endpoint must have the following features:
-        </p>
-
-        <ul>
-            <li>
-                After a user uploads an avatar, this avatar must appear next to all their new chat messages. It is
-                acceptable if their previous messages are not updated. This is done by adding an "imageURL" field to
-                all their chat messages. The value of this field is the path where you saved the image (eg.
-                "imageURL":
-                "/public/imgs/profile-pics/eda92e0a-eb7a-430b-a938-916d2102b480.png")
-            </li>
-            <li>
-                When an image is successfully uploaded, respond with a 200 OK and a message of your choice
-            </li>
-            <li>
-                If the same user uploads a second avatar, it replaces the first one
-            </li>
-            <li>
-                Update the users "/api/users/@me" endpoint to include their "imageURL" in a field
-            </li>
-            <li>
-                Users can upload either .jpg, .png, or .gif files. You may identify the image type using the file
-                extension of the uploaded file, and you must serve the images with the corresponding MIME type
-            </li>
-            <li>
-                Avatar uploads must persist through a server restart (eg. Images must be saved to disk and the users
-                account must be updated in the database)
-            </li>
-        </ul>
-
-
-        <p>
-            Please keep the following notes in mind when implementing this feature. All of these will also apply
-            to video uploads.
-        </p>
-
-        <p>
-            <b>File Naming</b>: When an image is uploaded, your server will save the image as a file. It is recommended
-            that
-            you devise a naming
-            convention for the image files instead of using the names submitted by your users. Naming the images
-            "image1.jpg", "image2.png", "image3.jpg", etc is fine, or you can generate guids as the names.
-        </p>
-
-
-        <p>
-            <b>Persistence</b>: Your uploads must persist through a server restart. You should store your images in
-            files (It's
-            generally bad
-            practice to store large files in a database), and store the filenames in your database. Since your images
-            are
-            stored in files, they will already persist through a restart.
-        </p>
-        <p>
-            <b>Buffering</b>: Your app must allow for large images to be uploaded. You'll accomplish this by buffering
-            your HTTP requests. Read the content length
-            of the request and buffer until you read the whole body.
-            Your buffering should be able to handle arbitrarily large files. You must use proper buffering for this. Do
-            not increase the TCP
-            buffer size by passing a large int to the recv method (That wouldn't work anyway for very large files).
-            You can assume that all the headers, upto the first "\r\n\r\n", of the request are always read in the first
-            read
-            from the socket with a 2048 buffer (eg. You do not have buffer while reading the headers, and you can safely
-            read the content length before any buffering).
-
-            It's recommended that you buffer in server.py before sending the request to your router, and not just in the
-            route for changing the avatar, as this will cover all future large requests for any path.
-        </p>
-
-        <p>
-            <b>Do not submit with any print statements printing out the full buffered request body.</b> 
-            If you submit to autolab with these print statements, it might crash your submission. 
-            This is because you're printing the contents of a very large video file.
-        </p>
-
-        {#        <p>#}
-        {#            If you have an insufficient buffering implementation, it is almost certain you will fail some of the second round tests. #}
-        {#            You can self-verify that your solution works by making sure that your fully read buffered request has the exact same body length as the Content-Length header.#}
-        {#            (Remember, headers don't contribute to the body length nor content-length). If the number is higher, you have read into another request being sent on the same socket back-to-back.#}
-        {#        </p>#}
-
-
-        {#  FUTURE: Bring this back, but update it, and lecture content, to work with the /public route. Removing slashes doesn't wok anymore'      <p>#}
-        {#            <b>Security</b>: Don't allow the user to request arbitrary files on your server. Starting with this#}
-        {#            objective, you#}
-        {#            will#}
-        {#            be hosting content at paths that cannot be hardcoded since you don’t know which images will be uploaded to#}
-        {#            your#}
-        {#            site. Even if you replace the file names with your own naming convention (eg. "image1.jpg" "image2.png"), you#}
-        {#            still don't know how many images will be uploaded. This means that you must accept some variable from the#}
-        {#            user#}
-        {#            that you will use to read, and send, a file from your server. You must ensure that an attacker cannot use#}
-        {#            this#}
-        {#            variable to access files that you don’t want them to access. (In this course, it is sufficient to not allow#}
-        {#            any#}
-        {#            '/' characters in the filename. Eg. remove any "/" characters from the requested filename after extracting#}
-        {#            it#}
-        {#            from the path)#}
-        {#        </p>#}
-
-        <br>
-        <hr>
-        <h4>VideoTube</h4>
-
-        <p>
-            Implement a [simplified] YouTube clone where users can share videos with each other. Add the following paths
-            that will be rendered using layout.html.
-        </p>
-
-        <ul>
-            <li>"/videotube" - Render videotube.html (Displays all videos)</li>
-            <li>"/videotube/upload" - Render upload.html (Upload video form)</li>
-            <li>"/videotube/videos/{videoID}" - Render view-video.html (Displays a single video)</li>
-        </ul>
-
-        <p>
-            To enable the video sharing feature on the front end, you will build out three additional endpoints. These
-            endpoints will allow users to upload videos, see all videos, and watch a single video.
-        </p>
-
-
-        <br>
-        <h5>Upload videos (`POST /api/videos`)</h5>
-
-        <p>
-            This endpoint will receive videos uploaded from the front end that will contain the videos title,
-            description, and the video itself. You should parse the request and store all this information. As with
-            images, the videos should be stored in files with only the filename stored in your database. Respond to
-            uploads with a 200 OK containing a JSON object with a unique id that you generate for the new video.
-        </p>
-
-        <p>Response (JSON): {"id": str}</p>
-
-        <p>
-            This endpoint only needs to handle .mp4 videos.
-        </p>
-
-        <p>
-            After a video has been uploaded, be sure your "/public" path will serve these videos. As long as you save
-            videos in the public directory, this will be mostly automatic but don't forget to add the MIME type for
-            .mp4 content.
-        </p>
-
-        <p>
-            Testing will only be done with authenticated users. It's up to you if you want to support guest video
-            uploads.
-        </p>
-
-        <br>
-        <h5>Retrieve all videos (`GET /api/videos`)</h5>
-
-        <p>
-            Return a JSON object containing information about all videos that have been uploaded in the following
-            format:
-        </p>
-
-        <p>Response (JSON): {"videos": [{"author_id": str, "title": str, "description": str, "video_path":
-            str,"created_at": str "id": str}, ...]}</p>
-
-
-        <p>Where "created_at" should be a timestamp that will be displayed on the front end. You can/should use the
-            datetime package to get a string format for the current time.</p>
-
-
-        <br>
-        <h5>Retrieve a single video (`GET /api/videos/{video_id}`)</h5>
-
-        <p>
-            Return all information about the video with an id matching {video_id}. The format follows the same structure
-            as the previous path, but with only 1 video object.
-        </p>
-
-        <p>Response (JSON): {"video": {"author_id": str, "title": str, "description": str, "video_path":
-            str,"created_at": str "id": str}}</p>
-
-{#        <br>#}
-{#        <hr/>#}
-{#        <h3>#}
-{#            Application Objective 1 - Video Subtitles using LLMs#}
-{#        </h3>#}
-{#        <hr/>#}
-{##}
-{#        <p>#}
-{#            Videos are subtitled on the internet using <a#}
-{#                href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API">VTT files</a>. Historically, this was done by hand by humans. #}
-{#                However, you're being given the exciting opportunity to leverage AI and LLMs to automatically generate these subtitles.#}
-{#            This application objective will involve you taking an uploaded video, extracting the audio from that video,#}
-{#            and uploading that audio to an API in order to generate a VTT file for the video.#}
-{#        </p>#}
-{##}
-{#        <p>A free-to-use API is provided for you at <a href="https://transcription-api.nico.engineer/">https://transcription-api.nico.engineer/</a>.#}
-{#            You will need to read <a href="https://github.com/CSE-312/transcriber">this README file</a> to understand#}
-{#            how to use the API. Note that the API readme explains how to run the API which you do not have to do for#}
-{#            this objective. The API is already running at the url provided and the readme is for you to understand how#}
-{#            to use this API. You do not have to create an AWS account.</p>#}
-{##}
-{#        <p>#}
-{#            The API is limited to only being able to transcribe videos less than or equal to one minute in duration.#}
-{#            You should use this demo video for testing transcription, as it's what we will use:#}
-{#            <a href="https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4">https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/30+sec.mp4</a>.#}
-{#            This video will produce this outputted VTT file#}
-{#            <a href="https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt">https://312-transcriptions.s3.us-east-1.amazonaws.com/transcriptions/ac23b8cb-3660-47fe-b7e2-01436fcd7d84.vtt</a>.#}
-{#            You can use these as test values to avoid hitting ratelimits on the API (it is heavily ratelimited to avoid#}
-{#            high cost).#}
-{#        </p>#}
-{#        <p>#}
-{#            To accomplish this objective, you will need to extract the audio from the video using ffmpeg. You'll also#}
-{#            find that ffprobe (which comes with ffmpeg) is useful for determining video duration.#}
-{#        </p>#}
-{##}
-{#        <p>#}
-{#            You will need to use an auth token when interacting with the API. Check your feedback on the "HW2-AO1 API#}
-{#            Key" assignment on Autolab to obtain your API key. Do not abuse the API or send unnecessary requests.#}
-{#            Bulky or otherwise abusive requests will result in your access being revoked.#}
-{#        </p>#}
-{##}
-{#        <p>#}
-{#            When a video is uploaded, you should extract the audio from the video as an mp3 file, and upload it to the api.#}
-{#            You should read the docs for the API to understand how to do this. #}
-{#            You should save the returned id by the API with your video metadata in the database, under the "transcription_id" field.#}
-{#        </p>#}
-{##}
-{#        <p>#}
-{#            You will make a GET `/api/transcriptions/{videoId}` endpoint. This route should call the transcription API with the transcription_id associated with the requested video.#}
-{#            The transcription API will return either a VTT file if the transcription is complete, or a 420 status code if the transcription is not complete/does not exist. Your API should return either a 200 with the VTT file, or a 400 if the transcription is not complete/does not exist.#}
-{#            #}
-{#            If successful, you should be able to upload a video to the site and see the subtitles associated with your uploaded video.#}
-{#        </p>#}
-{##}
-{#        <p>#}
-{#            NOTE: The transcription API is asynchronous, therefore it does not wait until the transcription is complete to return a response. Because of the heavy computing nature of transcription, the API will take about 30 seconds before a transcription is actually ready.#}
-{#            Therefore, when testing, you should wait 30 seconds before refreshing the page on the view video page to see the subtitles.#}
-{#        </p>#}
-{##}
-{#        <p>#}
-{#            WARNING: In order to avoid your submission crashing on autolab, #}
-{#            you must ensure that you handle any failures in transcription gracefully and ensure that video uploading still succeeds, even if your transcription doesn't for whatever reason.#}
-{#        </p>#}
-
-        <br>
-        <hr/>
-        <h3>
-            Application Objective 1 - Thumbnail Chooser
-        </h3>
-        <hr/>
-
-        <p>
-            Use ffmpeg to generate 5 possible thumbnail images for each video that is uploaded. These 5 thumbnails
-            should be: The first frame of the video, the frame at 25% of the videos runtime, the frame at 50%, the
-            frame at 75%, and the last frame (It is OK if the last frame is not the literal last frame of the video). 
-            Save all 5 frames as images and add them all to your videos data in a
-            "thumbnails" field as an array.
-        </p>
-
-
-        <p>
-            Example field to be added to videos - "thumbnails": [
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg",
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_1.jpg",
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_2.jpg",
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_3.jpg",
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"
-            ]
-        </p>
-
-        <p>
-            Add a second field named "thumbnailURL" to your video that is the selected thumbnail which will default to
-            the first frame of the video.
-        </p>
-
-        <p>
-            Example field to be added to videos - "thumbnailURL":
-            "/public/imgs/thumbnails/67c260f1bb497fca803f6c49_0.jpg"
-        </p>
-
-        <p>
-            Add the following path to render the thumbnail chooser page.
-        </p>
-        <ul>
-            <li>"/videotube/set-thumbnail" - Render set-thumbnail.html</li>
-        </ul>
-
-        <p>
-            Using this page, users can change their thumbnail for a specific video. When they do, a request will be sent
-            to the following endpoint.
-        </p>
-
-
-        <br>
-        <h5>Change thumbnail (`PUT /api/thumbnails/{videoId}`)</h5>
-
-        <p>
-            Request body: {"thumbnailURL":"/public/imgs/thumbnails/67c260f1bb497fca803f6c49_4.jpg"}
-        </p>
-
-        <p>
-            When a request is received at this endpoint, update the "thumbnailURL" field of the video with id {videoId}
-            to the provided value. Respond with a message in a JSON object indicating that the update was successful.
-        </p>
-
-        <p>
-            Response format (JSON): {"message": str}
-        </p>
-
-
-        <br>
-        <hr/>
-        <h3>
-            Application Objective 2 - Adaptive Bit-Rate
-        </h3>
-        <hr/>
-
-        <p>
-            When a video is uploaded, re-encode it to HLS with at least 2 different resolutions/bit-rates and host all
-            required
-            files for the video. Add the path to the index file for the video in a new field named "hls_path" to the
-            video.
-        </p>
-        <p>
-            Example field to be added to videos - "hls_path": "/public/videos/2439857234.m3u8"
-        </p>
-
-        <p>
-            The single index file should refer to multiple other index files with different bit-rates. If done
-            correctly, you will be able to select the resolution manually on the front end when viewing a video.
-        </p>
-
-        <br>
-        <hr>
-        <h3>Submission</h3>
-        <hr>
-        <p>Submit all files for your server to Autolab in a .zip file</p>
-
-        <p>
-            If you used any external libraries, be sure to add them to your requirements.txt. Autolab will install all
-            dependencies in this file, and no other dependencies, before starting your server.
-        </p>
+<div class="card-header section-testing">
+    <div></div>
+</div>
+
+<div class="section-card card-testing hw-content">
+
+    <hr />
+    <h2>
+        Introduction
+    </h2>
+    <hr />
+    <p>
+        You will continue to add features to your app from homework 2. In this assignment you will add multimedia to
+        your app. By the end, users will be able to upload a profile picture, share videos with each other, watch
+        videos at a quality that adapts to their connection, and live stream to other users of your app.
+    </p>
+
+    <p>
+        As with HW2, some objectives will require that you edit the provided front end, or build your own if you'd
+        prefer.
+    </p>
 
     <div class="alert alert-info">
-        It is <b>strongly recommended</b> that you download and test your submission after submitting. To do this, download
+        All objectives must function properly using docker compose. When running "docker compose up" your app must be
+        fully functional on localhost port 8080.
+    </div>
+
+    <hr />
+    <h2>
+        Security Concerns
+    </h2>
+    <hr />
+
+    <p>
+        Every security concern is clearly labeled. If you violate a
+        security concern, all 5 objectives will be scored 0 unless/until you submit a proper security essay <b>for
+        each</b> security risk in your submission.
+    </p>
+
+    <hr />
+    <h2>
+        Deviations
+    </h2>
+    <hr />
+
+    <p>
+        In addition to modifying the front end, or building your own, you are free to deviate from the specific details
+        of each objective as long
+        as you still implement the features for each objective. This offers you flexibility to implement your app the
+        way you'd like, while still
+        learning the concepts of each objective. There is no limit to the amount you are allowed to deviate as
+        long as the concepts of the objective are
+        still covered.
+    </p>
+
+    <p>
+        If you choose to deviate from a stated objective, you must justify how this deviation still covers the
+        concepts required for the objective. Deviations never make a security concern acceptable. Any deviation that
+        avoids handling a security concern does not cover the concepts of the objective and is not allowed (e.g.
+        Allowing anyone to live stream without a stream key). Likewise, any deviation that uses a library to do the
+        work an objective is teaching does not cover the concepts of the objective (e.g. Using a library to parse
+        multipart requests or Range headers).
+    </p>
+
+
+    <hr />
+    <h2>
+        Objective 1: Profile Pictures
+    </h2>
+    <hr />
+
+    <p>Goals:</p>
+    <ul>
+        <li>Allow users to upload an image to use as their profile picture (avatar)</li>
+        <li>Handle requests that are too large to read without buffering</li>
+        <li>Parse multipart requests</li>
+    </ul>
+
+    <p>Concepts Covered:</p>
+    <ul>
+        <li>Buffering</li>
+        <li>Multipart form requests</li>
+        <li>Multimedia uploads</li>
+        <li>Hosting user-uploaded files</li>
+    </ul>
+
+    <h3>Pages</h3>
+    <p>Add the following path, rendered using layout.html:</p>
+    <ul>
+        <li>"/change-avatar" - Render change-avatar.html</li>
+    </ul>
+
+    <br>
+    <h3>Buffering</h3>
+
+    <p>
+        Until now, every request your server received was likely small enough to arrive in a single read from the TCP
+        connection. Images and videos are not. A large upload will arrive over many reads, and your server must keep
+        reading until it has received the entire body before it handles the request.
+    </p>
+
+    <p>
+        Read the Content-Length header of each request and continue reading from the connection until you have received
+        exactly that many bytes of the body. Your buffering must work for arbitrarily large requests (e.g. a 1 GB
+        video). You must write this buffering yourself. Functions that do the buffering for you (e.g. io.ReadAll or
+        io.ReadFull on the connection) are not allowed for reading request bodies, and neither is attempting to read
+        the entire body with a single, very large read. Any approach that does not require that you read the Content-Length 
+        header is not allowed (Since you are not doing the buffering).
+    </p>
+
+    <p>
+        You may assume that all the headers of a request, up to and including the first "\r\n\r\n", are received in
+        the first read from the connection with a buffer of at least 2048 bytes (e.g. You do not have to buffer while
+        reading the headers, and you can safely read the Content-Length before any buffering).
+    </p>
+
+
+    <br>
+    <h3>Parsing Multipart Requests</h3>
+
+    <p>
+        The change avatar form sends a multipart/form-data request containing the image chosen by the user. You must
+        parse these requests yourself. Libraries that parse multipart requests (e.g. Go's mime/multipart package) are
+        not allowed.
+    </p>
+
+    <p>
+        Since you'll parse multipart requests for both avatar and video uploads, it is recommended that you write a
+        reusable function that takes an instance of your Request struct and returns a struct containing the boundary (from the Content-Type
+        header) and all the parts of the request. Each part can be a struct
+        containing its headers, its name (from its Content-Disposition header), and its content as bytes.
+    </p>
+
+    <p>Tips:</p>
+    <ul>
+        <li>The content of a part may be binary data (e.g. an image or video). Never convert it to a string or you will
+            corrupt the data</li>
+        <li>The content of a part may contain the sequences "\r\n\r\n" and "\r\n". Be sure you are not splitting or
+            corrupting the content when these appear in it</li>
+    </ul>
+
+    <br>
+    <h3>Avatar Uploads (`POST /api/users/avatar`)</h3>
+
+    <p>
+        The change avatar page sends the selected image in a part named "avatar". When your server receives a request at
+        this endpoint:
+    </p>
+    <ul>
+        <li>Requests from users who are not logged in will be rejected with a 401 Unauthorized</li>
+        <li>Users can upload JPEG (Both .jpg and .jpeg), PNG, or GIF images. If the file is not one of these
+            types, respond with a 400 and do not save the file. You may use the file extension, or MIME type of the part,
+             to determine the file type. When serving uploaded files, you must set the correct MIME type</li>
+        <li>Save the image to disk using a naming convention of your choosing, with a file extension that matches the
+            image type you identified, and store its path in your database. Do not use the user-supplied filenames. 
+            Do not store entire files in your database</li>
+        <li>Respond with a 200 OK and a message of your choice</li>
+        <li>Avatars must persist through a server restart</li>
+    </ul>
+
+    <br>
+    <h3>Displaying Avatars</h3>
+
+    <ul>
+        <li>Add an "imageURL" field to the response of GET "/api/users/@me" containing the path to the user's avatar
+            (e.g. "imageURL": "/public/imgs/avatars/eda92e0a-eb7a-430b-a938-916d2102b480.png")</li>
+        <li>Add an "imageURL" field to every message returned by GET "/api/chats" containing the avatar of the
+            message's author. As with display names in HW2, this must be their current avatar on all of their
+            messages, including messages sent before they uploaded it</li>
+        <li>Users who have not uploaded an avatar, and guests, must have an "imageURL" for a default image of your
+            choice</li>
+    </ul>
+
+    <p>Tips:</p>
+    <ul>
+        <li>If you reuse the same filename when a user replaces their avatar, your caching from HW1 may cause browsers to
+            keep displaying the old image. Using a new filename for each upload avoids this</li>
+        <li>Files written inside a container are lost when the container is recreated. If you want uploads to survive
+            "docker compose up --force-recreate", you may want to research and use volumes at this point. Volumes will be required 
+        for Objective 5, so setting one up now will be useful</li>
+    </ul>
+
+
+    <div class="alert alert-danger">
+        <b>Security Concern - XSS:</b> There is a new XSS attack, besides HTML injection, that users can perform. Instead 
+        of uploading a valid image, they upload attack.js. To prevent this, ensure that MIME type sniffing is disabled and 
+        that you do not allow any MIME type other than they 3 listed above (e.g. Accepting an upload of attack.js and serving it with 
+        a MIME type of text/javascript will not be prevented by nosniff since the MIME type matches the type) 
+    </div>
+
+    <p>Optional (Optional features are not required, but you may want to add these features for real world apps):</p>
+    <ul>
+        <li>
+            This is a state-changing request made by an authenticated user, making it a target for XSRF attacks. You may want 
+            to add a XSRF token to this endpoint
+        </li>    
+        <li>
+            File extensions are trivial for an attacker to spoof and they can upload javascript code with a .jpeg extension. 
+            A better method is to check the file header to verify the file type which is more difficult to fake
+        </li>
+    </ul>
+
+    <hr/>
+    <h2>
+        Objective 2: VideoTube
+    </h2>
+    <hr/>
+
+    <p>Goals:</p>
+    <ul>
+        <li>Allow users to upload videos and share them with other users</li>
+    </ul>
+
+    <p>Concepts Covered:</p>
+    <ul>
+        <li>Multipart uploads with.. well, multiple parts</li>
+        <li>Combining multipart uploads with an API</li>
+    </ul>
+
+    <h3>Pages</h3>
+    <p>Add the following paths, rendered using layout.html:</p>
+    <ul>
+        <li>"/videotube" - Render videotube.html (Displays all videos)</li>
+        <li>"/videotube/upload" - Render upload.html (Upload video form)</li>
+        <li>"/videotube/videos/{videoID}" - Render view-video.html (Displays a single video. Host the same HTML for any videoID)</li>
+    </ul>
+
+    <p>
+        In this objective you will build a [simplified] YouTube clone where users can share videos with each other.
+        The provided front end sends requests to the three endpoints below. The formats listed are what the provided
+        front end expects.
+    </p>
+
+    <br>
+    <h3>Upload Videos (`POST /api/videos`)</h3>
+
+    <p>
+        The upload page sends a multipart request with parts named "title", "description", and "video". When your
+        server receives a request at this endpoint:
+    </p>
+    <ul>
+        <li>Requests from users who are not logged in must be rejected with a 401 Unauthorized</li>
+        <li>You only need to support mp4 uploads for this endpoint. It is fine if you assume the upload is an mp4 video</li>
+        <li>Save the video to disk similar to how you did for images. Do not store the contents of the videos in your database</li>
+        <li>Respond with a 200 OK and a JSON object containing the id of the new video. The front end will redirect the
+            user to the page for this video</li>
+        <li>Host uploaded videos with the MIME type "video/mp4"</li>
+        <li>Videos must persist through a server restart</li>
+    </ul>
+
+    <p>Response (JSON): {"id": string}</p>
+
+    <br>
+    <h3>Retrieve All Videos (`GET /api/videos`)</h3>
+
+    <p>
+        Return information about every video that has been uploaded in the following format:
+    </p>
+
+    <p>Response (JSON): {"videos": [{"id": string, "author_id": string, "title": string, "description": string,
+        "video_path": string, "created_at": string, "thumbnailURL": string}, ...]}</p>
+
+    <ul>
+        <li>"created_at" is a timestamp that will be displayed on the front end. You may choose its format</li>
+        <li>The provided front end displays a thumbnail for each video using "thumbnailURL". Generating thumbnails is
+            not required for this assignment. You may set this to an image of your choice, or edit the front end
+            to display something else</li>
+    </ul>
+
+    <br>
+    <h3>Retrieve a Single Video (`GET /api/videos/{videoID}`)</h3>
+
+    <p>
+        Return all information about the video with an id matching {videoID}, using the same format as a single video
+        from the previous endpoint. If no video has this id, respond with a 404.
+    </p>
+
+    <p>Response (JSON): {"video": {"id": string, "author_id": string, "title": string, "description": string,
+        "video_path": string, "created_at": string, "thumbnailURL": string}}</p>
+
+
+    <div class="alert alert-danger">
+        <b>Security Concern - Escape HTML:</b> Video titles and descriptions are user-provided content, and the provided
+        front end inserts them into the page as HTML. You must escape any HTML in these fields before they are
+        displayed to other users.
+    </div>
+
+    <p>Tips:</p>
+    <ul>
+        <li>Use short videos for most of your testing, then test at least one large video (several hundred MB) to be
+            sure your buffering works properly</li>
+    </ul>
+
+    <p>Optional:</p>
+    <ul>
+        <li>
+            Add a XSRF token to any state-changing endpoints
+        </li>    
+        <li>
+            Check the file headers to verify the uploaded files are mp4
+        </li>
+        <li>
+            Extract a frame from the uploaded video to use as its thumbnail
+        </li>
+        <li>
+            Add support for video types other than mp4
+        </li>
+    </ul>
+
+
+    <hr />
+    <h2>
+        Objective 3: Range Requests
+    </h2>
+    <hr />
+
+    <p>Goals:</p>
+    <ul>
+        <li>Allow browsers to request part of a video so playback can start, and the user can skip ahead, without
+            downloading the entire file</li>
+        <li>Read and send only the bytes that were requested</li>
+    </ul>
+
+    <p>Concepts Covered:</p>
+    <ul>
+        <li>The Range, Content-Range, and Accept-Ranges headers</li>
+        <li>206 Partial Content</li>
+        <li>416 Range Not Satisfiable</li>
+    </ul>
+
+    <p>
+        When a browser plays an mp4, it doesn't need the entire file at once. If your server tells the browser that it
+        supports range requests, the browser will ask for only the bytes it needs: the beginning of the file to start
+        playback, then whichever part of the file the user skips to.
+    </p>
+
+
+    <br>
+    <h3>Requirements</h3>
+
+    <ul>
+        <li>
+            Add support for range requests for every mp4 file your server hosts.
+        </li>
+        <li>Every response for an mp4 file, including responses with the full file, must include the header
+            "Accept-Ranges: bytes" so the browser knows it can request ranges</li>
+        <li>If a request for an mp4 file does not have a Range header, respond with the entire file and a 200 OK as
+            you did before</li>
+        <li>If a request has a Range header requesting a range of bytes, respond with a 206 Partial Content
+            containing only those bytes, and a Content-Range header with the appropiate value. 
+        </li>
+        <li>Support all three forms of a byte range:
+            <ul>
+                <li>"bytes={first}-{last}" - The bytes from position {first} through position {last}, inclusive. If
+                    {last} is past the end of the file, send through the end of the file</li>
+                <li>"bytes={first}-" - The bytes from position {first} through the end of the file</li>
+                <li>"bytes=-{n}" - The last {n} bytes of the file. If {n} is larger than the file, send the entire
+                    file</li>
+            </ul>
+        </li>
+        <li>If {first} is past the end of the file, respond with a 416 Range Not Satisfiable with the header
+            "Content-Range: bytes */{total}"</li>
+        <li>Functions that handle Range headers for you (e.g. http.ServeContent or http.ServeFile) are not allowed</li>
+    </ul>
+
+    <br>
+
+    <p>Tips:</p>
+    <ul>
+        <li>Ranges are inclusive on both ends. "bytes=0-99" is 100 bytes, not 99. Off-by-one errors are the most common
+            bug in this objective</li>
+        <li>Browsers often request "bytes=0-" (the entire file) when a video first loads, then close the connection
+            once they have enough to start playing. Your server must handle the connection being closed in the middle of
+            a response without crashing</li>
+        <li>Since browser behavior can be unpredictable, you may want to test using curl and manually set the Range 
+            header of your test requests. Alternatively, you can write go code that will send custom requests to 
+            automate your testing</li>
+    </ul>
+
+    <p>Optional:</p>
+    <ul>
+        <li>
+            For an open-ended range ("bytes={first}-"), you may send fewer bytes than requested by limiting each
+            response to a maximum size (e.g. a few MB). As long as your Content-Range accurately describes the bytes you
+            sent, the browser will request the rest when it needs them
+        </li>
+        <li>
+            Do not read the entire file. Only read the requested bytes to save on memory for range requests
+        </li>
+    </ul>
+
+    <hr />
+    <h2>
+        Objective 4: Adaptive Bit-Rate Streaming
+    </h2>
+    <hr />
+
+    <p>Goals:</p>
+    <ul>
+        <li>Convert every uploaded video to HLS with multiple bit-rates</li>
+        <li>Perform these conversions with a background worker</li>
+    </ul>
+
+    <p>Concepts Covered:</p>
+    <ul>
+        <li>HLS</li>
+        <li>Adaptive Bit-Rate (ABR) streaming</li>
+        <li>Background jobs</li>
+        <li>Asynchronous processing</li>
+    </ul>
+
+    <p>
+        Converting a video to multiple bit-rates is slow. If
+        your server converted each video while handling the upload request, the user would wait too long for 
+        a response leading to poor user experience. Instead, you will process this conversion in the background 
+        respond to your user immediately.
+    </p>
+
+    <br>
+    <h3>Provided Conversion Code</h3>
+
+    <p>
+        You are not expected to research ffmpeg for this objective. The function below converts an mp4 into HLS with
+        two renditions (720p and 360p) with audio. You may use it as-is, or modify it if you prefer. Note that this 
+        function only works on videos with audio. If you want to support videos without audio, you will have to 
+        expand this code.
+    </p>
+
+<pre><code>// Converts the mp4 at inputPath into an HLS video with two
+// qualities (720p and 360p) and saves the index file at outputDir/master.m3u8
+func MP4ToHLS(inputPath string, outputDir string) error {
+	return exec.Command("ffmpeg", "-i", inputPath,
+		"-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+		"-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+		"-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+		"-f", "hls", "-hls_playlist_type", "vod",
+		"-master_pl_name", "master.m3u8",
+		"-var_stream_map", "v:0,a:0 v:1,a:1",
+		outputDir+"/%v/index.m3u8",
+	).Run()
+}</code></pre>
+
+<br>
+    <p>
+        For an outputDir of "public/videos/abc123", this function creates "public/videos/abc123/master.m3u8", which
+        refers to the index files "0/index.m3u8" (720p) and "1/index.m3u8" (360p), each in its own directory with its
+        .ts segment files. If ffmpeg fails, including for a video with no audio track, the function returns an error.
+    </p>
+
+    <p>
+        ffmpeg must be installed in your app's container. This function makes a system call that assumes ffmpeg is 
+        already installed. You can add
+        <code>RUN apt-get update &amp;&amp; apt-get install -y ffmpeg</code> to your Dockerfile to install it. You should 
+        add this line near the top of your Dockerfile, before doing anything with your app, so it will be cached and 
+        you only have to wait for the install once. You should also install ffmpeg locally if you intend to do any testing without 
+        Docker.
+    </p>
+
+    <br>
+    <h3>Background Worker</h3>
+
+    <p>
+        You will run the <code>MP4ToHLS</code> function in the background while your server responds to uploader with the 
+        following features:
+    </p>
+
+    <ul>
+        <li>POST "/api/videos" must respond as soon as the uploaded video is saved. It must not wait for a conversion to
+            start or finish</li>
+        <li>Conversions must be performed concurrently (via goroutines). You must retain your keep-alive functionality 
+            and the video conversion must not block the next request on the connection
+        </li>
+        <li>Clearly display to any user viewing a video that it is being processed during its conversion. You have flexibility in 
+            how you display this and you may need to edit the front end
+        </li>
+        <li>When a conversion succeeds, add an "hls_path" field to the video containing the path to its master playlist
+            (e.g. "hls_path": "/public/videos/video3/master.m3u8"). The provided front end plays the HLS video when this
+            field is present and will show a quality selector for the different bit rates</li>
+        <li>Host the new file types with the appropriate MIME types</li>
+    </ul>
+
+    <br>
+
+    <p>Tips:</p>
+    <ul>
+        <li>Upload a video that is a few minutes long to give yourself time to view the page while it is processing</li>
+        <li>
+            If you edit the videos title during the conversion to something like "[video title] -- processing" you can 
+            satisfy this requirement without changing the front end to display the processing status. Remember to remove 
+            this after processing is complete
+        </li>
+    </ul>
+
+    <p>
+        Optional:
+    </p>
+    <ul>
+        <li>
+            Build a queue of jobs and only allow 2 videos to be converted simultaneously. Running many conversions can be 
+            resource intensive and open an easy DoS opportunity for attackers. Instead, run at most 2 jobs simultaneously and 
+            queue any additional uploads
+        </li>
+        <li>
+            Alter the conversion to work with videos without audio in addition to videos with audio
+        </li>
+        <li>
+            Perform conversions in a separate Docker container using an image optimized for ffmpeg jobs, similar to the 
+            setup in the next objective. You may use an image that handles all the conversion logic out-of-the-box
+        </li>
+    </ul>
+
+    <hr />
+    <h2>
+        Objective 5: Live Streaming
+    </h2>
+    <hr />
+
+    <p>Goals:</p>
+    <ul>
+        <li>Allow every user to live stream to your app using streaming software (e.g. OBS)</li>
+        <li>Issue each user their own secret stream key</li>
+        <li>Allow anyone to find and watch the streams that are currently live</li>
+    </ul>
+
+    <p>Concepts Covered:</p>
+    <ul>
+        <li>Live streaming (RTMP ingest to HLS)</li>
+        <li>Stream keys</li>
+        <li>Multi-container architecture and communication</li>
+        <li>Docker volumes</li>
+        <li>Live HLS playlists</li>
+        <li>Front end design</li>
+    </ul>
+
+    <p>
+        Let's add live-streaming to the app. You will issue every logged in user a stream key that they can use to live-stream 
+        to your other users. You do not have handle any of the RTMP ingest or HLS conversion logic. Instead, you will 
+        use an existing Docker image for you ingest service, similar to how we use an image to run Postgres. 
+        You task is to handle the rest of the logistics, including building a way to display stream keys and live streams 
+        on the front end.
+    </p>
+
+    <br>
+    <h3>The Ingest Server</h3>
+
+    <p>
+        Use the <a href="https://hub.docker.com/r/tiangolo/nginx-rtmp">tiangolo/nginx-rtmp</a> image as your ingest
+        server with the configuration below. Save this configuration as nginx.conf in your project and copy it into
+        the container at "/etc/nginx/nginx.conf". Replace "app" with the name of your server's service in your
+        compose.yml, and change the two paths to the endpoints you choose. You may to use a second Dockerfile in 
+        a subdirectory to set this up, then use <code>build: ./subdirectory</code> in your compose.yml.
+    </p>
+
+<pre><code>events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}</code></pre>
+<br>
+    <p>With this configuration:</p>
+    <ul>
+        <li>A user streams by entering "rtmp://localhost:1935/live" as the server, and their stream key as the stream
+            key in their streaming software</li>
+        <li>When a user starts streaming, the ingest server sends a POST request to the on_publish URL. The body of this
+            request is URL-encoded and contains several fields, including "name", which is the stream key the user
+            entered. Respond with a 200 OK to allow the stream, or with a 403 to reject
+            it. Any stream with an invalid stream key should be rejected. If the stream is rejected, the ingest 
+            server disconnects the streamer</li>
+        <li>When a stream ends, the ingest server sends a POST request in the same format to the on_publish_done URL. 
+            Use this request to remove the stream from your active streams list
+        </li>
+        <li>While a stream is live, the ingest server writes the stream as HLS to the "/hls/{stream_key}" directory
+            inside its container. The playlist is "index.m3u8" and the segments are named "0.ts", "1.ts", etc. The
+            playlist is constantly updated and old segments are deleted as the stream continues</li>
+    </ul>
+
+    <br>
+    <h3>Requirements</h3>
+
+    <ul>
+        <li>Running "docker compose up" must start the ingest server along with your app and database, accepting
+            streams on localhost port 1935</li>
+        <li>Every registered user must have their own stream key. Stream keys must be randomly generated with at least
+            80 bits of entropy and treated as secret that are only shared with their owner</li>
+        <li>A logged in user must be able to see their own stream key. You have flexibility in how you show them, as long 
+            as it's obvious to your users where to find it (i.e. we should not have to look very hard for it during grading).
+            The obvious choice is somewhere on their settings page. This will require some front end editing
+        </li>
+        <li>Only valid stream keys may stream. Your on_publish endpoint must reject any stream key that does not belong
+            to a user</li>
+            <li>
+                You must be able to handle multiple concurrent live streams
+            </li>
+        <li>Add a way to see all users who are currently live, and be able to watch each stream. You may have to 
+            manipulate the front end to accomplish this. It is acceptable to mix this in with existing VideoTube page 
+            by adding live streams to the video list with an appropriate title and description
+        </li>
+        <li>
+            When user stops their live stream, the stream must be removed from the front end
+        </li>
+        <li>Viewers must only ever connect to your app on port 8080. The stream must get from the ingest server to
+            viewers through your app (e.g. using a volume shared by both containers), not by exposing the ingest server
+            to viewers</li>
+    </ul>
+
+    <div class="alert alert-danger">
+        <b>Security Concern - Stream keys:</b> Anyone who has a user's stream key can stream as that user. A stream key
+        must never be exposed to anyone other than its owner, including in any URL, playlist, or segment path requested
+        by viewers. Note that the ingest server names each stream's HLS directory after its stream key, so hosting that
+        directory as-is would leak the key.
+    </div>
+
+    <p>Tips:</p>
+    <ul>
+        <li>It's recommended that you test using <a href="https://obsproject.com/">OBS</a>. To setup a stream, go to 
+            Settings, Stream, choose the "Custom"
+            service, and enter the server and stream key</li>
+        <li>You can also test without streaming software by streaming a video file with ffmpeg:
+            <code>ffmpeg -re -i video.mp4 -c:v libx264 -preset veryfast -c:a aac -f flv rtmp://localhost:1935/live/{stream_key}</code> 
+            although this is significantly less fun..
+        </li>
+        <li>The video has to be captured, sent to the ingest server, transcoded into HLS, saved to disk, and communicated 
+            to your server (With the longest step by far being the transcoding) which will take some time. Don't panic if 
+            there's a decent amount of delay between starting your stream and seeing it in your app
+        </li>
+        <li>The ingest server looks up the hostname in the on_publish URL when it starts. Use depends_on in your
+            compose.yaml so your app's container is started first. Your app will start your TCP server quickly, 
+        but you may want to add a health check for additional assurance</li>
+        <li>The on_publish and on_publish_done endpoints are called by the ingest server, not by a browser, so they do
+            not have SOP/CORS concerns. Attackers may hit these endpoints, but they don't have a way to steal a user's 
+            stream key [unless you are careless with them]</li>
+        <li>A live playlist changes every few seconds. Make sure your caching headers from HW1 don't cause browsers to
+            reuse an old playlist (e.g. send "Cache-Control: no-store" for live playlists if this becomes an issue)</li>
+        <li>You will want to use Docker volumes to share the streams across containers. This works by mapping a local 
+            directory to a directory in the container. You can map a local directory to the /hls directory of the ingest server, 
+            then map that same local directory to your app's container. This will give you access to the files from your app, with 
+            the convenient side-effect of seeing all the files on your local machine which can be helpful while debugging.
+             Since the directory for each stream is named by it's stream key, 
+            you will have to use a different path to host them in your app instead of simply using the file path
+        </li>
+    </ul>
+
+
+    <br>
+    <h3>Submission</h3>
+    <hr>
+    <p>Submit all files for your server to Autolab in a .zip file</p>
+
+    <p>Complete the homework submission form after submitting your zip file to Autolab:
+        <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ikpGlu34sUCZ4l9rUKICUIaJ4qgBZqxBgxV6BqhnF-FUMU1aQ0xKVE1ESjNMQ0E5WTJYN0FWM01ESy4u"
+            target="_blank">Homework Submission Form</a>
+    </p>
+
+    <p>If you do not both submit your zip file to Autolab and complete the homework submission form before the due date,
+        your submission will not be graded. Do
+        not be one of the students who will get a 0 for not submitting the form after completing the assignment.</p>
+
+    <p>
+        Your submission must include a ".env" file with placeholder values for all your sensitive values. This is
+        required so we
+        know your variable names. You can optionally include only a ".env.example" file with all your variables as is standard 
+        practice. In any case, we need a simple way to find the names of all your environment variables while grading.
+    </p>
+
+    <p>
+        To reduce hard drive usage, Autolab will limit the size of submissions. Do not include any [large] uploaded images, 
+        uploaded videos, or HLS files in your submission. You still must include everything needed to run your app, including the 
+        entire front end.
+    </p>
+
+    <p>
+        Be sure your submission includes all your required directories. You can add placeholder files in your directories to 
+        ensure they are included in the zip file, or create the directories in your code if they don't exists. Many students have 
+        lost credit by 1. Ignoring the strongly recommended testing procedure below and 2. manually creating their video directories
+        for testing and deleting them before submission. This can cause a crash when your server is trying to save a video 
+        to a directory that does not exist.
+    </p>
+
+    <div class="alert alert-info">
+        It is <b>strongly recommended</b> that you download and test your submission after submitting. To do this,
+        download
         your zip file into a new directory, unzip your zip file, enter the directory where the files were unzipped,
         run
-        "docker compose up --build --force-recreate", then navigate to localhost:8080 in your browser and test all of your features. This
-        simulates exactly what the TAs will do during grading. If you notice that your database is still populated from your prior tests, you 
-        may also want to run "docker volume prune" to clear your database and all other volumes on your machine.
+        "docker compose up --build --force-recreate --renew-anon-volumes", then navigate to localhost:8080 in your
+        browser and test all
+        your features. This
+        simulates exactly what the TAs will do during grading.
         <br><br>
-        If you ignore this recommendation, don't be surprised when you do not earn credit for either Application
-        Objective even if your code functions properly when running server.py.
+        If you ignore this recommendation, don't be surprised when you do not earn credit even if your code functions
+        properly on your laptop.
     </div>
 
-        <br>
-        <hr>
-        <h3>Grading</h3>
-        <hr>
-        <p>Each objective will be scored on a 0-3 scale as follows:</p>
 
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3 (Complete)</td>
-                <td>Clearly correct</td>
-            </tr>
-            <tr>
-                <td>2 (Complete)</td>
-                <td>Mostly correct, but with some minor issues
-                </td>
-            <tr>
-                <td>1 (Incomplete)</td>
-                <td>Not all features outlined in this document are functional, but an attempt was made to
-                    complete the objective
-                </td>
-            <tr>
-                <td>0.3 (Incomplete)</td>
-                <td>The objective would earn a 3, but a security risk was found while testing</td>
-            <tr>
-                <td>0.2 (Incomplete)</td>
-                <td>The objective would earn a 2, but a security risk was found while testing</td>
-            <tr>
-                <td>0.1 (Incomplete)</td>
-                <td>The objective would earn a 1, but a security risk was found while testing</td>
-            <tr>
-                <td>0 (Incomplete)</td>
-                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
-        </table>
-        <br>
-        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
-            is meant to give you more feedback on your work.</p>
+    <br>
+    <hr>
+    <h3>Grading</h3>
+    <hr>
+    <p>Each objective will be scored on a 0-3 scale as follows:</p>
 
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3</td>
-                <td>Objective Complete</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>
-                    Objective Complete
-                </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-        </table>
-        <br>
-        <p>Autograded objectives are graded on a pass/fail basis with grades of 3.0 or 0.0.</p>
+    <table class="table table-bordered table-skinny">
+        <tr>
+            <td>3 (Complete)</td>
+            <td>Clearly correct</td>
+        </tr>
+        <tr>
+            <td>2 (Complete)</td>
+            <td>Mostly correct, but with some minor issues
+            </td>
+        </tr>
+        <tr>
+            <td>1 (Incomplete)</td>
+            <td>Not all features outlined in this document are functional, but an attempt was made to
+                complete the objective
+            </td>
+        </tr>
+        <tr>
+            <td>0 (Incomplete)</td>
+            <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library, or a
+                library that parses multipart requests) -or- The HW submission form was never submitted</td>
+        </tr>
+        <tr>
+            <td>0.X (Security Risk)</td>
+            <td>If any security risk is found while testing, all objectives will be scored 0 unless a proper security
+                essay is submitted. X is the score that will be earned if a proper security essay is submitted on time
+            </td>
+        </tr>
+    </table>
+    <br>
+    <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1.</p>
 
-        <br>
-        <hr>
-        <h3>Security Essay</h3>
-        <br>
-        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
-            the
-            objective by submitting an essay about the security issue you exposed. These essays must:</p>
+    <table class="table table-bordered table-skinny">
+        <tr>
+            <td>3</td>
+            <td>Objective Complete</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>
+                Objective Complete
+            </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>
+                Objective Not Complete
+            </td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>
+                Objective Not Complete
+            </td>
+        </tr>
+    </table>
+    <br>
 
-        <ul>
-            <li>Be at least 1000 words in length</li>
-            <li>Explain the security issue from your submission with specific details about your code</li>
-            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
-            </li>
-            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
-                in
-                production code with live users
-            </li>
-        </ul>
+    <p>
+        A <b>Security Risk</b> is any violation of a "Security Concern" that is explicitly labeled in this document,
+        including those from HW2.
+    </p>
 
+    <br>
+    <hr>
+    <h3>Security Essay</h3>
+    <br>
+    <p>If a security risk is found in your submission, you will be assigned a 0 for all 5 objectives.
+        However, you will still have an opportunity to earn credit for the objectives by submitting an essay about
+        the security issue you exposed. These essays must:</p>
 
-        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
-            incomplete.</p>
+    <ul>
+        <li>Be at least 1000 words in length</li>
+        <li>Explain the security issue from your submission with specific details about your code</li>
+        <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+        </li>
+        <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+            in production code with live users
+        </li>
+    </ul>
 
-        <p>Due Date: Security essays are due 1-week after grades are released.</p>
-
-        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
-            of
-            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
-            for
-            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
-            course
-            staff.</p>
-
-        <p>When you don't have to write an essay:</p>
-        <ul>
-            <li>If you never submit a security violation, you never have to write an essay for this course. Be safe. Be
-                secure
-            </li>
-            <li>If you earn a 0.1, there's no need to write an essay since you would not complete the objective anyway
-            </li>
-        </ul>
+    <p>If your submission contains multiple security risks, you may have to write multiple essays to recover your
+        homework grade</p>
 
 
-    </div>
+    <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
+        incomplete.</p>
+
+    <p>Due Date: Security essays are due 1-week after grades are released. Submission instructions will be included in
+        your feedback on Autolab.
+    </p>
+
+    <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
+        of
+        the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+        for
+        scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+        course
+        staff.</p>
+
+
+</div>
 {% endblock %}
