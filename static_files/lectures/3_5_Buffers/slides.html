@@ -470,52 +470,6 @@
 <li>Do not use functions that buffer for you (eg. <code>io.ReadAll</code> or <code>io.ReadFull</code>)</li>
 </ul></li>
 </ul>
-</section>
-<section id="file-signatures" class="slide level2">
-<h2>File Signatures</h2>
-<div class="columns">
-<div class="column" style="width:52%;">
-<ul>
-<li>Once you have the bytes, what type of file is it?</li>
-<li>The file extension and the part's Content-Type are chosen by the user
-<ul>
-<li>An attacker can upload <code>attack.js</code> renamed to <code>cat.jpg</code></li>
-</ul></li>
-<li>The first bytes of most file types are a fixed signature
-<ul>
-<li>Part of the content, so it's harder to fake</li>
-</ul></li>
-<li>Check the first bytes against the types you allow</li>
-</ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb12-1"><a></a>bytes<span class="op">.</span>HasPrefix<span class="op">(</span>content<span class="op">,</span> <span class="op">[]</span><span class="dt">byte</span><span class="op">{</span><span class="bn">0xFF</span><span class="op">,</span> <span class="bn">0xD8</span><span class="op">,</span> <span class="bn">0xFF</span><span class="op">})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column" style="width:48%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Type</th>
-<th>First bytes</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>JPEG</td>
-<td><code>FF D8 FF</code></td>
-</tr>
-<tr class="even">
-<td>PNG</td>
-<td><code>89 50 4E 47 0D 0A 1A 0A</code></td>
-</tr>
-<tr class="odd">
-<td>GIF</td>
-<td><code>GIF87a</code> or <code>GIF89a</code></td>
-</tr>
-<tr class="even">
-<td>MP4</td>
-<td><code>ftyp</code> starting at byte 4</td>
-</tr>
-</tbody>
-</table>
-</div></div>
 </section></section>
 <section>
 <section id="serving-large-files" class="title-slide slide level1 center">
@@ -563,18 +517,18 @@
 </ul></li>
 <li>Without this header, the browser may download the entire file and might not let the user skip ahead</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>HTTP/1.1 200 OK</span>
-<span id="cb13-2"><a></a>Content-Type: video/mp4</span>
-<span id="cb13-3"><a></a>Content-Length: 10000</span>
-<span id="cb13-4"><a></a>Accept-Ranges: bytes</span>
-<span id="cb13-5"><a></a>X-Content-Type-Options: nosniff</span>
-<span id="cb13-6"><a></a></span>
-<span id="cb13-7"><a></a>&lt;all 10000 bytes of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a></a>HTTP/1.1 200 OK</span>
+<span id="cb12-2"><a></a>Content-Type: video/mp4</span>
+<span id="cb12-3"><a></a>Content-Length: 10000</span>
+<span id="cb12-4"><a></a>Accept-Ranges: bytes</span>
+<span id="cb12-5"><a></a>X-Content-Type-Options: nosniff</span>
+<span id="cb12-6"><a></a></span>
+<span id="cb12-7"><a></a>&lt;all 10000 bytes of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-range-header" class="slide level2">
 <h2>The Range Header</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
-<span id="cb14-2"><a></a>Range: bytes=0-99</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
+<span id="cb13-2"><a></a>Range: bytes=0-99</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Positions are byte offsets in the file, starting at 0</li>
 <li>Three forms:</li>
@@ -610,14 +564,14 @@
 </section>
 <section id="partial-content" class="slide level2">
 <h2>206 Partial Content</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a></a>HTTP/1.1 206 Partial Content</span>
-<span id="cb15-2"><a></a>Content-Type: video/mp4</span>
-<span id="cb15-3"><a></a>Content-Length: 100</span>
-<span id="cb15-4"><a></a>Content-Range: bytes 0-99/10000</span>
-<span id="cb15-5"><a></a>Accept-Ranges: bytes</span>
-<span id="cb15-6"><a></a>X-Content-Type-Options: nosniff</span>
-<span id="cb15-7"><a></a></span>
-<span id="cb15-8"><a></a>&lt;bytes 0 through 99 of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb14-2"><a></a>Content-Type: video/mp4</span>
+<span id="cb14-3"><a></a>Content-Length: 100</span>
+<span id="cb14-4"><a></a>Content-Range: bytes 0-99/10000</span>
+<span id="cb14-5"><a></a>Accept-Ranges: bytes</span>
+<span id="cb14-6"><a></a>X-Content-Type-Options: nosniff</span>
+<span id="cb14-7"><a></a></span>
+<span id="cb14-8"><a></a>&lt;bytes 0 through 99 of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>Content-Range: bytes {first}-{last}/{total}</code>
 <ul>
@@ -630,64 +584,6 @@
 </ul></li>
 </ul>
 </section>
-<section id="range-examples" class="slide level2">
-<h2>Range Examples</h2>
-<ul>
-<li>For a file that is 10000 bytes:</li>
-</ul>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Range</th>
-<th>Bytes sent</th>
-<th>Content-Range</th>
-<th>Content-Length</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>bytes=0-99</code></td>
-<td>0 - 99</td>
-<td><code>bytes 0-99/10000</code></td>
-<td>100</td>
-</tr>
-<tr class="even">
-<td><code>bytes=9000-</code></td>
-<td>9000 - 9999</td>
-<td><code>bytes 9000-9999/10000</code></td>
-<td>1000</td>
-</tr>
-<tr class="odd">
-<td><code>bytes=-500</code></td>
-<td>9500 - 9999</td>
-<td><code>bytes 9500-9999/10000</code></td>
-<td>500</td>
-</tr>
-<tr class="even">
-<td><code>bytes=9500-20000</code></td>
-<td>9500 - 9999</td>
-<td><code>bytes 9500-9999/10000</code></td>
-<td>500</td>
-</tr>
-<tr class="odd">
-<td><code>bytes=-20000</code></td>
-<td>0 - 9999</td>
-<td><code>bytes 0-9999/10000</code></td>
-<td>10000</td>
-</tr>
-<tr class="even">
-<td><code>bytes=10000-</code></td>
-<td>Nothing</td>
-<td><code>bytes */10000</code></td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>If <code>last</code> is past the end of the file, send through the end of the file</li>
-<li>If <code>n</code> is larger than the file, send the entire file</li>
-</ul>
-</section>
 <section id="off-by-one" class="slide level2">
 <h2>Off By One</h2>
 <ul>
@@ -698,8 +594,8 @@
 </ul></li>
 <li>Go slices are exclusive on the end</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb16-1"><a></a>data<span class="op">[</span>first <span class="op">:</span> last<span class="op">+</span><span class="dv">1</span><span class="op">]</span>     <span class="co">// Bytes first through last, inclusive</span></span>
-<span id="cb16-2"><a></a>length <span class="op">:=</span> last <span class="op">-</span> first <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb15-1"><a></a>data<span class="op">[</span>first <span class="op">:</span> last<span class="op">+</span><span class="dv">1</span><span class="op">]</span>     <span class="co">// Bytes first through last, inclusive</span></span>
+<span id="cb15-2"><a></a>length <span class="op">:=</span> last <span class="op">-</span> first <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Off-by-one errors are the most common bug in range requests
 <ul>
@@ -715,50 +611,9 @@
 <li>Respond with <code>416 Range Not Satisfiable</code></li>
 <li><code>Content-Range</code> uses <code>*</code> for the range and still includes the total size</li>
 </ul>
-<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a></a>HTTP/1.1 416 Range Not Satisfiable</span>
-<span id="cb17-2"><a></a>Content-Range: bytes */10000</span>
-<span id="cb17-3"><a></a>Content-Length: 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="handling-a-range-request" class="slide level2">
-<h2>Handling a Range Request</h2>
-<ol type="1">
-<li>Get the size of the file</li>
-<li>If there is no Range header, send the entire file with <code>200 OK</code></li>
-<li>Remove <code>bytes=</code> and split the rest on <code>-</code></li>
-<li>Find <code>first</code> and <code>last</code> based on which form was sent
-<ul>
-<li><code>bytes=-{n}</code>: <code>first = size - n</code> (at least 0), <code>last = size - 1</code></li>
-<li><code>bytes={first}-</code>: <code>last = size - 1</code></li>
-<li><code>bytes={first}-{last}</code>: if <code>last &gt;= size</code>, use <code>size - 1</code></li>
-</ul></li>
-<li>If <code>first &gt;= size</code>, send a <code>416</code></li>
-<li>Send <code>206</code> with <code>Content-Range</code>, <code>Content-Length</code>, and bytes <code>first</code> through <code>last</code></li>
-</ol>
-<ul>
-<li>Functions that handle the Range header for you (eg. <code>http.ServeContent</code>, <code>http.ServeFile</code>) are not allowed on the HW</li>
-</ul>
-</section>
-<section id="dont-read-the-entire-file" class="slide level2">
-<h2>Don't Read the Entire File</h2>
-<ul>
-<li><code>os.ReadFile</code> loads the entire file into memory
-<ul>
-<li>Fine for small images. Not for a 1 GB video</li>
-</ul></li>
-<li>Open the file, jump to <code>first</code>, and copy only the bytes you need</li>
-</ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb18-1"><a></a>file<span class="op">,</span> err <span class="op">:=</span> os<span class="op">.</span>Open<span class="op">(</span>path<span class="op">)</span></span>
-<span id="cb18-2"><a></a><span class="co">// handle err</span></span>
-<span id="cb18-3"><a></a><span class="cf">defer</span> file<span class="op">.</span>Close<span class="op">()</span></span>
-<span id="cb18-4"><a></a></span>
-<span id="cb18-5"><a></a>info<span class="op">,</span> err <span class="op">:=</span> file<span class="op">.</span>Stat<span class="op">()</span></span>
-<span id="cb18-6"><a></a>size <span class="op">:=</span> info<span class="op">.</span>Size<span class="op">()</span></span>
-<span id="cb18-7"><a></a></span>
-<span id="cb18-8"><a></a>file<span class="op">.</span>Seek<span class="op">(</span>first<span class="op">,</span> io<span class="op">.</span>SeekStart<span class="op">)</span></span>
-<span id="cb18-9"><a></a>io<span class="op">.</span>CopyN<span class="op">(</span>connection<span class="op">,</span> file<span class="op">,</span> last<span class="op">-</span>first<span class="op">+</span><span class="dv">1</span><span class="op">)</span>  <span class="co">// Copies in small chunks</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>io.CopyN</code> reads a few kB at a time from the file and writes them to the connection</li>
-</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a></a>HTTP/1.1 416 Range Not Satisfiable</span>
+<span id="cb16-2"><a></a>Content-Range: bytes */10000</span>
+<span id="cb16-3"><a></a>Content-Length: 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="limiting-response-size" class="slide level2">
 <h2>Limiting Response Size</h2>
@@ -774,11 +629,11 @@
 </ul></li>
 <li>The browser will request the rest when it needs them</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1"><a></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
-<span id="cb19-2"><a></a>Range: bytes=0-</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a></a>HTTP/1.1 206 Partial Content</span>
-<span id="cb20-2"><a></a>Content-Range: bytes 0-2097151/1073741824</span>
-<span id="cb20-3"><a></a>Content-Length: 2097152</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
+<span id="cb17-2"><a></a>Range: bytes=0-</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb18-2"><a></a>Content-Range: bytes 0-2097151/1073741824</span>
+<span id="cb18-3"><a></a>Content-Length: 2097152</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="what-the-browser-does" class="slide level2">
 <h2>What the Browser Does</h2>
@@ -804,16 +659,12 @@
 <ul>
 <li>eg. "broken pipe" or "connection reset by peer"</li>
 </ul></li>
-<li><span class="yellow">Your server must not crash</span>
+<li>Your server must not crash
 <ul>
 <li>Check the error from every write</li>
 <li>Stop sending, close the connection, and return from the handler</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb21"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb21-1"><a></a>_<span class="op">,</span> err <span class="op">:=</span> io<span class="op">.</span>CopyN<span class="op">(</span>connection<span class="op">,</span> file<span class="op">,</span> length<span class="op">)</span></span>
-<span id="cb21-2"><a></a><span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb21-3"><a></a>    <span class="cf">return</span>  <span class="co">// Client is gone. Clean up and move on</span></span>
-<span id="cb21-4"><a></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="testing-range-requests" class="slide level2">
 <h2>Testing Range Requests</h2>
@@ -821,32 +672,15 @@
 <li>Browser behavior is unpredictable. Use curl to send exactly the Range you want to test</li>
 <li><code>-D -</code> prints the response headers, <code>-o</code> saves the body</li>
 </ul>
-<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-D</span> <span class="at">-</span> <span class="at">-o</span> part.bin <span class="at">-H</span> <span class="st">"Range: bytes=0-99"</span> http://localhost:8080/public/videos/test.mp4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb23-1"><a></a>HTTP/1.1 206 Partial Content</span>
-<span id="cb23-2"><a></a>Content-Range: bytes 0-99/10000</span>
-<span id="cb23-3"><a></a>Content-Length: 100</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-D</span> <span class="at">-</span> <span class="at">-o</span> part.bin <span class="at">-H</span> <span class="st">"Range: bytes=0-99"</span> http://localhost:8080/public/videos/test.mp4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb20-2"><a></a>Content-Range: bytes 0-99/10000</span>
+<span id="cb20-3"><a></a>Content-Length: 100</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Check that <code>part.bin</code> is exactly 100 bytes</li>
 <li>Test every form, a range past the end, and a request with no Range header</li>
 <li>The Network tab in your browser's dev tools shows the Range and Content-Range of every video request</li>
 </ul>
-</section>
-<section id="range-requests-vs.-segments" class="slide level2">
-<h2>Range Requests vs. Segments</h2>
-<ul>
-<li>Range requests let us serve one large mp4 efficiently</li>
-<li>But every user still gets the same file
-<ul>
-<li>A 4K video for someone on a slow phone connection</li>
-</ul></li>
-<li>Next: Split the video into many small files at multiple qualities
-<ul>
-<li>HLS and Adaptive Bit-Rate streaming</li>
-</ul></li>
-</ul>
-</section>
-<section id="demos" class="slide level2">
-<h2>Demos</h2>
 
 
 </section>
