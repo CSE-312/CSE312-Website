@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-bac7adb8ce4116f5fab3733098f19915.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -144,20 +144,12 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#conversions-are-slow" id="toc-conversions-are-slow" class="nav-link" data-scroll-target="#conversions-are-slow">Conversions Are Slow</a></li>
   <li><a href="#respond-first-process-later" id="toc-respond-first-process-later" class="nav-link" data-scroll-target="#respond-first-process-later">Respond First, Process Later</a></li>
-  <li><a href="#goroutines" id="toc-goroutines" class="nav-link" data-scroll-target="#goroutines">Goroutines</a></li>
-  <li><a href="#tracking-job-status" id="toc-tracking-job-status" class="nav-link" data-scroll-target="#tracking-job-status">Tracking Job Status</a></li>
-  <li><a href="#errors-in-the-background" id="toc-errors-in-the-background" class="nav-link" data-scroll-target="#errors-in-the-background">Errors in the Background</a></li>
-  <li><a href="#limiting-concurrent-jobs" id="toc-limiting-concurrent-jobs" class="nav-link" data-scroll-target="#limiting-concurrent-jobs">Limiting Concurrent Jobs</a></li>
-  <li><a href="#worker-pool" id="toc-worker-pool" class="nav-link" data-scroll-target="#worker-pool">Worker Pool</a></li>
-  <li><a href="#workers-in-the-real-world" id="toc-workers-in-the-real-world" class="nav-link" data-scroll-target="#workers-in-the-real-world">Workers in the Real World</a></li>
   </ul></li>
   <li><a href="#video-on-the-front-end" id="toc-video-on-the-front-end" class="nav-link" data-scroll-target="#video-on-the-front-end">Video on the Front End</a>
   <ul class="collapse">
   <li><a href="#the-video-element" id="toc-the-video-element" class="nav-link" data-scroll-target="#the-video-element">The Video Element</a></li>
   <li><a href="#playing-hls" id="toc-playing-hls" class="nav-link" data-scroll-target="#playing-hls">Playing HLS</a></li>
   <li><a href="#the-provided-front-end" id="toc-the-provided-front-end" class="nav-link" data-scroll-target="#the-provided-front-end">The Provided Front End</a></li>
-  <li><a href="#quality-selector" id="toc-quality-selector" class="nav-link" data-scroll-target="#quality-selector">Quality Selector</a></li>
-  <li><a href="#showing-processing-status" id="toc-showing-processing-status" class="nav-link" data-scroll-target="#showing-processing-status">Showing Processing Status</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
   </ul></li>
   </ul>
@@ -169,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Video - ABR and Background Jobs</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
 <div>
@@ -613,8 +604,6 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>The files are in nested directories
 <ul>
 <li>eg. <code>/public/videos/abc123/0/index0.ts</code></li>
-<li>If you prevent path traversal by removing every <code>/</code>, these paths will break</li>
-<li>Reject any path containing <code>..</code> instead (Or only serve files you know exist)</li>
 </ul></li>
 <li>Store the path to <code>master.m3u8</code> in your database as the video's <code>hls_path</code></li>
 </ul>
@@ -625,9 +614,9 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <section id="conversions-are-slow" class="level2">
 <h2 class="anchored" data-anchor-id="conversions-are-slow">Conversions Are Slow</h2>
 <ul>
-<li>Converting a video to multiple bit-rates takes a long time
+<li>Converting a video to multiple bit-rates can take a long time
 <ul>
-<li>Seconds for a short clip. Minutes for a long video</li>
+<li>Seconds for a short clip. Up to minutes for a long video</li>
 <li>Uses a lot of CPU</li>
 </ul></li>
 <li>If your server converts the video while handling the upload request:
@@ -635,8 +624,9 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>The user waits on the upload page with no response</li>
 <li>The browser may give up and time out</li>
 <li>Nothing else can happen on that keep-alive connection until the conversion finishes</li>
+<li>Users will think your app is broken</li>
 </ul></li>
-<li>Respond first, process later</li>
+<li>Respond before the conversion finishes!</li>
 </ul>
 </section>
 <section id="respond-first-process-later" class="level2">
@@ -644,136 +634,14 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <ol type="1">
 <li>Receive and buffer the upload</li>
 <li>Save the mp4 to disk and add the video to your database</li>
-<li>Start the conversion in the background</li>
-<li>Respond to the user immediately</li>
+<li>Respond to the user</li>
+<li>Start the conversion in the background concurrently</li>
+<li>Handle other requests from this user on the same connection</li>
 <li>When the conversion finishes, update the video in your database</li>
 </ol>
 <ul>
 <li>The video can be watched as an mp4 while it's being converted</li>
 <li>Users see the HLS version once it's ready</li>
-</ul>
-</section>
-<section id="goroutines" class="level2">
-<h2 class="anchored" data-anchor-id="goroutines">Goroutines</h2>
-<ul>
-<li><code>go</code> starts a function in a new goroutine and does not wait for it to finish</li>
-<li>The handler responds while the conversion runs in the background</li>
-</ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>videoID<span class="op">,</span> mp4Path <span class="op">:=</span> saveUpload<span class="op">(</span>request<span class="op">)</span>        <span class="co">// Save to disk + database (your code)</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="cf">go</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    outputDir <span class="op">:=</span> <span class="st">"public/videos/"</span> <span class="op">+</span> videoID</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    err <span class="op">:=</span> MP4ToHLS<span class="op">(</span>mp4Path<span class="op">,</span> outputDir<span class="op">)</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        markFailed<span class="op">(</span>videoID<span class="op">)</span>                     <span class="co">// There's no request to respond to</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    setHLSPath<span class="op">(</span>videoID<span class="op">,</span> <span class="st">"/"</span><span class="op">+</span>outputDir<span class="op">+</span><span class="st">"/master.m3u8"</span><span class="op">)</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="op">}()</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>respondWithID<span class="op">(</span>connection<span class="op">,</span> videoID<span class="op">)</span>             <span class="co">// Respond immediately</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="tracking-job-status" class="level2">
-<h2 class="anchored" data-anchor-id="tracking-job-status">Tracking Job Status</h2>
-<ul>
-<li>Each video is processing, ready, or failed
-<ul>
-<li>Store this in your database with the video</li>
-</ul></li>
-<li>Add <code>hls_path</code> to the video only after the conversion succeeds</li>
-<li>Clearly show users that a video is being processed
-<ul>
-<li>Simple option: Add "-- processing" to the title, and remove it when done</li>
-<li>Or add a status field and edit the front end to display it</li>
-</ul></li>
-<li>What happens if your server restarts during a conversion?
-<ul>
-<li>The goroutine is gone, and the status is stuck on processing</li>
-<li>Real apps restart unfinished jobs on startup</li>
-</ul></li>
-</ul>
-</section>
-<section id="errors-in-the-background" class="level2">
-<h2 class="anchored" data-anchor-id="errors-in-the-background">Errors in the Background</h2>
-<ul>
-<li>A background job has no request to respond to
-<ul>
-<li>Record the failure in your database so users can see it</li>
-<li>Log it so you can debug it</li>
-</ul></li>
-<li>eg. The provided conversion fails on videos without audio:</li>
-</ul>
-<pre class="text"><code>Stream map '0:a:0' matches no streams.</code></pre>
-<ul>
-<li><span class="yellow">An unrecovered panic in any goroutine crashes your entire server</span>
-<ul>
-<li>Every user is disconnected because one video was bad</li>
-<li>Check every error. Don't <code>panic</code> or <code>log.Fatal</code> in a job</li>
-</ul></li>
-</ul>
-</section>
-<section id="limiting-concurrent-jobs" class="level2">
-<h2 class="anchored" data-anchor-id="limiting-concurrent-jobs">Limiting Concurrent Jobs</h2>
-<ul>
-<li>What if 50 users upload videos at the same time?
-<ul>
-<li>50 copies of ffmpeg compete for the CPU</li>
-<li>Every conversion and every request slows down</li>
-<li>An easy denial of service for an attacker</li>
-</ul></li>
-<li>Use a fixed number of workers and a queue of jobs
-<ul>
-<li>Upload handlers add jobs to the queue</li>
-<li>Each worker takes the next job when it finishes the last one</li>
-<li>Extra uploads wait in the queue</li>
-</ul></li>
-<li>Optional for the HW: At most 2 conversions at a time</li>
-</ul>
-</section>
-<section id="worker-pool" class="level2">
-<h2 class="anchored" data-anchor-id="worker-pool">Worker Pool</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> ConversionJob <span class="kw">struct</span> <span class="op">{</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    VideoID <span class="dt">string</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    MP4Path <span class="dt">string</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> jobs <span class="op">=</span> <span class="bu">make</span><span class="op">(</span><span class="kw">chan</span> ConversionJob<span class="op">,</span> <span class="dv">100</span><span class="op">)</span>  <span class="co">// The queue</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> startWorkers<span class="op">(</span>count <span class="dt">int</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> i<span class="op">++</span> <span class="op">{</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">go</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> job <span class="op">:=</span> <span class="kw">range</span> jobs <span class="op">{</span>           <span class="co">// Waits for the next job</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                convert<span class="op">(</span>job<span class="op">)</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="op">}()</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>At startup: <code>startWorkers(2)</code></li>
-<li>In the upload handler: <code>jobs &lt;- ConversionJob{videoID, mp4Path}</code>
-<ul>
-<li>If the queue is full, this line waits until there is room</li>
-</ul></li>
-</ul>
-</section>
-<section id="workers-in-the-real-world" class="level2">
-<h2 class="anchored" data-anchor-id="workers-in-the-real-world">Workers in the Real World</h2>
-<ul>
-<li>Background jobs are everywhere
-<ul>
-<li>Video processing, sending emails, generating reports, resizing images</li>
-</ul></li>
-<li>Production apps often run workers as separate processes or containers
-<ul>
-<li>Web servers stay responsive. Workers can use all the CPU they want</li>
-<li>Add more workers when the queue gets long</li>
-</ul></li>
-<li>The queue is a separate service (eg. Redis, RabbitMQ, Amazon SQS)
-<ul>
-<li>Jobs survive a restart</li>
-<li>Failed jobs can be retried</li>
-</ul></li>
-<li>Optional for the HW: Run conversions in a separate container</li>
 </ul>
 </section>
 </section>
@@ -794,10 +662,10 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
-<div class="sourceCode" id="cb15"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -821,14 +689,14 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
-<div class="sourceCode" id="cb16"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="height: 1.0em">
 
 </div>
-<div class="sourceCode" id="cb17"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -848,9 +716,8 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <ul>
 <li>Included in <code>layout.html</code></li>
 </ul></li>
-<li>Other players: video.js, dash.js (for MPEG-DASH)</li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-provided-front-end" class="level2">
 <h2 class="anchored" data-anchor-id="the-provided-front-end">The Provided Front End</h2>
@@ -859,61 +726,19 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>If the video has an <code>hls_path</code>, play it with hls.js</li>
 <li>Otherwise, play the mp4 directly
 <ul>
-<li>With Range requests if your server supports them</li>
+<li>With Range requests if your server and browser supports them</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/videos/</span><span class="sc">${</span>videoId<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="kw">const</span> video <span class="op">=</span> (<span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>())<span class="op">.</span><span class="at">video</span><span class="op">;</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="cf">if</span> (video<span class="op">.</span><span class="at">hls_path</span>) {</span>
-<span id="cb19-5"><a href="#cb19-5"></a>    <span class="kw">const</span> hls <span class="op">=</span> <span class="kw">new</span> <span class="fu">Hls</span>()<span class="op">;</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a>    hls<span class="op">.</span><span class="fu">loadSource</span>(video<span class="op">.</span><span class="at">hls_path</span>)<span class="op">;</span>   <span class="co">// URL of master.m3u8</span></span>
-<span id="cb19-7"><a href="#cb19-7"></a>    hls<span class="op">.</span><span class="fu">attachMedia</span>(videoPlayer)<span class="op">;</span>     <span class="co">// The &lt;video&gt; element</span></span>
-<span id="cb19-8"><a href="#cb19-8"></a>} <span class="cf">else</span> {</span>
-<span id="cb19-9"><a href="#cb19-9"></a>    videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span>
-<span id="cb19-10"><a href="#cb19-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="quality-selector" class="level2">
-<h2 class="anchored" data-anchor-id="quality-selector">Quality Selector</h2>
-<ul>
-<li>hls.js reads the renditions from the master playlist
-<ul>
-<li>Called "levels" in hls.js</li>
-</ul></li>
-<li>The provided front end adds an option for each level</li>
-<li><code>currentLevel</code> chooses a level. <code>-1</code> lets hls.js adapt automatically</li>
-</ul>
-<div class="sourceCode" id="cb20"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>hls<span class="op">.</span><span class="fu">on</span>(Hls<span class="op">.</span><span class="at">Events</span><span class="op">.</span><span class="at">MANIFEST_PARSED</span><span class="op">,</span> <span class="kw">function</span> (<span class="bu">event</span><span class="op">,</span> data) {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">.</span><span class="at">levels</span><span class="op">.</span><span class="fu">forEach</span>((level<span class="op">,</span> index) <span class="kw">=&gt;</span> {</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> option <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"option"</span>)<span class="op">;</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        option<span class="op">.</span><span class="at">value</span> <span class="op">=</span> index<span class="op">;</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        option<span class="op">.</span><span class="at">text</span> <span class="op">=</span> <span class="vs">`</span><span class="sc">${</span>level<span class="op">.</span><span class="at">height</span><span class="sc">}</span><span class="vs">p (</span><span class="sc">${</span>level<span class="op">.</span><span class="at">bitrate</span> <span class="op">/</span> <span class="dv">1000</span><span class="sc">}</span><span class="vs"> kbps)`</span><span class="op">;</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        select<span class="op">.</span><span class="fu">appendChild</span>(option)<span class="op">;</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>select<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">"change"</span><span class="op">,</span> <span class="kw">function</span> () {</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    hls<span class="op">.</span><span class="at">currentLevel</span> <span class="op">=</span> select<span class="op">.</span><span class="at">value</span> <span class="op">===</span> <span class="st">"auto"</span> <span class="op">?</span> <span class="op">-</span><span class="dv">1</span> <span class="op">:</span> <span class="pp">parseInt</span>(select<span class="op">.</span><span class="at">value</span>)<span class="op">;</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="showing-processing-status" class="level2">
-<h2 class="anchored" data-anchor-id="showing-processing-status">Showing Processing Status</h2>
-<ul>
-<li>The provided front end doesn't know about processing
-<ul>
-<li>No <code>hls_path</code>: It plays the mp4</li>
-</ul></li>
-<li>The HW requires that users can clearly see a video is processing</li>
-<li>Options:
-<ul>
-<li>Change the title in your API response (No front end changes)</li>
-<li>Add a status field to your API and display it in <code>view-video.html</code> and <code>videotube.html</code></li>
-</ul></li>
-<li>The front end is yours to change
-<ul>
-<li>Read the provided JavaScript before you edit it</li>
-</ul></li>
-</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/videos/</span><span class="sc">${</span>videoId<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">const</span> video <span class="op">=</span> (<span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>())<span class="op">.</span><span class="at">video</span><span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="cf">if</span> (video<span class="op">.</span><span class="at">hls_path</span>) {</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="kw">const</span> hls <span class="op">=</span> <span class="kw">new</span> <span class="fu">Hls</span>()<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>    hls<span class="op">.</span><span class="fu">loadSource</span>(video<span class="op">.</span><span class="at">hls_path</span>)<span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>    hls<span class="op">.</span><span class="fu">attachMedia</span>(videoPlayer)<span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-9"><a href="#cb16-9"></a>    videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
@@ -921,7 +746,6 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
 <li><a href="https://datatracker.ietf.org/doc/html/rfc8216">RFC8216 - HLS</a></li>
-<li><a href="https://gobyexample.com/worker-pools">Worker Pools (Go by Example)</a></li>
 <li><a href="https://ffmpeg.org">ffmpeg</a></li>
 </ul>
 </section>

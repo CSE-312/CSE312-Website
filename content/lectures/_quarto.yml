@@ -22,6 +22,9 @@ format:
     anchor-sections: true
     format-links: false
     html-math-method: plain
+    grid:
+      body-width: 1200px
+      margin-width: 250px
   revealjs:
     from: markdown-smart
     output-file: slides.html

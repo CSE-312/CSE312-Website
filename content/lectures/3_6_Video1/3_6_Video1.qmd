@@ -1,24 +1,19 @@
 ---
-title: "Video Processing"
-subtitle: "CSE312 — Web Development"
+title: "Video - ABR and Background Jobs"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Adaptive bit-rate streaming with HLS, running slow jobs in the background, and playing video on the front end"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
+  - url: "https://datatracker.ietf.org/doc/html/rfc8216"
+    text: "RFC8216 - HLS"
   - url: "https://ffmpeg.org"
     text: "ffmpeg"
-  - url: "https://pypi.org/project/ffmpeg-python/"
-    text: "ffmpeg-python"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## Video
+# Video Uploads
 
 ## Uploading Video
 
@@ -27,208 +22,428 @@ released: false
 - How do we support video uploads?
   - The same exact way as images!
   - Files are just bytes
-  - Images and videos are handled as bytes
+- HW3 upload form: A multipart request with parts named "title", "description", and "video"
+  - Parse the parts, save the video to disk, store its path in your database
+  - Host it with `Content-Type: video/mp4` and support Range requests
 
-## Displaying Video
+## The Problem
 
+- You host a video on your web app
+- You want high quality so you host a large 1080p mp4
+  - The entire file is 100's of MB
+- Range requests let users start watching without downloading the entire file
+- But every user gets the same quality
+  - Someone visits your site using eduroam on a bad day..
+  - The video buffers, stutters, or doesn't play at all
+- We need a solution that:
+  - Allows users with slow connections to enjoy your content
+  - Delivers high quality to users with high-speed Internet
 
-- How do we display a video on our page?
-  - Not the same as images (Can't use the `<img>` element)
-- Use the `<video>` element!
+# Adaptive Bit-Rate Streaming
 
+## Segments
+
+- Split the video into many short files called segments
+  - Typically ~2-10 seconds of playback each
+- The browser downloads one segment at a time
+  - Only a few seconds need to be downloaded before playback starts
+  - If the user skips around in the video, only request the segment they skipped to
+  - If the user leaves the page without finishing the video, the rest is never downloaded
+- Each segment is a small, regular file
+  - No Range requests needed
+
+## Adaptive Bit-Rate
+
+- Instead of hosting a single video at a single resolution
+  - Host multiple versions of the same video at different resolutions
+  - Each resolution requires a different bit-rate to stream
+- Create segments for every version
+- With the video split into ~2-10 second segments
+  - The browser can switch to a different version at any segment
+  - It chooses the highest bit-rate that fits its current bandwidth
+
+## Adaptive Bit-Rate {.unnumbered .unlisted}
+
+- The browser adapts the requested bit-rate based on current conditions
+- Limited interruption for the user, though quality can change over time
+
+::: {style="height: 1.5em"}
+:::
+
+| Segment | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+|---------|---|---|---|---|---|---|---|
+| Bandwidth | Fast | Fast | Drops | Slow | Slow | Recovers | Fast |
+| Quality | 1080p | 1080p | 480p | potato | potato | 480p | 1080p |
+
+## HLS vs MPEG-DASH
+
+- Two major protocols for segmented, adaptive bit-rate video
+  - Both use an index file listing the segments. The browser requests segments as it needs them
+- HTTP Live Streaming (HLS) - Developed by Apple
+  - Index files are `.m3u8` playlists. Segments are commonly `.ts` files
+  - Wide-spread support. Spec freely available in RFC8216
+- Dynamic Adaptive Streaming over HTTP (MPEG-DASH) - Developed by MPEG
+  - Index file is an XML `.mpd` file
+  - Not supported on Apple devices
+  - Spec published as ISO/IEC 23009-1 - Available for $245 (!)
+- We'll use HLS
+
+## HLS Files
+
+:::: {.columns}
+::: {.column width="55%"}
+- A master playlist lists every version (rendition) of the video
+- Each rendition has its own media playlist listing its segments
+- Each segment is a few seconds of video and audio
+- Your server hosts all of these files
+- The browser only needs the URL of the master playlist
+:::
+::: {.column width="45%"}
+```text
+public/videos/abc123/
+├── master.m3u8
+├── 0/
+│   ├── index.m3u8
+│   ├── index0.ts
+│   ├── index1.ts
+│   └── index2.ts
+└── 1/
+    ├── index.m3u8
+    ├── index0.ts
+    ├── index1.ts
+    └── index2.ts
 ```
-<video width="400" controls autoplay muted>
-<source src="space.mp4" type="video/mp4">
-</video>
+:::
+::::
+
+## Master Playlist
+
+- `master.m3u8` lists each rendition
+  - Its bandwidth, resolution, and codecs
+  - The path to its media playlist, relative to this file
+- The browser chooses a rendition based on its bandwidth
+
+```{.text code-line-numbers="3-4,6-7"}
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=2825900,RESOLUTION=1280x720,CODECS="avc1.f4001f,mp4a.40.2"
+0/index.m3u8
+
+#EXT-X-STREAM-INF:BANDWIDTH=955900,RESOLUTION=640x360,CODECS="avc1.f4001e,mp4a.40.2"
+1/index.m3u8
 ```
 
-![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
+## Media Playlist
 
-## Displaying Video
+- `1/index.m3u8` lists the segments of the 360p rendition
+  - `#EXTINF` is the duration of the next segment in seconds
+  - `#EXT-X-ENDLIST` means there are no more segments
+- Segment paths are relative to the playlist
 
-
-- Can add a variety of attributes to the video
-  - controls: displays the control buttons for the user
-  - autoplay: plays on page load [if allowed by the browser]
-  - muted: mute the audio (Required in Chromium for autoplay)
-
-```
-<video width="400" controls autoplay muted>
-<source src="space.mp4" type="video/mp4">
-</video>
-```
-
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Displaying Video
-
-
-- Specify the source file in a source element
-- If the MIME type is omitted, the browser might be able to sniff the type (Don't rely on this)
-- This element will request "space.mp4" just like the src of an img
-
-```
-<video width="400" controls autoplay muted>
-<source src="space.mp4" type="video/mp4">
-</video>
+```{.text code-line-numbers="6-11"}
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:8
+#EXT-X-MEDIA-SEQUENCE:0
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXTINF:8.333333,
+index0.ts
+#EXTINF:8.333333,
+index1.ts
+#EXTINF:3.333333,
+index2.ts
+#EXT-X-ENDLIST
 ```
 
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
+## Watching an HLS Video
 
-## Displaying Video
+- The browser requests each file as it needs it
 
-
-- Using the src attribute in the video element is allowed
-  - This is discouraged
-  - Cannot specify MIME type
-  - Can only have one source
-
-```
-<video width="400" src="space.mp4" controls autoplay muted>
-</video>
+```text
+GET /public/videos/abc123/master.m3u8          Pick a rendition
+GET /public/videos/abc123/1/index.m3u8         Start with 360p
+GET /public/videos/abc123/1/index0.ts
+GET /public/videos/abc123/1/index1.ts          Bandwidth looks good
+GET /public/videos/abc123/0/index.m3u8         Switch to 720p
+GET /public/videos/abc123/0/index2.ts
 ```
 
-![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
+- These are all normal GET requests for files
+  - Your server doesn't need to know anything about HLS to host them
+  - Just the right MIME types
 
-## Displaying Video
-
-
-- Using the source element allows us to specify multiple formats
-  - Browser will use the first source in the list that it supports
-  - Most browsers do not support mpd or m3u8 and will play the mp4
-- Add text that is displayed for very old browsers that don't support the HTML5 video element
-
-```
-<video width="400" src="space.mp4" controls autoplay muted>
-</video>
-```
-
-```
-<video width="400" controls autoplay muted>
-<source src="space.mpd" type="application/x-mpegURL">
-<source src="space.m3u8" type="video/hls">
-<source src="space.mp4" type="video/mp4">
-Your browser does not support video playback
-</video>
-```
-
-![](assets/slide07-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Displaying Video
-
-
-- Expectation for HW3 when a video is uploaded:
-  - Save the video to disk and store the filename in your DB
-  - Host the video at a path matching the filename
-  - The frontend will see the filename, request the video, then add the video bytes to a video element
-
-```
-<video width="400" controls autoplay muted>
-<source src="space.mp4" type="video/mp4">
-</video>
-```
-
-![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## File Formats
-
-## File Formats
-
-- How can we find the type of file that was uploaded?
-- Check the file extension?
-- File extension pros:
-  - Helpful for us humans to identify the type
-  - Let's our OS recommend which program to use to open the file
-- File extensions cons:
-  - They are part of the filename and can be set to anything by renaming the file (Or removed entirely)
-  - They are not part of the file itself (No filename when working with only the content of the file)
-
-## File Formats
-
-- How can we find the type of file that was uploaded?
-- Check the Content-Type of the part of the request?
-- The browser might use the file extension to determine the Content-Type of an uploaded file
-  - Cannot be fully trusted
-
-## File Signatures
-
-- The first bytes of each file contain a signature
-  - Identifies the type of the file
-  - Reliable(ish) since it's part of the content of the file itself instead of the filename
-- When the file extension can't be trusted
-  - Read the first bytes of the file
-  - Lookup the signature of these bytes
-- Common file types will always start with the same bytes
-  - eg. JPEG images will start with
-    - b'\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01'
-- Find the signatures for each file type you support and determine the MIME type matching the signature
-
-## Video Processing
+# Converting Video
 
 ## Media Processing
 
 - You do not always want to store user uploaded media as-is
-  - Users can upload anything
-  - What they upload might break your server
-  - Never trust your users!
-- Even your most trustworthy users will upload large media files
-  - High storage cost
-  - Slower load times
-
-## Media Processing
-
+  - Users can upload anything. Never trust your users!
+  - Even your most trustworthy users will upload large media files
 - Process the media when it's uploaded
-  - Convert/Compress the image/video
-  - Only store and serve the converted files
-  - Limits storage costs when compressing
-  - All media stored in the same format
-- *Typically also limit the file size on the front end
-  - Can always be bypassed
-
-## Aspect Ratios
-
-- It's important to preserve the original aspect ratio of the media
-- In our examples, we'll have a target maximum number of pixels for the height or width
-- The Process:
-  - Read the dimensions of the media to find the aspect ratio
-  - Set the larger dimension equal to your maximum height/ width
-  - Compute the other dimension based on the aspect ratio
-  - Scale the media to this new height and width
-
-## Video Processing
-
-- Recommended (Pretty much required) to use ffmpeg
-- ffmpeg is the answer for video manipulation
-- Need to install ffmpeg
-  - Include the installation in your Dockerfile if using docker
-- You may use any library you'd like to process videos
+  - Convert/Compress the video
+  - Store and serve the converted files
+  - All media stored in formats you choose
+- For ABR: Convert each upload into HLS at several bit-rates
 
 ## ffmpeg
 
-- To run ffmpeg in your code
-- Option 1: Make a system call
-  - Same as typing a command into the command line
-  - Build into every language
-- Option 2: Use ffmpeg bindings (Library)
-  - Simplifies the syntax by calling methods instead of working with command line arguments
-  - Makes the system calls for you
+- ffmpeg is *the* answer for video manipulation
+- A command line program
+  - Your Go code runs it with a system call
+  - Same as typing the command into the command line
 
-## ffmpeg
+```go
+exec.Command("ffmpeg", "-i", "input.avi", "-f", "mp4", "output.mp4").Run()
+```
 
-ffmpeg -i inputVideo.avi -f mp4 outputVideo.mp4
+- ffmpeg must be installed in your container
+  - Add this near the top of your Dockerfile so it's cached and you only wait for the install once
 
-- Example of command line ffmpeg usage
-  - Converts inputVideo.avi into an mp4
-- The -i flag indicates the input filename
-- The -f flag indicates the output format
-- The last argument is always the output filename
-  - No flag for the output filename
+```dockerfile
+RUN apt-get update && apt-get install -y ffmpeg
+```
 
-## ffmpeg
+## The Provided Conversion
 
-ffmpeg -i inputVideo.avi -s 640x360 -f mp4 outputVideo.mp4
+- You are not expected to research ffmpeg for the HW
+- This function converts an mp4 into HLS with 2 renditions: 720p and 360p
+- Let's see what each argument does
 
-- We can add more arguments for more control
-  - Output filename is still the last argument
-- The -s flag is sets the resolution of the output file
-  - We convert the file to 640x360
+::: {.absolute bottom=0 left=0 width="100%"}
+```go
+func MP4ToHLS(inputPath string, outputDir string) error {
+    return exec.Command("ffmpeg", "-i", inputPath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+        "-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+        "-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+        "-f", "hls", "-hls_playlist_type", "vod",
+        "-master_pl_name", "master.m3u8",
+        "-var_stream_map", "v:0,a:0 v:1,a:1",
+        outputDir+"/%v/index.m3u8",
+    ).Run()
+}
+```
+:::
+
+## The Provided Conversion {.unnumbered .unlisted}
+
+- `-i` is the input file
+- `-map` selects streams from the input for the output
+  - `0:v:0` is the first video stream of the first (only) input. `0:a:0` is its first audio stream
+  - Mapped twice: Video and audio for each rendition
+- If the input has no audio, `0:a:0` matches nothing and ffmpeg fails
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.go code-line-numbers="2-3"}
+func MP4ToHLS(inputPath string, outputDir string) error {
+    return exec.Command("ffmpeg", "-i", inputPath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+        "-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+        "-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+        "-f", "hls", "-hls_playlist_type", "vod",
+        "-master_pl_name", "master.m3u8",
+        "-var_stream_map", "v:0,a:0 v:1,a:1",
+        outputDir+"/%v/index.m3u8",
+    ).Run()
+}
+```
+:::
+
+## The Provided Conversion {.unnumbered .unlisted}
+
+- Output video stream 0: Scaled to 720 pixels tall at 2500 kb/s
+- Output video stream 1: Scaled to 360 pixels tall at 800 kb/s
+- `-2` for the width: Compute the width that preserves the aspect ratio
+  - Rounded to an even number (Required by the encoder)
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.go code-line-numbers="4-5"}
+func MP4ToHLS(inputPath string, outputDir string) error {
+    return exec.Command("ffmpeg", "-i", inputPath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+        "-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+        "-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+        "-f", "hls", "-hls_playlist_type", "vod",
+        "-master_pl_name", "master.m3u8",
+        "-var_stream_map", "v:0,a:0 v:1,a:1",
+        outputDir+"/%v/index.m3u8",
+    ).Run()
+}
+```
+:::
+
+## The Provided Conversion {.unnumbered .unlisted}
+
+- `-f hls`: Output HLS
+- `-hls_playlist_type vod`: Video on Demand
+  - Keep every segment in the playlist and end it with `#EXT-X-ENDLIST`
+  - (As opposed to a live stream)
+- `-master_pl_name`: Also write a master playlist named `master.m3u8`
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.go code-line-numbers="6-7"}
+func MP4ToHLS(inputPath string, outputDir string) error {
+    return exec.Command("ffmpeg", "-i", inputPath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+        "-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+        "-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+        "-f", "hls", "-hls_playlist_type", "vod",
+        "-master_pl_name", "master.m3u8",
+        "-var_stream_map", "v:0,a:0 v:1,a:1",
+        outputDir+"/%v/index.m3u8",
+    ).Run()
+}
+```
+:::
+
+## The Provided Conversion {.unnumbered .unlisted}
+
+- `-var_stream_map`: Group the streams into renditions
+  - Rendition 0: video 0 with audio 0. Rendition 1: video 1 with audio 1
+- `%v` in the output path is replaced by the rendition number
+  - `outputDir/0/index.m3u8` and `outputDir/1/index.m3u8`
+- `Run` waits until ffmpeg finishes and returns an error if it failed
+
+::: {.absolute bottom=0 left=0 width="100%"}
+```{.go code-line-numbers="8-10"}
+func MP4ToHLS(inputPath string, outputDir string) error {
+    return exec.Command("ffmpeg", "-i", inputPath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:v:0", "-map", "0:a:0",
+        "-filter:v:0", "scale=-2:720", "-b:v:0", "2500k",
+        "-filter:v:1", "scale=-2:360", "-b:v:1", "800k",
+        "-f", "hls", "-hls_playlist_type", "vod",
+        "-master_pl_name", "master.m3u8",
+        "-var_stream_map", "v:0,a:0 v:1,a:1",
+        outputDir+"/%v/index.m3u8",
+    ).Run()
+}
+```
+:::
+
+## Hosting HLS Files
+
+- Two new file types to host
+
+| Extension | MIME type |
+|-----------|-----------|
+| `.m3u8` | `application/vnd.apple.mpegurl` |
+| `.ts` | `video/mp2t` |
+
+- The files are in nested directories
+  - eg. `/public/videos/abc123/0/index0.ts`
+- Store the path to `master.m3u8` in your database as the video's `hls_path`
+
+# Background Jobs
+
+## Conversions Are Slow
+
+- Converting a video to multiple bit-rates can take a long time
+  - Seconds for a short clip. Up to minutes for a long video
+  - Uses a lot of CPU
+- If your server converts the video while handling the upload request:
+  - The user waits on the upload page with no response
+  - The browser may give up and time out
+  - Nothing else can happen on that keep-alive connection until the conversion finishes
+  - Users will think your app is broken
+- Respond before the conversion finishes!
+
+## Respond First, Process Later
+
+1. Receive and buffer the upload
+2. Save the mp4 to disk and add the video to your database
+3. Respond to the user
+4. Start the conversion in the background concurrently
+5. Handle other requests from this user on the same connection
+6. When the conversion finishes, update the video in your database
+
+- The video can be watched as an mp4 while it's being converted
+- Users see the HLS version once it's ready
+
+
+
+# Video on the Front End
+
+## The Video Element
+
+:::: {.columns}
+::: {.column width="45%"}
+- Can't use `<img>` for video
+- Use the `<video>` element!
+- Attributes:
+  - `controls`: Displays the control buttons for the user
+  - `autoplay`: Plays on page load [if allowed by the browser]
+  - `muted`: Mute the audio (Required in Chromium for autoplay)
+:::
+::: {.column width="55%"}
+```html
+<video width="400" controls autoplay muted>
+    <source src="space.mp4" type="video/mp4">
+    Your browser does not support video playback
+</video>
+```
+:::
+::::
+
+## The Video Element {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="45%"}
+- Specify the file in a `<source>` element
+  - Requested just like the `src` of an `<img>`
+- Can list multiple sources
+  - The browser uses the first one it supports
+- The text is displayed by very old browsers that don't support video
+- Can also set `src` on the video element
+  - The provided front end does this in JavaScript
+:::
+::: {.column width="55%"}
+```html
+<video width="400" controls autoplay muted>
+    <source src="space.mp4" type="video/mp4">
+    Your browser does not support video playback
+</video>
+```
+
+::: {style="height: 1.0em"}
+:::
+
+```javascript
+videoPlayer.src = video.video_path;
+```
+:::
+::::
+
+## Playing HLS
+
+- Most browsers cannot play HLS using only the `<video>` element
+  - Safari can. Many others can't
+  - You cannot rely on the browser to support it
+- Use a JavaScript video player
+  - It downloads the playlists and segments, and feeds them to the `<video>` element
+- The provided front end uses hls.js
+  - Included in `layout.html`
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+```
+
+## The Provided Front End
+
+- The video page requests the video from your API
+- If the video has an `hls_path`, play it with hls.js
+- Otherwise, play the mp4 directly
+  - With Range requests if your server and browser supports them
+
+```{.javascript code-line-numbers="4-10"}
+const response = await fetch(`/api/videos/${videoId}`);
+const video = (await response.json()).video;
+
+if (video.hls_path) {
+    const hls = new Hls();
+    hls.loadSource(video.hls_path);
+    hls.attachMedia(videoPlayer);
+} else {
+    videoPlayer.src = video.video_path;
+}
+```
+
