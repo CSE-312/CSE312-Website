@@ -1,329 +1,358 @@
 ---
-title: "Video - Adaptive Bit-Rate (ABR)"
-subtitle: "CSE312 — Web Development"
+title: "Live Streaming"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "RTMP ingest, live HLS playlists, stream keys, and sharing files between containers with Docker volumes"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
-  - url: "https://datatracker.ietf.org/doc/html/rfc8216"
-    text: "RFC8216 - HLS"
-  - url: "https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP"
-    text: "MPEG-DASH [Wikipedia]"
-  - url: "https://videojs.com/getting-started"
-    text: "video.js"
+  - url: "https://hub.docker.com/r/tiangolo/nginx-rtmp/"
+    text: "tiangolo/nginx-rtmp"
+  - url: "https://docs.docker.com/engine/storage/volumes/"
+    text: "Docker Volumes"
+  - url: "https://obsproject.com"
+    text: "OBS Studio"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## Video - ABR
-
-## The Problem
-
-- You host a video on your web app
-- You want high quality so you host a large 1080p mp4
-  - The entire file is 100's of MB
-- Every user visiting your page has to download the entire video before playback can begin
-  - Very slow to load
-  - Entire file must download even for users who will only watch for a few seconds
-
-## Chunking
-
-- Avoid the requirement of downloading the entire video before it plays
-- Provided a way to request short segments of the video
-- Download one "chunk" of the video at a time
-  - Typically ~2-10 seconds of playback
-- Advantages:
-  - Only a few seconds need to be downloaded before playback starts
-  - If the user skips around in the video, only request they chunk they skipped to
-  - If the user leaves the page without finishing the video, the entire file doesn't have to be downloaded
-
-## Chunking - Range
-
-- Even mp4 videos can be chunked
-- The browser may end a request for a large file that includes a Range header
-  - The Range header specifies a range of bytes being requested
-  - eg. A request for "/video.mp4" with a header "Range: 10000-20000" is request the 9999th through 19999th bytes of video.mp4
-- The response code should be 206 Partial content
-- The response should contain a Content-Range header
-  - Contains the range of bytes being sent and the to total size of the file
-  - eg. Content-Range: 10000-20000/500000
-  - eg. Content-Range: 0-499999/500000 if the entire file is sent
-
-## Chunking - Range
-
-- Using the Range header can be effective in some cases, however:
-  - It adds extra complexity to the server
-  - It relies on the browser to request useful ranges
-  - Some browsers might not implement Range and ask for the entire file
-- We would like a more robust solution
-
-## Chunking - Multiple Files
-
-- Instead of relying on the browser asking for a specific range of bytes..
-- We host a single video in multiple files
-- Each file contains a few seconds of playback
-- The browser requests each segment as needed
-  - User only watches a few seconds -> Only need to request the first few segments
-  - User skips to the middle of the video -> Request the middle segment
-
-## HLS vs MPEG-DASH
-
-- Two major protocols support the idea of breaking a video into smaller segments/chunks: HLS and MPEG-DASH
-- HTTP Live Streaming (HLS)
-  - Developed by Apple
-  - Only supports the H.264 encoding for video
-  - Wide-spread adaptation
-  - Spec freely available in RFC8216
-- Dynamic Adaptive Streaming over HTTP (MPEG-DASH)
-  - Developed by Moving Picture Experts Group (MPEG)
-  - Supports any video encodings
-  - No support on Apple devices
-  - Spec published as ISO/IEC 23009-1:2022 - Available for $245 (!)
-
-## HLS
-
-
-- Divide the video into multiple .ts files
-  - MPEG Transport Stream files
-- One .m3u8 index file containing information about each .ts file and how they combine into a single video
-- Your server hosts all files
-- Set the video source as the index file
-- Browser reads the index file to know when to request each ts file
-
-![](assets/slide08-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## HLS - Transcoding
-
-ffmpeg -i space.mp4 -hls_list_size 0 -f hls space.m3u8
-
-- Use ffmpeg to convert to HLS
-- "-f hls" to specify the output format as HLS
-- "-hls_list_size 0" to keep all ts files in the index
-  - By deafult, ffmpeg will only keep the last 5 ts files in the index file
-  - This is good if you are live-streaming (This is the HTTP Live Streaming protocol after all)
-  - Since our use case is hosting Video on Demand (VOD), we want to keep every ts file in the index
-  - Setting the list size to 0 means the size is not limited
-
-## MPEG-DASH
-
-
-- Divide the video into multiple files that can use a variety of formats (m4s by default in ffmpeg output which is mp4 encoded)
-- One .mpd (Media Presentation Description) index file containing tons of information in an XML format
-- Hosts all files and set the video source as the index file
-- Browser reads the index file to find an init file and naming convention for content files to request
-
-![](assets/slide10-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## MPEG-DASH
-
-
-- Full mpd file from the example
-
-![](assets/slide11-1.png){fig-alt="TODO: describe this image"}
-
-## MPEG-DASH - Transcoding
-
-ffmpeg -i space.mp4 -f dash space.mpd
-
-- Use ffmpeg to convert to MPEG-DASH
-- "-f dash" to specify the output format as MPEG-DASH
-- Creates an mpd with the name you provide
-  - All other files follow a default naming convention
-  - May want to create a new directory for each video to avoid naming conflicts
-
-## Adaptive Bit-Rate Streaming
-
-## The Problem
-
-- You host a video on your web app
-  - You even use HLS or MPEG-DASH to segment the video into 2-10 seconds chunks
-- You want high quality so you host chunks in 4K@60Hz
-  - Can require ~25Mb/s bandwidth to stream
-- And someone visits your site using eduroam on a bad day..
-  - The video buffers, stutters, or doesn't play at all
-- We need a solution that:
-  - Allows users with slow connections to enjoy your content
-  - Delivers high quality to users with high-speed Internet
-
-## Adaptive Bit-Rate
-
-- Instead of hosting the a single video at a single resolution
-  - Host multiple versions of the same video at different resolutions
-  - Each resolution requires a different bit rate to stream
-- User visits your page
-  - Their browser adapts to the current download bandwidth available
-  - Stream the highest bit rate video that fits the bandwidth
-
-## Adaptive Bit-Rate
-
-- Using HLS or MPEG-DASH
-  - Create chunks at several different resolutions/bit rates
-  - Add information about all resolutions in the index file
-- With the video segmented into ~2-10 second chucks
-  - Easy for the browser to switch between resolutions
-
-## Adaptive Bit-Rate
-
-- The browser can adapt the requested bit-rate based on current conditions
-- Limited interruption for the user, though quality can change over time
-
-4k
-
-1080p
-
-480p
-
-potato
-
-wifi slows down
-
-wifi speeds up
-
-## Adaptive Bit-Rate - HLS
-
-
-- Using HLS, m3u8 index files can be nested
-- Convert your video into multiple HLS resolutions
-- Combine them into a single index file with references to the others
-- This example contains references to 2 video index files at different resolutions, and 1 audio index file
-
-![](assets/slide18-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-- The mpd file can contain multiple resolutions
-- The media is represented in multiple layers
-  - Period
-  - Adaptation Set
-  - Representation
-
-![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-- Period
-- Allows the division of a media file into multiple parts
-  - ie. Chapters
-- For our purposes, we only need 1 period
-
-![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-- Adaptation Set
-- Represents different parts of the media that will all be combined into one experience
-- Can contain multiple video/audio adaptation sets
-  - eg. One for video, one for audio, and another for closed captions
-- The example below has one for video and one for audio
-
-![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-- Representation
-- Each adaptation set can have multiple representations
-- This is where we add multiple different bit-rates of the media
-- The browser will choose one representation for each adaptation set at a given time based on bandwidth
-
-![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-- Representation
-- This example has 2 resolutions for  video that the browser can choose
-  - 480kb of 1Mb bandwidth
-- This example only has one representation of the audio track
-  - Only 128kb bandwidth
-
-![](assets/slide19-1.png){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate - MPEG-DASH
-
-
-- Each representation has it's own set of content files
-  - eg. "chunk-stream0-0000X.m4s" and "init-stream0.m4s" are the files containing the video representation with id == 0
-  - The browser dynamically requests the specific files desired given the circumstances
-  - Your server hosts all files
-
-![](assets/slide24-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Adaptive Bit-Rate
-
-- Your task [For AO2]:
-  - Choose between HLS and MPEG-DASH
-  - Programmatically convert an uploaded mp4 into the format you choose with multiple resolutions
-  - Serve those videos by setting the source of a video to the index file for that video
-- Hint: Get ffmpeg to do all the work for you
-  - You should not manually write any of these files
-  - Do research to find the command(s)/flags you need to send to ffmpeg to do the job
-
-## Video Players
-
-- Most built-in video players do not support HLS or MPEG- DASH
-  - You cannot rely on the browser having a player for either of these formats (eg. During grading we will not use a browser with built-in support for HLS or MPEG- DASH)
-- We must use a 3rd party video player
-  - Several players available (eg. dash.js)
-  - Examples in the following slides will use video.js
-
-## Video Players
-
-
-- This example downloads the css and js for video.js from a CDN
-- Uses "class" and "data-setup" attributes on a video element to tell the library to do its thing
-- You now have a video player that supports both HLS and MPEG-DASH
-
-![](assets/slide27-diagram.jpg){fig-alt="TODO: describe this image"}
-
-## Video Players
-
-
-- Your video player will now have a consistent look across all browsers
-- Don't have to worry about what formats each browser supports
-  - You support any format supported by video.js
-
-![](assets/slide28-diagram.jpg){fig-alt="TODO: describe this image"}
+# Live Streaming
 
 ## Live Streaming
 
-## Live Streaming
-
-- We've talked about uploading and host mp4 videos using a streaming protocol
-  - A VOD service
+- We can upload and host videos using a streaming protocol
+  - A Video on Demand (VOD) service
 - What about live streaming?
+  - The video doesn't exist yet when viewers start watching
+  - Segments are created while the streamer is streaming
 - Most live streaming isn't truly live
   - There will be several seconds of delay in the stream
-  - Acceptable loss to gain accuracy
+  - Acceptable loss to gain reliability and scale
 
-## Live Streaming
+
+## RTMP
+
+- Real-Time Messaging Protocol
+  - Runs over TCP. Default port 1935
+  - The streamer pushes a continuous stream of video and audio to the server
+- Streaming software (OBS, ffmpeg, phones, consoles) speaks RTMP
+- Browsers don't
+  - Viewers need HLS, served over HTTP
+  - HTTP also works with caches and CDNs, which is how big platforms reach millions of viewers
+- RTMP is used for ingest: Getting the stream into your system
+
+
+## Stream Keys
+
+- A stream key is a secret that lets someone stream as a user
+  - Anyone with the key can stream as that user
+  - Treat it like an auth token
+- Every user gets their own key
+- Generate it randomly with at least 80 bits of entropy
+- Unlike auth tokens, you can't store only a hash
+  - You need to show the key to its owner
+
+## Don't Leak the Key
+
+- The ingest server names each stream's directory after its stream key
+  - `/hls/f3a9c2e17b4d80a65e2f1c8d3b7a4e08/index.m3u8`
+- If you host that directory as-is, the key is in the URL of every playlist and segment
+  - Visible in the Network tab of every viewer
+  - [Any viewer could stream as that user]{.yellow}
+- The key must never appear in any URL, playlist, or segment path requested by viewers
+- Host each stream at a public path instead
+  - eg. `/live/{username}/index.m3u8`
+  - Your server maps the public name to the stream key
+
+
+## The Pipeline
 
 - Typical setup (eg. Twitch/YouTube Live/etc.)
-- User streams their video into an ingest server using the Real-Time Messaging Protocol (RTMP)
-  - RTMP is a container for any real-time communication
-  - The content of RTMP happens to be a media stream in this case
-- The server transcodes the video into a streaming format (eg. HLS/MPEG-DASH) and continually updates/ generates index files
 
-## Live Streaming
+```text
+  Streamer (OBS)
+        │   RTMP: rtmp://localhost:1935/live + stream key
+        ▼
+  Ingest server
+        │   Converts RTMP stream to HLS: A playlist + segments
+        ▼
+  Web server  (Your app)
+        │   HTTP: Normal GET requests for the playlist and segments
+        ▼
+  Viewers (hls.js)
+```
 
-- When a viewer visits a live stream
-  - The browsers asks for the latest index file and starts requesting content
-  - When it nears the end of that index file, request a new index file
-  - Repeat until the stream ends
-- When a viewer visits the VOD of a past live-stream
-  - Serve an index file for then entire stream
-  - No different than watching the stream live
+- Viewers never talk to the ingest server
 
-## Live Streaming
 
-- Since the transcoding process of the ingest server takes some time:
-  - The stream is not truly live
-- The streamed content is downloaded via TCP/HTTP
-  - Reliable. You will not miss a second of video
-- If the delay is unacceptable (eg. Zoom):
-  - Use UDP instead of TCP
-  - Do not transcode
-  - Accept dropped packets as a part of life
+## The Ingest Server
+
+- Receives RTMP streams and turns them into HLS
+  - Writes a playlist and segments to disk for each stream
+  - Keeps updating them as long as the stream is live
+- Asks your app whether each stream is allowed
+- For the HW, you don't write this
+  - Use the `tiangolo/nginx-rtmp` image
+  - Same idea as using the `postgres` image instead of writing a database
+- Your job is everything around it
+  - Stream keys, deciding who can stream, serving streams to viewers, the front end
+
+# The Ingest Server
+
+## nginx.conf
+
+:::: {.columns}
+::: {.column width="40%"}
+- The ingest server is configured with an `nginx.conf` file
+- Copy it into the container at `/etc/nginx/nginx.conf`
+:::
+::: {.column width="60%"}
+```nginx
+events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}
+```
+:::
+::::
+
+## nginx.conf {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="40%"}
+- Accept RTMP streams on port 1935 for the application named `live`
+- Streamers enter:
+  - Server: `rtmp://localhost:1935/live`
+  - Stream Key: Their key
+- The stream key becomes the name of the stream
+:::
+::: {.column width="60%"}
+```{.nginx code-line-numbers="4-6"}
+events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}
+```
+:::
+::::
+
+## nginx.conf {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="40%"}
+- When a stream starts, the ingest server sends a request to your app
+- `app` is the name of your app's service in your compose file
+  - Service names are hostnames between containers
+- Change the paths to the endpoints you choose
+:::
+::: {.column width="60%"}
+```{.nginx code-line-numbers="9-10"}
+events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}
+```
+:::
+::::
+
+## nginx.conf {.unnumbered .unlisted}
+
+:::: {.columns}
+::: {.column width="40%"}
+- Write every live stream as HLS in `/hls`
+  - Inside the ingest container
+- `hls_nested`: Each stream gets its own directory named after its stream key
+  - `/hls/{stream_key}/index.m3u8`
+  - `/hls/{stream_key}/0.ts`, `1.ts`, ...
+:::
+::: {.column width="60%"}
+```{.nginx code-line-numbers="13-15"}
+events {}
+rtmp {
+    server {
+        listen 1935;
+        application live {
+            live on;
+
+            # Called when a stream starts and ends
+            on_publish http://app:8080/api/live/start;
+            on_publish_done http://app:8080/api/live/end;
+
+            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
+            hls on;
+            hls_path /hls;
+            hls_nested on;
+        }
+    }
+}
+```
+:::
+::::
+
+
+## on_publish
+
+- When a streamer connects, the ingest server sends a POST request to your app
+- The body is url-encoded
+  - Same format as the HTML forms from HW2
+  - Several fields. `name` is the stream key the streamer entered
+- `on_publish_done` sends the same format when the stream ends
+  - Remove the stream from your active streams
+
+```http
+POST /api/live/start HTTP/1.1
+Host: app:8080
+Content-Type: application/x-www-form-urlencoded
+
+app=live&...&call=publish&name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&type=live
+```
+
+- Respond `200 OK` to allow the stream
+- Respond `403 Forbidden` to reject it. The ingest server disconnects the streamer
+
+
+## Three Containers
+
+:::: {.columns}
+::: {.column width="40%"}
+- Your app now has three services
+  - `app`: Your Go server
+  - `db`: Your database
+  - `ingest`: nginx-rtmp. Write a Dockerfile in ./ingest
+- `docker compose up` must start all three
+- nginx looks up the hostname for `on_publish` and `on_publish_done` when it starts
+  - If your app's container doesn't exist yet, the ingest server fails
+- Use `depends_on` to ensure your app starts first
+:::
+::: {.column width="60%"}
+```yaml
+services:
+  ingest:
+    build: ./ingest
+    # ...
+  db:
+    image: postgres
+    # ...
+  app:
+    build: .
+    # ...
+```
+:::
+::::
+
+
+## Live Playlists
+
+- Live HLS playlists change while you watch
+  - New segments are added every few seconds
+  - Old segments are removed from the playlist and deleted
+  - No `#EXT-X-ENDLIST` until the stream is over
+- The player re-requests the playlist every few seconds to find new segments
+
+```text
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:41
+#EXT-X-TARGETDURATION:5
+#EXTINF:5.000,
+41.ts
+#EXTINF:5.000,
+42.ts
+#EXTINF:5.000,
+43.ts
+```
+
+## Live Playlists {.unnumbered .unlisted}
+
+- [Caching]{.yellow}: The playlist changes every few seconds
+  - Your caching headers might cause browsers to reuse an old playlist
+  - Don't send caching headers for live playlists
+    - To be extra sure, send `Cache-Control: no-store`
+- Segments never change once written
+  - Caching them is fine
+- One rendition per stream
+  - Whatever quality the streamer sends. No ABR for this objective
+
+
+
+# Docker Volumes
+
+## Containers Have Their Own Files
+
+- Each container has its own filesystem
+- The ingest server writes streams to `/hls` in the ingest container
+  - Your app can't see them
+- Files written inside a container are lost when the container is recreated
+  - `docker compose up --build --force-recreate`
+  - Uploaded avatars and videos disappear
+- We need storage that lives outside the container
+
+## Volumes
+
+- A volume maps storage outside the container to a directory inside the container
+- This mirrors all files in local directory `./streams` and the container directory `hls` 
+  - You will be able to see all the hls files in your local directory
+- Recommended to use volumes starting with avatar uploads
+  - You can see the files on your machine. Great for debugging
+- Mount the same storage into two containers and they can share files
+  - Mounting `./streams` to a directory in your app container lets your app access the streams
+
+```yaml
+services:
+  ingest:
+    volumes:
+      - ./streams:/hls
+    # ...
+```
+
+## Volume Gotchas
+
+- `--renew-anon-volumes` deletes anonymous volumes when testing and grading
+  - Bind mounts and named volumes persist
+- A volume hides what the image had at that path
+  - Mount `./uploads` at `/app/public` and your front end disappears
+  - Mount only the directories that hold uploaded or streamed files
+- Directories must exist before you write to them
+  - Create them in your code at startup if they don't exist
+

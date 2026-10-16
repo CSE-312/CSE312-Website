@@ -209,18 +209,17 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Live Streaming</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
 <section>
-<section id="how-live-streaming-works" class="title-slide slide level1 center">
-<h1>How Live Streaming Works</h1>
+<section id="live-streaming" class="title-slide slide level1 center">
+<h1>Live Streaming</h1>
 
 </section>
-<section id="live-streaming" class="slide level2">
+<section id="live-streaming-1" class="slide level2">
 <h2>Live Streaming</h2>
 <ul>
 <li>We can upload and host videos using a streaming protocol
@@ -239,25 +238,6 @@
 </ul></li>
 </ul>
 </section>
-<section id="the-pipeline" class="slide level2">
-<h2>The Pipeline</h2>
-<ul>
-<li>Typical setup (eg. Twitch/YouTube Live/etc.)</li>
-</ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>  Streamer (OBS)</span>
-<span id="cb1-2"><a></a>        │   RTMP: rtmp://localhost:1935/live + stream key</span>
-<span id="cb1-3"><a></a>        ▼</span>
-<span id="cb1-4"><a></a>  Ingest server</span>
-<span id="cb1-5"><a></a>        │   Converts the stream to HLS: A playlist + segments</span>
-<span id="cb1-6"><a></a>        ▼</span>
-<span id="cb1-7"><a></a>  Web server  (Your app)</span>
-<span id="cb1-8"><a></a>        │   HTTP: Normal GET requests for the playlist and segments</span>
-<span id="cb1-9"><a></a>        ▼</span>
-<span id="cb1-10"><a></a>  Viewers (hls.js)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Viewers never talk to the ingest server</li>
-</ul>
-</section>
 <section id="rtmp" class="slide level2">
 <h2>RTMP</h2>
 <ul>
@@ -273,6 +253,61 @@
 <li>HTTP also works with caches and CDNs, which is how big platforms reach millions of viewers</li>
 </ul></li>
 <li>RTMP is used for ingest: Getting the stream into your system</li>
+</ul>
+</section>
+<section id="stream-keys" class="slide level2">
+<h2>Stream Keys</h2>
+<ul>
+<li>A stream key is a secret that lets someone stream as a user
+<ul>
+<li>Anyone with the key can stream as that user</li>
+<li>Treat it like an auth token</li>
+</ul></li>
+<li>Every user gets their own key</li>
+<li>Generate it randomly with at least 80 bits of entropy</li>
+<li>Unlike auth tokens, you can't store only a hash
+<ul>
+<li>You need to show the key to its owner</li>
+</ul></li>
+</ul>
+</section>
+<section id="dont-leak-the-key" class="slide level2">
+<h2>Don't Leak the Key</h2>
+<ul>
+<li>The ingest server names each stream's directory after its stream key
+<ul>
+<li><code>/hls/f3a9c2e17b4d80a65e2f1c8d3b7a4e08/index.m3u8</code></li>
+</ul></li>
+<li>If you host that directory as-is, the key is in the URL of every playlist and segment
+<ul>
+<li>Visible in the Network tab of every viewer</li>
+<li><span class="yellow">Any viewer could stream as that user</span></li>
+</ul></li>
+<li>The key must never appear in any URL, playlist, or segment path requested by viewers</li>
+<li>Host each stream at a public path instead
+<ul>
+<li>eg. <code>/live/{username}/index.m3u8</code></li>
+<li>Your server maps the public name to the stream key</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-pipeline" class="slide level2">
+<h2>The Pipeline</h2>
+<ul>
+<li>Typical setup (eg. Twitch/YouTube Live/etc.)</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>  Streamer (OBS)</span>
+<span id="cb1-2"><a></a>        │   RTMP: rtmp://localhost:1935/live + stream key</span>
+<span id="cb1-3"><a></a>        ▼</span>
+<span id="cb1-4"><a></a>  Ingest server</span>
+<span id="cb1-5"><a></a>        │   Converts RTMP stream to HLS: A playlist + segments</span>
+<span id="cb1-6"><a></a>        ▼</span>
+<span id="cb1-7"><a></a>  Web server  (Your app)</span>
+<span id="cb1-8"><a></a>        │   HTTP: Normal GET requests for the playlist and segments</span>
+<span id="cb1-9"><a></a>        ▼</span>
+<span id="cb1-10"><a></a>  Viewers (hls.js)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Viewers never talk to the ingest server</li>
 </ul>
 </section>
 <section id="the-ingest-server" class="slide level2">
@@ -441,6 +476,10 @@
 <li>Same format as the HTML forms from HW2</li>
 <li>Several fields. <code>name</code> is the stream key the streamer entered</li>
 </ul></li>
+<li><code>on_publish_done</code> sends the same format when the stream ends
+<ul>
+<li>Remove the stream from your active streams</li>
+</ul></li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a></a>POST /api/live/start HTTP/1.1</span>
 <span id="cb6-2"><a></a>Host: app:8080</span>
@@ -452,43 +491,36 @@
 <li>Respond <code>403 Forbidden</code> to reject it. The ingest server disconnects the streamer</li>
 </ul>
 </section>
-<section id="on_publish-1" class="slide level2 unnumbered unlisted">
-<h2>on_publish</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a></a><span class="co">// POST /api/live/start (Called by the ingest server)</span></span>
-<span id="cb7-2"><a></a>form <span class="op">:=</span> parseURLEncoded<span class="op">(</span>request<span class="op">.</span>Body<span class="op">)</span>          <span class="co">// Your code from HW2</span></span>
-<span id="cb7-3"><a></a>user<span class="op">,</span> found <span class="op">:=</span> findUserByStreamKey<span class="op">(</span>form<span class="op">[</span><span class="st">"name"</span><span class="op">])</span></span>
-<span id="cb7-4"><a></a><span class="cf">if</span> <span class="op">!</span>found <span class="op">{</span></span>
-<span id="cb7-5"><a></a>    sendResponse<span class="op">(</span>connection<span class="op">,</span> <span class="dv">403</span><span class="op">)</span>              <span class="co">// Reject: Streamer is disconnected</span></span>
-<span id="cb7-6"><a></a>    <span class="cf">return</span></span>
-<span id="cb7-7"><a></a><span class="op">}</span></span>
-<span id="cb7-8"><a></a>addLiveStream<span class="op">(</span>user<span class="op">,</span> form<span class="op">[</span><span class="st">"name"</span><span class="op">])</span>              <span class="co">// Track active streams</span></span>
-<span id="cb7-9"><a></a>sendResponse<span class="op">(</span>connection<span class="op">,</span> <span class="dv">200</span><span class="op">)</span>                  <span class="co">// Allow the stream</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="three-containers" class="slide level2">
+<h2>Three Containers</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
-<li>Any stream key that doesn't belong to a user must be rejected</li>
-<li><code>on_publish_done</code> sends the same format when the stream ends
+<li>Your app now has three services
 <ul>
-<li>Remove the stream from your active streams</li>
+<li><code>app</code>: Your Go server</li>
+<li><code>db</code>: Your database</li>
+<li><code>ingest</code>: nginx-rtmp. Write a Dockerfile in ./ingest</li>
 </ul></li>
-<li>Multiple streams can start at the same time
+<li><code>docker compose up</code> must start all three</li>
+<li>nginx looks up the hostname for <code>on_publish</code> and <code>on_publish_done</code> when it starts
 <ul>
-<li>If you track active streams in memory, protect them with a mutex</li>
+<li>If your app's container doesn't exist yet, the ingest server fails</li>
 </ul></li>
+<li>Use <code>depends_on</code> to ensure your app starts first</li>
 </ul>
-</section>
-<section id="who-calls-these-endpoints" class="slide level2">
-<h2>Who Calls These Endpoints?</h2>
-<ul>
-<li>The ingest server, not a browser
-<ul>
-<li>No Same-Origin Policy or CORS concerns</li>
-</ul></li>
-<li>Anyone can still send requests to them
-<ul>
-<li>An attacker could send <code>name=&lt;guess&gt;</code> to check whether a stream key is valid</li>
-<li>With at least 80 bits of entropy, guessing is hopeless</li>
-</ul></li>
-<li>Never trust the request to identify a user by anything other than the stream key</li>
-</ul>
+</div><div class="column" style="width:60%;">
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb7-2"><a></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb7-3"><a></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./ingest</span></span>
+<span id="cb7-4"><a></a><span class="co">    # ...</span></span>
+<span id="cb7-5"><a></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb7-6"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb7-7"><a></a><span class="co">    # ...</span></span>
+<span id="cb7-8"><a></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb7-9"><a></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb7-10"><a></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div>
 </section>
 <section id="live-playlists" class="slide level2">
 <h2>Live Playlists</h2>
@@ -517,8 +549,11 @@
 <ul>
 <li><span class="yellow">Caching</span>: The playlist changes every few seconds
 <ul>
-<li>Your caching headers from HW1 might cause browsers to reuse an old playlist</li>
-<li>Send <code>Cache-Control: no-store</code> for live playlists</li>
+<li>Your caching headers might cause browsers to reuse an old playlist</li>
+<li>Don't send caching headers for live playlists
+<ul>
+<li>To be extra sure, send <code>Cache-Control: no-store</code></li>
+</ul></li>
 </ul></li>
 <li>Segments never change once written
 <ul>
@@ -526,95 +561,7 @@
 </ul></li>
 <li>One rendition per stream
 <ul>
-<li>Whatever quality the streamer sends. No ABR for this HW</li>
-</ul></li>
-</ul>
-</section>
-<section id="why-the-delay" class="slide level2">
-<h2>Why the Delay?</h2>
-<ul>
-<li>The ingest server can't write a segment until it has several seconds of video</li>
-<li>The player downloads a few segments before it starts playing
-<ul>
-<li>So it doesn't stall if the next segment is slow</li>
-</ul></li>
-<li>Plus the time to encode, upload, and download</li>
-<li>Result: Viewers are commonly 10-30 seconds behind the streamer
-<ul>
-<li>Don't panic if your stream takes a while to appear</li>
-</ul></li>
-<li>If that delay is unacceptable (eg. Video calls)
-<ul>
-<li>Use UDP instead of TCP, skip the segments, accept dropped packets</li>
-<li>More on this with WebRTC</li>
-</ul></li>
-</ul>
-</section></section>
-<section>
-<section id="multiple-containers" class="title-slide slide level1 center">
-<h1>Multiple Containers</h1>
-
-</section>
-<section id="three-containers" class="slide level2">
-<h2>Three Containers</h2>
-<div class="columns">
-<div class="column" style="width:40%;">
-<ul>
-<li>Your app now has three services
-<ul>
-<li><code>app</code>: Your Go server. Port 8080</li>
-<li><code>db</code>: Your database</li>
-<li><code>ingest</code>: nginx-rtmp. Port 1935 for streamers</li>
-</ul></li>
-<li><code>docker compose up</code> must start all three</li>
-</ul>
-</div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb9-2"><a></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb9-3"><a></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb9-4"><a></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb9-5"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span>
-<span id="cb9-6"><a></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
-<span id="cb9-7"><a></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./ingest</span><span class="co">    # Has a Dockerfile and nginx.conf</span></span>
-<span id="cb9-8"><a></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb9-9"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"1935:1935"</span></span>
-<span id="cb9-10"><a></a><span class="at">    </span><span class="fu">depends_on</span><span class="kw">:</span></span>
-<span id="cb9-11"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> app</span></span>
-<span id="cb9-12"><a></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
-<span id="cb9-13"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
-<span id="cb9-14"><a></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div></div>
-</section>
-<section id="the-ingest-container" class="slide level2">
-<h2>The Ingest Container</h2>
-<ul>
-<li>Build the ingest image from its own Dockerfile in a subdirectory</li>
-<li>Start from the nginx-rtmp image and add your config</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a></a>ingest/</span>
-<span id="cb10-2"><a></a>├── Dockerfile</span>
-<span id="cb10-3"><a></a>└── nginx.conf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb11-1"><a></a><span class="kw">FROM</span> tiangolo/nginx-rtmp</span>
-<span id="cb11-2"><a></a><span class="kw">COPY</span> nginx.conf /etc/nginx/nginx.conf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li><code>build: ./ingest</code> in your compose file</li>
-</ul>
-</section>
-<section id="startup-order" class="slide level2">
-<h2>Startup Order</h2>
-<ul>
-<li>nginx looks up the hostname <code>app</code> when it starts
-<ul>
-<li>If your app's container doesn't exist yet, the ingest server fails</li>
-</ul></li>
-<li><code>depends_on</code> starts your app's container first</li>
-<li><code>depends_on</code> doesn't wait until your server is ready
-<ul>
-<li>Your Go server starts quickly, so this is usually fine</li>
-</ul></li>
-<li>For more assurance, add a <code>healthcheck</code> to your app and use <code>condition: service_healthy</code>
-<ul>
-<li>The same pattern you may have used to wait for your database</li>
+<li>Whatever quality the streamer sends. No ABR for this objective</li>
 </ul></li>
 </ul>
 </section></section>
@@ -633,7 +580,7 @@
 </ul></li>
 <li>Files written inside a container are lost when the container is recreated
 <ul>
-<li><code>docker compose up --force-recreate</code></li>
+<li><code>docker compose up --build --force-recreate</code></li>
 <li>Uploaded avatars and videos disappear</li>
 </ul></li>
 <li>We need storage that lives outside the container</li>
@@ -643,23 +590,24 @@
 <h2>Volumes</h2>
 <ul>
 <li>A volume maps storage outside the container to a directory inside the container</li>
-<li>Mount the same storage into two containers and they share the files</li>
-<li>Bind mount: A directory on your machine (<code>./hls</code>)
+<li>This mirrors all files in local directory <code>./streams</code> and the container directory <code>hls</code>
+<ul>
+<li>You will be able to see all the hls files in your local directory</li>
+</ul></li>
+<li>Recommended to use volumes starting with avatar uploads
 <ul>
 <li>You can see the files on your machine. Great for debugging</li>
 </ul></li>
-<li>Named volume: Storage managed by Docker (<code>uploads</code>)</li>
+<li>Mount the same storage into two containers and they can share files
+<ul>
+<li>Mounting <code>./streams</code> to a directory in your app container lets your app access the streams</li>
+</ul></li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb12-2"><a></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
-<span id="cb12-3"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb12-4"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./hls:/hls</span><span class="co">                  # Host ./hls appears at /hls in ingest</span></span>
-<span id="cb12-5"><a></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb12-6"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb12-7"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./hls:/app/hls</span><span class="co">              # Same host directory, appears at /app/hls in app</span></span>
-<span id="cb12-8"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> uploads:/app/public/uploads</span><span class="co"> # Named volume for avatars and videos</span></span>
-<span id="cb12-9"><a></a><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb12-10"><a></a><span class="at">  </span><span class="fu">uploads</span><span class="kw">:</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb9-2"><a></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb9-3"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-4"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./streams:/hls</span></span>
+<span id="cb9-5"><a></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="volume-gotchas" class="slide level2">
 <h2>Volume Gotchas</h2>
@@ -675,174 +623,15 @@
 </ul></li>
 <li>Directories must exist before you write to them
 <ul>
-<li>Create them in your code at startup (eg. <code>os.MkdirAll</code>)</li>
-</ul></li>
-<li>Don't submit uploaded videos or HLS files with your HW
-<ul>
-<li>Your code must still work when those directories start empty</li>
+<li>Create them in your code at startup if they don't exist</li>
 </ul></li>
 </ul>
-</section></section>
-<section>
-<section id="stream-keys" class="title-slide slide level1 center">
-<h1>Stream Keys</h1>
-
-</section>
-<section id="stream-keys-1" class="slide level2">
-<h2>Stream Keys</h2>
-<ul>
-<li>A stream key is a secret that lets someone stream as a user
-<ul>
-<li>Anyone with the key can stream as that user</li>
-<li>Treat it like a password</li>
-</ul></li>
-<li>Every user gets their own key</li>
-<li>Generate it randomly with at least 80 bits of entropy
-<ul>
-<li>Use <code>crypto/rand</code>. Never <code>math/rand</code></li>
-</ul></li>
-</ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb13-1"><a></a>keyBytes <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">16</span><span class="op">)</span>          <span class="co">// 128 bits</span></span>
-<span id="cb13-2"><a></a>_<span class="op">,</span> err <span class="op">:=</span> rand<span class="op">.</span>Read<span class="op">(</span>keyBytes<span class="op">)</span>         <span class="co">// crypto/rand</span></span>
-<span id="cb13-3"><a></a>streamKey <span class="op">:=</span> hex<span class="op">.</span>EncodeToString<span class="op">(</span>keyBytes<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="showing-the-key" class="slide level2">
-<h2>Showing the Key</h2>
-<ul>
-<li>Only the owner may ever see their stream key</li>
-<li>Show it somewhere obvious, like the settings page
-<ul>
-<li>Requires front end changes</li>
-<li>Return it only to the logged in user it belongs to</li>
-</ul></li>
-<li>Never include it in any response other users can see
-<ul>
-<li>eg. The active streams list, chat messages, user search</li>
-</ul></li>
-<li>Unlike passwords, you can't store only a hash
-<ul>
-<li>You need to show the key to its owner</li>
-</ul></li>
-<li>Real apps let users reset their key if it leaks</li>
-</ul>
-</section>
-<section id="dont-leak-the-key" class="slide level2">
-<h2>Don't Leak the Key</h2>
-<ul>
-<li>The ingest server names each stream's directory after its stream key
-<ul>
-<li><code>/hls/f3a9c2e17b4d80a65e2f1c9d3b7a4e08/index.m3u8</code></li>
-</ul></li>
-<li>If you host that directory as-is, the key is in the URL of every playlist and segment
-<ul>
-<li>Visible in the Network tab of every viewer</li>
-<li><span class="yellow">Any viewer could stream as that user</span></li>
-</ul></li>
-<li>The key must never appear in any URL, playlist, or segment path requested by viewers</li>
-<li>Host each stream at a public path instead
-<ul>
-<li>eg. <code>/live/{username}/index.m3u8</code></li>
-<li>Your server maps the public name to the stream key</li>
-</ul></li>
-</ul>
-</section>
-<section id="serving-a-stream" class="slide level2">
-<h2>Serving a Stream</h2>
-<ul>
-<li>The playlist refers to segments by relative paths (<code>41.ts</code>)
-<ul>
-<li>The browser requests <code>/live/{username}/41.ts</code></li>
-<li>The key is never sent to the browser</li>
-</ul></li>
-</ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb14-1"><a></a><span class="co">// GET /live/{username}/{file}</span></span>
-<span id="cb14-2"><a></a>username<span class="op">,</span> file <span class="op">:=</span> parseLivePath<span class="op">(</span>request<span class="op">.</span>Path<span class="op">)</span></span>
-<span id="cb14-3"><a></a>streamKey<span class="op">,</span> live <span class="op">:=</span> activeStreamKey<span class="op">(</span>username<span class="op">)</span>   <span class="co">// Server-side lookup only</span></span>
-<span id="cb14-4"><a></a><span class="cf">if</span> <span class="op">!</span>live <span class="op">||</span> <span class="op">!</span>isPlaylistOrSegment<span class="op">(</span>file<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb14-5"><a></a>    send404<span class="op">(</span>connection<span class="op">)</span></span>
-<span id="cb14-6"><a></a>    <span class="cf">return</span></span>
-<span id="cb14-7"><a></a><span class="op">}</span></span>
-<span id="cb14-8"><a></a>serveFile<span class="op">(</span>connection<span class="op">,</span> <span class="st">"hls/"</span><span class="op">+</span>streamKey<span class="op">+</span><span class="st">"/"</span><span class="op">+</span>file<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Only allow <code>index.m3u8</code> and segment names
-<ul>
-<li>Path traversal applies here too</li>
-</ul></li>
-<li>Viewers only ever connect to port 8080</li>
-</ul>
-</section></section>
-<section>
-<section id="the-front-end" class="title-slide slide level1 center">
-<h1>The Front End</h1>
-
-</section>
-<section id="watching-live-streams" class="slide level2">
-<h2>Watching Live Streams</h2>
-<ul>
-<li>Viewers need to find the streams that are live
-<ul>
-<li>Keep a list of active streams from <code>on_publish</code> and <code>on_publish_done</code></li>
-<li>Add an endpoint or page to list them</li>
-<li>Or add them to the VideoTube list with an appropriate title</li>
-</ul></li>
-<li>Playing a live stream is the same as playing any other HLS video
-<ul>
-<li>hls.js sees there is no <code>#EXT-X-ENDLIST</code> and keeps refreshing the playlist</li>
-</ul></li>
-</ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb15-1"><a></a><span class="kw">const</span> hls <span class="op">=</span> <span class="kw">new</span> <span class="fu">Hls</span>()<span class="op">;</span></span>
-<span id="cb15-2"><a></a>hls<span class="op">.</span><span class="fu">loadSource</span>(<span class="vs">`/live/</span><span class="sc">${</span>username<span class="sc">}</span><span class="vs">/index.m3u8`</span>)<span class="op">;</span></span>
-<span id="cb15-3"><a></a>hls<span class="op">.</span><span class="fu">attachMedia</span>(videoPlayer)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>When a stream ends, it must disappear from the list</li>
-</ul>
-</section></section>
-<section>
-<section id="testing" class="title-slide slide level1 center">
-<h1>Testing</h1>
-
-</section>
-<section id="streaming-with-obs" class="slide level2">
-<h2>Streaming with OBS</h2>
-<ul>
-<li>Settings → Stream → Service: Custom
-<ul>
-<li>Server: <code>rtmp://localhost:1935/live</code></li>
-<li>Stream Key: The key from your settings page</li>
-</ul></li>
-<li>Or stream a video file with ffmpeg (Less fun)</li>
-</ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a></a><span class="ex">ffmpeg</span> <span class="at">-re</span> <span class="at">-i</span> video.mp4 <span class="at">-c:v</span> libx264 <span class="at">-preset</span> veryfast <span class="at">-c:a</span> aac <span class="at">-f</span> flv rtmp://localhost:1935/live/{stream_key}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="debugging-a-stream" class="slide level2">
-<h2>Debugging a Stream</h2>
-<ul>
-<li>Follow the stream through the pipeline</li>
-<li>Did the ingest server receive it?
-<ul>
-<li><code>docker compose logs ingest</code></li>
-</ul></li>
-<li>Did your <code>on_publish</code> endpoint respond with a 200?</li>
-<li>Are files appearing in <code>./hls/{stream_key}/</code> on your machine?
-<ul>
-<li>The bind mount makes this easy to check</li>
-</ul></li>
-<li>Can you request the playlist from your app?
-<ul>
-<li>Correct MIME type? <code>Cache-Control: no-store</code>?</li>
-</ul></li>
-<li>Is the stream in your active streams list?</li>
-</ul>
-</section>
-<section id="demo" class="slide level2">
-<h2>Demo</h2>
 
 
 </section>
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
-<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives">nginx-rtmp Directives</a></li>
 <li><a href="https://hub.docker.com/r/tiangolo/nginx-rtmp/">tiangolo/nginx-rtmp</a></li>
 <li><a href="https://docs.docker.com/engine/storage/volumes/">Docker Volumes</a></li>
 <li><a href="https://obsproject.com">OBS Studio</a></li>
