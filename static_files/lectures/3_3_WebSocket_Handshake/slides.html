@@ -28,8 +28,74 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -143,7 +209,6 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">WebSocket Handshake</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -194,18 +259,23 @@
 </ul></li>
 </ul>
 </section>
+<section>
+<section id="the-handshake" class="title-slide slide level1 center">
+<h1>The Handshake</h1>
+
+</section>
 <section id="websocket-handshake" class="slide level2">
 <h2>WebSocket Handshake</h2>
 <ul>
 <li>When the server receives a WebSocket HTTP request
 <ul>
 <li>Take steps to keep this TCP socket open as a WebSocket connection</li>
-<li>These steps ensure that both client and server are speaking the same protocol</li>
+<li>These steps ensure that the client knows the server speaks the WS protocol</li>
 </ul></li>
 <li>After the handshake, client/server can both send messages over the socket</li>
 </ul>
 </section>
-<section id="websocket-handshake-1" class="slide level2">
+<section id="websocket-handshake-1" class="slide level2 unnumbered unlisted">
 <h2>WebSocket Handshake</h2>
 <ul>
 <li>Client sends an HTTP GET request to the WebSocket path</li>
@@ -223,8 +293,36 @@
 </ul></li>
 </ul>
 </section>
-<section id="websocket-handshake-2" class="slide level2">
-<h2>WebSocket Handshake</h2>
+<section id="the-handshake-request" class="slide level2">
+<h2>The Handshake Request</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a></a>GET /websocket HTTP/1.1</span>
+<span id="cb1-2"><a></a>Host: localhost:8080</span>
+<span id="cb1-3"><a></a>Connection: Upgrade</span>
+<span id="cb1-4"><a></a>Upgrade: websocket</span>
+<span id="cb1-5"><a></a>Sec-WebSocket-Version: 13</span>
+<span id="cb1-6"><a></a>Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==</span>
+<span id="cb1-7"><a></a>Origin: http://localhost:8080</span>
+<span id="cb1-8"><a></a>Cookie: auth_token=8f3a91c2...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>A normal HTTP GET request. It arrives through the same keep-alive loop as every other request</li>
+<li><code>Sec-WebSocket-Key</code> is 16 random bytes, base64 encoded, new for every connection</li>
+<li>Note the <code>Origin</code> and <code>Cookie</code> headers. We'll need both later</li>
+</ul>
+</section>
+<section id="the-handshake-response" class="slide level2">
+<h2>The Handshake Response</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a></a>HTTP/1.1 101 Switching Protocols</span>
+<span id="cb2-2"><a></a>Connection: Upgrade</span>
+<span id="cb2-3"><a></a>Upgrade: websocket</span>
+<span id="cb2-4"><a></a>Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>101 Switching Protocols</code> is the last HTTP message on this connection</li>
+<li>No body, so no <code>Content-Length</code></li>
+<li>After the blank line, both sides only send WebSocket frames</li>
+</ul>
+</section>
+<section id="computing-the-accept" class="slide level2">
+<h2>Computing the Accept</h2>
 <ul>
 <li>The client generates a random "Sec-WebSocket-Key" for each new WebSocket connection</li>
 <li>The server appends a specific GUID to this key
@@ -235,11 +333,275 @@
 <li>"Sec-WebSocket-Accept" is the base64 encoding of the hash</li>
 <li>Why?
 <ul>
-<li>Ensure client and server both implement the protocol
+<li>Client ensured that the server speaks the WS protocol properly
 <ul>
 <li>Highly unlikely this value would be returned by accident</li>
 </ul></li>
 <li>Avoid caching</li>
+</ul></li>
+</ul>
+</section>
+<section id="why-the-sec--headers" class="slide level2">
+<h2>Why the Sec- Headers?</h2>
+<ul>
+<li>Headers that start with <code>Sec-</code> are <strong>forbidden headers</strong>
+<ul>
+<li>Only the browser can set them. JavaScript's <code>fetch</code> cannot</li>
+</ul></li>
+<li>A page can't use <code>fetch</code> to fake a WebSocket handshake</li>
+<li>A server that doesn't understand WebSockets, or a cache replaying an old response, won't return the right accept value</li>
+<li>Both sides prove they speak the WebSocket protocol before a single frame is sent
+<ul>
+<li>Client set a Sec- header so you know it was sent by their browser</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="in-the-browser" class="title-slide slide level1 center">
+<h1>In the Browser</h1>
+
+</section>
+<section id="websockets-in-the-browser" class="slide level2">
+<h2>WebSockets in the Browser</h2>
+<ul>
+<li>Create a new WebSocket object with the host/path to connect to
+<ul>
+<li>Choose a path and set up your server to accept WebSocket requests on that path</li>
+</ul></li>
+<li>Use <code>wss://</code> on a page served over <code>https://</code>
+<ul>
+<li>Browsers block <code>ws://</code> connections from <code>https://</code> pages (mixed content)</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a></a><span class="kw">let</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">'ws://'</span> <span class="op">+</span> <span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">host</span> <span class="op">+</span> <span class="st">'/websocket'</span>)<span class="op">;</span></span>
+<span id="cb3-2"><a></a>socket<span class="op">.</span><span class="at">onmessage</span> <span class="op">=</span> renderMessage<span class="op">;</span></span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a><span class="kw">function</span> <span class="fu">sendMessage</span>(text) {</span>
+<span id="cb3-5"><a></a>    socket<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({<span class="st">'messageType'</span><span class="op">:</span> <span class="st">'echo_client'</span><span class="op">,</span> <span class="st">'text'</span><span class="op">:</span> text}))<span class="op">;</span></span>
+<span id="cb3-6"><a></a>}</span>
+<span id="cb3-7"><a></a></span>
+<span id="cb3-8"><a></a><span class="kw">function</span> <span class="fu">renderMessage</span>(message) {</span>
+<span id="cb3-9"><a></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(message<span class="op">.</span><span class="at">data</span>)<span class="op">;</span></span>
+<span id="cb3-10"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="websockets-in-the-browser-1" class="slide level2 unnumbered unlisted">
+<h2>WebSockets in the Browser</h2>
+<ul>
+<li>Set <code>onmessage</code> to a function that will be called whenever a message is received</li>
+<li>The argument of the call will contain the message</li>
+</ul>
+<div class="sourceCode" id="cb4" data-code-line-numbers="2,8-10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a></a><span class="kw">let</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">'ws://'</span> <span class="op">+</span> <span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">host</span> <span class="op">+</span> <span class="st">'/websocket'</span>)<span class="op">;</span></span>
+<span id="cb4-2"><a></a>socket<span class="op">.</span><span class="at">onmessage</span> <span class="op">=</span> renderMessage<span class="op">;</span></span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a><span class="kw">function</span> <span class="fu">sendMessage</span>(text) {</span>
+<span id="cb4-5"><a></a>    socket<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({<span class="st">'messageType'</span><span class="op">:</span> <span class="st">'echo_client'</span><span class="op">,</span> <span class="st">'text'</span><span class="op">:</span> text}))<span class="op">;</span></span>
+<span id="cb4-6"><a></a>}</span>
+<span id="cb4-7"><a></a></span>
+<span id="cb4-8"><a></a><span class="kw">function</span> <span class="fu">renderMessage</span>(message) {</span>
+<span id="cb4-9"><a></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(message<span class="op">.</span><span class="at">data</span>)<span class="op">;</span></span>
+<span id="cb4-10"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="websockets-in-the-browser-2" class="slide level2 unnumbered unlisted">
+<h2>WebSockets in the Browser</h2>
+<ul>
+<li>Call the <code>send</code> method to send a message to the server</li>
+<li>Can give it a String and the WebSocket object will convert it to a frame
+<ul>
+<li>We'll parse this frame on the server</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb5" data-code-line-numbers="4-6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a></a><span class="kw">let</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">'ws://'</span> <span class="op">+</span> <span class="bu">window</span><span class="op">.</span><span class="at">location</span><span class="op">.</span><span class="at">host</span> <span class="op">+</span> <span class="st">'/websocket'</span>)<span class="op">;</span></span>
+<span id="cb5-2"><a></a>socket<span class="op">.</span><span class="at">onmessage</span> <span class="op">=</span> renderMessage<span class="op">;</span></span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="kw">function</span> <span class="fu">sendMessage</span>(text) {</span>
+<span id="cb5-5"><a></a>    socket<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({<span class="st">'messageType'</span><span class="op">:</span> <span class="st">'echo_client'</span><span class="op">,</span> <span class="st">'text'</span><span class="op">:</span> text}))<span class="op">;</span></span>
+<span id="cb5-6"><a></a>}</span>
+<span id="cb5-7"><a></a></span>
+<span id="cb5-8"><a></a><span class="kw">function</span> <span class="fu">renderMessage</span>(message) {</span>
+<span id="cb5-9"><a></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(message<span class="op">.</span><span class="at">data</span>)<span class="op">;</span></span>
+<span id="cb5-10"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section></section>
+<section>
+<section id="authenticating-a-websocket" class="title-slide slide level1 center">
+<h1>Authenticating a WebSocket</h1>
+
+</section>
+<section id="who-is-on-this-connection" class="slide level2">
+<h2>Who Is On This Connection?</h2>
+<ul>
+<li>WebSocket frames have no headers, and therefore no cookies (No auth token)</li>
+<li>The handshake is the <span class="yellow">only</span> HTTP request on a WebSocket connection
+<ul>
+<li>The browser attaches its cookies to it, including the auth token</li>
+<li>This is your only chance to authenticate the user</li>
+</ul></li>
+<li>Authenticate during the handshake, before sending the 101
+<ul>
+<li>Same as any other request: read the <code>auth_token</code> cookie, hash it, look it up</li>
+<li>Store the username with <em>this</em> connection</li>
+</ul></li>
+<li>Every frame on this connection is from that user, for as long as the connection is open</li>
+</ul>
+</section>
+<section id="never-trust-the-message" class="slide level2">
+<h2>Never Trust the Message</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb6-1"><a></a><span class="fu">{</span><span class="dt">"messageType"</span><span class="fu">:</span> <span class="st">"direct_message"</span><span class="fu">,</span> <span class="dt">"fromUser"</span><span class="fu">:</span> <span class="st">"admin"</span><span class="fu">,</span> <span class="dt">"text"</span><span class="fu">:</span> <span class="st">"Trust me"</span><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Anyone can open a WebSocket to your server and send any message they want</li>
+<li>Never use a username, or any other identity, that arrives in a message</li>
+<li>The only identity you trust is the one you authenticated in the handshake</li>
+<li>No auth token? The connection is a guest for as long as it's open
+<ul>
+<li>Guests can still use features that don't require an account</li>
+</ul></li>
+</ul>
+</section>
+<section id="authentication-is-frozen" class="slide level2">
+<h2>Authentication is Frozen</h2>
+<ul>
+<li>The connection keeps the identity it had during the handshake
+<ul>
+<li>The user logs out in another tab: this connection is still logged in as them</li>
+<li>The user logs in after the page loads: this connection is still a guest</li>
+</ul></li>
+<li>Common solutions:
+<ul>
+<li>The front end reconnects after a login or logout (a page reload does this)</li>
+<li>On logout, the server closes every connection that belongs to that user</li>
+</ul></li>
+<li>Long-lived connections make you think about <em>when</em> authentication is checked</li>
+</ul>
+</section></section>
+<section>
+<section id="cross-site-websocket-hijacking" class="title-slide slide level1 center">
+<h1>Cross-Site WebSocket Hijacking</h1>
+
+</section>
+<section id="recall-xsrf" class="slide level2">
+<h2>Recall: XSRF</h2>
+<ul>
+<li>A malicious page sends a request to your server</li>
+<li>The browser attaches the victim's cookies</li>
+<li>The Same-Origin Policy stops the attacker from <strong>reading</strong> the response</li>
+<li>XSRF tokens stop your server from <strong>accepting</strong> the request</li>
+</ul>
+</section>
+<section id="the-sop-and-websockets" class="slide level2">
+<h2>The SOP and WebSockets</h2>
+<ul>
+<li><span class="yellow">The Same-Origin Policy does not apply to WebSockets</span>
+<ul>
+<li>No preflight</li>
+<li>No CORS</li>
+<li>Any page can open a WebSocket to any server and read every message</li>
+</ul></li>
+<li>The WebSocket protocol made a different choice
+<ul>
+<li>The browser tells the server which origin the page is from</li>
+<li>The server decides whether to accept the connection</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-attack" class="slide level2">
+<h2>The Attack</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><a></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb7-2"><a></a>  <span class="kw">const</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">"ws://localhost:8080/websocket"</span>)<span class="op">;</span></span>
+<span id="cb7-3"><a></a>  socket<span class="op">.</span><span class="at">onopen</span> <span class="op">=</span> () <span class="kw">=&gt;</span> socket<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(</span>
+<span id="cb7-4"><a></a>      {<span class="st">"messageType"</span><span class="op">:</span> <span class="st">"direct_message"</span><span class="op">,</span> <span class="st">"targetUser"</span><span class="op">:</span> <span class="st">"cse312"</span><span class="op">,</span> <span class="st">"text"</span><span class="op">:</span> <span class="st">"Sent by the attacker"</span>}))<span class="op">;</span></span>
+<span id="cb7-5"><a></a>  socket<span class="op">.</span><span class="at">onmessage</span> <span class="op">=</span> (message) <span class="kw">=&gt;</span> <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">"Stolen: "</span> <span class="op">+</span> message<span class="op">.</span><span class="at">data</span>)<span class="op">;</span></span>
+<span id="cb7-6"><a></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The victim visits the attacker's page while logged in to your app</li>
+<li>The browser sends the handshake with the victim's cookies</li>
+<li>Your server authenticates the connection as the victim</li>
+<li>The attacker can send messages <strong>and read every message</strong> as the victim
+<ul>
+<li>XSRF + reading the responses = a hijacked session</li>
+</ul></li>
+</ul>
+</section>
+<section id="samesite-and-websockets" class="slide level2">
+<h2>SameSite and WebSockets</h2>
+<ul>
+<li>The handshake is not a navigation
+<ul>
+<li><code>Lax</code> cookies are not sent on a <strong>cross-site</strong> handshake</li>
+</ul></li>
+<li>A cross-site attack fails if the auth cookie is <code>Lax</code> or <code>Strict</code>
+<ul>
+<li>Browsers disagree on the default when <code>SameSite</code> is not set</li>
+</ul></li>
+<li>A <strong>same-site</strong> attack works, even with <code>Strict</code>
+<ul>
+<li>A different subdomain, or a different port</li>
+<li><code>http://localhost:5000</code> attacking <code>http://localhost:8080</code> is same-site!</li>
+</ul></li>
+<li>Browser protections help most users, not all
+<ul>
+<li>We need protection on our server</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-origin-header" class="slide level2">
+<h2>The Origin Header</h2>
+<ul>
+<li>Browsers send an <code>Origin</code> header with every WebSocket handshake</li>
+<li><code>Origin</code> is a forbidden header. JavaScript can't change it
+<ul>
+<li>In a browser, the <code>Origin</code> is honest</li>
+</ul></li>
+<li>A script or curl can send any <code>Origin</code> it wants
+<ul>
+<li>But it doesn't have the victim's cookies. It can only authenticate as itself</li>
+</ul></li>
+<li>RFC 6455: servers should check the <code>Origin</code> and respond <code>403 Forbidden</code> if it isn't one they expect</li>
+<li>Your origin changes when you deploy. Keep the allowed origins in an environment variable</li>
+</ul>
+</section>
+<section id="tickets" class="slide level2">
+<h2>Tickets</h2>
+<ul>
+<li>Extra protection that works like an XSRF token:
+<ol type="1">
+<li>The page sends <code>POST /api/websocket-ticket</code> with its XSRF token</li>
+<li>The server responds with a random ticket: single use, expires in ~30 seconds, tied to this user</li>
+<li>The page connects to <code>/websocket?ticket=...</code></li>
+<li>The server verifies the ticket during the handshake, then deletes it</li>
+</ol></li>
+<li>The attacker's page can't read the ticket. The SOP applies to the <code>fetch</code></li>
+<li>Short-lived and single use since URLs often end up in logs</li>
+</ul>
+</section></section>
+<section>
+<section id="after-the-handshake" class="title-slide slide level1 center">
+<h1>After the Handshake</h1>
+
+</section>
+<section id="the-connection-changes-protocols" class="slide level2">
+<h2>The Connection Changes Protocols</h2>
+<ul>
+<li>Recall the keep-alive loop: read a request, send a response, repeat</li>
+<li>After you send the 101, <span class="yellow">the next bytes on this socket are WebSocket frames, not HTTP requests</span>
+<ul>
+<li>Never pass this connection back to your HTTP parsing</li>
+<li>Switch to a WebSocket loop: read a frame, handle it, repeat</li>
+<li>Until a close frame or an error</li>
+</ul></li>
+<li>The goroutine for this connection now lives as long as the WebSocket: minutes, or hours</li>
+</ul>
+</section>
+<section id="many-connections" class="slide level2">
+<h2>Many Connections</h2>
+<ul>
+<li>Every open tab is an open TCP connection and a goroutine on your server</li>
+<li>Features like broadcasting must reach <em>other</em> connections
+<ul>
+<li>Store your connections in a data structure that every goroutine can reach</li>
+<li>Along with the user you authenticated for each connection</li>
+</ul></li>
+<li>Many goroutines sharing the same data at the same time...
+<ul>
+<li>Proper concurrency matters</li>
 </ul></li>
 </ul>
 </section>
@@ -261,76 +623,19 @@
 <h2>WebSocket Frame</h2>
 <ul>
 <li>https://tools.ietf.org/html/rfc6455#section-5.2</li>
-<li>We'll see how to parse through this on Wednesday</li>
+<li>We'll see how to parse through this next time</li>
 </ul>
 
-<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="web-sockets---browser" class="slide level2">
-<h2>Web Sockets - Browser</h2>
-<ul>
-<li>To setup a connection from the browser</li>
-<li>Create a new WebSocket object with the host/path to connect to
-<ul>
-<li>Choose a path and setup your server to accept WS requests on that path</li>
-</ul></li>
-</ul>
-<pre><code>let socket = new WebSocket('ws://' + window.location.host + '/socket');
-socket.onmessage = renderMessages;</code></pre>
-<pre><code>function sendMessage() {
-socket.send(JSON.stringify({'username': username, 'message': message}))
-}</code></pre>
-<pre><code>function renderMessages(message) {
-console.log(message.data);
-}</code></pre>
-</section>
-<section id="web-sockets---browser-1" class="slide level2">
-<h2>Web Sockets - Browser</h2>
-<ul>
-<li>Set onmessage to a function that will be called whenever a message is received</li>
-<li>The argument of the call will contain the message</li>
-</ul>
-<pre><code>let socket = new WebSocket('ws://' + window.location.host + '/socket');
-socket.onmessage = renderMessages;</code></pre>
-<pre><code>function sendMessage() {
-socket.send(JSON.stringify({'username': username, 'message': message}))
-}</code></pre>
-<pre><code>function renderMessages(message) {
-console.log(message.data);
-}</code></pre>
-</section>
-<section id="web-sockets---browser-2" class="slide level2">
-<h2>Web Sockets - Browser</h2>
-<ul>
-<li>Call the send method to send a message to the server</li>
-<li>Can give it a String and the WebSocket object will convert it to a frame
-<ul>
-<li>We'll parse this frame on the server</li>
-</ul></li>
-</ul>
-<pre><code>let socket = new WebSocket('ws://' + window.location.host + '/socket');
-socket.onmessage = renderMessages;</code></pre>
-<pre><code>function sendMessage() {
-socket.send(JSON.stringify({'username': username, 'message': message}))
-}</code></pre>
-<pre><code>function renderMessages(message) {
-console.log(message.data);
-}</code></pre>
-</section>
-<section id="examples" class="slide level2">
-<h2>Examples</h2>
-</section>
-<section id="concurrency" class="slide level2">
-<h2>Concurrency</h2>
 
 
-</section>
+<img data-src="assets/frame_format.svg" alt="The WebSocket frame format from RFC 6455 section 5.2, 32 bits per row. In order: FIN (1 bit), RSV1, RSV2, and RSV3 (1 bit each), opcode (4 bits), MASK (1 bit), payload len (7 bits), an extended payload length of 16 bits if payload len is 126 or 64 bits if it is 127, a 4-byte masking key if MASK is 1, then the payload data. The optional fields have dashed borders." class="r-stretch"></section>
 <section id="further-reading" class="slide level2">
 <h2>Further Reading</h2>
 <ul>
 <li><a href="https://tools.ietf.org/html/rfc6455">RFC 6455</a></li>
-<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSocket Documentation and Examples</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">Writing WebSocket Servers (MDN)</a></li>
 </ul>
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
