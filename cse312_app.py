@@ -132,6 +132,11 @@ def serve_static(filename):
     resp.headers["X-Content-Type-Options"] = "nosniff"
     return resp
 
+@app.get('/favicon.ico')
+def serve_icon():
+    filename = "favicon.ico"
+    return serve_static(filename)
+
 @app.route('/live')
 def stream():
     resp = make_response(send_from_directory('static_files', 'stream.html'))

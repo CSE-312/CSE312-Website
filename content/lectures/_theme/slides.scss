@@ -233,3 +233,41 @@ button:focus-visible,
 // .reveal div {
 //   margin: 0.4em;
 // }
+/* ASCII chart in 1_2_Encodings: 6 column groups x 16 rows on one slide */
+.reveal table.ascii-table {
+  font-size: 0.64em;
+  margin: 0 auto;
+}
+
+.reveal table.ascii-table caption {
+  font-size: 1.2em;
+  padding-bottom: 0.3em;
+}
+
+.reveal table.ascii-table th,
+.reveal table.ascii-table td {
+  padding: 0.12em 0.4em;
+  text-align: center;
+}
+
+.reveal table.ascii-table th:nth-child(3n),
+.reveal table.ascii-table td:nth-child(3n) {
+  border-right: 1px solid rgba(126, 200, 255, 0.35);
+}
+
+/* Long example tokens (5_5_JWT) wrap anywhere instead of running off the slide */
+.reveal .jwt-token {
+  font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  font-size: 0.6em;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+  margin-top: 0.4em;
+}
+
+/* Quarto's code-overflow-wrap loses to the numbered-line styles; make long lines wrap */
+.reveal div.sourceCode pre.code-overflow-wrap code,
+.reveal div.sourceCode pre.code-overflow-wrap code span {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+}

@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -122,6 +122,7 @@
     }
   </style>
   </head><body class="quarto-dark"><a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("main-content")) {
@@ -173,14 +174,14 @@
 <li>How do users interact with stored data?</li>
 </ul>
 
-<img data-src="assets/slide03-diagram.jpg" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly" class="r-stretch"></section>
+<img data-src="assets/client_server_db.svg" alt="The user/client communicates with our server, and our server communicates with the database. The client never connects to the database directly." class="r-stretch"></section>
 <section id="data-2" class="slide level2 unnumbered unlisted">
 <h2>Data</h2>
 <ul>
 <li>How does our server interact with stored data?</li>
 </ul>
 
-<img data-src="assets/slide04-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
+<img data-src="assets/server_db_focus.svg" alt="The same client, server, and database. The client is faded out to focus on the connection between the server and the database." class="r-stretch"></section>
 <section id="crud" class="slide level2">
 <h2>CRUD</h2>
 <ul>
@@ -193,7 +194,7 @@
 </ul></li>
 </ul>
 
-<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
+<img data-src="assets/server_db.svg" alt="A server connected to a database with a two-way arrow." class="r-stretch"></section>
 <section id="crud---create" class="slide level2">
 <h2>CRUD - Create</h2>
 <ul>
@@ -281,10 +282,8 @@
 <ul>
 <li>How do users interact with our server?</li>
 </ul>
-<p>User/Client</p>
-<p>Server</p>
 
-<img data-src="assets/slide15-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
+<img data-src="assets/client_server_focus.svg" alt="The same client, server, and database. The database is faded out to focus on the connection between the user/client and the server." class="r-stretch"></section>
 <section id="http-requests-methods" class="slide level2">
 <h2>HTTP Requests Methods</h2>
 <ul>
@@ -471,7 +470,7 @@
 
 
 
-<img data-src="assets/slide30-diagram.jpg" alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations" class="r-stretch"></section></section>
+<img data-src="assets/rest_crud.svg" alt="The user/client communicates with your server using your RESTful API. The server communicates with your database using CRUD operations." class="r-stretch"></section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

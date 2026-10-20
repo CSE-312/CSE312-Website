@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -88,6 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -250,16 +251,16 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Typical setup (eg. Twitch/YouTube Live/etc.)</li>
 </ul>
-<pre class="text"><code>  Streamer (OBS)
-        │   RTMP: rtmp://localhost:1935/live + stream key
-        ▼
-  Ingest server
-        │   Converts RTMP stream to HLS: A playlist + segments
-        ▼
-  Web server  (Your app)
-        │   HTTP: Normal GET requests for the playlist and segments
-        ▼
-  Viewers (hls.js)</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>  Streamer (OBS)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>        │   RTMP: rtmp://localhost:1935/live + stream key</span>
+<span id="cb1-3"><a href="#cb1-3"></a>        ▼</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  Ingest server</span>
+<span id="cb1-5"><a href="#cb1-5"></a>        │   Converts RTMP stream to HLS: A playlist + segments</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        ▼</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  Web server  (Your app)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        │   HTTP: Normal GET requests for the playlist and segments</span>
+<span id="cb1-9"><a href="#cb1-9"></a>        ▼</span>
+<span id="cb1-10"><a href="#cb1-10"></a>  Viewers (hls.js)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Viewers never talk to the ingest server</li>
 </ul>
@@ -296,24 +297,24 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Copy it into the container at <code>/etc/nginx/nginx.conf</code></li>
 </ul>
 </div><div class="column" style="width:60%;">
-<pre class="nginx"><code>events {}
-rtmp {
-    server {
-        listen 1935;
-        application live {
-            live on;
-
-            # Called when a stream starts and ends
-            on_publish http://app:8080/api/live/start;
-            on_publish_done http://app:8080/api/live/end;
-
-            # Write each stream as HLS to /hls/{stream_key}/index.m3u8
-            hls on;
-            hls_path /hls;
-            hls_nested on;
-        }
-    }
-}</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>events {}</span>
+<span id="cb2-2"><a href="#cb2-2"></a>rtmp {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    server {</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        listen 1935;</span>
+<span id="cb2-5"><a href="#cb2-5"></a>        application live {</span>
+<span id="cb2-6"><a href="#cb2-6"></a>            live on;</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a>            # Called when a stream starts and ends</span>
+<span id="cb2-9"><a href="#cb2-9"></a>            on_publish http://app:8080/api/live/start;</span>
+<span id="cb2-10"><a href="#cb2-10"></a>            on_publish_done http://app:8080/api/live/end;</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a>            # Write each stream as HLS to /hls/{stream_key}/index.m3u8</span>
+<span id="cb2-13"><a href="#cb2-13"></a>            hls on;</span>
+<span id="cb2-14"><a href="#cb2-14"></a>            hls_path /hls;</span>
+<span id="cb2-15"><a href="#cb2-15"></a>            hls_nested on;</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        }</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    }</span>
+<span id="cb2-18"><a href="#cb2-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -331,7 +332,7 @@ rtmp {
 <li>The stream key becomes the name of the stream</li>
 </ul>
 </div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>events {}</span>
+<div class="sourceCode" id="cb3" data-highlight-lines="4-6"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>events {}</span>
 <span id="cb3-2"><a href="#cb3-2"></a>rtmp {</span>
 <span id="cb3-3"><a href="#cb3-3"></a>    server {</span>
 <span id="cb3-4"><a href="#cb3-4"></a>        listen 1935;</span>
@@ -365,7 +366,7 @@ rtmp {
 <li>Change the paths to the endpoints you choose</li>
 </ul>
 </div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>events {}</span>
+<div class="sourceCode" id="cb4" data-highlight-lines="9-10"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>events {}</span>
 <span id="cb4-2"><a href="#cb4-2"></a>rtmp {</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    server {</span>
 <span id="cb4-4"><a href="#cb4-4"></a>        listen 1935;</span>
@@ -402,7 +403,7 @@ rtmp {
 </ul></li>
 </ul>
 </div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>events {}</span>
+<div class="sourceCode" id="cb5" data-highlight-lines="13-15"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>events {}</span>
 <span id="cb5-2"><a href="#cb5-2"></a>rtmp {</span>
 <span id="cb5-3"><a href="#cb5-3"></a>    server {</span>
 <span id="cb5-4"><a href="#cb5-4"></a>        listen 1935;</span>
@@ -437,11 +438,11 @@ rtmp {
 <li>Remove the stream from your active streams</li>
 </ul></li>
 </ul>
-<pre class="http"><code>POST /api/live/start HTTP/1.1
-Host: app:8080
-Content-Type: application/x-www-form-urlencoded
-
-app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;type=live</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>POST /api/live/start HTTP/1.1</span>
+<span id="cb6-2"><a href="#cb6-2"></a>Host: app:8080</span>
+<span id="cb6-3"><a href="#cb6-3"></a>Content-Type: application/x-www-form-urlencoded</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;type=live</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Respond <code>200 OK</code> to allow the stream</li>
 <li>Respond <code>403 Forbidden</code> to reject it. The ingest server disconnects the streamer</li>
@@ -466,16 +467,16 @@ app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;
 <li>Use <code>depends_on</code> to ensure your app starts first</li>
 </ul>
 </div><div class="column" style="width:60%;">
-<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./ingest</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">    # ...</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">    # ...</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> ./ingest</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">    # ...</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">    # ...</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -490,16 +491,16 @@ app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;
 </ul></li>
 <li>The player re-requests the playlist every few seconds to find new segments</li>
 </ul>
-<pre class="text"><code>#EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-MEDIA-SEQUENCE:41
-#EXT-X-TARGETDURATION:5
-#EXTINF:5.000,
-41.ts
-#EXTINF:5.000,
-42.ts
-#EXTINF:5.000,
-43.ts</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>#EXTM3U</span>
+<span id="cb8-2"><a href="#cb8-2"></a>#EXT-X-VERSION:3</span>
+<span id="cb8-3"><a href="#cb8-3"></a>#EXT-X-MEDIA-SEQUENCE:41</span>
+<span id="cb8-4"><a href="#cb8-4"></a>#EXT-X-TARGETDURATION:5</span>
+<span id="cb8-5"><a href="#cb8-5"></a>#EXTINF:5.000,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>41.ts</span>
+<span id="cb8-7"><a href="#cb8-7"></a>#EXTINF:5.000,</span>
+<span id="cb8-8"><a href="#cb8-8"></a>42.ts</span>
+<span id="cb8-9"><a href="#cb8-9"></a>#EXTINF:5.000,</span>
+<span id="cb8-10"><a href="#cb8-10"></a>43.ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="live-playlists-1" class="level2 unnumbered unlisted">
 <h2 class="unnumbered unlisted anchored" data-anchor-id="live-playlists-1">Live Playlists</h2>
@@ -558,11 +559,11 @@ app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;
 <li>Mounting <code>./streams</code> to a directory in your app container lets your app access the streams</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./streams:/hls</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="at">  </span><span class="fu">ingest</span><span class="kw">:</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./streams:/hls</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">    # ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="volume-gotchas" class="level2">
 <h2 class="anchored" data-anchor-id="volume-gotchas">Volume Gotchas</h2>
@@ -595,6 +596,37 @@ app=live&amp;...&amp;call=publish&amp;name=f3a9c2e17b4d80a65e2f1c9d3b7a4e08&amp;
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

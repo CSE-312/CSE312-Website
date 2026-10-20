@@ -22,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -36,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -53,6 +88,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -178,10 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Number of seconds the browser may reuse this response</li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/css
-Content-Length: 42
-Cache-Control: max-age=3600</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>HTTP/1.1 200 OK</span>
+<span id="cb1-2"><a href="#cb1-2"></a>Content-Type: text/css</span>
+<span id="cb1-3"><a href="#cb1-3"></a>Content-Length: 42</span>
+<span id="cb1-4"><a href="#cb1-4"></a>Cache-Control: max-age=3600</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>max-age=3600</code> means this is fresh for one hour</li>
 <li>After that, the copy is stale and a new request will be sent</li>
@@ -192,7 +228,7 @@ Cache-Control: max-age=3600</code></pre>
 <ul>
 <li>An exact time when the response becomes stale</li>
 </ul>
-<pre class="http"><code>Expires: Wed, 23 Sep 2026 19:50:00 GMT</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>Expires: Wed, 23 Sep 2026 19:50:00 GMT</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>HTTP dates are <strong>GMT</strong>, not local time</li>
 <li><code>max-age</code> is preferred
@@ -235,11 +271,11 @@ Cache-Control: max-age=3600</code></pre>
 <li>A fingerprint of this version of the resource</li>
 <li>Send it on 200 responses</li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: text/css
-Content-Length: 42
-Cache-Control: max-age=10
-ETag: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>HTTP/1.1 200 OK</span>
+<span id="cb3-2"><a href="#cb3-2"></a>Content-Type: text/css</span>
+<span id="cb3-3"><a href="#cb3-3"></a>Content-Length: 42</span>
+<span id="cb3-4"><a href="#cb3-4"></a>Cache-Control: max-age=10</span>
+<span id="cb3-5"><a href="#cb3-5"></a>ETag: "9e107d9d372bb6826bd81d3542a419d6"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>When the file contents change, the ETag <strong>must</strong> change</li>
 <li>A hash of the file bytes is a great way to do this</li>
@@ -250,9 +286,9 @@ ETag: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
 <ul>
 <li>Once the copy is stale, the browser sends the ETag back</li>
 </ul>
-<pre class="http"><code>GET /public/style.css HTTP/1.1
-Host: localhost:8080
-If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>GET /public/style.css HTTP/1.1</span>
+<span id="cb4-2"><a href="#cb4-2"></a>Host: localhost:8080</span>
+<span id="cb4-3"><a href="#cb4-3"></a>If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Compare it to the ETag of the file currently on disk</li>
 <li>If they match, send a 304</li>
@@ -261,9 +297,9 @@ If-None-Match: "9e107d9d372bb6826bd81d3542a419d6"</code></pre>
 </section>
 <section id="has-no-body" class="level2">
 <h2 class="anchored" data-anchor-id="has-no-body">304 has no body</h2>
-<pre class="http"><code>HTTP/1.1 304 Not Modified
-ETag: "9e107d9d372bb6826bd81d3542a419d6"
-Cache-Control: max-age=3600</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>HTTP/1.1 304 Not Modified</span>
+<span id="cb5-2"><a href="#cb5-2"></a>ETag: "9e107d9d372bb6826bd81d3542a419d6"</span>
+<span id="cb5-3"><a href="#cb5-3"></a>Cache-Control: max-age=3600</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>304 means "your copy is still current"</li>
 <li>No body in the response
@@ -280,7 +316,7 @@ Cache-Control: max-age=3600</code></pre>
 <li>By default the cache key is the URL</li>
 <li>Sometimes the same URL serves different content depending on a request header</li>
 </ul>
-<pre class="http"><code>Vary: Accept-Language</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>Vary: Accept-Language</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>GET /page</code> with <code>Accept-Language: en</code> and <code>Accept-Language: es</code> are different cache entries</li>
 <li>If you skip <code>Vary</code>, an English user can be served the Spanish page from cache</li>
@@ -298,6 +334,37 @@ Cache-Control: max-age=3600</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

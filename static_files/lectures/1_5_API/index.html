@@ -36,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -53,6 +53,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -152,14 +153,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>How do users interact with stored data?</li>
 </ul>
-<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"></p>
+<p><img src="assets/client_server_db.svg" class="img-fluid" alt="The user/client communicates with our server, and our server communicates with the database. The client never connects to the database directly."></p>
 </section>
 <section id="data-2" class="level2 unnumbered unlisted">
 <h2 class="unnumbered unlisted anchored" data-anchor-id="data-2">Data</h2>
 <ul>
 <li>How does our server interact with stored data?</li>
 </ul>
-<p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/server_db_focus.svg" class="img-fluid" alt="The same client, server, and database. The client is faded out to focus on the connection between the server and the database."></p>
 </section>
 <section id="crud" class="level2">
 <h2 class="anchored" data-anchor-id="crud">CRUD</h2>
@@ -172,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Delete</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/server_db.svg" class="img-fluid" alt="A server connected to a database with a two-way arrow."></p>
 </section>
 <section id="crud---create" class="level2">
 <h2 class="anchored" data-anchor-id="crud---create">CRUD - Create</h2>
@@ -261,9 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>How do users interact with our server?</li>
 </ul>
-<p>User/Client</p>
-<p>Server</p>
-<p><img src="assets/slide15-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/client_server_focus.svg" class="img-fluid" alt="The same client, server, and database. The database is faded out to focus on the connection between the user/client and the server."></p>
 </section>
 <section id="http-requests-methods" class="level2">
 <h2 class="anchored" data-anchor-id="http-requests-methods">HTTP Requests Methods</h2>
@@ -448,13 +447,44 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Users interact with our RESTful API</li>
 <li>API requests correlate to CRUD operations</li>
 </ul>
-<p><img src="assets/slide30-diagram.jpg" class="img-fluid" alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations"></p>
+<p><img src="assets/rest_crud.svg" class="img-fluid" alt="The user/client communicates with your server using your RESTful API. The server communicates with your database using CRUD operations."></p>
 
 
 </section>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

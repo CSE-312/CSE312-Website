@@ -653,7 +653,7 @@ services:
 ::: {.column width="5%"}
 :::
 ::: {.column width="50%"}
-```yaml
+```{.yaml code-line-numbers=""}
 services:
   mysql:
     image: mysql
@@ -689,7 +689,7 @@ services:
 ::: {.column width="5%"}
 :::
 ::: {.column width="50%"}
-```yaml
+```{.yaml code-line-numbers=""}
 services:
   mysql:
     image: mysql

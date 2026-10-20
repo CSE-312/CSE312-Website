@@ -113,9 +113,9 @@ released: true
 - Generally, there should be at least 2^80 unique tokens that could be generated (80 bits of entropy)
   - More is better!
 - Since you are generating these tokens, and no human has to remember them, you can simply choose the entropy
-  - Generate a random hex value of length 10?
-    - You already have 160 bits of entropy
-  - Why not generate length 50 and have 800 bits of entropy 🤷
+  - Generate bytes of length 10?
+    - You already have 80 bits of entropy
+  - Why not generate length 50 and have 400 bits of entropy 🤷
 
 
 ## Storing Authentication Tokens

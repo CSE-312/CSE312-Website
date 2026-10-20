@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -88,6 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -282,21 +283,21 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb1"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> package.json package.json</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> server.js server.js</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> src/ src/</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="at">--fix-missing</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> nodejs</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> install <span class="at">-y</span> npm</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">COPY</span> package.json package.json</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">COPY</span> server.js server.js</span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="kw">COPY</span> src/ src/</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">CMD</span> [<span class="st">"node"</span>, <span class="st">"server.js"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -310,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>In this example: We start with Ubuntu 26.04</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb2" data-highlight-lines="1-1"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
@@ -341,7 +342,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>You'll know where your files are if you ever have to navigate the container</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb3" data-highlight-lines="3"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb3-4"><a href="#cb3-4"></a></span>
@@ -377,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb4" data-highlight-lines="5-7,10"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb4-2"><a href="#cb4-2"></a></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
@@ -405,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Destination is relative to the working directory that we set on line 3</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb5" data-highlight-lines="9,12-13"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb5-2"><a href="#cb5-2"></a></span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb5-4"><a href="#cb5-4"></a></span>
@@ -437,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb6" data-highlight-lines="9-10"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb6-4"><a href="#cb6-4"></a></span>
@@ -470,7 +471,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb7" data-highlight-lines="12-13"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb7-4"><a href="#cb7-4"></a></span>
@@ -499,7 +500,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>CMD will execute when the container is run</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
+<div class="sourceCode" id="cb8" data-highlight-lines="15"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">FROM</span> ubuntu:26.04</span>
 <span id="cb8-2"><a href="#cb8-2"></a></span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb8-4"><a href="#cb8-4"></a></span>
@@ -530,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>This image starts with node and npm installed so we can remove the installation lines</li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">FROM</span> node:24</span>
+<div class="sourceCode" id="cb9" data-highlight-lines="1-1"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">FROM</span> node:24</span>
 <span id="cb9-2"><a href="#cb9-2"></a></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="kw">WORKDIR</span> /app</span>
 <span id="cb9-4"><a href="#cb9-4"></a></span>
@@ -612,22 +613,22 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -648,7 +649,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb11" data-highlight-lines="1-2,9"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
 <span id="cb11-3"><a href="#cb11-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
@@ -688,7 +689,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb12" data-highlight-lines="3,10"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
 <span id="cb12-3"><a href="#cb12-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
 <span id="cb12-4"><a href="#cb12-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
@@ -718,7 +719,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb13" data-highlight-lines="15-16"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
@@ -752,7 +753,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb14" data-highlight-lines="4-8"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
 <span id="cb14-3"><a href="#cb14-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
 <span id="cb14-4"><a href="#cb14-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
@@ -788,7 +789,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb15" data-highlight-lines="11-14"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
 <span id="cb15-4"><a href="#cb15-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
@@ -822,22 +823,22 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb16"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -857,22 +858,22 @@ document.addEventListener("DOMContentLoaded", function () {
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb17"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="at">  </span><span class="fu">mysql</span><span class="kw">:</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mysql</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="at">      </span><span class="fu">MYSQL_ROOT_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'7PtypF^*6&amp;to@PAhwaw5'</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="at">      </span><span class="fu">MYSQL_USER</span><span class="kw">:</span><span class="at"> mysql_username</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="at">      </span><span class="fu">MYSQL_PASSWORD</span><span class="kw">:</span><span class="at"> </span><span class="st">'WTc&amp;$5#jAd6jRe9gJ0nL'</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="at">      </span><span class="fu">MYSQL_DATABASE</span><span class="kw">:</span><span class="at"> my_db</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:8080"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -890,7 +891,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <p>HOST = <code>postgres</code></p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb18" data-highlight-lines="2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a><span class="at">  </span><span class="fu">postgres</span><span class="kw">:</span></span>
 <span id="cb18-3"><a href="#cb18-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
 <span id="cb18-4"><a href="#cb18-4"></a><span class="at">    ...</span></span>
@@ -913,7 +914,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li><p>Must match the service name in <code>compose.yaml</code></p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<div class="sourceCode" id="cb19" data-highlight-lines="2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb19-2"><a href="#cb19-2"></a><span class="at">  </span><span class="fu">my_super_cool_service_name</span><span class="kw">:</span></span>
 <span id="cb19-3"><a href="#cb19-3"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
 <span id="cb19-4"><a href="#cb19-4"></a><span class="at">    ...</span></span>
@@ -961,6 +962,37 @@ document.addEventListener("DOMContentLoaded", function () {
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

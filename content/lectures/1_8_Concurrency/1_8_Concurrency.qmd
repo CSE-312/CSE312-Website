@@ -37,7 +37,7 @@ released: true
 ::: {.column width="5%"}
 :::
 ::: {.column width="50%"}
-![](assets/tcp.png){fig-alt="TCP 3-way handshake"}
+![](assets/tcp_handshake.svg){fig-alt="TCP 3-way handshake between a client and a server. The server calls listen() and is in the LISTEN state, then calls accept(). The client calls connect() and enters SYN_SENT, sending SYN M. The server enters SYN_RECV and replies SYN N, ACK M+1. connect() returns and the client is ESTABLISHED. The client sends ACK N+1, which can include data. accept() returns and the server is ESTABLISHED."}
 :::
 ::::
 

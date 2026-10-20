@@ -141,6 +141,51 @@ figcaption {
   color: inherit;
 }
 
+/* Lines from code-line-numbers="..." (see line-highlight.html). The bar beside
+   the line number marks them without relying on color. */
+pre > code.sourceCode > span.highlight-line {
+  min-width: calc(100% + 4em);
+  background: #fff3a3;
+}
+
+pre.numberSource code > span > a:first-child::before {
+  padding-right: 0.6em;
+}
+
+pre > code.sourceCode > span.highlight-line > a:first-child::before {
+  box-shadow: inset -3px 0 0 #7d4e00;
+}
+
+/* GitHub-light colors that fall below 4.5:1 on white or on the highlight */
+code span.al,
+code span.er,
+code span.wa {
+  color: #a40e26;
+}
+
+code span.at,
+code span.bu,
+code span.cf,
+code span.dt,
+code span.ex,
+code span.kw,
+code span.pp {
+  color: #cf222e;
+}
+
+code span.an,
+code span.co,
+code span.cv,
+code span.do,
+code span.in,
+code span.re {
+  color: #57606a;
+}
+
+code span.va {
+  color: #953800;
+}
+
 .diagram-description {
   border-left: 4px solid #3d8bfd;
   padding: 0.75rem 1rem;
@@ -191,4 +236,12 @@ button:focus-visible {
   button:focus-visible {
     outline: 3px solid CanvasText;
   }
+}
+
+/* Long example tokens (5_5_JWT) wrap anywhere instead of overflowing the page */
+.jwt-token {
+  font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }

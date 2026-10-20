@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -88,6 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -341,18 +342,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The browser only needs the URL of the master playlist</li>
 </ul>
 </div><div class="column" style="width:45%;">
-<pre class="text"><code>public/videos/abc123/
-├── master.m3u8
-├── 0/
-│   ├── index.m3u8
-│   ├── index0.ts
-│   ├── index1.ts
-│   └── index2.ts
-└── 1/
-    ├── index.m3u8
-    ├── index0.ts
-    ├── index1.ts
-    └── index2.ts</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>public/videos/abc123/</span>
+<span id="cb1-2"><a href="#cb1-2"></a>├── master.m3u8</span>
+<span id="cb1-3"><a href="#cb1-3"></a>├── 0/</span>
+<span id="cb1-4"><a href="#cb1-4"></a>│   ├── index.m3u8</span>
+<span id="cb1-5"><a href="#cb1-5"></a>│   ├── index0.ts</span>
+<span id="cb1-6"><a href="#cb1-6"></a>│   ├── index1.ts</span>
+<span id="cb1-7"><a href="#cb1-7"></a>│   └── index2.ts</span>
+<span id="cb1-8"><a href="#cb1-8"></a>└── 1/</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    ├── index.m3u8</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    ├── index0.ts</span>
+<span id="cb1-11"><a href="#cb1-11"></a>    ├── index1.ts</span>
+<span id="cb1-12"><a href="#cb1-12"></a>    └── index2.ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -366,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>The browser chooses a rendition based on its bandwidth</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>#EXTM3U</span>
+<div class="sourceCode" id="cb2" data-highlight-lines="3-4,6-7"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>#EXTM3U</span>
 <span id="cb2-2"><a href="#cb2-2"></a>#EXT-X-VERSION:3</span>
 <span id="cb2-3"><a href="#cb2-3"></a>#EXT-X-STREAM-INF:BANDWIDTH=2825900,RESOLUTION=1280x720,CODECS="avc1.f4001f,mp4a.40.2"</span>
 <span id="cb2-4"><a href="#cb2-4"></a>0/index.m3u8</span>
@@ -384,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Segment paths are relative to the playlist</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>#EXTM3U</span>
+<div class="sourceCode" id="cb3" data-highlight-lines="6-11"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>#EXTM3U</span>
 <span id="cb3-2"><a href="#cb3-2"></a>#EXT-X-VERSION:3</span>
 <span id="cb3-3"><a href="#cb3-3"></a>#EXT-X-TARGETDURATION:8</span>
 <span id="cb3-4"><a href="#cb3-4"></a>#EXT-X-MEDIA-SEQUENCE:0</span>
@@ -402,12 +403,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>The browser requests each file as it needs it</li>
 </ul>
-<pre class="text"><code>GET /public/videos/abc123/master.m3u8          Pick a rendition
-GET /public/videos/abc123/1/index.m3u8         Start with 360p
-GET /public/videos/abc123/1/index0.ts
-GET /public/videos/abc123/1/index1.ts          Bandwidth looks good
-GET /public/videos/abc123/0/index.m3u8         Switch to 720p
-GET /public/videos/abc123/0/index2.ts</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>GET /public/videos/abc123/master.m3u8          Pick a rendition</span>
+<span id="cb4-2"><a href="#cb4-2"></a>GET /public/videos/abc123/1/index.m3u8         Start with 360p</span>
+<span id="cb4-3"><a href="#cb4-3"></a>GET /public/videos/abc123/1/index0.ts</span>
+<span id="cb4-4"><a href="#cb4-4"></a>GET /public/videos/abc123/1/index1.ts          Bandwidth looks good</span>
+<span id="cb4-5"><a href="#cb4-5"></a>GET /public/videos/abc123/0/index.m3u8         Switch to 720p</span>
+<span id="cb4-6"><a href="#cb4-6"></a>GET /public/videos/abc123/0/index2.ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>These are all normal GET requests for files
 <ul>
@@ -446,14 +447,14 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>Same as typing the command into the command line</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> <span class="st">"input.avi"</span><span class="op">,</span> <span class="st">"-f"</span><span class="op">,</span> <span class="st">"mp4"</span><span class="op">,</span> <span class="st">"output.mp4"</span><span class="op">).</span>Run<span class="op">()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1"></a>exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> <span class="st">"input.avi"</span><span class="op">,</span> <span class="st">"-f"</span><span class="op">,</span> <span class="st">"mp4"</span><span class="op">,</span> <span class="st">"output.mp4"</span><span class="op">).</span>Run<span class="op">()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>ffmpeg must be installed in your container
 <ul>
 <li>Add this near the top of your Dockerfile so it's cached and you only wait for the install once</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> ffmpeg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource dockerfile number-lines code-with-copy"><code class="sourceCode dockerfile"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">RUN</span> <span class="ex">apt-get</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt-get</span> install <span class="at">-y</span> ffmpeg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-provided-conversion" class="level2">
 <h2 class="anchored" data-anchor-id="the-provided-conversion">The Provided Conversion</h2>
@@ -463,17 +464,17 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>Let's see what each argument does</li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb7"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">).</span>Run<span class="op">()</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>        <span class="st">"-filter:v:1"</span><span class="op">,</span> <span class="st">"scale=-2:360"</span><span class="op">,</span> <span class="st">"-b:v:1"</span><span class="op">,</span> <span class="st">"800k"</span><span class="op">,</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>        <span class="st">"-f"</span><span class="op">,</span> <span class="st">"hls"</span><span class="op">,</span> <span class="st">"-hls_playlist_type"</span><span class="op">,</span> <span class="st">"vod"</span><span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a>        <span class="st">"-master_pl_name"</span><span class="op">,</span> <span class="st">"master.m3u8"</span><span class="op">,</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a>        <span class="st">"-var_stream_map"</span><span class="op">,</span> <span class="st">"v:0,a:0 v:1,a:1"</span><span class="op">,</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>        outputDir<span class="op">+</span><span class="st">"/%v/index.m3u8"</span><span class="op">,</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="op">).</span>Run<span class="op">()</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="the-provided-conversion-1" class="level2 unnumbered unlisted">
@@ -488,7 +489,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>If the input has no audio, <code>0:a:0</code> matches nothing and ffmpeg fails</li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb8" data-highlight-lines="2-3"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
@@ -512,7 +513,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </ul></li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb9" data-highlight-lines="4-5"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
@@ -537,7 +538,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li><code>-master_pl_name</code>: Also write a master playlist named <code>master.m3u8</code></li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb10" data-highlight-lines="6-7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
 <span id="cb10-3"><a href="#cb10-3"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
 <span id="cb10-4"><a href="#cb10-4"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
@@ -564,7 +565,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li><code>Run</code> waits until ffmpeg finishes and returns an error if it failed</li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb11" data-highlight-lines="8-10"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">func</span> MP4ToHLS<span class="op">(</span>inputPath <span class="dt">string</span><span class="op">,</span> outputDir <span class="dt">string</span><span class="op">)</span> <span class="dt">error</span> <span class="op">{</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a>    <span class="cf">return</span> exec<span class="op">.</span>Command<span class="op">(</span><span class="st">"ffmpeg"</span><span class="op">,</span> <span class="st">"-i"</span><span class="op">,</span> inputPath<span class="op">,</span></span>
 <span id="cb11-3"><a href="#cb11-3"></a>        <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:v:0"</span><span class="op">,</span> <span class="st">"-map"</span><span class="op">,</span> <span class="st">"0:a:0"</span><span class="op">,</span></span>
 <span id="cb11-4"><a href="#cb11-4"></a>        <span class="st">"-filter:v:0"</span><span class="op">,</span> <span class="st">"scale=-2:720"</span><span class="op">,</span> <span class="st">"-b:v:0"</span><span class="op">,</span> <span class="st">"2500k"</span><span class="op">,</span></span>
@@ -662,10 +663,10 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
-<div class="sourceCode" id="cb12"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb12-1"><a href="#cb12-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    Your browser does not support video playback</span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -689,14 +690,14 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
-<div class="sourceCode" id="cb13"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    Your browser does not support video playback</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb13-1"><a href="#cb13-1"></a><span class="dt">&lt;</span><span class="kw">video</span><span class="ot"> width</span><span class="op">=</span><span class="st">"400"</span><span class="ot"> controls autoplay muted</span><span class="dt">&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>    <span class="dt">&lt;</span><span class="kw">source</span><span class="ot"> src</span><span class="op">=</span><span class="st">"space.mp4"</span><span class="ot"> type</span><span class="op">=</span><span class="st">"video/mp4"</span><span class="dt">&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>    Your browser does not support video playback</span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="dt">&lt;/</span><span class="kw">video</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div style="height: 1.0em">
 
 </div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1"></a>videoPlayer<span class="op">.</span><span class="at">src</span> <span class="op">=</span> video<span class="op">.</span><span class="at">video_path</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
@@ -717,7 +718,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>Included in <code>layout.html</code></li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb15-1"><a href="#cb15-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-provided-front-end" class="level2">
 <h2 class="anchored" data-anchor-id="the-provided-front-end">The Provided Front End</h2>
@@ -729,7 +730,7 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 <li>With Range requests if your server and browser supports them</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/videos/</span><span class="sc">${</span>videoId<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<div class="sourceCode" id="cb16" data-highlight-lines="4-10"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">const</span> response <span class="op">=</span> <span class="cf">await</span> <span class="fu">fetch</span>(<span class="vs">`/api/videos/</span><span class="sc">${</span>videoId<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="kw">const</span> video <span class="op">=</span> (<span class="cf">await</span> response<span class="op">.</span><span class="fu">json</span>())<span class="op">.</span><span class="at">video</span><span class="op">;</span></span>
 <span id="cb16-3"><a href="#cb16-3"></a></span>
 <span id="cb16-4"><a href="#cb16-4"></a><span class="cf">if</span> (video<span class="op">.</span><span class="at">hls_path</span>) {</span>
@@ -752,6 +753,37 @@ GET /public/videos/abc123/0/index2.ts</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

@@ -28,7 +28,7 @@ released: true
 
 
 
-![](assets/slide03-diagram.jpg){fig-alt="Client communicates with our server. Our server communicates with the database. Client never connects to the database directly"}
+![](assets/client_server_db.svg){fig-alt="The user/client communicates with our server, and our server communicates with the database. The client never connects to the database directly."}
 
 ## Data {.unnumbered .unlisted}
 
@@ -36,7 +36,7 @@ released: true
 - How does our server interact with stored data?
 
 
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/server_db_focus.svg){fig-alt="The same client, server, and database. The client is faded out to focus on the connection between the server and the database."}
 
 ## CRUD
 
@@ -47,7 +47,7 @@ released: true
   - Update
   - Delete
 
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/server_db.svg){fig-alt="A server connected to a database with a two-way arrow."}
 
 ## CRUD - Create
 
@@ -131,11 +131,7 @@ DELETE FROM user WHERE id=$1
 
 - How do users interact with our server?
 
-User/Client
-
-Server
-
-![](assets/slide15-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/client_server_focus.svg){fig-alt="The same client, server, and database. The database is faded out to focus on the connection between the user/client and the server."}
 
 ## HTTP Requests Methods
 
@@ -260,4 +256,4 @@ Server
 - Users interact with our RESTful API
 - API requests correlate to CRUD operations
 
-![](assets/slide30-diagram.jpg){fig-alt="User communicates with your server using your REST API. Server communicates with your database using CRUD operations"}
+![](assets/rest_crud.svg){fig-alt="The user/client communicates with your server using your RESTful API. The server communicates with your database using CRUD operations."}

@@ -10,13 +10,16 @@ website:
 lang: en
 filters:
   - _theme/reading-list.lua
+  - _theme/line-highlight.lua
 format:
   html:
     from: markdown-smart
     output-file: index.html
     theme: [cosmo, _theme/page.scss]
     include-in-header: _theme/accessibility-header.html
+    include-after-body: _theme/line-highlight.html
     highlight-style: github-light
+    code-line-numbers: true
     toc: true
     toc-depth: 2
     anchor-sections: true

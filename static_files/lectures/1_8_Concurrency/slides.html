@@ -95,7 +95,7 @@
     code span.vs { color: #9ecbff; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -188,6 +188,7 @@
     }
   </style>
   </head><body class="quarto-dark"><a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("main-content")) {
@@ -244,7 +245,7 @@
 </div><div class="column" style="width:5%;">
 
 </div><div class="column" style="width:50%;">
-<p><img data-src="assets/tcp.png" alt="TCP 3-way handshake"></p>
+<p><img data-src="assets/tcp_handshake.svg" alt="TCP 3-way handshake between a client and a server. The server calls listen() and is in the LISTEN state, then calls accept(). The client calls connect() and enters SYN_SENT, sending SYN M. The server enters SYN_RECV and replies SYN N, ACK M+1. connect() returns and the client is ESTABLISHED. The client sends ACK N+1, which can include data. accept() returns and the server is ESTABLISHED."></p>
 </div></div>
 </section></section>
 <section>

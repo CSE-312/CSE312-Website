@@ -29,7 +29,7 @@
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -122,6 +122,7 @@
     }
   </style>
   </head><body class="quarto-dark"><a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("main-content")) {
@@ -153,15 +154,15 @@
 <h2>Local Area Network (LAN)</h2>
 <p>Connect a small group of devices</p>
 
-<img data-src="assets/1_router.png" alt="A modem connected to a router showing wifi communication to a laptop" class="r-stretch"></section>
+<img data-src="assets/lan.svg" alt="A home network. The Internet connects to a modem, an Ethernet cable connects the modem to a router, and the router talks to a computer over Wi-Fi." class="r-stretch"></section>
 <section id="internet-service-provider-isp" class="slide level2">
 <h2>Internet Service Provider (ISP)</h2>
 <p>Connect customers to The Internet</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="assets/slide03-1.jpeg" alt="Diagram showing an ISP connecting 5 different customers to the Internet. The customers are government, home, large corporation, small business, and an educational institution"></p>
+<p><img data-src="assets/slide03-1.jpeg" alt="Utility poles carrying cables along a suburban street"></p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="assets/slide03-2.jpeg" alt="Image of utility poles in a suburban neighborhood"></p>
+<p><img data-src="assets/isp.svg" alt="An ISP connecting 5 different customers to the Internet: a government building, a home, a large corporation, a small business, and an educational institution"></p>
 </div></div>
 </section>
 <section id="tier-1-networks" class="slide level2">
@@ -180,7 +181,7 @@
 <h2>Data Centers Power Apps</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="assets/slide05-1.jpeg" alt="Ariel image of the Lockport data center"></p>
+<p><img data-src="assets/slide05-1.jpeg" alt="Aerial photo of the Lockport data center"></p>
 </div><div class="column" style="width:50%;">
 <p><img data-src="assets/slide05-2.jpeg" alt="Inside of a data center showing dozens of racks of servers"></p>
 </div></div>
@@ -191,7 +192,7 @@
 <div class="column" style="width:30%;">
 <p><img data-src="assets/slide06-2.jpeg" alt="A technician working in a room with 100's of ethernet cables"></p>
 </div><div class="column" style="width:70%;">
-<p><img data-src="assets/slide06-1.png" alt="Map of the earth showing cables the cross the oceans and connect continents"></p>
+<p><img data-src="assets/slide06-1.png" alt="Map of the earth showing undersea cables that cross the oceans and connect the continents"></p>
 </div></div>
 </section>
 <section id="how-do-we-use-these-cables.." class="slide level2">
@@ -213,7 +214,7 @@
 <li>Use DNS (Domain Name Server) to lookup IP address by domain name</li>
 </ul>
 
-<img data-src="assets/slide09-diagram.jpg" alt="Diagram showing a computer sending a request to a server for the IP address of CSE312.com. The server replies with 159.89.179.140" class="r-stretch"></section>
+<img data-src="assets/dns_lookup.svg" alt="Your computer asks a DNS server for the IP address of cse312.com. The DNS server replies with 159.89.179.140." class="r-stretch"></section>
 <section id="data-is-sent-over-the-internet-in-packetsdatagrams" class="slide level2">
 <h2>Data is sent over the Internet in packets/datagrams</h2>
 <ul>
@@ -221,7 +222,7 @@
 <li><p>Large messages are sent in multiple packets</p></li>
 </ul>
 
-<img data-src="assets/slide10-1.png" alt="IPv4 header diagram" class="r-stretch"></section>
+<img data-src="assets/ipv4_header.svg" alt="The IPv4 header from RFC 791, 32 bits per row. Row 1: Version (4 bits), IHL (4 bits), Type of Service (8 bits), Total Length (16 bits). Row 2: Identification (16 bits), Flags (3 bits), Fragment Offset (13 bits). Row 3: Time to Live (8 bits), Protocol (8 bits), Header Checksum (16 bits). Row 4: Source Address (32 bits). Row 5: Destination Address (32 bits). Row 6: Options (24 bits), Padding (8 bits)." class="r-stretch"></section>
 <section id="routing-packets" class="slide level2">
 <h2>Routing Packets</h2>
 <ul>
@@ -233,12 +234,12 @@
 </ol></li>
 </ul>
 
-<img data-src="assets/slide11-diagram.jpg" alt="Routers sending a packet through the Internet between 2 devices. There are 2 different paths and only 1 was used" class="r-stretch"></section>
+<img data-src="assets/routing.svg" alt="A computer sends a packet to a server through a network of seven routers. There are two paths from the first router to the last. The packet takes the top path, router to router, to the server. The bottom path is unused." class="r-stretch"></section>
 <section id="the-internet-is-unreliable" class="slide level2">
 <h2>The Internet is Unreliable</h2>
 <p>Many factors cause packets to be dropped</p>
 
-<img data-src="assets/slide12-diagram.jpg" alt="Same diagram as the previous slide, but with a storm severing one of the connections that was used. This packet will be lost" class="r-stretch"></section></section>
+<img data-src="assets/routing_lost.svg" alt="The same network. The packet travels from the computer to the first router, then to the second router on the top path. A storm cuts the link between the second and third routers, so the packet is lost and never reaches the server." class="r-stretch"></section></section>
 <section>
 <section id="transmission-control-protocol" class="title-slide slide level1 center">
 <h1>Transmission Control Protocol</h1>
@@ -256,7 +257,7 @@
 </ul></li>
 </ul>
 
-<img data-src="assets/slide14-1.png" alt="TCP 3-way handshake" class="r-stretch"></section>
+<img data-src="assets/tcp_handshake.svg" alt="TCP 3-way handshake between a client and a server. The server calls listen() and is in the LISTEN state, then calls accept(). The client calls connect() and enters SYN_SENT, sending SYN M. The server enters SYN_RECV and replies SYN N, ACK M+1. connect() returns and the client is ESTABLISHED. The client sends ACK N+1, which can include data. accept() returns and the server is ESTABLISHED." class="r-stretch"></section>
 <section id="tcpip-in-cse312" class="slide level2">
 <h2>TCP/IP in CSE312</h2>
 <ul>
