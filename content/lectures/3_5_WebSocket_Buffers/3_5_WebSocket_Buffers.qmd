@@ -11,7 +11,7 @@ released: true
 
 # WebSocket Buffers
 
-## Reads Don't Line Up With Frames
+## TCP is a Stream
 
 - TCP delivers a stream of bytes, not messages
 - One `Read` from the socket can return:
@@ -19,7 +19,7 @@ released: true
   - Exactly one frame
   - The end of one frame and the start of the next
   - Several frames
-- The only way to delimit frames are by payload length
+- The only way to delimit frames is by payload length
   - Just like `Content-Length` for HTTP requests
 
 ## Special Cases

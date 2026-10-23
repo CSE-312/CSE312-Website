@@ -71,7 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -88,6 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -197,10 +198,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>First, read data from the TCP socket</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>POST /form-path HTTP/1.1</span>
+<div class="sourceCode" id="cb2" data-highlight-lines="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>POST /form-path HTTP/1.1</span>
 <span id="cb2-2"><a href="#cb2-2"></a>Content-Length: 746</span>
 <span id="cb2-3"><a href="#cb2-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
@@ -222,10 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The size of the buffer is the maximum number of bytes that will be read from the TCP socket</li>
 <li><code>bytesRead</code> is how many bytes were actually read</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>POST /form-path HTTP/1.1</span>
+<div class="sourceCode" id="cb4" data-highlight-lines="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>POST /form-path HTTP/1.1</span>
 <span id="cb4-2"><a href="#cb4-2"></a>Content-Length: 746</span>
 <span id="cb4-3"><a href="#cb4-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
@@ -249,10 +250,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Might not be able to read the entire request in one read from the socket</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>POST /form-path HTTP/1.1</span>
+<div class="sourceCode" id="cb6" data-highlight-lines="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>POST /form-path HTTP/1.1</span>
 <span id="cb6-2"><a href="#cb6-2"></a>Content-Length: 91320</span>
 <span id="cb6-3"><a href="#cb6-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
 <span id="cb6-4"><a href="#cb6-4"></a></span>
@@ -275,10 +276,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>We read at most 2048 bytes per read</li>
 <li>A bigger buffer doesn't help. The rest of the bytes may not have arrived yet</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>POST /form-path HTTP/1.1</span>
+<div class="sourceCode" id="cb8" data-highlight-lines="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href="#cb8-1"></a>POST /form-path HTTP/1.1</span>
 <span id="cb8-2"><a href="#cb8-2"></a>Content-Length: 1884206</span>
 <span id="cb8-3"><a href="#cb8-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
 <span id="cb8-4"><a href="#cb8-4"></a></span>
@@ -299,10 +300,10 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li><span class="yellow">We must read from the socket multiple times!</span></li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb9-1"><a href="#cb9-1"></a>buffer <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="dt">byte</span><span class="op">,</span> <span class="dv">2048</span><span class="op">)</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>POST /form-path HTTP/1.1</span>
+<div class="sourceCode" id="cb10" data-highlight-lines="2"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href="#cb10-1"></a>POST /form-path HTTP/1.1</span>
 <span id="cb10-2"><a href="#cb10-2"></a>Content-Length: 1884206</span>
 <span id="cb10-3"><a href="#cb10-3"></a>Content-Type: multipart/form-data; boundary=----WebKitFormBoundarycriD3u6M0UuPR1ia</span>
 <span id="cb10-4"><a href="#cb10-4"></a></span>
@@ -329,7 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="A User box with an arrow labeled &quot;User sends data to the server&quot; pointing to a Server box. A single small packet travels along the arrow."></p>
+<p><img src="assets/one_packet.svg" class="img-fluid" alt="A User box with an arrow labeled &quot;User sends data to the server&quot; pointing to a Server box. A single packet travels along the arrow."></p>
 </div>
 </section>
 <section id="buffer-questions" class="level2">
@@ -342,7 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>What if the data contains streaming video that never ends?</li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<p><img src="assets/slide10-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+<p><img src="assets/many_packets.svg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
 </div>
 </section>
 <section id="buffer-answer" class="level2">
@@ -355,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<p><img src="assets/slide11-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+<p><img src="assets/many_packets.svg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
 </div>
 </section>
 <section id="buffers-1" class="level2 unnumbered unlisted">
@@ -369,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 </ul>
 <div class="absolute" data-bottom="0" data-left="0" width="100%">
-<p><img src="assets/slide12-diagram.jpg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
+<p><img src="assets/many_packets.svg" class="img-fluid" alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."></p>
 </div>
 </section>
 <section id="http-buffers" class="level2">
@@ -394,9 +395,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li><code>Read</code> returns how many bytes it read. Only use that many</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">...)</span>              <span class="co">// Wrong: Always appends 2048 bytes</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">[:</span>bytesRead<span class="op">]...)</span>  <span class="co">// Right: Only the bytes that were read</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb11-1"><a href="#cb11-1"></a>bytesRead<span class="op">,</span> err <span class="op">:=</span> reader<span class="op">.</span>Read<span class="op">(</span>buffer<span class="op">)</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">...)</span>              <span class="co">// Wrong: Always appends 2048 bytes</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>body <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>body<span class="op">,</span> buffer<span class="op">[:</span>bytesRead<span class="op">]...)</span>  <span class="co">// Right: Only the bytes that were read</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>Read</code> reuses the same buffer every time
 <ul>
@@ -472,18 +473,18 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Without this header, the browser may download the entire file and might not let the user skip ahead</li>
 </ul>
-<pre class="http"><code>HTTP/1.1 200 OK
-Content-Type: video/mp4
-Content-Length: 10000
-Accept-Ranges: bytes
-X-Content-Type-Options: nosniff
-
-&lt;all 10000 bytes of the file&gt;</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href="#cb12-1"></a>HTTP/1.1 200 OK</span>
+<span id="cb12-2"><a href="#cb12-2"></a>Content-Type: video/mp4</span>
+<span id="cb12-3"><a href="#cb12-3"></a>Content-Length: 10000</span>
+<span id="cb12-4"><a href="#cb12-4"></a>Accept-Ranges: bytes</span>
+<span id="cb12-5"><a href="#cb12-5"></a>X-Content-Type-Options: nosniff</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a>&lt;all 10000 bytes of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="the-range-header" class="level2">
 <h2 class="anchored" data-anchor-id="the-range-header">The Range Header</h2>
-<pre class="http"><code>GET /public/videos/abc123.mp4 HTTP/1.1
-Range: bytes=0-99</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
+<span id="cb13-2"><a href="#cb13-2"></a>Range: bytes=0-99</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Positions are byte offsets in the file, starting at 0</li>
 <li>Three forms:</li>
@@ -519,14 +520,14 @@ Range: bytes=0-99</code></pre>
 </section>
 <section id="partial-content" class="level2">
 <h2 class="anchored" data-anchor-id="partial-content">206 Partial Content</h2>
-<pre class="http"><code>HTTP/1.1 206 Partial Content
-Content-Type: video/mp4
-Content-Length: 100
-Content-Range: bytes 0-99/10000
-Accept-Ranges: bytes
-X-Content-Type-Options: nosniff
-
-&lt;bytes 0 through 99 of the file&gt;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb14-2"><a href="#cb14-2"></a>Content-Type: video/mp4</span>
+<span id="cb14-3"><a href="#cb14-3"></a>Content-Length: 100</span>
+<span id="cb14-4"><a href="#cb14-4"></a>Content-Range: bytes 0-99/10000</span>
+<span id="cb14-5"><a href="#cb14-5"></a>Accept-Ranges: bytes</span>
+<span id="cb14-6"><a href="#cb14-6"></a>X-Content-Type-Options: nosniff</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a>&lt;bytes 0 through 99 of the file&gt;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>Content-Range: bytes {first}-{last}/{total}</code>
 <ul>
@@ -549,8 +550,8 @@ X-Content-Type-Options: nosniff
 </ul></li>
 <li>Go slices are exclusive on the end</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode go code-with-copy"><code class="sourceCode go"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data<span class="op">[</span>first <span class="op">:</span> last<span class="op">+</span><span class="dv">1</span><span class="op">]</span>     <span class="co">// Bytes first through last, inclusive</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>length <span class="op">:=</span> last <span class="op">-</span> first <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource go number-lines code-with-copy"><code class="sourceCode go"><span id="cb15-1"><a href="#cb15-1"></a>data<span class="op">[</span>first <span class="op">:</span> last<span class="op">+</span><span class="dv">1</span><span class="op">]</span>     <span class="co">// Bytes first through last, inclusive</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>length <span class="op">:=</span> last <span class="op">-</span> first <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Off-by-one errors are the most common bug in range requests
 <ul>
@@ -566,9 +567,9 @@ X-Content-Type-Options: nosniff
 <li>Respond with <code>416 Range Not Satisfiable</code></li>
 <li><code>Content-Range</code> uses <code>*</code> for the range and still includes the total size</li>
 </ul>
-<pre class="http"><code>HTTP/1.1 416 Range Not Satisfiable
-Content-Range: bytes */10000
-Content-Length: 0</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a href="#cb16-1"></a>HTTP/1.1 416 Range Not Satisfiable</span>
+<span id="cb16-2"><a href="#cb16-2"></a>Content-Range: bytes */10000</span>
+<span id="cb16-3"><a href="#cb16-3"></a>Content-Length: 0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="limiting-response-size" class="level2">
 <h2 class="anchored" data-anchor-id="limiting-response-size">Limiting Response Size</h2>
@@ -584,11 +585,11 @@ Content-Length: 0</code></pre>
 </ul></li>
 <li>The browser will request the rest when it needs them</li>
 </ul>
-<pre class="http"><code>GET /public/videos/abc123.mp4 HTTP/1.1
-Range: bytes=0-</code></pre>
-<pre class="http"><code>HTTP/1.1 206 Partial Content
-Content-Range: bytes 0-2097151/1073741824
-Content-Length: 2097152</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1"><a href="#cb17-1"></a>GET /public/videos/abc123.mp4 HTTP/1.1</span>
+<span id="cb17-2"><a href="#cb17-2"></a>Range: bytes=0-</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1"><a href="#cb18-1"></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb18-2"><a href="#cb18-2"></a>Content-Range: bytes 0-2097151/1073741824</span>
+<span id="cb18-3"><a href="#cb18-3"></a>Content-Length: 2097152</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="what-the-browser-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-browser-does">What the Browser Does</h2>
@@ -627,10 +628,10 @@ Content-Length: 2097152</code></pre>
 <li>Browser behavior is unpredictable. Use curl to send exactly the Range you want to test</li>
 <li><code>-D -</code> prints the response headers, <code>-o</code> saves the body</li>
 </ul>
-<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-D</span> <span class="at">-</span> <span class="at">-o</span> part.bin <span class="at">-H</span> <span class="st">"Range: bytes=0-99"</span> http://localhost:8080/public/videos/test.mp4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre class="http"><code>HTTP/1.1 206 Partial Content
-Content-Range: bytes 0-99/10000
-Content-Length: 100</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-D</span> <span class="at">-</span> <span class="at">-o</span> part.bin <span class="at">-H</span> <span class="st">"Range: bytes=0-99"</span> http://localhost:8080/public/videos/test.mp4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource http number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1"><a href="#cb20-1"></a>HTTP/1.1 206 Partial Content</span>
+<span id="cb20-2"><a href="#cb20-2"></a>Content-Range: bytes 0-99/10000</span>
+<span id="cb20-3"><a href="#cb20-3"></a>Content-Length: 100</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>Check that <code>part.bin</code> is exactly 100 bytes</li>
 <li>Test every form, a range past the end, and a request with no Range header</li>
@@ -649,6 +650,37 @@ Content-Length: 100</code></pre>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

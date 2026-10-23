@@ -1,6 +1,5 @@
 ---
 title: "Handling Large Files"
-subtitle: "CSE312 — Web Development"
 lang: en
 
 description: "Buffering large uploads, identifying file types, and serving large files with Range requests"
@@ -177,7 +176,7 @@ Content-Type: image/png
   - Returns some bytes of the request
 
 ::: {.absolute bottom=0 left=0 width="100%"}
-![](assets/slide09-diagram.jpg){fig-alt="A User box with an arrow labeled \"User sends data to the server\" pointing to a Server box. A single small packet travels along the arrow."}
+![](assets/one_packet.svg){fig-alt="A User box with an arrow labeled \"User sends data to the server\" pointing to a Server box. A single packet travels along the arrow."}
 :::
 
 ## Buffer Questions
@@ -189,7 +188,7 @@ Content-Type: image/png
 - What if the data contains streaming video that never ends?
 
 ::: {.absolute bottom=0 left=0 width="100%"}
-![](assets/slide10-diagram.jpg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
+![](assets/many_packets.svg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
 :::
 
 ## Buffer Answer
@@ -199,7 +198,7 @@ Content-Type: image/png
   - For GET requests the entire request is smaller than the buffer (Safe assumption in this course)
 
 ::: {.absolute bottom=0 left=0 width="100%"}
-![](assets/slide11-diagram.jpg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
+![](assets/many_packets.svg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
 :::
 
 ## Buffers {.unnumbered .unlisted}
@@ -210,7 +209,7 @@ Content-Type: image/png
   - Combine the bytes from multiple calls to receive the entire file
 
 ::: {.absolute bottom=0 left=0 width="100%"}
-![](assets/slide12-diagram.jpg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
+![](assets/many_packets.svg){fig-alt="The same User to Server arrow, now with a long line of packets spread out along it, still in transit."}
 :::
 
 ## HTTP Buffers
