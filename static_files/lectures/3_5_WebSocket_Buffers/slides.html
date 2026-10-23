@@ -28,8 +28,74 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -122,6 +188,7 @@
     }
   </style>
   </head><body class="quarto-dark"><a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("main-content")) {
@@ -143,31 +210,51 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">WebSocket Buffering</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="websocket-buffers" class="slide level2">
-<h2>WebSocket Buffers</h2>
-</section>
-<section id="slide-2" class="slide level2">
-<h2>Slide 2</h2>
+<section>
+<section id="websocket-buffers" class="title-slide slide level1 center">
+<h1>WebSocket Buffers</h1>
 
-<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="special-cases" class="slide level2">
-<h2>Special Cases</h2>
+</section>
+<section id="reads-dont-line-up-with-frames" class="slide level2">
+<h2>Reads Don't Line Up With Frames</h2>
 <ul>
-<li>Let's talk about 3 special cases that will come up when implementing WebSockets
+<li>TCP delivers a stream of bytes, not messages</li>
+<li>One <code>Read</code> from the socket can return:
 <ul>
-<li>Buffering large frames</li>
-<li>Multiple frames per message using the fin bit and continuation frames</li>
-<li>Multiple frames being sent back-to-back messages</li>
+<li>Part of a frame</li>
+<li>Exactly one frame</li>
+<li>The end of one frame and the start of the next</li>
+<li>Several frames</li>
+</ul></li>
+<li>The only way to delimit frames are by payload length
+<ul>
+<li>Just like <code>Content-Length</code> for HTTP requests</li>
 </ul></li>
 </ul>
 </section>
-<section id="buffering-large-frames" class="slide level2">
+<section id="special-cases" class="slide level2">
+<h2>Special Cases</h2>
+<ul>
+<li>We'll talk about 4 special cases that will come up when implementing WebSockets
+<ul>
+<li>Buffering large frames</li>
+<li>Multiple frames per message using the fin bit and continuation frames</li>
+<li>Control frames in the middle of a multi-frame message</li>
+<li>Multiple frames being sent back-to-back</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="buffering-large-frames" class="title-slide slide level1 center">
+<h1>Buffering Large Frames</h1>
+
+</section>
+<section id="buffering-large-frames-1" class="slide level2">
 <h2>Buffering Large Frames</h2>
 <ul>
 <li>You will sometimes receive WebSocket frames that are large enough that they need to be buffered
@@ -182,179 +269,332 @@
 <li>Keep reading bytes from the socket until you've read the entire frame
 <ul>
 <li>Payload length does not include the header bytes</li>
+<li>Size of headers depends on the payload length (2 or 8 extra bytes) and mask (4 extra bytes)</li>
 </ul></li>
-<li>Process the request</li>
+<li>Process the frame</li>
 </ul></li>
 </ul>
+</section></section>
+<section>
+<section id="continuation-frames" class="title-slide slide level1 center">
+<h1>Continuation Frames</h1>
+
 </section>
-<section id="continuation-frames" class="slide level2">
+<section id="continuation-frames-1" class="slide level2">
 <h2>Continuation Frames</h2>
 <ul>
-<li>You will sometimes receive very large messages from client that will be sent in multiple frames (&gt;131,000 bytes in Chrome)
+<li>You will sometimes receive very large messages from clients that will be sent in multiple frames
 <ul>
 <li>Fin bit will be 0 until the last frame</li>
 <li>opcode will be 0000 for all but the first frame</li>
 <li>Payload length is only the length of that frame</li>
 </ul></li>
+<li>Sending a message &gt;131,072 (2^17) bytes in Chrome will be sent in multiple frames
+<ul>
+<li>Great for testing since this is predictable</li>
+</ul></li>
+<li>Firefox will send messages in a single frame</li>
+<li>Test thoroughly. If you only test in Firefox, you did not test this feature</li>
 </ul>
-
-<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="continuation-frames-1" class="slide level2">
+</section>
+<section id="continuation-frames-2" class="slide level2">
 <h2>Continuation Frames</h2>
 <ul>
 <li>When you read a frame with a fin bit of 0:
 <ul>
-<li>Keep reading frames until you read a frame with a fin bit of 1</li>
+<li>Keep reading frames until you read a frame with a fin bit of 1 and opcode of 0000</li>
 <li>Combine the payload of all frames, then process the entire message</li>
 </ul></li>
 </ul>
 
-<img data-src="assets/slide02-1.png" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="continuation-frames-2" class="slide level2">
+<img data-src="assets/frame_format.svg" alt="The WebSocket frame format from RFC 6455 section 5.2, the same diagram as earlier: FIN, RSV1-3, opcode, MASK, payload len, optional extended payload length, optional masking key, payload data." class="r-stretch"></section>
+<section id="continuation-frames-3" class="slide level2">
 <h2>Continuation Frames</h2>
 <ul>
-<li>Example of one message sent over 3 frames</li>
+<li>One message sent over 3 frames</li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>Frame 3</p>
-<p>fin bit: 0</p>
-<p>payload length: 11</p>
-<p>payload: "Never look "</p>
-<p>fin bit: 0</p>
-<p>payload length: 14</p>
-<p>payload: "directly into "</p>
-<p>fin bit: 1</p>
-<p>payload length: 7</p>
-<p>payload: "the sun"</p>
-<p>Message: Never look directly into the sun</p>
 
-<img data-src="assets/slide07-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="back-to-back-frames" class="slide level2">
+<img data-src="assets/continuation_frames.svg" alt="Three frames. Frame 1: FIN 0, opcode 0001 (text), payload length 11, payload &quot;Never look &quot;. Frame 2: FIN 0, opcode 0000 (continuation), payload length 14, payload &quot;directly into &quot;. Frame 3: FIN 1, opcode 0000 (continuation), payload length 7, payload &quot;the sun&quot;. Arrows from all three point to the combined message: Never look directly into the sun." class="r-stretch"></section>
+<section id="control-frames-mid-message" class="slide level2">
+<h2>Control Frames Mid-Message</h2>
+<ul>
+<li>Control frames (close, ping, pong) can arrive <span class="yellow">between the frames of a fragmented message</span>
+<ul>
+<li>They are never fragmented themselves</li>
+</ul></li>
+<li>Example: a pong arrives in the middle of "Never look directly into the sun"</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Frame</th>
+<th>FIN</th>
+<th>Opcode</th>
+<th>Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0</td>
+<td>0001 (text)</td>
+<td>"Never look "</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>1010 (pong)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0</td>
+<td>0000 (continuation)</td>
+<td>"directly into "</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>0000 (continuation)</td>
+<td>"the sun"</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Handle the pong right away. Don't add it to the message</li>
+<li>On HW4 your server pings every 5 seconds. A large message will be interrupted eventually
+<ul>
+<li>This will be checked during grading of objective 3</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="back-to-back-frames" class="title-slide slide level1 center">
+<h1>Back-to-back Frames</h1>
+
+</section>
+<section id="back-to-back-frames-1" class="slide level2">
 <h2>Back-to-back Frames</h2>
 <ul>
 <li>Multiple WebSocket frames can be sent back-to-back on the same connection
 <ul>
-<li>Especially when continuation frames are used</li>
+<li>Nearly guaranteed when continuation frames are used</li>
 </ul></li>
 <li>If you read more bytes than you expect, you have read the headers of the next frame</li>
-<li>Use the payload length to know how many bytes to expect
+<li>Use the payload length to delimit frames
 <ul>
 <li>If you read &lt; payload length bytes, you should buffer</li>
 <li>If you read &gt; payload length bytes, store the extra bytes as the start of the next frame</li>
 </ul></li>
 </ul>
 </section>
-<section id="back-to-back-frames-1" class="slide level2">
-<h2>Back-to-back Frames</h2>
-<ul>
-<li>To test for back-to-back frames:
-<ul>
-<li>Edit the front end JavaScript to send a message multiple times when the user sends a message</li>
-<li>Make sure each message is duplicated the correct number of times</li>
-<li>With this modification, every sent message should appear in chat 5 times</li>
-</ul></li>
-</ul>
-
-<img data-src="assets/slide09-1.png" alt="TODO: describe this image" class="r-stretch"></section>
 <section id="back-to-back-frames-2" class="slide level2">
 <h2>Back-to-back Frames</h2>
 <ul>
-<li>Example</li>
 <li>Two frames are sent by the client back-to-back
 <ul>
 <li>The first frame has a payload length of 1500
 <ul>
 <li>1508 total bytes including headers</li>
 </ul></li>
-<li>The first frame has a payload length of 2000
+<li>The second frame has a payload length of 2000
 <ul>
 <li>2008 total bytes including headers</li>
 </ul></li>
 </ul></li>
 <li>Both frames have been processed by TCP and are ready to be read</li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>fin bit: 1</p>
-<p>payload length: 1500</p>
-<p>fin bit: 1</p>
-<p>payload length: 2000</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Frame</th>
+<th>FIN</th>
+<th>Payload Length</th>
+<th>Total Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1500</td>
+<td>1508</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1</td>
+<td>2000</td>
+<td>2008</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="back-to-back-frames-3" class="slide level2">
+<section id="back-to-back-frames-3" class="slide level2 unnumbered unlisted">
 <h2>Back-to-back Frames</h2>
 <ul>
 <li>There are 3516 bytes ready to be read from the socket</li>
-<li>And you call
+<li>And you call <code>conn.Read(buffer)</code> with a 2048 byte buffer
 <ul>
-<li>This will read unto 2048 bytes from the socket</li>
+<li>This will read up to 2048 bytes from the socket</li>
 <li>There are &gt;2048 bytes ready, so you get the first 2048</li>
 </ul></li>
 <li>You read the entirety of the first frame, and the first 540 bytes of the second frame</li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>fin bit: 1</p>
-<p>payload length: 1500</p>
-<p>fin bit: 1</p>
-<p>payload length: 2000</p>
 
-<img data-src="assets/slide11-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="back-to-back-frames-4" class="slide level2">
+<img data-src="assets/b2b_read1.svg" alt="Frame 1 (payload length 1500, 1508 bytes total) followed by Frame 2 (payload length 2000, 2008 bytes total). A bracket labeled Read 1: 2048 bytes covers all of Frame 1 and the first 540 bytes of Frame 2." class="r-stretch"></section>
+<section id="back-to-back-frames-4" class="slide level2 unnumbered unlisted">
 <h2>Back-to-back Frames</h2>
 <ul>
-<li>If you're not careful, you loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
+<li>If you're not careful, your loop will go back to the socket and read the remaining 1468 bytes of the second frame and attempt to parse it</li>
 <li>Since you start in the middle of the frame, you will run header parsing code on masked payload bytes
 <ul>
 <li>You will get errors!</li>
 </ul></li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>fin bit: 1</p>
-<p>payload length: 1500</p>
-<p>fin bit: 1</p>
-<p>payload length: 2000</p>
-
-<img data-src="assets/slide12-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="back-to-back-frames-5" class="slide level2">
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<p><img data-src="assets/b2b_read2.svg" alt="The same two frames. A bracket labeled Read 2: 1468 bytes covers the end of Frame 2, starting in the middle of Frame 2's payload."></p>
+</div>
+</section>
+<section id="back-to-back-frames-5" class="slide level2 unnumbered unlisted">
 <h2>Back-to-back Frames</h2>
 <ul>
 <li>When parsing the first frame:
 <ul>
 <li>Use the payload length to detect that you've read too many bytes</li>
-<li>Store the extra bytes in a separate variable</li>
+<li>Store the extra bytes in a separate data structure</li>
 <li>Parse the first frame</li>
 </ul></li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>fin bit: 1</p>
-<p>payload length: 1500</p>
-<p>fin bit: 1</p>
-<p>payload length: 2000</p>
-
-<img data-src="assets/slide13-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="back-to-back-frames-6" class="slide level2">
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<p><img data-src="assets/b2b_extra.svg" alt="The same two frames. The first read is split in two. A bracket under Frame 1 reads Frame 1: 1508 bytes, parse it. A bracket under the first 540 bytes of Frame 2 reads 540 extra bytes, save them."></p>
+</div>
+</section>
+<section id="back-to-back-frames-6" class="slide level2 unnumbered unlisted">
 <h2>Back-to-back Frames</h2>
 <ul>
-<li>When you finish processing the first frame, start parsing the second frame with the bytes stored in the operate variable</li>
+<li>When you finish processing the first frame, start parsing the second frame with the stored bytes</li>
 <li>Check the payload length and buffer if needed to read the rest of the frame</li>
-<li>Recommendation: Use your top-level loop to do this so you can handle any number of back-to-back frames</li>
+<li>Recommendation: Use your top-level WS loop to do this so you can handle any number of back-to-back frames
+<ul>
+<li>Only read from the socket if you don't have any stored bytes, or you are buffering with a known payload length</li>
+</ul></li>
 </ul>
-<p>Frame 1</p>
-<p>Frame 2</p>
-<p>fin bit: 1</p>
-<p>payload length: 1500</p>
-<p>fin bit: 1</p>
-<p>payload length: 2000</p>
-
-<img data-src="assets/slide14-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
-<section id="demos" class="slide level2">
-<h2>Demos</h2>
-
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<p><img data-src="assets/b2b_next.svg" alt="The same two frames. Frame 1 is dimmed and labeled done. Under Frame 2, one bracket covers the 540 saved bytes and another covers Read 2: 1468 bytes, the rest of Frame 2. A bracket under both reads Frame 2: 540 + 1468 = 2008 bytes."></p>
+</div>
+</section>
+<section id="multiple-frames-in-one-read" class="slide level2">
+<h2>Multiple Frames in One Read</h2>
+<ul>
+<li>The client sends 4 small frames back-to-back
+<ul>
+<li>Each has a payload length of 592: 600 bytes including headers</li>
+<li>2400 bytes are ready to be read</li>
+</ul></li>
+<li><code>conn.Read(buffer)</code> with a 2048 byte buffer returns:
+<ul>
+<li>All of frames 1, 2, and 3 (1800 bytes)</li>
+<li>The first 248 bytes of frame 4</li>
+</ul></li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<p><img data-src="assets/b2b_three_and_a_half.svg" alt="Four back-to-back frames, each with payload length 592 and 600 bytes total. A bracket labeled Read 1: 2048 bytes covers Frames 1, 2, and 3 and the first 248 bytes of Frame 4."></p>
+</div>
+</section>
+<section id="multiple-frames-in-one-read-1" class="slide level2 unnumbered unlisted">
+<h2>Multiple Frames in One Read</h2>
+<ul>
+<li>Handle frames 1, 2, and 3 <span class="yellow">before you read again</span></li>
+<li>Frame 4 is incomplete: keep its 248 bytes and read more bytes from the socket
+<ul>
+<li>Second read returns the last 352 bytes of frame 4</li>
+</ul></li>
+</ul>
+<div class="absolute" style="left: 0px; bottom: 0px; width: 100%; ">
+<p><img data-src="assets/b2b_three_and_a_half_next.svg" alt="The same four frames. Brackets under Frames 1, 2, and 3 read 1. handle it, 2. handle it, and 3. handle it. Under Frame 4, one bracket covers 248 saved bytes and another covers Read 2: 352 bytes. A bracket under all of Frame 4 reads Frame 4: 248 + 352 = 600 bytes."></p>
+</div>
+</section>
+<section id="dont-assume-the-header-arrived" class="slide level2">
+<h2>Don't Assume the Header Arrived</h2>
+<ul>
+<li>With back-to-back frames, a read could end in the middle of the headers of a frame
+<ul>
+<li>Even 1 byte into the next frame's header</li>
+</ul></li>
+<li>Before parsing a header, check that you have all of its bytes
+<ul>
+<li>If you don't, read more</li>
+</ul></li>
+<li>Make sure you have at least 2 bytes before parsing
+<ul>
+<li>Check the 7-bit payload length to see if you have all the header bytes</li>
+<li>Buffer as needed</li>
+</ul></li>
+<li>This will not be explicitly checked during HW4 grading, but you might experience strange bugs if you don't handle it</li>
+</ul>
+</section></section>
+<section>
+<section id="limits" class="title-slide slide level1 center">
+<h1>Limits</h1>
 
 </section>
+<section id="dont-trust-the-length" class="slide level2">
+<h2>Don't Trust the Length</h2>
+<ul>
+<li>The payload length is chosen by the client
+<ul>
+<li>The 64-bit length lets an attacker claim a 16 EB frame</li>
+</ul></li>
+<li>Don't allocate <code>make([]byte, payloadLength)</code> from an untrusted length</li>
+<li>An attacker can also send continuation frames forever
+<ul>
+<li>Limit the total size of a message, not only the size of a frame</li>
+</ul></li>
+<li>Too big? Send a close frame with status 1009 (Message Too Big) and close the connection</li>
+</ul>
+</section></section>
+<section>
+<section id="testing" class="title-slide slide level1 center">
+<h1>Testing</h1>
+
+</section>
+<section id="back-to-back-frames-7" class="slide level2">
+<h2>Back-to-back Frames</h2>
+<ul>
+<li>To test for back-to-back frames:
+<ul>
+<li>Edit the front end JavaScript to send a message multiple times when the user sends a message</li>
+<li>Make sure each message is duplicated the correct number of times</li>
+<li>With this modification, every echoed message should appear 5 times</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a></a><span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb1-2"><a></a>    socket<span class="op">.</span><span class="fu">send</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({<span class="st">'messageType'</span><span class="op">:</span> <span class="st">'echo_client'</span><span class="op">,</span> <span class="st">'text'</span><span class="op">:</span> text}))<span class="op">;</span></span>
+<span id="cb1-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="testing-without-a-browser" class="slide level2">
+<h2>Testing Without a Browser</h2>
+<ul>
+<li>The browser decides how your messages are split. You can't control it</li>
+<li>Write a small Go test client
+<ul>
+<li><code>net.Dial("tcp", "localhost:8080")</code>, send a handshake, read the 101</li>
+<li>Then write hand-built frames with exact control over every byte</li>
+</ul></li>
+<li>Things to try:
+<ul>
+<li>Two frames in one <code>Write</code> (back-to-back)</li>
+<li>One frame split across two <code>Write</code>s with a <code>time.Sleep</code> between them (split header)</li>
+<li>A pong between two continuation frames</li>
+</ul></li>
+<li>Frames from a client must be masked, but the mask can be <code>00 00 00 00</code>
+<ul>
+<li>XOR with 0 doesn't change the payload, so you can read your test frames</li>
+</ul></li>
+</ul>
+
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
