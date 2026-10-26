@@ -1,0 +1,248 @@
+---
+title: "WebSocket Concurrency"
+lang: en
+
+description: "Sharing state between goroutines: data races, mutexes, the race detector, heartbeats, slow clients, and C10k"
+
+reading-list:
+  - url: "http://www.kegel.com/c10k.html"
+    text: "The C10K Problem"
+
+released: true
+---
+
+# Shared State
+
+## Before WebSockets
+
+- Recall: One goroutine per TCP connection
+- Each goroutine only touched its own connection
+  - A request arrives on a connection, the response goes back on the same connection
+- Shared data lived in the database
+  - The database handles concurrent access for you
+- Goroutines never had to know about each other
+
+## WebSockets Change This
+
+- A message on one connection causes writes on *other* connections
+  - Broadcasting the active users list
+  - Sending a DM to another user
+  - Forwarding a WebRTC offer to another peer
+- Goroutines need a shared data structure to find each other's connections
+  - e.g. A map of username to Connection
+
+- [Many goroutines will read and write the same memory concurrently]{.yellow}
+
+## Who Touches the Shared Data?
+
+| Event | Goroutine | Access |
+|---|---|---|
+| A handshake completes | The new connection's | Add a client |
+| A close frame or read error | The closing connection's | Remove a client |
+| No pong in time | A heartbeat goroutine | Remove a client |
+| A user's list changes | Whoever changed it | Read every client |
+| A DM is sent | The sender's | Find the recipient's clients |
+
+- Any of these can happen at any moment, or all at once
+
+# Data Races
+
+## Data Races
+
+- A **data race**: two goroutines access the same memory at the same time, at least one of them writes, and nothing coordinates them
+- The result depends on timing: lost updates, corrupted data, crashes
+
+
+## Maps Are Not Safe
+
+- Go maps are not safe for concurrent use
+- The runtime checks for concurrent access and kills your **entire server**:
+
+```text
+fatal error: concurrent map writes
+fatal error: concurrent map read and map write
+```
+
+- This is not a panic you can recover from
+  - Server crashes
+  - Every user is disconnected, not just the one who triggered it
+- It only happens when the timing lines up
+  - Server works perfectly with 2 tabs open
+  - Crashes with 50 connections
+
+## The Race Detector
+
+```bash
+go run -race .
+```
+
+- Watches every memory access while your server runs
+- Can report races that happen, even if nothing crashed
+- It will not find all your races
+  - Misses many races when networking is involved (Most goroutines are waiting to read from a socket)
+  - Only finds races that actually happen while it runs
+  - Open many connections at once while testing to maximize the races it finds
+- Slower and uses more memory. Use it while developing, not in production
+
+# Mutexes
+
+## sync.Mutex
+
+```go
+type Registry struct {
+    mu      sync.Mutex
+    clients map[*Client]bool
+}
+
+func (r *Registry) Add(client *Client) {
+    r.mu.Lock()
+    defer r.mu.Unlock()
+    r.clients[client] = true
+}
+```
+
+- Only one goroutine can hold the lock at a time
+  - Every other goroutine waits at `Lock()` until it is unlocked
+- The code between `Lock()` and `Unlock()` is a **critical section**
+- `defer` unlocks even if the function returns early
+
+## Every Access Needs the Lock
+
+- Reads need the lock too
+  - A read during a write can see a half-updated map
+- Wrap the map in a struct, and only touch it through methods that lock
+  - It's then impossible to forget the lock somewhere
+
+## Deadlock
+
+- Go's mutexes are not reentrant
+  - Locking a mutex you already hold blocks forever
+- Your server doesn't crash. It stops responding to anything that needs that lock
+- Decide which functions expect the lock to already be held, and never call a locking function while holding the lock
+
+## Check, Then Act
+
+- Example: a map from username to connection
+
+```go
+// Wrong: the map can change between the two critical sections
+r.mu.Lock()
+_, exists := r.users[username]
+r.mu.Unlock()
+if !exists {
+    r.mu.Lock()
+    r.users[username] = client
+    r.mu.Unlock()
+}
+```
+
+- Every individual access holds the lock, and there's still a bug
+  - Two goroutines can both see `exists == false` before either writes
+- The check and the action must be in the **same** critical section
+
+## Multiple Tabs
+
+- One user with 3 tabs open = 3 connections with the same username
+- The active users list should show them once
+  - Store connections, not users
+  - Build the list from the unique usernames of all connections
+- A user leaves the list only when their **last** connection closes
+- Sending to a user means sending to every one of their connections
+  - A DM should appear in all 3 tabs
+
+This is an optional objective on HW4
+
+# Writing to Connections
+
+## Who Writes to a Connection?
+
+- Its own goroutine (eg. echo replies)
+- Other connections' goroutines (broadcasts, DMs, WebRTC signaling)
+- Its heartbeat goroutine (a ping every 5 seconds)
+- [Many goroutines write to the same socket at the same time]{.yellow}
+
+## Interleaved Frames
+
+```go
+conn.Write(header)        // Goroutine A sends a frame in two writes...
+                          // ...Goroutine B: conn.Write(pingFrame)
+conn.Write(payload)
+```
+
+- The browser reads A's header, then B's ping as if it were A's payload
+  - Every byte after that is parsed from the wrong position
+  - The browser closes the connection with an error
+- `net.Conn` allows concurrent writes, and the bytes from one `Write` call are sent together
+  - Two `Write` calls for one frame can be split apart
+- Send entire frames in one Write, or protect writes with a mutex
+
+
+## One Reader Per Connection
+
+- Do not read concurrently from the same socket
+- Only the connection's own goroutine reads from its socket
+- Two goroutines reading the same socket each get random pieces of the stream
+  - Neither can parse frames
+- Other goroutines only ever write to a connection
+
+
+## Heartbeat goroutine
+
+- Start a heartbeat goroutine for each connection after the handshake
+- When the reading goroutine sees a pong frame, notify the heartbeat goroutine
+  - Shared data
+  - Message over a channel
+- When a connection ends, end the heartbeat goroutine for that connection as well
+- Otherwise, you have a **goroutine leak**
+  - The heartbeat keeps sending pings to a closed socket
+  - Memory grows with every disconnect
+
+# C10k
+
+## The C10k Problem
+
+- 1999: How can one server handle 10,000 connections at the same time?
+- One OS thread per connection
+  - Each thread reserves megabytes for its stack
+  - Switching between thousands of threads is expensive
+- The answer at the time: event loops
+  - One thread watches thousands of sockets
+  - Runs a callback when a socket is ready
+  - nginx and Node.js work this way
+- The cost: callbacks everywhere, and you can never block
+
+## Goroutines and C10k
+
+- Goroutines start with a stack of a few KB that grows as needed
+- A goroutine blocked on `Read` is parked until its socket has data
+  - It isn't holding an OS thread while it waits
+- You write simple blocking code, one goroutine per connection
+  - You get the scalability of an event loop
+- A big reason Go is popular for servers
+
+## WebSockets Make It Real
+
+- HTTP: A connection is busy for milliseconds
+- WebSockets: Every open tab holds a connection for hours
+  - 10,000 users online = 10,000 open connections, all the time
+- Each connection on your server: 2-3 goroutines (reader, heartbeat, maybe writer), a read buffer, and an entry in your registry
+- Limits you'll hit before the CPU:
+  - File descriptors: every socket is a file, and `ulimit -n` is often 1024 by default (Can be raised to millions)
+  - Memory for each connection's buffers
+  - Broadcasts: one message to 10,000 users is 10,000 writes
+
+# Testing Concurrency
+
+## Your Server Under Load
+
+- Two browser tabs will never find these bugs
+- Write a Go load test:
+  - 100 goroutines, each opening a WebSocket connection
+  - All sending messages at the same time
+  - All disconnecting at the same time
+- Run your server with `go run -race .` while the test runs
+- Check that:
+  - Your server is still running
+  - Every frame the clients received parses
+  - A new connection gets an accurate active users list
+- This is how HW4 will be tested

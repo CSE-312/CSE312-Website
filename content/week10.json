@@ -5,7 +5,7 @@
   "recitation": "Yes Recitation",
   "content": [
     {
-      "lecture": "23-ws_testing.json",
+      "lecture": "3_6_WebSocket_Concurrency",
       "day": "Monday",
       "date": "October 26"
     },

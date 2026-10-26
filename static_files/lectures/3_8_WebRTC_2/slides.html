@@ -210,14 +210,97 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">WebRTC Details</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="webrtc" class="slide level2">
-<h2>WebRTC</h2>
+<section>
+<section id="webrtc" class="title-slide slide level1 center">
+<h1>WebRTC</h1>
+
+</section>
+<section id="webrtc---overview" class="slide level2">
+<h2>WebRTC - Overview</h2>
+<ul>
+<li>Web Real Time Communication</li>
+<li>Establishes a live streaming peer-to-peer connection
+<ul>
+<li>We'll stream video and audio to make a video chat app</li>
+</ul></li>
+<li>Stable release in 2018</li>
+<li>Widely adopted by major browsers
+<ul>
+<li>Most of the WebRTC logic/code is built into your browser</li>
+</ul></li>
+</ul>
+</section>
+<section id="webrtc---overview-1" class="slide level2">
+<h2>WebRTC - Overview</h2>
+<ul>
+<li>WebRTC establishes a live streaming peer-to-peer connection</li>
+<li>Peer-to-peer
+<ul>
+<li>Two clients will communicate without the use of a server</li>
+<li>Your server will only help the clients establish the connection</li>
+<li>The server does not handle the steaming data</li>
+</ul></li>
+<li>Live streaming
+<ul>
+<li>The protocol is meant for live (real-time) streaming</li>
+<li>End-to-end delay is critical!</li>
+<li>Even a small delay will result in clients talking over each other on a voice/video call</li>
+</ul></li>
+</ul>
+</section>
+<section id="webrtc---overview-2" class="slide level2">
+<h2>WebRTC - Overview</h2>
+<ul>
+<li>TCP can be slow!
+<ul>
+<li>Meant for reliability</li>
+<li>If a packet is dropped, request a resend and wait</li>
+<li>Only deliver bytes after all packets arrive and are reassembled</li>
+<li>Not suitable for live [real-time] streaming*</li>
+</ul></li>
+</ul>
+<p>Other protocols are used when delays are tolerable (ie. not real-time) like YouTube Live or Twitch</p>
+</section>
+<section id="webrtc---overview-3" class="slide level2">
+<h2>WebRTC - Overview</h2>
+<ul>
+<li>WebRTC uses UDP instead of TCP</li>
+<li>UDP (User Datagram Protocol)
+<ul>
+<li>Meant for speed</li>
+<li>If a packet is dropped, it's lost forever. Move on with your life</li>
+<li>Bytes are delivered as soon as they are received</li>
+<li>Very close to using raw IP packets</li>
+</ul></li>
+</ul>
+</section>
+<section id="webrtc---overview-4" class="slide level2">
+<h2>WebRTC - Overview</h2>
+<ul>
+<li>Servers are still involved
+<ul>
+<li>We'll discuss 3 types of servers that assist in WebRTC connections</li>
+</ul></li>
+<li>Signalling Server
+<ul>
+<li>Passes messages between clients to help them establish a peer-to-peer connection</li>
+<li>Once the connection is established, the server's job is done (Unless you want to pass a disconnect message)</li>
+</ul></li>
+<li>STUN (Session Traversal Utilities for NAT) Server
+<ul>
+<li>A server that tells clients their public IP/port</li>
+</ul></li>
+<li>TURN (Traversal Using Relays around NAT) Server
+<ul>
+<li>Optional for WebRTC connections [Most of the time]</li>
+<li>All WebRTC packets for a connection are routed through the TURN server if one is used</li>
+</ul></li>
+</ul>
 </section>
 <section id="webrtc-1" class="slide level2">
 <h2>WebRTC</h2>
@@ -484,7 +567,7 @@
 <li>... Unless you run your own TURN server!</li>
 </ul>
 
-<img data-src="assets/rtc_turn.svg" alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer." class="r-stretch"></section>
+<img data-src="assets/rtc_turn.svg" alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer." class="r-stretch"></section></section>
 <section>
 <section id="stun-in-detail" class="title-slide slide level1 center">
 <h1>STUN in Detail</h1>
@@ -745,7 +828,6 @@
 <ul>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">Introduction to WebRTC Protocols (MDN)</a></li>
 <li><a href="https://www.rfc-editor.org/rfc/rfc8489">RFC 8489 - STUN</a></li>
-<li><a href="https://www.rfc-editor.org/rfc/rfc8445">RFC 8445 - ICE</a></li>
 </ul>
 </section></section>
     </div>

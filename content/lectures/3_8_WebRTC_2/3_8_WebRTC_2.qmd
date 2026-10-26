@@ -1,6 +1,5 @@
 ---
 title: "WebRTC Details"
-subtitle: "CSE312 — Web Development"
 lang: en
 
 description: "Signaling, NATs, STUN, ICE candidates, and TURN: how two browsers find each other for a peer-to-peer connection"
@@ -10,15 +9,65 @@ reading-list:
     text: "Introduction to WebRTC Protocols (MDN)"
   - url: "https://www.rfc-editor.org/rfc/rfc8489"
     text: "RFC 8489 - STUN"
-  - url: "https://www.rfc-editor.org/rfc/rfc8445"
-    text: "RFC 8445 - ICE"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
 released: true
 ---
 
-## WebRTC
+# WebRTC
+
+
+## WebRTC - Overview
+
+- Web Real Time Communication
+- Establishes a live streaming peer-to-peer connection
+  - We'll stream video and audio to make a video chat app
+- Stable release in 2018
+- Widely adopted by major browsers
+  - Most of the WebRTC logic/code is built into your browser
+
+## WebRTC - Overview
+
+- WebRTC establishes a live streaming peer-to-peer connection
+- Peer-to-peer
+  - Two clients will communicate without the use of a server
+  - Your server will only help the clients establish the connection
+  - The server does not handle the steaming data
+- Live streaming
+  - The protocol is meant for live (real-time) streaming
+  - End-to-end delay is critical!
+  - Even a small delay will result in clients talking over each other on a voice/video call
+
+## WebRTC - Overview
+
+- TCP can be slow!
+  - Meant for reliability
+  - If a packet is dropped, request a resend and wait
+  - Only deliver bytes after all packets arrive and are reassembled
+  - Not suitable for live [real-time] streaming*
+
+Other protocols are used when delays are tolerable (ie. not real-time) like YouTube Live or Twitch
+
+## WebRTC - Overview
+
+- WebRTC uses UDP instead of TCP
+- UDP (User Datagram Protocol)
+  - Meant for speed
+  - If a packet is dropped, it's lost forever. Move on with your life
+  - Bytes are delivered as soon as they are received
+  - Very close to using raw IP packets
+
+## WebRTC - Overview
+
+- Servers are still involved
+  - We'll discuss 3 types of servers that assist in WebRTC connections
+- Signalling Server
+  - Passes messages between clients to help them establish a peer-to-peer connection
+  - Once the connection is established, the server's job is done (Unless you want to pass a disconnect message)
+- STUN (Session Traversal Utilities for NAT) Server
+  - A server that tells clients their public IP/port
+- TURN (Traversal Using Relays around NAT) Server
+  - Optional for WebRTC connections [Most of the time]
+  - All WebRTC packets for a connection are routed through the TURN server if one is used
 
 ## WebRTC
 
