@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <ul class="collapse">
   <li><a href="#websocket-buffers" id="toc-websocket-buffers" class="nav-link active" data-scroll-target="#websocket-buffers">WebSocket Buffers</a>
   <ul class="collapse">
-  <li><a href="#reads-dont-line-up-with-frames" id="toc-reads-dont-line-up-with-frames" class="nav-link" data-scroll-target="#reads-dont-line-up-with-frames">Reads Don't Line Up With Frames</a></li>
+  <li><a href="#tcp-is-a-stream" id="toc-tcp-is-a-stream" class="nav-link" data-scroll-target="#tcp-is-a-stream">TCP is a Stream</a></li>
   <li><a href="#special-cases" id="toc-special-cases" class="nav-link" data-scroll-target="#special-cases">Special Cases</a></li>
   </ul></li>
   <li><a href="#buffering-large-frames" id="toc-buffering-large-frames" class="nav-link" data-scroll-target="#buffering-large-frames">Buffering Large Frames</a>
@@ -183,8 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <section id="websocket-buffers" class="level1">
 <h1>WebSocket Buffers</h1>
-<section id="reads-dont-line-up-with-frames" class="level2">
-<h2 class="anchored" data-anchor-id="reads-dont-line-up-with-frames">Reads Don't Line Up With Frames</h2>
+<section id="tcp-is-a-stream" class="level2">
+<h2 class="anchored" data-anchor-id="tcp-is-a-stream">TCP is a Stream</h2>
 <ul>
 <li>TCP delivers a stream of bytes, not messages</li>
 <li>One <code>Read</code> from the socket can return:
@@ -194,7 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The end of one frame and the start of the next</li>
 <li>Several frames</li>
 </ul></li>
-<li>The only way to delimit frames are by payload length
+<li>The only way to delimit frames is by payload length
 <ul>
 <li>Just like <code>Content-Length</code> for HTTP requests</li>
 </ul></li>

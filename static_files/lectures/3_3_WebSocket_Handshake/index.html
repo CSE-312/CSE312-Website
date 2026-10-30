@@ -119,10 +119,12 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#websockets" id="toc-websockets" class="nav-link active" data-scroll-target="#websockets">WebSockets</a></li>
+  <li><a href="#websockets" id="toc-websockets" class="nav-link active" data-scroll-target="#websockets">WebSockets</a>
+  <ul class="collapse">
   <li><a href="#ajax-summary" id="toc-ajax-summary" class="nav-link" data-scroll-target="#ajax-summary">AJAX Summary</a></li>
   <li><a href="#websockets-1" id="toc-websockets-1" class="nav-link" data-scroll-target="#websockets-1">WebSockets</a></li>
   <li><a href="#websocket-overview" id="toc-websocket-overview" class="nav-link" data-scroll-target="#websocket-overview">WebSocket Overview</a></li>
+  </ul></li>
   <li><a href="#the-handshake" id="toc-the-handshake" class="nav-link" data-scroll-target="#the-handshake">The Handshake</a>
   <ul class="collapse">
   <li><a href="#websocket-handshake" id="toc-websocket-handshake" class="nav-link" data-scroll-target="#websocket-handshake">WebSocket Handshake</a></li>
@@ -188,9 +190,8 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="websockets" class="level2">
-<h2 class="anchored" data-anchor-id="websockets">WebSockets</h2>
-</section>
+<section id="websockets" class="level1">
+<h1>WebSockets</h1>
 <section id="ajax-summary" class="level2">
 <h2 class="anchored" data-anchor-id="ajax-summary">AJAX Summary</h2>
 <ul>
@@ -232,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Client and server send WebSocket messages/frames over the TCP connection until one side closes the connection</li>
 </ul></li>
 </ul>
+</section>
 </section>
 <section id="the-handshake" class="level1">
 <h1>The Handshake</h1>

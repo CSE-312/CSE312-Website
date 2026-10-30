@@ -220,8 +220,8 @@
 <h1>WebSocket Buffers</h1>
 
 </section>
-<section id="reads-dont-line-up-with-frames" class="slide level2">
-<h2>Reads Don't Line Up With Frames</h2>
+<section id="tcp-is-a-stream" class="slide level2">
+<h2>TCP is a Stream</h2>
 <ul>
 <li>TCP delivers a stream of bytes, not messages</li>
 <li>One <code>Read</code> from the socket can return:
@@ -231,7 +231,7 @@
 <li>The end of one frame and the start of the next</li>
 <li>Several frames</li>
 </ul></li>
-<li>The only way to delimit frames are by payload length
+<li>The only way to delimit frames is by payload length
 <ul>
 <li>Just like <code>Content-Length</code> for HTTP requests</li>
 </ul></li>
