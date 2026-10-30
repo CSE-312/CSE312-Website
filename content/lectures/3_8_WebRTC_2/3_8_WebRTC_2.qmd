@@ -5,6 +5,8 @@ lang: en
 description: "Signaling, NATs, STUN, ICE candidates, and TURN: how two browsers find each other for a peer-to-peer connection"
 
 reading-list:
+  - url: "https://docs.google.com/forms/d/e/1FAIpQLSdfAoyiMu7WZJfxliNoE3Hr9YIChWjw64FyorV_qQii9b31UQ/viewform?usp=publish-editor"
+    text: "Team Formation Form"
   - url: "https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols"
     text: "Introduction to WebRTC Protocols (MDN)"
   - url: "https://www.rfc-editor.org/rfc/rfc8489"
