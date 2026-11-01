@@ -3,721 +3,811 @@
 {% block title %}CSE312: Project{% endblock %}
 
 {% block header %}
-    <h1>Project</h1>
-    <hr/>
+<h1>Project</h1>
+<hr />
 {% endblock %}
 
 {% block task %}
 
+{#
+Planning notes (not rendered):
+80 points code
+20 points presentation
+
+Obj1 - HW1 - Deploy, use framework, make a static page [with API?]
+Obj2 - HW2 - Auth with JWTs and a separate auth service
+~HW3 - Media uploads
+Obj3 - HW4 - WS. Make it an MMO
+~Proj - per account rate limiting..
+~Proj - Add an extra layer to each HW (eg. JWTs)
+Obj5 - Report - Explain what _you_ did with links to your commits
+
+Obj4 - At least 1 thing from another course (Web apps are just apps that speak web protocols)
+#}
+
+<div class="card-header section-testing">
+    <div></div>
+</div>
+
+<div class="section-card card-testing hw-content">
+
+    <hr />
+    <h3>
+        Introduction
+    </h3>
+    <hr />
+    <p>
+        For the team project, you will build a web app where many users interact with each other in real-time,
+        and deploy it on the Internet. You have a large amount of freedom in what you build as long as it
+        meets the criteria outlined in this document.
+    </p>
+
+    <p>
+        In the homework, you built every feature starting from a TCP socket. In the project, you'll build an app of
+        your own design with a web framework. The project is meant to give you experience with real-world web app
+        development and you are allowed to use any resources you would be able to use on the job, including LLMs.
+    </p>
+
+    <p>
+        The project is divided into 4 objectives, worth 20 points each, and a presentation also worth 20 points.
+        Individual grading adjustments may apply to each team member based on their individual effort and completion
+        of the report and peer eval form.
+    </p>
+
+    <br>
+    <hr>
+    <h3>
+        Submissions
+    </h3>
+    <hr>
+    <br>
+
+    <p>
+        The project has the following submissions. Please remember to complete all submissions for your project to be
+        properly graded:
+    </p>
+
+    <table class="table table-bordered table-skinny">
+        <caption>Project submissions</caption>
+        <thead>
+            <tr>
+                <th scope="col">Submission</th>
+                <th scope="col">Submitted by</th>
+                <th scope="col">What it includes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSdfAoyiMu7WZJfxliNoE3Hr9YIChWjw64FyorV_qQii9b31UQ/viewform?usp=publish-editor">Team
+                        Formation Form</a>
+                </td>
+                <td>One member of each team</td>
+                <td>The members of your team</td>
+            </tr>
+            <tr>
+                <td>
+                    <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSfmAP8AN3gY5DZoDgG0vDvU6yJQaF07aqzwKRkEKHrSyFAD7w/viewform?usp=publish-editor">Team
+                        Details
+                        Form</a>
+                </td>
+                <td>One member of each team</td>
+                <td>
+                    The link to your team's GitHub repository (It must be public), and a short description of your app
+                    plan
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://calendly.com/hartloff/cse312-presentations">Presentation Sign Up</a>
+                </td>
+                <td>One member of each team</td>
+                <td>Your team's presentation time</td>
+            </tr>
+            <tr>
+                <td>
+                    <a
+                        href="https://docs.google.com/forms/d/e/1FAIpQLScK-J8jhk1TNGt2ko87ebmwGLWPG9NKjUQfaVf6ui7QV_s_yw/viewform?usp=publish-editor">Report
+                        and Peer Evals</a>
+                </td>
+                <td>Every team member</td>
+                <td>What <i>you</i> did for the project, and your evaluation of each of your teammates</td>
+            </tr>
+        </tbody>
+    </table>
 
 
-    <div class="card-header section-testing">
-        <div></div>
+    <br>
+    <hr>
+    <h3 id="individual-grading">
+        Report, Peer Evals, and Individual Grading
+    </h3>
+    <hr>
+    <br>
+
+    <p>
+        By the project deadline, every team member must submit the
+        <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLScK-J8jhk1TNGt2ko87ebmwGLWPG9NKjUQfaVf6ui7QV_s_yw/viewform?usp=publish-editor">report
+            and peer eval form</a>. In your report, you must:
+    </p>
+    <ul>
+        <li>
+            List each feature or part of the project you worked on, and explain what <em>you</em> did
+        </li>
+        <li>
+            Link to your commits on GitHub for each item in your list. These must be commits that you authored on
+            the default branch of your team's repo
+        </li>
+        <li>
+            Evaluate each of your teammates
+        </li>
+    </ul>
+    <p>
+        Reports are individual assignments: Write your own, and describe only your own work.
+    </p>
+
+    <p>
+        The points described in this document determine your team score for the project. Your actual grade may be
+        adjusted based on your individual contributions to the project. These decisions will be made on a
+        case-by-case basis at the discretion of the course staff. Factors used to determine these adjustments
+        include:
+    </p>
+
+    <ul>
+        <li>Your report
+            <ul>
+                <li>
+                    Not submitting a report is an easy way to earn a negative individual grade adjustment, probably
+                    all the way to 0/80 on the project objectives (You could still earn 20 points from the presentation)
+                </li>
+                <li>
+                    The quality of your report will be taken into account as well (eg. "I worked on the backend"
+                    with a link to a single commit is a low quality report)
+                </li>
+            </ul>
+        </li>
+        <li>Your teammates' evaluations of you
+            <ul>
+                <li>
+                    If your teammates rated you poorly/excellently, your grade may be adjusted down/up respectively.
+                    This is not automatic. All cases will be reviewed by the course staff to verify each situation
+                </li>
+            </ul>
+        </li>
+        <li>Your commits in the team repo
+            <ul>
+                <li>
+                    Your commits may be checked to see if you did in fact complete the work you described in your
+                    report, as well as compare the amount of work you completed to that of your teammates
+                </li>
+                <li>
+                    You MUST commit your own code! It is not acceptable for your teammate to commit your code for
+                    you. You should have a clear separation between your tasks and commit the code for your task.
+                    If a commit is not in your name, you effectively did not write that code. If a teammate is
+                    making this difficult, let the course staff know in your peer evals
+                </li>
+                <li>
+                    If you don't have any commits on the default branch of the repo, you effectively did not work on
+                    the project and will earn a 0 after individual grade adjustments
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <br>
+    <hr>
+    <h3>
+        How Your Project is Tested
+    </h3>
+    <hr>
+    <br>
+
+    <p>
+        Objectives 1-4 [except the deployment requirements of Objective 1] will be tested by:
+    </p>
+    <ol>
+        <li>
+            Cloning your repo
+        </li>
+        <li>
+            Running "docker compose up"
+        </li>
+        <li>
+            Navigating to http://localhost:8080/ in a browser and testing all the features of your app
+        </li>
+    </ol>
+
+    <p>
+        The deployment requirements of Objective 1 are tested using the link to your deployed app in your readme.
+    </p>
+
+    <p>
+        For grading purposes, we will check out your latest commit that was made before the deadline.
+    </p>
+
+    <p>
+        It is strongly recommended that you test your app by cloning a fresh copy of your repo, after the last
+        commit for the deadline, and going through these steps. This will simulate exactly what we'll do during
+        grading and will expose any setup issues you may have. It is common for an app to run in your working
+        directory, but not from a fresh clone (eg. If you have dependencies installed locally in a .venv or
+        node_modules directory, or a file/directory that was never committed). Test your app to make sure it will run
+        during grading.
+    </p>
+
+
+    <br>
+    <hr>
+    <h5>
+        Objective 1 - Deployment
+    </h5>
+    <hr>
+
+    <p>
+        This objective is the foundation of your app. You have the freedom to choose any language, database,
+        framework, etc for this project, and this objective is where you'll make those choices. Your app must
+        contain the
+        following features and structure:
+    </p>
+
+    <ul>
+        <li>
+            <b>Framework</b>
+            <ul>
+                <li>
+                    You are required to use a web framework (You cannot start from a TCP
+                    socket. That's what the homework was all about). You have full freedom in choose your framework,
+                    including which language to use for this project
+                </li>
+                <li>
+                    If you're not sure if something counts as a
+                    web framework,
+                    feel free to ask the course staff
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Docker Compose</b>
+            <ul>
+                <li>
+                    Set up your project using Docker and docker compose. Your app must run on local port 8080 after
+                    running "docker compose up". You may choose to map additional ports, but 8080 must also be available
+                    over HTTP if you do
+                </li>
+                <li>
+                    Run nginx as a reverse proxy. This may be in a separate container using docker compose, installing
+                    nginx
+                    directly
+                    on your production server, or both
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Database</b>
+            <ul>
+                <li>
+                    You may use whatever database you'd like (ie. You do not have to use Postgres), though your
+                    database must run in a separate container that is started using docker compose (ie. A local SQLite
+                    instance is not allowed)
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Home Page</b>
+            <ul>
+                <li>
+                    Your framework serves a home page at "/". For this objective, a static
+                    page is enough
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Deployment</b>
+            <ul>
+                <li>
+                    Deploy your app on a publicly available server with a domain name and HTTPS with a valid
+                    certificate. It is recommended that you
+                    take advantage of the
+                    <a href="https://education.github.com/experiences/intro_to_web_dev">GitHub Student Developer
+                        Pack</a> which includes offers for free domain names for 1 year. Add a DNS record for your
+                    domain name that points to your instance
+                </li>
+                <li>
+                    Your certificate must be valid. It's recommended that you use Certbot to acquire a free
+                    certificate from Let's Encrypt
+                </li>
+                <li>
+                    Requests to http:// (port 80) must redirect to the same path on https:// (port 443)
+                </li>
+                <li>
+                    Add a link to your deployed app in the readme of your repository so we can find your deployment
+                </li>
+                <li>
+                    Your app must still run locally at http://localhost:8080 with "docker compose up" since that's
+                    how we'll test the rest of the project. You may want to create a separate branch, or a separate
+                    compose file, for the deployed version of your app, or ensure that all feature work both with
+                    and without TLS
+                </li>
+            </ul>
+        </li>
+    </ul>
+    
+    <div class="alert alert-danger">
+        <b>Security Concern</b> - Ensure that your database is not accessible to the world.
+            For example, if you're using MongoDB and you map your port (eg. 27017:27017) in compose.yml, anyone
+            with an internet connection can access your database. You may want to map this port for
+            testing purposes in your
+            development environment, but this MUST be removed before deploying.
     </div>
 
-    <div class="section-card card-testing hw-content">
-
-        <hr/>
-        <h3>
-            Introduction
-        </h3>
-        <hr/>
-        <p>
-            For the team project, you will build a real-time massively multiplayer online (MMO) game. You have a large
-            amount of freedom in the design of your project as long as it meets the criteria outlined in this document.
-        </p>
-
-        <p>
-            The term "game" is used fairly loosely here. If you have an app idea that is not technically a game,
-            you might still be able to build it as long as it satisfies all the requirements.
-        </p>
-
-        <br>
-        <hr>
-        <h3>
-            Team Formation
-        </h3>
-        <hr>
-        <br>
-        <p>
-            If you are forming a team, please use the following form to let us know the members of your team, your
-            public GitHub repository link, and your team name. Teams must consist of either 4 or 5 members. If you have
-            a team of 3, you must find a 4th member to agree to be part of your team.
-        </p>
-        <p>
-            Team Formation Form: <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSfVOpVZRhIanL66FFp7ZwsjkZUIH-T21W57pvUSM_Y2OBIIUA/viewform?usp=dialog">https://docs.google.com/forms/d/e/1FAIpQLSfVOpVZRhIanL66FFp7ZwsjkZUIH-T21W57pvUSM_Y2OBIIUA/viewform?usp=dialog</a>
-        </p>
-
-        <p>
-            If you prefer to be placed on a random team instead of finding your own teammates, please fill out this
-            form. When you are notified of your random team, via email, please fill out the team formation form letting
-            us know your chosen team name and GitHub link.
-        </p>
-        <p>
-            Random Team Form: <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeXZGfnOcWILZ50GPdtDtcKrK7LFxddgbA6H9eIt8DhqV2-3w/viewform?usp=dialog">https://docs.google.com/forms/d/e/1FAIpQLSeXZGfnOcWILZ50GPdtDtcKrK7LFxddgbA6H9eIt8DhqV2-3w/viewform?usp=dialog</a>
-        </p>
-
-        <p>
-            Anyone who is not part of team and didn't fill out the random team form will be placed on a random team
-            after the team formation deadline.
-        </p>
-
-        <br>
-        <hr>
-        <h3>
-            Meeting Forms and Individual Grading
-        </h3>
-        <hr>
-        <br>
-
-        <p>
-            You must fill out the <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSchiMqdJooYA-H0fqdeJWIawTB2BqH1kfZ-E02V5VeablObeg/viewform?usp=dialog">team
-            meeting and eval form</a> for each week of the project. There are 4 weeks for the project so you are
-            expected to have at least 4 submissions of this form. These are submitted on an individual basis and must be
-            completed by each team member. You are expected to meet with your team [at least] weekly and fill out the
-            form after each meeting, though you must still fill out the form even if there was no meeting (Where you
-            should explain why you went a whole week without meeting).
-        </p>
-        <p>
-            All the AO grading described in this document determines your team score for the project.
-            Your actual grade (number of AOs earned) may be adjusted based on your individual contributions to the
-            project. These decisions
-            will be
-            made on a case-by-case basis at the discretion of the course staff. Factors used to determine these
-            adjustments
-            include:
-        </p>
-
-        <ul>
-            <li>Your team meeting and eval form submissions
-                <ul>
-                    <li>
-                        You must fill out this form each week. Failure to do so is an easy way to earn a
-                        negative individual
-                        grade adjustment. Since there are 4 weeks for the project, you are expected to have at least 4
-                        submissions of this form. Anything less than 4 will result in a grade reduction
-                    </li>
-                    <li>
-                        The quality of your submissions will be taken into account as well (eg. Saying "I'll do stuff"
-                        before the next
-                        meeting is a low quality submission)
-                    </li>
-                    <li>
-                        You may submit more meeting forms than are required even if there was no meeting (eg. If you
-                        want to adjust your
-                        evals after a deadline without waiting for the next meeting)
-                    </li>
-                </ul>
-            </li>
-            <li>Your evaluations from the meeting form
-                <ul>
-                    <li>
-                        If your teammates rated you poorly/excellently, your grade may be adjusted down/up respectively.
-                        This is not automatic. All cases will be reviewed by the course staff to verify each situation
-                    </li>
-                </ul>
-            </li>
-            <li>Your commits in the team repo
-                <ul>
-                    <li>
-                        Your commits may be checked to see if you did in fact complete the work you mentioned in the
-                        meeting form, as
-                        well as compare the amount of work you completed to that of your teammates
-                    </li>
-                    <li>
-                        You MUST commit your own code! It is not acceptable for your teammate to commit your code for
-                        you. You should
-                        have a clear separation between your tasks and commit the code for your task. If a commit is not
-                        in your name,
-                        you effectively did not write that code. If a teammate is making this difficult, let the course
-                        staff know in
-                        the meeting form
-                    </li>
-                    <li>
-                        If you don't have any commits on the default branch of the repo, you effectively did not work on
-                        the project and
-                        will earn a 0 after individual grade adjustments
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-
-        <br>
-        <hr>
-        <h3>
-            Checkpoint Objectives
-        </h3>
-        <hr>
-        <br>
-
-        <p>
-            These objectives are due by the team project checkpoint. For grading purposes, we will check out your
-            latest commit that was made before the deadline. You should continue working on your project during grading
-            of the checkpoint.
-        </p>
-
-
-        <br>
-        <hr>
-        <h5>
-            Checkpoint Application Objective 1 - App Structure
-        </h5>
-        <hr>
-
-        <p>
-            You have the freedom to choose any web framework or language for this project. However, you are required to
-            use a web framework (You cannot start from a TCP socket. That's what the homework was all about). Examples
-            of web frameworks, and their language, are provided. Any web framework that is not on this list is also
-            allowed.
-        </p>
-        <ul>
-            <li>Flask / Python</li>
-            <li>Express / Node.js</li>
-            <li>Django / Python</li>
-            <li>gin / go</li>
-            <li>Play / Java;Scala</li>
-            <li>Koa / Node.js</li>
-            <li>FastAPI / Python</li>
-            <li>Elysia / Node.js</li>
-            <li>Spring / Java</li>
-        </ul>
-
-        <p>
-            Once your team agrees on a framework, you should build out the foundation of your app using the framework.
-            For this objective, your app must contain the following features and structure:
-        </p>
-
-        <ul>
-            <li>
-                <b>Docker Compose</b>
-                <ul>
-                    <li>
-                        Set up your project using Docker and docker compose. Your app must run on local port 8080 after
-                        running "docker compose up"
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Database</b>
-                <ul>
-                    <li>
-                        You will need a database throughout the project. You may use whatever you'd like for your
-                        database (ie. You do not have to use MongoDB), though
-                        your database must run in a second container that is separate from your app and started
-                        using docker compose.
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Authentication</b>
-                <ul>
-                    <li>
-                        There should be a clear way for users to register and login to your app. Once logged in, there
-                        should be a clear visual letting the user know that they are logged in (eg. Display their
-                        username on the home page)
-                    </li>
-                    <li>
-                        Authenticated sessions must be persistent - If a user logs in then you restart the server, they
-                        should be able to refresh the page and still be logged in
-                    </li>
-                    <li>
-                        Security: Stored passwords must be salted and hashed
-                    </li>
-                    <li>
-                        Security: Only hashes of your auth tokens should be stored in your database (Do not store the
-                        tokens as plain text). Salting is not expected
-                    </li>
-                    <li>
-                        Security: Set the HttpOnly directive on your cookie storing authentication tokens
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Logging</b>
-                <ul>
-                    <li>
-                        Add the structure for logging on your server and log each request you receive. Logs must be
-                        recorded in a local file in the root directory of your project outside the docker container.
-                        For example, running the app from your root directory with "docker compose up" should result in
-                        a log file being created in that same directory and can be read even after the container stops
-                        running (You should use a volume to accomplish this)
-                    </li>
-                    <li>
-                        For each request, log [at least] the IP address of the sender, the HTTP method and path of the
-                        request, and a timestamp for the request
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <p>
-            Grading Note: If any one of these features are missing or non-functional, the objective is not complete.
-        </p>
-
-
-        <p>
-            All objectives [except deployment] will be tested by:
-        </p>
-        <ol>
-            <li>
-                Cloning your repo
-            </li>
-            <li>
-                Running "docker compose up"
-            </li>
-            <li>
-                Navigating to http://localhost:8080/ in a browser and testing all the features of your app
-            </li>
-        </ol>
-
-        <p>
-            It is strongly recommended that you test your app by cloning a fresh copy of your repo, after the last
-            commit for the deadline, and going through these steps. This will simulate exactly what we'll do during
-            grading and will expose any setup issues you may have. It is common for an app to run in your working
-            directory, but not from a fresh clone (eg. If you have dependencies installed locally in a .venv or
-            node_modules directory). Test your app to make sure it will run during grading.
-        </p>
-
-        <br>
-        <hr>
-        <h5>
-            Checkpoint Application Objective 2 - The Game and Web Sockets
-        </h5>
-        <hr>
-
-        <p>
-            Build a real-time MMO. This game must support any number [within reason] of players playing together in the
-            same instance of your game. You have much
-            freedom in the design of your game as long as all these featured are implemented:
-        </p>
-
-        <ul>
-            <li>
-                <b>Visuals</b>
-                <ul>
-                    <li>
-                        There must be a visual representation of your game. You may choose how users join the game, or
-                        if every logged-in user automatically joins the game when they load the home page. When a user
-                        is in the game, they should be able to see all other users in the game
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Web Sockets and Movement</b>
-                <ul>
-                    <li>
-                        Your game must have continuous movement for each player and all movement of each player must
-                        be broadcast to all other players in real-time using Web Sockets. This means all players will be
-                        able to see all
-                        other players' movements as they happen [minus network delays]. All players must be able
-                        to move simultaneously (Turn-based games are not allowed)
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Player Names</b>
-                <ul>
-                    <li>
-                        The username of each player must be clearly labeled for all other players in the game
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <b>Game</b>
-                <ul>
-                    <li>
-                        Users must have a way to interact with each other that constitutes a game. To be considered a
-                        game, for the purposes of this objective, there must be a clear "winner" when the game is
-                        played. If the game has an end, all players must know who won the game. If the game does not
-                        end, all players must clearly be able to see who is currently winning (eg. By displaying
-                        everyone's score)
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-        <p>
-            You have many options for the visuals of your game. You will not be graded on how visually appealing your
-            game is so an HTML canvas with basics shapes will suffice. If you want to make something more impressive
-            though, you should consider using a game framework like <a href="https://phaser.io/">phaser.io</a>.
-        </p>
-
-        <p>
-            If you're lacking ideas, <a href="https://agar.io">agar.io</a> is an example of a game that meets all these
-            criteria.
-        </p>
-
-        <br>
-        <hr>
-        <h5>
-            Checkpoint Application Objective 3 - Deployment
-        </h5>
-        <hr>
-
-        <p>
-            Deploy your app on a publicly available server with a domain name and HTTPS with a valid certificate. You
-            may use any means available to accomplish this, though it is recommended that you take advantage of the
-            <a href="https://education.github.com/experiences/intro_to_web_dev">GitHub Student Developer Pack</a> which
-            includes offers for free domain names for 1 year. You will be provided an AWS instance to deploy your app
-            and add a DNS record for your domain name to point to your instance.
-        </p>
-        <p>
-            When deployed, add a link to your app in the readme of your repository so we can find your deployment.
-        </p>
-        <p>
-            Note the following implications of this objective:
-        </p>
-        <ul>
-            <li>
-                You will use the WSS protocol for your WebSocket connection. When making this change, be sure that your
-                WS connection still works when ran locally using HTTP since this is how we'll test the other AOs. You
-                might want to create a separate branch for the deployed version of your app
-            </li>
-            <li>
-                Your certificate must be valid. It's recommended that you use CertBot to acquire a free certificate
-            </li>
-        </ul>
-
-        <p>
-            Security: If using MongoDB, do not map port 27017:27017 for your MongoDB in your docker-compose file. This
-            is a major security
-            risk that makes your database publicly available. Since you are deploying on the Internet in this objective,
-            that means everyone on the planet would have access to your DB and attackers will steal your data. You may
-            want ot map this port
-            for testing purposes in your development environments, but this MUST be removed before deploying.
-        </p>
-
-
-        <br>
-        <br>
-        <hr>
-        <h3>
-            Deadline Objectives
-        </h3>
-        <hr>
-        <br>
-
-        <p>
-            These objectives are due by the team project deadline.
-        </p>
-
-
-        <br>
-        <hr>
-        <h5>
-            Deadline Application Objective 1 - Logging
-        </h5>
-        <hr>
-
-        <p>
-            Expand the logging that was set up in checkpoint AO1. Add the following features to your logging:
-        </p>
-        <ul>
-            <li>
-                Responses
-                <ul>
-                    <li>
-                        In addition to the request information that is logged, also log the response code sent from your
-                        server (eg. 200, 301, 404). It must be clear which code corresponds with which request
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Registration/Login
-                <ul>
-                    <li>
-                        Log each time a user attempts to register or log in to your app. For each attempt, record the
-                        username, if the attempt was successful, and the reason for failure if the attempt was
-                        unsuccessful (eg. "admin tried to log in with the wrong password" "pam tried to log in, but that
-                        username does not exist")
-                    </li>
-                    <li>
-                        After a user is logged in, add their username to all their logged requests (In addition to their
-                        IP)
-                    </li>
-                    <li>
-                        Security: Do not log any plaintext passwords
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Errors
-                <ul>
-                    <li>
-                        If your server ever throws an error, log the stack trace of the error. You can do this by
-                        wrapping your entire server in a try/catch and logging the stack trace in the catch block
-                    </li>
-                    <li>
-                        This will be tested by intentionally writing an error somewhere in your code and making sure
-                        the error in logged
-                    </li>
-                </ul>
-            </li>
-            <li>
-                Full Requests/Responses
-                <ul>
-                    <li>
-                        In a separate log file, log the raw HTTP requests and responses that your app receives and
-                        sends. This must be in a separate file since there will be a lot of information being logged
-                        that would spam your main lag file.
-                    </li>
-                    <li>
-                        To reduce the size of this file, you may limit the logging to the first 2048 bytes of each
-                        request/response
-                    </li>
-                    <li>
-                        If a request/response contains any non-text information, only log the headers of the request
-                    </li>
-                    <li>
-                        Security: Do not log any plaintext passwords. Note that the plain text will be included in the
-                        registration and login requests. For these requests, only log the headers
-                    </li>
-                    <li>
-                        Security: Do not log auth tokens. These tokens will appear in request and response headers and
-                        they must be
-                        removed before they are logged. You should still log the rest of the headers, and the remaining
-                        cookies. This will require some parsing to remove only the auth token
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
-
-        <br>
-        <hr>
-        <h5>
-            Deadline Application Objective 2 - Custom Avatars
-        </h5>
-        <hr>
-
-        <p>
-            Users can upload custom images to be used as their avatar in the game. These images must appear in the game
-            and move with the player's character. You must support at least jpg and png images of any resolution or
-            aspect ratio. If the uploaded image does not fit the aspect ratio expected for your game, you must choose a
-            way to modify the image so it can be used without distorting/stretching the original image (eg. By cropping
-            the image)
-        </p>
-
-
-        <br>
-        <hr>
-        <h5>
-            Deadline Application Objective 3 - Game Features
-        </h5>
-        <hr>
-
-        <p>
-            Of the following features, add at least 3 of them of your choice to your app:
-        </p>
-
-        <ul>
-            <li>
-                Leaderboard - A global leaderboard. All your users can complete for placement on the leaderboard and the
-                leaderboard must be accessible by all users. You may choose the metric by which users complete. All
-                users must appear on this leaderboard even if they are not currently playing or logged in
-            </li>
-            <li>
-                Player Stats - Stats tracked per account that have some performance statistics (eg. games won). The
-                stats must reflect
-                the users performance in the game. Tracking only things like "games played" or "time played" will not
-                suffice since they don't track anything related to the players skill in your game
-            </li>
-            <li>
-                Lobbies - Add support for multiple instances of your game to be played simultaneously with different
-                subsets of your users
-            </li>
-            <li>
-                Voice Chat - Allow users to talk to each using voice chat while playing your game together
-            </li>
-            <li>
-                Teams - Add teams to your game where players compete as a team. You have freedom in how you define teams
-                (eg. Team death match, something more like guilds, or anything else as long as sub-sets of players work
-                together towards a shared goal)
-            </li>
-            <li>
-                Trade - Allow players to trade some in-game resource with each other
-            </li>
-            <li>
-                Achievements - Add at least 3 achievements to your game. Players should be able to see all these
-                achievements and if they completed each achievement. You may choose what players need to do to unlock
-                an achievements (eg. Reach level 3, score 1000 points, win 10 games, play for 24 hours)
-            </li>
-        </ul>
-
-        <hr>
-        <h3>
-            Presentation Objectives
-        </h3>
-        <hr>
-        <br>
-
-        <p>
-            Sing up for a presentation time: <a href="https://calendly.com/hartloff/cse312-presentations">https://calendly.com/hartloff/cse312-presentations</a>
-        </p>
-        <p>
-            You will give a presentation demoing your project and opening it for the audience to test. Your project must
-            be deployed to a live server before your presentation and the audience will use your app during your demo.
-        </p>
-        <p>
-            Your presentation should be 8-10 minutes. Not all team members have to talk during the presentation, but all
-            must be present and at the front of the room. Any team members who are not present will earn 0 application
-            objectives for the presentation (Having absent members does not affect the grade of those who are present).
-        </p>
-        <p>
-            Your app must be deployed and publicly available during your presentation. You must share the link and the
-            app must be functional for anyone in the audience.
-        </p>
-        <p>
-            Your deployed app must be accessible via HTTPS with a valid certificate. There must not be any security
-            warnings (ie. self-signed certificates) when a user visits your app.
-        </p>
-        <p>
-            If your app is not properly deployed, your team will earn 0 application objectives for the presentation.</p>
-        <br>
-        <hr>
-        <h5>
-            Presentation Application Objective 1 - Demo
-        </h5>
-        <hr>
-
-        <p>
-            Demo the functionality of your app from the user perspective. Run your app and show all the
-            functionality of the required features as well as any additional features
-            your team implemented. For any features that are incomplete, you should still mention the feature and the
-            status of development. You can still earn full credit for the presentation even if some features are not
-            complete or functional.
-        </p>
-
-        <p>
-            During the demo portion of your presentation, it is recommended that you hide your URL from the audience.
-            Leaking the URL early can entice someone in the audience to use your app during the demo. You should lock up
-            this AO before revealing your URL and moving to AO2.
-        </p>
-
-        <br>
-        <hr>
-        <h5>
-            Presentation Application Objective 2 - User Tests and Logs
-        </h5>
-        <hr>
-
-        <p>
-            After your demo, reveal your URL to the audience so everyone in attendance can test your app. During this
-            test, everyone should be able to play your game without issue. Your app should be able to handle the
-            load of all the users playing simultaneously without crashing or suffering severe performance issues.
-        </p>
-
-        <p>
-            <b>Logging:</b> After the presentation, submit the logs of your app that were generated during the
-            presentation to Autolab. These logs must at least contain the required logging from checkpoint AO1 (Requests
-            with IP, method, path, and timestamp).
-        </p>
-
-        <br>
-        <hr>
-        <h3>Grading</h3>
-        <hr>
-        <p>Each objective will be scored on a 0-3 scale as follows:</p>
-
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3 (Complete)</td>
-                <td>Clearly correct</td>
-            </tr>
-            <tr>
-                <td>2 (Complete)</td>
-                <td>Mostly correct, but with some minor issues
-                </td>
-            <tr>
-                <td>1 (Incomplete)</td>
-                <td>Not all requirements outlined in this document are functional, but an honest attempt was made to
-                    complete the
-                    objective.
-                    This includes issues running Docker or docker-compose even if the code for the objective is correct
-                </td>
-            <tr>
-                <td>0.3 (Incomplete)</td>
-                <td>The objective would earn a 3, but a security risk was found while testing</td>
-            <tr>
-                <td>0.2 (Incomplete)</td>
-                <td>The objective would earn a 2, but a security risk was found while testing</td>
-            <tr>
-                <td>0.1 (Incomplete)</td>
-                <td>The objective would earn a 1, but a security risk was found while testing</td>
-            <tr>
-                <td>0 (Incomplete)</td>
-                <td>No attempt to complete the objective or violation of the assignment (Ex. Using an HTTP library)</td>
-        </table>
-        <br>
-        <p>Note that for your final grade there is no difference between a 2 and 3, or a 0 and a 1. The numeric score
-            is meant to give you more feedback on your work.</p>
-
-        <table class="table table-bordered table-skinny">
-            <tr>
-                <td>3</td>
-                <td>Objective Complete</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>
-                    Objective Complete
-                </td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-            <tr>
-                <td>0</td>
-                <td>
-                    Objective Not Complete
-                </td>
-            </tr>
-        </table>
-        <br>
-        <hr>
-        <h3>Security Essay</h3>
-        <br>
-        <p>For each objective for which you earned a 0.3 or 0.2, you will still have an opportunity to earn credit for
-            the
-            objective by submitting an essay about the security issue you exposed. These essays must:</p>
-
-        <ul>
-            <li>Be at least 1000 words in length</li>
-            <li>Explain the security issue from your submission with specific details about your code</li>
-            <li>Describe how you fixed the issue in your submission with specific details about the code you changed
-            </li>
-            <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
-                in
-                production code with live users
-            </li>
-        </ul>
-
-
-        <p>Any submission that does not meet all these criteria will be rejected and your objective will remain
-            incomplete.</p>
-
-        <p>Due Date: Security essays are due 1-week after grades are released.</p>
-
-        <p>
-            Security essays are individual assignments. It is important that every member of the team understands the
-            importance of preventing security vulnerabilities even if they did not write the offending code. Multiple
-            members of a team submitting the same, or similar, essays is an academic integrity violation.
-        </p>
-
-        <p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
-            of
-            the security issue that you exposed. If an interview is required, you will be contacted by the course staff
-            for
-            scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
-            course
-            staff.</p>
-
-
+    <div class="alert alert-danger">
+        <b>Security Concern</b> - Do not commit your certificate's private key to your repo.
     </div>
+
+    <div class="alert alert-danger">
+        <b>Security Concern</b> - Any security concern covered in any homework also applies. This includes 
+        HTML injection, SQL injection, XSRF protection, proper cookie directives, etc. This applies to all 4 objectives. 
+        Specific security details cannot be provided due to the open-ended nature of the project
+    </div>
+
+    <br>
+    <hr>
+    <h5>
+        Objective 2 - Authentication with JWT's and an Auth Server
+    </h5>
+    <hr>
+
+    <p>
+        Add accounts to your app, with a twist: A separate authentication (auth) server issues JWTs, and your app
+        verifies them without asking the auth server or the database who the user is.
+    </p>
+
+    <ul>
+        <li>
+            <b>Registration and Login</b>
+            <ul>
+                <li>
+                    There should be a clear way for users to register, login, and logout. Once logged in, there
+                    should be a clear visual letting the user know that they are logged in (eg. Display their
+                    username on the home page)
+                </li>
+                <li>
+                    Authenticated sessions must be persistent - If a user logs in then you restart all your
+                    containers, they should be able to refresh the page and still be logged in
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>The Auth Server</b>
+            <ul>
+                <li>
+                    Create a separate auth server that runs in its own container. It handles all registration,
+                    login, and logout requests, and issues a JWT when a user logs in
+                </li>
+                <li>
+                    Use nginx to route all authentication requests (/register, /login, /logout) to your auth
+                    server, and all other requests to your app. You may route more paths to your auth server if
+                    you'd like, but only these 3 are required
+                </li>
+                <li>
+                    Auth-related requests must never be seen by your app container
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>JWTs</b>
+            <ul>
+                <li>
+                    JWTs must be cryptographically signed using a private key that only your auth server can
+                    access (eg. RS256). Your app verifies them with the matching public key
+                </li>
+                <li>
+                    Your app must verify JWTs without communicating with the auth server and without a database
+                    lookup. After the JWT is verified, you may still use the database (eg. To pull information 
+                    about the user). You just can't use it to
+                    verify the user's identity
+                </li>
+                <li>
+                    You will have to solve the problem of generating a public/private key pair, keeping the private
+                    key only on the auth server, and sharing the public key with your app. Your keys must survive a
+                    restart (Otherwise every JWT becomes invalid and your sessions are not persistent). You may
+                    give your app the public key through a shared volume, or by adding an endpoint to your auth
+                    server that returns the public key. That endpoint is the only direct communication allowed
+                    between the two
+                </li>
+                <li>
+                    Each JWT must expire. Include the "exp" claim and reject expired tokens in your app
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <div class="alert alert-danger">
+        <b>Security Concern</b> - Your JWTs must be signed in a way that they cannot be forged. Your app must 
+        reject tokens with an
+        invalid signature, tokens signed with a different algorithm than the one you chose, and expired tokens.
+    </div>
+
+
+
+    <br>
+    <hr>
+    <h5>
+        Objective 3 - WebSockets
+    </h5>
+    <hr>
+
+    <p>
+        This is the core of your app and the part your audience will use during your presentation. Build a feature
+        where many users [within reason] are in the same shared space at the same time and see each other's actions
+        as they happen. You have much freedom in what you build as long as WebSockets are actually needed to build
+        it (eg. The lag of polling, even at a polling interval of ~500ms, would create a terrible user experience).
+    </p>
+
+    <p>
+        To check if your idea needs WebSockets, imagine every update arrived half a second late, as it might if each
+        browser polled your server for changes. If your app would still work fine, it doesn't need WebSockets. A chat
+        app, a turn-based game, an auction site, or a feed of new posts all work fine with a half-second delay, so none of these
+        satisfy this objective. Players moving around a game world would feel broken with that delay.
+    </p>
+
+    <p>
+        We recommend building a real-time massively multiplayer online (MMO) game since it naturally meets every
+        requirement for this objective. If you're lacking ideas, <a href="https://agar.io">agar.io</a> is an example of a game that
+        meets all these criteria, without being overly complex. If you have an idea that isn't a game, you can still build it as long as it meets
+        all the requirements. If you're not sure if your idea qualifies, feel free to ask the
+        course staff.
+    </p>
+
+    <ul>
+        <li>
+            <b>Shared Space</b>
+            <ul>
+                <li>
+                    There must be a visual representation of the shared space. You may choose how users join, or if
+                    every logged-in user automatically joins when they load the home page. When a user is in the
+                    shared space, they should be able to see all other users in it and what they're doing
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Real-Time Updates</b>
+            <ul>
+                <li>
+                    The actions of each user must be broadcast to all other users in real time using WebSockets.
+                    This means all users see each other's actions as they happen [minus network delays]
+                </li>
+                <li>
+                    All users must be able to act at the same time (eg. Turn-based games are not allowed)
+                </li>
+                <li>
+                    Your idea must need WebSockets, as described above. If your app would work just as well with a
+                    half-second delay (between a user taking an action and all other users seeing that action),
+                     this objective is not complete
+                </li>
+                <li>
+                    There must be some form of interaction between users. This does not have to be substantial, but there
+                    must be something more than users moving around in a shared space. These interaction must benefit from
+                    WebSockets with the same "500ms delay would feel bad" criteria
+                </li>
+                <li>
+                    Your deployed app uses WSS through nginx. Be sure your WebSocket connection still works when ran
+                    locally using HTTP
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Authenticated Connections</b>
+            <ul>
+                <li>
+                    Only logged-in users can join. Your app verifies the JWT from the WebSocket handshake request
+                    before accepting the connection, and uses the username from the verified JWT for everything that
+                    user does. A user must never be able to act as another user
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        You have many options for the visuals of your app. You will not be graded on how visually appealing your app
+        is so an HTML canvas with basic shapes will suffice. If you're building a game and want to make something
+        more impressive though, you should consider using a game framework like
+        <a href="https://phaser.io/">phaser.io</a>.
+    </p>
+
+
+    <br>
+    <hr>
+    <h5 id="objective-4">
+        Objective 4 - Make it Interesting
+    </h5>
+    <hr>
+
+    <p>
+        A web app is just an app that users interact with through web protocols. In this course, you learned how to
+        turn HTTP requests and WebSocket messages into app functionality. Once you can do that, anything you know
+        how to program can become part of a web app.
+    </p>
+
+    <p>
+        For this objective, add a feature to your app that is built on something you learned outside of this course.
+        This can be something from another course you've taken, or something new that you learn on your own for this
+        project. Choose from one of the categories below. If you have an idea that does not fit any of the categories, 
+        you may propose it for approval and the course staff will decide if it meets the spirit of this objective.
+    </p>
+
+    <p>
+        If you are not sure if you idea qualifies, feel free to ask the course staff if it does.
+    </p>
+    <p>
+        Requirements:
+    </p>
+    <ul>
+        <li>
+            <b>Beyond This Course</b>
+            <ul>
+                <li>
+                    The topic must not be covered in this course. Using a different web framework or database, or
+                    anything from our lectures (eg. WebRTC, encryption, OAuth), does not count
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Part of Your App</b>
+            <ul>
+                <li>
+                    This feature must connect to your Objective 3 feature. It is recommended that you plan you idea for 
+                    objectives 3 and 4 simultaneously instead of planning objective 4 after objective 3 is built
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Write-Up</b>
+            <ul>
+                <li>
+                    Add an "Objective 4" section to the readme of your repository that explains what you 
+                    built for this objective
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Presentation</b>
+            <ul>
+                <li>
+                    Demo this feature during your presentation and explain what you built. If your feature can't
+                    be run with "docker compose up" (eg. It uses specialized hardware), your presentation is how
+                    we'll see it working
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>
+        <b>Categories</b>
+    </p>
+
+    <p>
+        Below are the categories you may choose from for this objective. Each category lists several examples/ideas 
+        that can choose, or come up with an idea of similar rigor in your favorite category.
+    </p>
+
+    <ul>
+        <li>
+            <b>AI and Machine Learning</b>
+            <ul>
+                <li>
+                    Train a model or implement an AI algorithm that powers a feature of your app. Examples: Bots
+                    that play against your users using search (eg. Minimax or Monte Carlo tree search) or
+                    reinforcement learning; A model trained on data your app collects (eg. Detecting bots or cheaters
+                    from how they move); Recommendations based on what users do in your app
+                </li>
+                <li>
+                    Sending a prompt to a hosted model (eg. An LLM API) and integrating the response into your app
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Databases and Data</b>
+            <ul>
+                <li>
+                    Do more with your data than store, look up, and joins. Examples: Replays, where your app records
+                    every event and users can watch any past session play back, spatial queries that find nearby
+                    users fast enough to run on every update, or a database
+                    replicated across several containers that keeps working when the primary is stopped
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Systems and Networking</b>
+            <ul>
+                <li>
+                    Change how your app runs, scales, or communicates. Examples: Horizontal scaling, where several
+                    copies of your app run behind nginx and users connected to different copies still see each other
+                    in real time, netcode techniques from game development (eg. Client-side prediction, server
+                    reconciliation, and interpolation) that keep movement smooth when latency is high, a compact
+                    binary format for your WebSocket messages, fault tolerance, where an app container can crash
+                    without users noticing
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Theory and Algorithms</b>
+            <ul>
+                <li>
+                    Implement a nontrivial algorithm at the core of a feature. Examples: Procedural generation of your
+                    world (eg. Noise functions or wave function collapse), collision detection that scales to many
+                    users (eg. Something more efficient than O(n^2) collision detection), skill ratings and 
+                    matchmaking (eg. Elo)
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Hardware</b>
+            <ul>
+                <li>
+                    Connect a physical device to your app using HTTP or WebSockets just like a
+                    browser. Examples: A microcontroller (eg. ESP32 or Raspberry Pi Pico W) used as a controller for
+                    your game, sensors that stream live data into your app, lights, motors, or a display that reacts
+                    to what users do in your app
+                </li>
+                <li>
+                    Build a desktop or mobile app for your game. All users of your app, whether desktop, mobile, or web, 
+                    must be able to interact with each other
+                </li>
+            </ul>
+        </li>
+        <li>
+            <b>Graphics and Interaction</b>
+            <ul>
+                <li>
+                    Go beyond drawing shapes on a canvas. Examples: Using OpenGL or phaser.io to make a visually appealing app,
+                     spatial
+                    audio that lets users hear where other users are
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+
+    <br>
+    <hr>
+    <h3 id="presentation">
+        Presentation
+    </h3>
+    <hr>
+    <br>
+
+    <p>
+        Sign up for a presentation time: <a
+            href="https://calendly.com/hartloff/cse312-presentations">https://calendly.com/hartloff/cse312-presentations</a>
+    </p>
+    <p>
+        You will give a presentation demoing your project and opening it for the audience to test. You must
+        demo from the deployed version of your app, and the audience will use your app during your demo.
+    </p>
+    <p>
+        Your presentation should be 8-10 minutes. All team members must be present, at the front of the room, and
+        speak during the presentation. Each team member should speak for a roughly equal share of the time, so plan
+        ahead for who will present each part (eg. Each member can demo the features they built). Any team members who
+        are not present, or who do not speak, will earn 0 points for the presentation (This does not affect the
+        grade of the rest of the team).
+    </p>
+    <p>
+        Your app must be deployed and publicly available during your presentation. You must share the link and the
+        app must be functional for anyone in the audience.
+    </p>
+    <p>
+        Your deployed app must be accessible via HTTPS with a valid certificate. There must not be any security
+        warnings (ie. self-signed certificates) when a user visits your app.
+    </p>
+    <p>
+        If your app is not properly deployed, your team will earn 0 points for the presentation.</p>
+    <br>
+    <hr>
+    <h5>
+        Demo (10 points)
+    </h5>
+    <hr>
+
+    <p>
+        Demo the functionality of your app from the user perspective. Run your app and show all the
+        functionality of the required features as well as any additional features
+        your team implemented. For any features that are incomplete, you should still mention the feature and the
+        status of development. You can still earn full credit for the presentation even if some features are not
+        complete or functional.
+    </p>
+
+    <p>
+        Your demo must include your Objective 4 feature. Explain what you learned, how it works in your app, and
+        show your evidence that it works.
+    </p>
+
+    <p>
+        During the demo portion of your presentation, it is recommended that you hide your URL from the audience.
+        Leaking the URL early can entice someone in the audience to use your app during the demo. You should finish
+        your demo before revealing your URL and moving to the user tests.
+    </p>
+
+    <br>
+    <hr>
+    <h5>
+        User Tests (10 points)
+    </h5>
+    <hr>
+
+    <p>
+        After your demo, reveal your URL to the audience so everyone in attendance can test your app. During this
+        test, everyone should be able to use your app without issue. Your app should be able to handle the load of
+        all the users in the audience at the same time without crashing or suffering severe performance issues.
+    </p>
+
+    <br>
+    <hr>
+    <h3>Grading</h3>
+    <hr>
+
+    <p>
+        Unlike the homework objectives, partial credit may be given for each project objective.
+    </p>
+    <p>
+        Objectives 1-4 list their requirements. Each of these objectives earns all its points when every requirement
+        is functional. Points are deducted for each requirement that is missing or not working. This includes issues
+        running Docker or docker compose even if the code for the objective is correct.
+    </p>
+
+    <p>
+        If a security risk is found while testing an objective, all objectives earn 0 points. You can recover your
+        points by submitting a security essay. These essays must be submitted on an individual basis, even for team members 
+        who had no part in the feature with the security issue.
+    </p>
+
+    <p>
+        An objective earns 0 points if it violates the assignment (Ex. Not using a web framework).
+    </p>
+<p>
+    A <b>Security Risk</b> is any violation of a "Security Concern" that is explicitly labeled in this document.
+</p>
+
+<br>
+<hr>
+<h3>Security Essay</h3>
+<br>
+<p>If a security risk is found in your submission, you will be assigned a 0 for all 4 objectives.
+    However, you will still have an opportunity to earn credit for the objectives by submitting an essay about
+    the security issue you exposed. These essays must:</p>
+
+<ul>
+    <li>Be at least 1000 words in length</li>
+    <li>Explain the security issue from your submission with specific details about your code</li>
+    <li>Describe how you fixed the issue in your submission with specific details about the code you changed
+    </li>
+    <li>Explain why this security issue is a concern and the damage that could be done if you exposed this issue
+        in production code with live users
+    </li>
+</ul>
+
+<p>If your project contains multiple security risks, you may have to write multiple essays to recover your
+    project grade</p>
+
+
+<p>Any submission that does not meet all these criteria will be rejected and your project grade will remain 0/80.</p>
+
+<p>Due Date: Security essays are due 1-week after grades are released. Submission instructions will be included in
+    your feedback on Autolab.
+</p>
+
+<p>Any essay may be subject to an interview with the course staff to verify that you understand the importance
+    of
+    the security issue that you exposed. If an interview is required, you will be contacted by the course staff
+    for
+    scheduling. Decisions of whether or not an interview is required will be made at the discretion of the
+    course
+    staff.</p>
+
+
+</div>
 {% endblock %}
