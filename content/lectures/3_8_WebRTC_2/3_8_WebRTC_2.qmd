@@ -78,7 +78,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Need the IP address of your peer
   - Need to agree on the details of the connection
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_p2p.svg){fig-alt="Two peers with a dashed two-way arrow between them: they want a direct peer-to-peer connection."}
+:::
 
 ## WebRTC - Connecting
 
@@ -87,7 +89,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - audio/visual codec, bitrate, etc details (How to interpret the bytes once the streaming starts)
   - A username fragment ("ice-ufrag") as a unique identifier
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_offer.svg){fig-alt="Peer 1 sends a webRTC-offer to peer 2."}
+:::
 
 ## WebRTC - Connecting
 
@@ -96,14 +100,18 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - Contains their own ufrag so the connection can be identified
 - Once the answer is received, the peers agree to connect
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_offer_answer.svg){fig-alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer."}
+:::
 
 ## WebRTC - Connecting
 
 - But there's a problem
 - How do we send these messages between two peers?
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_offer_answer_how.svg){fig-alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"}
+:::
 
 ## WebRTC - Connecting
 
@@ -112,7 +120,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Use DNS to lookup the [static] IP address of the server
   - Send a request to the IP address on port 80 or 443
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_offer_answer_how.svg){fig-alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"}
+:::
 
 ## WebRTC - Connecting
 
@@ -120,7 +130,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - We need to discover the IP and port of the peer without DNS
   - Peer IP/port can change (dynamic IP)
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_offer_answer_how.svg){fig-alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"}
+:::
 
 ## WebRTC - Signalling Server
 
@@ -129,14 +141,18 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - Both peers connect to your server
 - Send offer/answer to the server and the server forwards the messages to the other peer
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_signaling.svg){fig-alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."}
+:::
 
 ## WebRTC - Signalling Server
 
 - We need a method to send these messages
 - We'll need a way for the server to be able to send messages to each client in real-time
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_signaling.svg){fig-alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."}
+:::
 
 ## WebRTC - Signalling Server
 
@@ -144,21 +160,27 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - We'll need a way for the server to be able to send messages to each client in real-time
 - Wow! It's really convenient that we have WebSockets!
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_signaling.svg){fig-alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."}
+:::
 
 ## WebRTC - Signalling Server
 
 - When your server receives a WebSocket frame containing an offer or answer
   - Send the payload to the other peer over their WebSocket
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_signaling.svg){fig-alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."}
+:::
 
 ## WebRTC - NATs
 
 - We have another issue..
 - How do we know the IP address and port for each peer?
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_nat.svg){fig-alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."}
+:::
 
 ## WebRTC - NATs
 
@@ -168,7 +190,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - You have a local IP address for communication on your local network
   - When communicating outside your network, the NAT router sends your message using a public IP address and port number
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_nat.svg){fig-alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."}
+:::
 
 ## WebRTC - NATs
 
@@ -177,7 +201,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Each device does not know it's public IP/port used when it communicates to the outside world
   - [Also the problem that port-forwarding solves]
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_nat.svg){fig-alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."}
+:::
 
 ## WebRTC - STUN Server
 
@@ -186,14 +212,18 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - STUN server checks the origin IP/port and informs the client
 - We'll use Google's free STUN server (stun.l.google.com:19302)
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_stun.svg){fig-alt="Each peer, behind its NAT, asks a STUN server: What's my IP?"}
+:::
 
 ## WebRTC - ICE Candidate
 
 - Each peer sends their public IP/port, and connection information, in an ICE (Interactive Connectivity Establishment) candidate message
 - Whenever your signaling server receives an ICE candidate, forward it to the other peer
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_candidate.svg){fig-alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."}
+:::
 
 ## WebRTC - ICE Candidate
 
@@ -202,17 +232,28 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - IP/port - Local in this example
   - Username fragment - Uniquely identifies the connection
 
+::: {.absolute bottom=0 left=0 width="100%"}
+![](assets/rtc_candidate.svg){fig-alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."}
+:::
+
+## WebRTC - ICE Candidate
+
 ```{.json .code-overflow-wrap}
-{"candidate":"candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/ network-id 1 network-cost 10","sdpMid":"0","sdpMLineIndex":0}
+{"candidate":"candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/
+ network-id 1 network-cost 10","sdpMid":"0","sdpMLineIndex":0}
 ```
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_candidate.svg){fig-alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."}
+:::
 
 ## WebRTC - Connection
 
 - And now we can establish a peer-to-peer connection!
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_full.svg){fig-alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."}
+:::
 
 ## WebRTC - Summary
 
@@ -221,7 +262,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - Both peers get their public IP/port from their STUN Servers
 - Both peers send their ICE candidates to the other
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_full.svg){fig-alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."}
+:::
 
 ## WebRTC - Summary
 
@@ -229,7 +272,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - The servers step aside and the clients stream directly to each other
   - True peer-to-peer!
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_streaming.svg){fig-alt="The peers stream audio and video directly to each other. The signalling server and STUN servers are no longer involved."}
+:::
 
 ## WebRTC - Summary
 
@@ -238,7 +283,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - No need to read/parse/interpret the RTC portion of these messages
   - Extract the payload from the WS frame, send it to the appropriate peer as a new WS frame
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_full.svg){fig-alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."}
+:::
 
 ## WebRTC - Restrictions
 
@@ -246,7 +293,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
 - Must have an encrypted connection to use WebRTC
   - *Unless connecting over localhost (Let's us test locally)
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_full.svg){fig-alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."}
+:::
 
 ## WebRTC - Restrictions
 
@@ -255,7 +304,9 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Dynamic NATs might change your port unexpectedly
   - Organizations might block certain traffic on their network
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_firewall.svg){fig-alt="Each peer is behind a NAT and a firewall. There is no connection between them."}
+:::
 
 ## WebRTC - TURN Server
 
@@ -263,11 +314,15 @@ Other protocols are used when delays are tolerable (ie. not real-time) like YouT
   - Use a TURN (Traversals Using Relays around NAT) Server
   - After the connection is established using a signaling server, each peer routes their streaming data through a TURN server
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_turn.svg){fig-alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer."}
+:::
 
 ## WebRTC - TURN Server
 
 - If you ask me... using a TURN server defeats the purpose of using a peer-to-peer technology
 - ... Unless you run your own TURN server!
 
+::: {.absolute bottom=0 left=0 width="100%"}
 ![](assets/rtc_turn.svg){fig-alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer."}
+:::

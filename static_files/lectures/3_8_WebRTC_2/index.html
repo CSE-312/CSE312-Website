@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#webrtc---stun-server" id="toc-webrtc---stun-server" class="nav-link" data-scroll-target="#webrtc---stun-server">WebRTC - STUN Server</a></li>
   <li><a href="#webrtc---ice-candidate" id="toc-webrtc---ice-candidate" class="nav-link" data-scroll-target="#webrtc---ice-candidate">WebRTC - ICE Candidate</a></li>
   <li><a href="#webrtc---ice-candidate-1" id="toc-webrtc---ice-candidate-1" class="nav-link" data-scroll-target="#webrtc---ice-candidate-1">WebRTC - ICE Candidate</a></li>
+  <li><a href="#webrtc---ice-candidate-2" id="toc-webrtc---ice-candidate-2" class="nav-link" data-scroll-target="#webrtc---ice-candidate-2">WebRTC - ICE Candidate</a></li>
   <li><a href="#webrtc---connection" id="toc-webrtc---connection" class="nav-link" data-scroll-target="#webrtc---connection">WebRTC - Connection</a></li>
   <li><a href="#webrtc---summary" id="toc-webrtc---summary" class="nav-link" data-scroll-target="#webrtc---summary">WebRTC - Summary</a></li>
   <li><a href="#webrtc---summary-1" id="toc-webrtc---summary-1" class="nav-link" data-scroll-target="#webrtc---summary-1">WebRTC - Summary</a></li>
@@ -276,7 +277,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Need to agree on the details of the connection</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_p2p.svg" class="img-fluid" alt="Two peers with a dashed two-way arrow between them: they want a direct peer-to-peer connection."></p>
+</div>
 </section>
 <section id="webrtc---connecting" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting">WebRTC - Connecting</h2>
@@ -288,7 +291,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>A username fragment ("ice-ufrag") as a unique identifier</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_offer.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to peer 2."></p>
+</div>
 </section>
 <section id="webrtc---connecting-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting-1">WebRTC - Connecting</h2>
@@ -298,7 +303,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Contains their own ufrag so the connection can be identified</li>
 <li>Once the answer is received, the peers agree to connect</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_offer_answer.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer."></p>
+</div>
 </section>
 <section id="webrtc---connecting-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting-2">WebRTC - Connecting</h2>
@@ -306,7 +313,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>But there's a problem</li>
 <li>How do we send these messages between two peers?</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_offer_answer_how.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"></p>
+</div>
 </section>
 <section id="webrtc---connecting-3" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting-3">WebRTC - Connecting</h2>
@@ -318,7 +327,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Send a request to the IP address on port 80 or 443</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_offer_answer_how.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"></p>
+</div>
 </section>
 <section id="webrtc---connecting-4" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connecting-4">WebRTC - Connecting</h2>
@@ -329,7 +340,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Peer IP/port can change (dynamic IP)</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_offer_answer_how.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to peer 2, and peer 2 replies with a webRTC-answer. A large question mark sits between them: how do these messages reach the other peer?"></p>
+</div>
 </section>
 <section id="webrtc---signalling-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server">WebRTC - Signalling Server</h2>
@@ -341,7 +354,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Both peers connect to your server</li>
 <li>Send offer/answer to the server and the server forwards the messages to the other peer</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_signaling.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."></p>
+</div>
 </section>
 <section id="webrtc---signalling-server-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-1">WebRTC - Signalling Server</h2>
@@ -349,7 +364,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>We need a method to send these messages</li>
 <li>We'll need a way for the server to be able to send messages to each client in real-time</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_signaling.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."></p>
+</div>
 </section>
 <section id="webrtc---signalling-server-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-2">WebRTC - Signalling Server</h2>
@@ -358,7 +375,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>We'll need a way for the server to be able to send messages to each client in real-time</li>
 <li>Wow! It's really convenient that we have WebSockets!</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_signaling.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."></p>
+</div>
 </section>
 <section id="webrtc---signalling-server-3" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---signalling-server-3">WebRTC - Signalling Server</h2>
@@ -368,7 +387,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Send the payload to the other peer over their WebSocket</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_signaling.svg" class="img-fluid" alt="Peer 1 sends a webRTC-offer to the signalling server, which forwards it to peer 2. Peer 2 sends a webRTC-answer to the signalling server, which forwards it to peer 1."></p>
+</div>
 </section>
 <section id="webrtc---nats" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats">WebRTC - NATs</h2>
@@ -376,7 +397,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>We have another issue..</li>
 <li>How do we know the IP address and port for each peer?</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_nat.svg" class="img-fluid" alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."></p>
+</div>
 </section>
 <section id="webrtc---nats-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats-1">WebRTC - NATs</h2>
@@ -391,7 +414,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>When communicating outside your network, the NAT router sends your message using a public IP address and port number</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_nat.svg" class="img-fluid" alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."></p>
+</div>
 </section>
 <section id="webrtc---nats-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---nats-2">WebRTC - NATs</h2>
@@ -403,7 +428,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>[Also the problem that port-forwarding solves]</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_nat.svg" class="img-fluid" alt="Peer 1 has local address 192.168.0.5 port 8956 behind a NAT, which talks to the signalling server from public address 159.89.179.140 port 10678. Peer 2 has local address 192.168.0.52 port 14568 behind a NAT, which talks to the signalling server from public address 23.34.59.30 port 5670."></p>
+</div>
 </section>
 <section id="webrtc---stun-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---stun-server">WebRTC - STUN Server</h2>
@@ -413,7 +440,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>STUN server checks the origin IP/port and informs the client</li>
 <li>We'll use Google's free STUN server (stun.l.google.com:19302)</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_stun.svg" class="img-fluid" alt="Each peer, behind its NAT, asks a STUN server: What's my IP?"></p>
+</div>
 </section>
 <section id="webrtc---ice-candidate" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---ice-candidate">WebRTC - ICE Candidate</h2>
@@ -421,7 +450,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Each peer sends their public IP/port, and connection information, in an ICE (Interactive Connectivity Establishment) candidate message</li>
 <li>Whenever your signaling server receives an ICE candidate, forward it to the other peer</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_candidate.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."></p>
+</div>
 </section>
 <section id="webrtc---ice-candidate-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---ice-candidate-1">WebRTC - ICE Candidate</h2>
@@ -433,15 +464,26 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Username fragment - Uniquely identifies the connection</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource json code-overflow-wrap number-lines code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">{</span><span class="dt">"candidate"</span><span class="fu">:</span><span class="st">"candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/ network-id 1 network-cost 10"</span><span class="fu">,</span><span class="dt">"sdpMid"</span><span class="fu">:</span><span class="st">"0"</span><span class="fu">,</span><span class="dt">"sdpMLineIndex"</span><span class="fu">:</span><span class="dv">0</span><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_candidate.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."></p>
+</div>
+</section>
+<section id="webrtc---ice-candidate-2" class="level2">
+<h2 class="anchored" data-anchor-id="webrtc---ice-candidate-2">WebRTC - ICE Candidate</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource json code-overflow-wrap number-lines code-with-copy"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">{</span><span class="dt">"candidate"</span><span class="fu">:</span><span class="st">"candidate:2382557538 1 udp 2122260223 192.168.1.19 54090 typ host generation 0 ufrag FGP/</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="st"> network-id 1 network-cost 10"</span><span class="fu">,</span><span class="dt">"sdpMid"</span><span class="fu">:</span><span class="st">"0"</span><span class="fu">,</span><span class="dt">"sdpMLineIndex"</span><span class="fu">:</span><span class="dv">0</span><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
+<p><img src="assets/rtc_candidate.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? Then each peer sends a webRTC-candidate through the signalling server to the other peer."></p>
+</div>
 </section>
 <section id="webrtc---connection" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---connection">WebRTC - Connection</h2>
 <ul>
 <li>And now we can establish a peer-to-peer connection!</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_full.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."></p>
+</div>
 </section>
 <section id="webrtc---summary" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary">WebRTC - Summary</h2>
@@ -451,7 +493,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Both peers get their public IP/port from their STUN Servers</li>
 <li>Both peers send their ICE candidates to the other</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_full.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."></p>
+</div>
 </section>
 <section id="webrtc---summary-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary-1">WebRTC - Summary</h2>
@@ -462,7 +506,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>True peer-to-peer!</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_streaming.svg" class="img-fluid" alt="The peers stream audio and video directly to each other. The signalling server and STUN servers are no longer involved."></p>
+</div>
 </section>
 <section id="webrtc---summary-2" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---summary-2">WebRTC - Summary</h2>
@@ -476,7 +522,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Extract the payload from the WS frame, send it to the appropriate peer as a new WS frame</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_full.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."></p>
+</div>
 </section>
 <section id="webrtc---restrictions" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---restrictions">WebRTC - Restrictions</h2>
@@ -487,7 +535,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>*Unless connecting over localhost (Let's us test locally)</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_full.svg" class="img-fluid" alt="Each peer asks its STUN server: What's my IP? The webRTC-offer, webRTC-answer, and webRTC-candidate messages travel between the peers through the signalling server."></p>
+</div>
 </section>
 <section id="webrtc---restrictions-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---restrictions-1">WebRTC - Restrictions</h2>
@@ -499,7 +549,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Organizations might block certain traffic on their network</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_firewall.svg" class="img-fluid" alt="Each peer is behind a NAT and a firewall. There is no connection between them."></p>
+</div>
 </section>
 <section id="webrtc---turn-server" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---turn-server">WebRTC - TURN Server</h2>
@@ -510,7 +562,9 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>After the connection is established using a signaling server, each peer routes their streaming data through a TURN server</li>
 </ul></li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_turn.svg" class="img-fluid" alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer."></p>
+</div>
 </section>
 <section id="webrtc---turn-server-1" class="level2">
 <h2 class="anchored" data-anchor-id="webrtc---turn-server-1">WebRTC - TURN Server</h2>
@@ -518,13 +572,16 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>If you ask me... using a TURN server defeats the purpose of using a peer-to-peer technology</li>
 <li>... Unless you run your own TURN server!</li>
 </ul>
+<div class="absolute" data-bottom="0" data-left="0" width="100%">
 <p><img src="assets/rtc_turn.svg" class="img-fluid" alt="Each peer is behind a NAT and a firewall. Both peers stream audio and video to a TURN server, which relays it to the other peer."></p>
+</div>
 
 
 </section>
 <section id="further-reading" class="level2">
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
+<li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdfAoyiMu7WZJfxliNoE3Hr9YIChWjw64FyorV_qQii9b31UQ/viewform?usp=publish-editor">Team Formation Form</a></li>
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Protocols">Introduction to WebRTC Protocols (MDN)</a></li>
 <li><a href="https://www.rfc-editor.org/rfc/rfc8489">RFC 8489 - STUN</a></li>
 </ul>
