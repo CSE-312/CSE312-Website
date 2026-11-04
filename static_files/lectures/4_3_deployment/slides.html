@@ -28,8 +28,74 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #e1e4e8; background-color: #24292e; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #e1e4e8; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #f97583; } /* Attribute */
+    code span.bn { color: #79b8ff; } /* BaseN */
+    code span.bu { color: #f97583; } /* BuiltIn */
+    code span.cf { color: #f97583; } /* ControlFlow */
+    code span.ch { color: #9ecbff; } /* Char */
+    code span.cn { color: #79b8ff; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #f97583; } /* DataType */
+    code span.dv { color: #79b8ff; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #f97583; font-weight: bold; } /* Extension */
+    code span.fl { color: #79b8ff; } /* Float */
+    code span.fu { color: #b392f0; } /* Function */
+    code span.im { color: #9ecbff; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #f97583; } /* Keyword */
+    code span.op { color: #e1e4e8; } /* Operator */
+    code span.ot { color: #b392f0; } /* Other */
+    code span.pp { color: #f97583; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #79b8ff; } /* SpecialChar */
+    code span.ss { color: #9ecbff; } /* SpecialString */
+    code span.st { color: #9ecbff; } /* String */
+    code span.va { color: #ffab70; } /* Variable */
+    code span.vs { color: #9ecbff; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-f65d2ec59612398c4e579656c3152281.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-19faab6ca467a5f6aafa2424a05cfcb2.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -122,6 +188,7 @@
     }
   </style>
   </head><body class="quarto-dark"><a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     if (document.getElementById("main-content")) {
@@ -143,14 +210,15 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Reverse Proxy Servers - Nginx</h1>
-  <p class="subtitle">CSE312 — Web Development</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="https-with-nginx" class="slide level2">
-<h2>HTTPS with Nginx</h2>
+<section>
+<section id="https-with-nginx" class="title-slide slide level1 center">
+<h1>HTTPS with Nginx</h1>
+
 </section>
 <section id="the-problem" class="slide level2">
 <h2>The Problem</h2>
@@ -171,7 +239,11 @@
 <h2>Nginx</h2>
 <ul>
 <li>Nginx has many uses and is very powerful software</li>
-<li>We'll use it a reverse proxy with TLS to enable HTTPS</li>
+<li>We'll use it as a reverse proxy with TLS to enable HTTPS</li>
+<li>One nginx can sit in front of many servers
+<ul>
+<li>On the project: route /register, /login, and /logout to your auth service, and everything else to your app</li>
+</ul></li>
 </ul>
 </section>
 <section id="nginx-strategy" class="slide level2">
@@ -192,18 +264,15 @@
 <li>If Nginx gets an HTTP request (port 80) redirect the user to HTTPS (port 443)</li>
 </ul>
 </section>
-<section id="nginx-strategy-1" class="slide level2">
+<section id="nginx-strategy-1" class="slide level2 unnumbered unlisted">
 <h2>Nginx Strategy</h2>
-<p>HTTPS Request (port 443)</p>
-<p>HTTP Request (port 8080)</p>
-<p>HTTPS Response (port 443)</p>
-<p>HTTP Response (port 8080)</p>
-<p>Nginx</p>
-<p>Your Server</p>
-<p>The Internet</p>
-<p>Your network</p>
 
-<img data-src="assets/slide05-diagram.jpg" alt="TODO: describe this image" class="r-stretch"></section>
+<img data-src="assets/nginx_proxy.svg" alt="On the Internet, the user sends an HTTPS request on port 443 to Nginx. Inside your network, Nginx forwards it as an HTTP request on port 8080 to your server. Your server sends an HTTP response on port 8080 back to Nginx, and Nginx sends an HTTPS response on port 443 back to the user." class="r-stretch"></section></section>
+<section>
+<section id="certificates" class="title-slide slide level1 center">
+<h1>Certificates</h1>
+
+</section>
 <section id="openssl" class="slide level2">
 <h2>OpenSSL</h2>
 <ul>
@@ -223,12 +292,207 @@
 </section>
 <section id="self-signed-certificate" class="slide level2">
 <h2>Self-Signed Certificate</h2>
-<p>openssl req -x509 -newkey rsa:4096 -keyout private.key -out cert.pem -days 365 -sha256 -nodes -subj "/C=US"</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="ex">openssl</span> req <span class="at">-x509</span> <span class="at">-newkey</span> rsa:4096 <span class="at">-keyout</span> private.key <span class="at">-out</span> cert.pem <span class="at">-days</span> 365 <span class="at">-sha256</span> <span class="at">-nodes</span> <span class="at">-subj</span> <span class="st">"/C=US"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>This command will generate a self-signed certificate and a private key
 <ul>
-<li>Private key saves as private.key</li>
+<li>Private key saved as private.key</li>
 <li>Certificate saved as cert.pem</li>
+</ul></li>
+<li>The browser warns every user: no certificate authority vouched for it
+<ul>
+<li>Fine for testing. Not for a deployed app</li>
+</ul></li>
+</ul>
+</section>
+<section id="lets-encrypt" class="slide level2">
+<h2>Let's Encrypt</h2>
+<ul>
+<li>A certificate authority that issues free certificates
+<ul>
+<li>Trusted by every major browser</li>
+</ul></li>
+<li>Before issuing a certificate, it checks that you control the domain
+<ul>
+<li>It asks for a file at <code>http://yourgame.me/.well-known/acme-challenge/&lt;token&gt;</code></li>
+<li>Only the server your domain points to can serve that file</li>
+</ul></li>
+<li>Certbot automates all of this</li>
+</ul>
+</section>
+<section id="certbot" class="slide level2">
+<h2>Certbot</h2>
+<ul>
+<li>On your server, with your domain already pointing to it:</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="fu">sudo</span> certbot certonly <span class="at">--standalone</span> <span class="at">-d</span> yourgame.me</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>--standalone</code>: Certbot answers the challenge itself on port 80
+<ul>
+<li>Nothing else can be using port 80 while it runs. Stop nginx first</li>
+</ul></li>
+<li>Saves your certificate and private key:
+<ul>
+<li><code>/etc/letsencrypt/live/yourgame.me/fullchain.pem</code></li>
+<li><code>/etc/letsencrypt/live/yourgame.me/privkey.pem</code></li>
+</ul></li>
+<li>Certificates expire after 90 days. <code>sudo certbot renew</code> gets a new one</li>
+</ul>
+</section>
+<section id="domain-names" class="slide level2">
+<h2>Domain Names</h2>
+<ul>
+<li>Register a domain name
+<ul>
+<li>The GitHub Student Developer Pack includes free domains for 1 year</li>
+</ul></li>
+<li>Add an A record that maps your domain to your server's public IP
+<ul>
+<li><code>yourgame.me</code> → <code>3.89.120.15</code></li>
+</ul></li>
+<li>DNS changes can take minutes to hours to reach everyone
+<ul>
+<li>Check with <code>dig yourgame.me</code> or <code>nslookup yourgame.me</code></li>
+</ul></li>
+<li>Get your DNS working before running Certbot</li>
+</ul>
+</section></section>
+<section>
+<section id="nginx-configuration" class="title-slide slide level1 center">
+<h1>Nginx Configuration</h1>
+
+</section>
+<section id="redirect-http-to-https" class="slide level2">
+<h2>Redirect HTTP to HTTPS</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a></a>server {</span>
+<span id="cb3-2"><a></a>    listen 80;</span>
+<span id="cb3-3"><a></a>    server_name yourgame.me;</span>
+<span id="cb3-4"><a></a>    return 301 https://$host$request_uri;</span>
+<span id="cb3-5"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Any request on port 80 gets a 301 to the same path over HTTPS</li>
+<li><code>$host</code> and <code>$request_uri</code> are filled in by nginx for each request</li>
+</ul>
+</section>
+<section id="terminate-tls-and-proxy" class="slide level2">
+<h2>Terminate TLS and Proxy</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a></a>server {</span>
+<span id="cb4-2"><a></a>    listen 443 ssl;</span>
+<span id="cb4-3"><a></a>    server_name yourgame.me;</span>
+<span id="cb4-4"><a></a>    ssl_certificate     /etc/letsencrypt/live/yourgame.me/fullchain.pem;</span>
+<span id="cb4-5"><a></a>    ssl_certificate_key /etc/letsencrypt/live/yourgame.me/privkey.pem;</span>
+<span id="cb4-6"><a></a></span>
+<span id="cb4-7"><a></a>    location / {</span>
+<span id="cb4-8"><a></a>        proxy_pass http://app:8080;</span>
+<span id="cb4-9"><a></a>        proxy_set_header Host $host;</span>
+<span id="cb4-10"><a></a>        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+<span id="cb4-11"><a></a>        proxy_set_header X-Forwarded-Proto $scheme;</span>
+<span id="cb4-12"><a></a>    }</span>
+<span id="cb4-13"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>app</code> is the name of your app's service in docker compose</li>
+</ul>
+</section>
+<section id="websockets-through-nginx" class="slide level2">
+<h2>WebSockets Through Nginx</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource nginx number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a></a>location /websocket {</span>
+<span id="cb5-2"><a></a>    proxy_pass http://app:8080;</span>
+<span id="cb5-3"><a></a>    proxy_http_version 1.1;</span>
+<span id="cb5-4"><a></a>    proxy_set_header Upgrade $http_upgrade;</span>
+<span id="cb5-5"><a></a>    proxy_set_header Connection "upgrade";</span>
+<span id="cb5-6"><a></a>    proxy_read_timeout 3600s;</span>
+<span id="cb5-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Upgrade and Connection apply to one hop only. Nginx drops them unless you set them again</li>
+<li>Nginx closes a proxied connection after 60 seconds without data
+<ul>
+<li>Raise the timeout, or keep the connection busy with heartbeats</li>
+</ul></li>
+</ul>
+</section>
+<section id="wss-in-the-front-end" class="slide level2">
+<h2>WSS in the Front End</h2>
+<ul>
+<li>A page loaded over HTTPS can't open a <code>ws://</code> connection
+<ul>
+<li>The browser blocks it as mixed content</li>
+</ul></li>
+<li>Pick the protocol from the page's own protocol:</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a></a><span class="kw">const</span> protocol <span class="op">=</span> location<span class="op">.</span><span class="at">protocol</span> <span class="op">===</span> <span class="st">"https:"</span> <span class="op">?</span> <span class="st">"wss://"</span> <span class="op">:</span> <span class="st">"ws://"</span><span class="op">;</span></span>
+<span id="cb6-2"><a></a><span class="kw">const</span> socket <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(protocol <span class="op">+</span> location<span class="op">.</span><span class="at">host</span> <span class="op">+</span> <span class="st">"/websocket"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>The same code works at <code>http://localhost:8080</code> and on your deployed domain</li>
+</ul>
+</section>
+<section id="the-clients-real-ip" class="slide level2">
+<h2>The Client's Real IP</h2>
+<ul>
+<li>Behind nginx, every request arrives from nginx's container
+<ul>
+<li>Your logs show the same IP for everyone</li>
+<li>IP-based limits would block everyone at once</li>
+</ul></li>
+<li>Nginx adds the client's address to <code>X-Forwarded-For</code></li>
+<li>Only trust this header from your own proxy. Clients can send it too
+<ul>
+<li>Flask: <code>app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1)</code>, then <code>request.remote_addr</code></li>
+<li>Express: <code>app.set("trust proxy", 1)</code>, then <code>req.ip</code></li>
+<li>Most frameworks have a similar "trusted proxy" setting</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="deploying" class="title-slide slide level1 center">
+<h1>Deploying</h1>
+
+</section>
+<section id="docker-compose-on-a-server" class="slide level2">
+<h2>Docker Compose on a Server</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb7-2"><a></a><span class="at">  </span><span class="fu">nginx</span><span class="kw">:</span></span>
+<span id="cb7-3"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> nginx</span></span>
+<span id="cb7-4"><a></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb7-5"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"80:80"</span></span>
+<span id="cb7-6"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"443:443"</span></span>
+<span id="cb7-7"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb7-8"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./nginx.conf:/etc/nginx/conf.d/default.conf:ro</span></span>
+<span id="cb7-9"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> /etc/letsencrypt:/etc/letsencrypt:ro</span></span>
+<span id="cb7-10"><a></a><span class="at">  </span><span class="fu">app</span><span class="kw">:</span></span>
+<span id="cb7-11"><a></a><span class="at">    </span><span class="fu">build</span><span class="kw">:</span><span class="at"> .</span></span>
+<span id="cb7-12"><a></a><span class="at">  </span><span class="fu">mongo</span><span class="kw">:</span></span>
+<span id="cb7-13"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> mongo</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Only nginx publishes ports. Your app and database are reachable by name inside the compose network</li>
+<li><span class="yellow">Never publish your database's port on a public server</span></li>
+</ul>
+</section>
+<section id="local-and-deployed" class="slide level2">
+<h2>Local and Deployed</h2>
+<ul>
+<li>Locally there's no domain and no certificate
+<ul>
+<li>Nginx listens on port 8080 with plain HTTP</li>
+</ul></li>
+<li>On the server, nginx listens on 80 and 443 with your certificate</li>
+<li>Keep both:
+<ul>
+<li>A separate nginx config for each, chosen by a compose override file</li>
+<li><code>docker compose -f compose.yml -f compose.prod.yml up -d</code> on the server</li>
+</ul></li>
+<li>Never commit your certificate's private key</li>
+</ul>
+</section>
+<section id="secure-cookies" class="slide level2">
+<h2>Secure Cookies</h2>
+<ul>
+<li>Add the <code>Secure</code> directive to your auth cookies
+<ul>
+<li>The browser only sends them over HTTPS</li>
+</ul></li>
+<li>Browsers treat <code>http://localhost</code> as secure
+<ul>
+<li>Secure cookies still work when testing locally</li>
 </ul></li>
 </ul>
 </section>
@@ -238,6 +502,13 @@
 
 
 </section>
+<section id="further-reading" class="slide level2">
+<h2>Further Reading</h2>
+<ul>
+<li><a href="https://nginx.org/en/docs/http/websocket.html">Nginx - WebSocket proxying</a></li>
+<li><a href="https://certbot.eff.org/instructions">Certbot Instructions</a></li>
+</ul>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
