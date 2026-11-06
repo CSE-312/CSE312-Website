@@ -438,34 +438,59 @@
 <h1>Deploying</h1>
 
 </section>
+<section id="nginx-in-deployment" class="slide level2">
+<h2>Nginx in Deployment</h2>
+<ul>
+<li>Two possible setups</li>
+<li>Nginx runs on your server directly
+<ul>
+<li>Handles encryption</li>
+<li>Routes all traffic to your app</li>
+<li>Extra setup involved that is not part of docker compose</li>
+</ul></li>
+<li>Nginx runs in a docker container
+<ul>
+<li>Easier to deploy -- docker compose up</li>
+<li>More difficult to run certbot</li>
+</ul></li>
+</ul>
+</section>
+<section id="nginx-in-deployment---recommendation" class="slide level2">
+<h2>Nginx in Deployment - Recommendation</h2>
+<ul>
+<li>Nginx on server or nginx in docker?
+<ul>
+<li>Why not both?</li>
+</ul></li>
+<li>Run one Nginx instance on your server
+<ul>
+<li>Only handles encryption</li>
+<li>Easy to run certbot</li>
+</ul></li>
+<li>Run another Nginx instance in a docker container
+<ul>
+<li>Only handles routing between auth and app services</li>
+<li>Easy to deploy</li>
+</ul></li>
+</ul>
+</section>
 <section id="nginx-with-docker-compose" class="slide level2">
 <h2>Nginx with Docker Compose</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a></a><span class="fu">services</span><span class="kw">:</span></span>
 <span id="cb6-2"><a></a><span class="at">  </span><span class="fu">nginx</span><span class="kw">:</span></span>
 <span id="cb6-3"><a></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> nginx</span></span>
 <span id="cb6-4"><a></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
-<span id="cb6-5"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"80:80"</span></span>
-<span id="cb6-6"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"443:443"</span></span>
-<span id="cb6-7"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
-<span id="cb6-8"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./nginx.conf:/etc/nginx/conf.d/default.conf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:80"</span></span>
+<span id="cb6-6"><a></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb6-7"><a></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./nginx.conf:/etc/nginx/conf.d/default.conf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
-<li>Only nginx publishes ports. Your app and database are reachable by name inside the compose network</li>
+<li>Only nginx publishes ports. Your app and database are reachable by name inside the compose network
+<ul>
 <li><span class="yellow">Never publish your database's port on a public server</span></li>
-<li>Useful for routing between auth server and app, or hosting static files through nginx</li>
-</ul>
-</section>
-<section id="local-and-deployed" class="slide level2">
-<h2>Local and Deployed</h2>
-<ul>
-<li>Locally there's no domain and no certificate
-<ul>
-<li>Nginx listens on port 8080 with plain HTTP</li>
 </ul></li>
-<li>On the server, nginx listens on 80 and 443 with your certificate</li>
-<li>Two options:
+<li>nginx.conf can be added to the container using a volume (shown) or create another Dockerfile for nginx
 <ul>
-<li>Use a separate nginx config for each, or a separate compose.yml</li>
-<li>Run nginx though docker compose only for routing. Run a second nginx on your server for HTTPS</li>
+<li>In your config, use your service names for hostname (Not localhost or 127.0.0.1)</li>
 </ul></li>
 </ul>
 </section>

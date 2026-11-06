@@ -171,6 +171,29 @@ const socket = new WebSocket(protocol + location.host + "/websocket");
 
 # Deploying
 
+## Nginx in Deployment
+
+- Two possible setups
+- Nginx runs on your server directly
+  - Handles encryption
+  - Routes all traffic to your app
+  - Extra setup involved that is not part of docker compose
+- Nginx runs in a docker container
+  - Easier to deploy -- docker compose up
+  - More difficult to run certbot
+
+## Nginx in Deployment - Recommendation
+
+- Nginx on server or nginx in docker?
+  - Why not both?
+- Run one Nginx instance on your server
+  - Only handles encryption
+  - Easy to run certbot
+- Run another Nginx instance in a docker container
+  - Only handles routing between auth and app services
+  - Easy to deploy
+  
+
 ## Nginx with Docker Compose
 
 ```yaml
@@ -178,24 +201,16 @@ services:
   nginx:
     image: nginx
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
 ```
 
 - Only nginx publishes ports. Your app and database are reachable by name inside the compose network
-- [Never publish your database's port on a public server]{.yellow}
-- Useful for routing between auth server and app, or hosting static files through nginx
+  - [Never publish your database's port on a public server]{.yellow}
+- nginx.conf can be added to the container using a volume (shown) or create another Dockerfile for nginx
+  - In your config, use your service names for hostname (Not localhost or 127.0.0.1)
 
-## Local and Deployed
-
-- Locally there's no domain and no certificate
-  - Nginx listens on port 8080 with plain HTTP
-- On the server, nginx listens on 80 and 443 with your certificate
-- Two options:
-  - Use a separate nginx config for each, or a separate compose.yml
-  - Run nginx though docker compose only for routing. Run a second nginx on your server for HTTPS
 
 ## Secure Cookies
 
