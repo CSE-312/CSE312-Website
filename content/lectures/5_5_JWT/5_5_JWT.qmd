@@ -1,29 +1,26 @@
 ---
 title: "JSON Web Tokens (JWTs)"
-subtitle: "CSE312 — Web Development"
 lang: en
 
-# TODO: one-sentence summary shown on the lecture index.
-description: ""
+description: "Self-contained auth tokens: How JWTs are built, signed, and verified, and how a separate auth service issues them"
 
-# Merged from the lecture's old .json reading_list.
 reading-list:
   - url: "https://www.rfc-editor.org/rfc/rfc7519"
     text: "RFC 7519 - JWT"
+  - url: "https://jwt.io/introduction"
+    text: "Introduction to JSON Web Tokens (jwt.io)"
 
-# Flip to true after reviewing the Quarto deck; until then the
-# schedule links the original PDF instead of Slides / Readable Page.
-released: false
+released: true
 ---
 
-## JSON Web Tokens (JWTs)
+# JSON Web Tokens (JWTs)
 
 ## Why JWT?
 
 - We'll use JWTs for persistent authentication
 - We currently use authentication tokens to solve the same problem
 - Why do we need a new mechanism?
-- What's wrong with auth tokens?
+- What's wrong with auth tokens??
 
 ## Recall Auth Tokens
 
@@ -32,23 +29,7 @@ released: false
 - Store token in database on login
 - Lookup token in database for authentication
 
-Register username/password
-
-Issues auth token in cookie
-
-User/Client
-
-Auth Database
-
-Requests with auth token
-
-Server
-
--Passwords
-
--auth tokens
-
-![](assets/slide03-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/auth_tokens.svg){fig-alt="The user/client registers a username and password with the server. The server issues an auth token in a cookie. The user/client then sends requests with the auth token to the server. The server talks to the auth database, which stores passwords and auth tokens."}
 
 ## Recall Auth Tokens
 
@@ -57,75 +38,23 @@ Server
   - Random meaningless bytes
 - Database lookup is required
 
-Register username/password
-
-Issues auth token in cookie
-
-User/Client
-
-Auth Database
-
-Requests with auth token
-
-Server
-
--Passwords
-
--auth tokens
-
-![](assets/slide04-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/auth_tokens.svg){fig-alt="The user/client registers a username and password with the server. The server issues an auth token in a cookie. The user/client then sends requests with the auth token to the server. The server talks to the auth database, which stores passwords and auth tokens."}
 
 ## Recall Auth Tokens
 
 
 - When your app gets HUGE
-  - Make it distributed
+  - Make it distributed!
   - Separate parts of your app onto different servers
 
-Register username/password
-
-Issues auth token in cookie
-
-Auth Server
-
-Auth Database
-
--Passwords
-
-User/Client
-
-Requests with auth token
-
--auth tokens
-
-App Server
-
-![](assets/slide05-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/auth_tokens_distributed.svg){fig-alt="The user/client registers a username and password with the auth server. The auth server issues an auth token in a cookie. The user/client sends requests with the auth token to a separate app server. Only the auth server talks to the auth database, which stores passwords and auth tokens."}
 
 ## Recall Auth Tokens
 
 
 - App server needs to verify the auth token
 
-Register username/password
-
-Issues auth token in cookie
-
-Auth Server
-
-Auth Database
-
--Passwords
-
-User/Client
-
-Requests with auth token
-
--auth tokens
-
-App Server
-
-![](assets/slide06-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/auth_tokens_distributed.svg){fig-alt="The user/client registers a username and password with the auth server. The auth server issues an auth token in a cookie. The user/client sends requests with the auth token to a separate app server. Only the auth server talks to the auth database, which stores passwords and auth tokens."}
 
 ## Auth Tokens - Distributed
 
@@ -153,28 +82,12 @@ App Server
 - Instead of auth token
   - Issue a self-contained JWT
 
-Register username/password
-
-Issues JWT in cookie
-
-Auth Server
-
-Auth Database
-
--Passwords
-
-User/Client
-
-Requests with JWT
-
-App Server
-
-![](assets/slide09-diagram.jpg){fig-alt="TODO: describe this image"}
+![](assets/jwt_distributed.svg){fig-alt="The user/client registers a username and password with the auth server. The auth server issues a JWT in a cookie. The user/client sends requests with the JWT to a separate app server. The auth database now stores only passwords."}
 
 ## JWT
 
-- JWTs are tokens that are designed to be self- contained
-  - Contain all information needed for authentication/ authorization
+- JWTs are tokens that are designed to be self-contained
+  - Contain all information needed for authentication/authorization
   - No need to talk to the DB or the auth server
   - Auth server doesn't even need to store JWTs
 - App server receives a request containing a JWT
@@ -209,7 +122,7 @@ App Server
 - Each of the three parts are Base64URL encoded
 - Base64
   - Maps 3 bytes of arbitrary data into 4 ASCII characters
-  - 64 characters: a-z, A-Z, 0-1, '+', '/'
+  - 64 characters: a-z, A-Z, 0-9, '+', '/'
   - If length%3 != 0, pad with '='
   - Not suitable for the web
 - Base64URL
@@ -242,13 +155,17 @@ App Server
 - The issuer (Auth server) will cryptographically sign the JWTs it issues
 - Apps will verify this signature
 - Attackers cannot forge the signatures
-- eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc
+- Example of a signed JWT:
+
+::: {.jwt-token}
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE-gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX-SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBAyPq4a8sIxQXcLqyObr84CZQv3q67NFI-ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwtaL5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxlPM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski-nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9hJVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izjHwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1nZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc
+:::
 
 ## JWT - Verification
 
 - Public/Private key
   - In CSE312, we'll prefer to sign tokens with a private RSA key using the RS256 algorithm
-  - This algorithm computes a SHA256 hash of the headers and claims of the token
+  - This algorithm computes a SHA256 hash of the encoded headers and claims of the token
   - Sign this hash using the auth server's private key
   - The Base64URL encoding of this signature is the 3rd part of the token
 - App server has the auth servers public key
@@ -257,55 +174,97 @@ App Server
 ## JWT - Verification
 
 - Public/Private key
-  - Attackers can generate JWTs to with valid headers and claims
-  - Attacks cannot forge the signature
+  - Attackers can generate JWTs with valid headers and claims
+  - Attackers cannot forge the signature
 - If the signature is not valid, do not accept the token
 
 ## JWT - Verification
 
 - Shared Secret
   - Alternatively, all servers can control a shared secret used to both sign and verify signatures
-  - If the secret is not compromised, this is just as good a private key signatures
+  - If the secret is not compromised, this is just as good as private key signatures
   - Downside:
     - Expands your attack surface
       - Attacker who compromises any server has your shared secret
     - Not wise if you're issuing tokens that are verified by 3rd party servers
-  - Not allowed on HW5..
+  - Not allowed on the project. Only your auth service may have the signing key
+
+## Registered Claims
+
+- RFC 7519 defines some standard claims. All are optional
+  - `exp`: Expiration time, in seconds since 1970. Reject the token after this time
+  - `iat`: When the token was issued
+  - `sub`: Who the token is about (eg. the user's id)
+  - `iss`: Who issued the token (eg. your auth service)
+- Always set `exp`
+  - A JWT can't be revoked. Expiring is how it stops working
+
+## Verifying a JWT
+
+- Use a library
+- Check the signature with the auth service's public key
+- Check `exp`
+- [Choose the algorithm yourself]{.yellow}. Never use the one in the token's header
+  - An attacker can set `"alg": "none"`, or switch RS256 to HS256 and sign with your public key
+
+
+## Storing JWTs
+
+- Store the JWT in a cookie, the same way as an auth token
+  - HttpOnly: JavaScript can't read it, so an XSS attack can't steal it
+  - Secure: Only sent over HTTPS
+- Avoid localStorage
+  - Any script running on your page can read it
+
+## Logging Out
+
+- The auth service doesn't store JWTs, so it can't delete one
+- Logging out deletes the cookie from the browser
+  - A copy of the token still works until it expires
+- Options:
+  - Short-lived tokens, plus refresh tokens to get new ones (Recall OAuth)
+  - Any other option requires communication with the auth server or database (This is what we're trying to avoid)
+
+## Compromised JWTs
+
+- A compromised JWT is valid until it expires
+- Just like logging out, the auth server has no way to revoke a JWT once it's issued
+- Using short expiration times limits the damage that can be done (Typically ~1 hour)
 
 ## JWT - Encryption
 
 - JWTs can optionally be encrypted to obfuscate the headers and claims
-- I don't have anything else to say about that
+  - Anything can be encrypted. Sometimes, people will encrypt JWTs 
 
-😅
+## Recall OAuth
 
-![](assets/slide20-1.png){fig-alt="TODO: describe this image"}
+- When the auth and resource servers are separate
+- Common for access tokens to be JWTs
+- Make them short-lived and issue refresh tokens
 
-## • When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens
+![](assets/oauth_refresh.svg){fig-alt="Your app sends an authorization grant to the authentication server, which responds with an access token and a refresh token. Later your app sends the refresh token to the authentication server and gets back a new access token, and possibly a new refresh token. To use the API, your app sends only the access token to the resource server, which responds with private data."}
 
+# JWTs in the Project
 
-Recall OAuth
+## The Auth Service
 
-Authorization Grant
+- A separate service, in its own container, handles registration, login, and logout
+  - It has the private key and the password database
+  - It issues a signed JWT in a cookie on login
+- Nginx routes `/register`, `/login`, and `/logout` to the auth service, and everything else to your app
+- Your app verifies JWTs with the public key
+  - No request to the auth service and no database lookup
 
-Access Token and Refresh Token
+## The Auth Service {.unnumbered .unlisted}
 
-Authentication
+![](assets/jwt_project.svg){fig-alt="The browser talks to nginx over HTTPS. Nginx routes /register, /login, and /logout to the auth service, and everything else to the app. The auth service holds the private key and the password database, and signs JWTs. The app holds only the public key, which it gets from a shared volume or a public key endpoint, and uses it to verify JWTs. The app has its own game data."}
 
-Refresh Token
+## Keys
 
-Server
-
-Access Token [and Refresh Token]
-
-API Access - Access Token Only
-
-Resource
-
-Private Data
-
-Your App / Client
-
-Server
-
-![](assets/slide21-diagram.jpg){fig-alt="TODO: describe this image"}
+- Generate the key pair when the auth service starts, if it doesn't have one yet
+- Store the private key in a volume that only the auth service mounts
+  - Keys must survive a restart, or every JWT stops working
+  - [Never commit a private key]{.yellow}
+  - Not even your app server should hold the private key
+- Share the public key with your app
+  - A volume both containers mount, or an endpoint on the auth service that returns it

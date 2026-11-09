@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Self-contained auth tokens: How JWTs are built, signed, and verified, and how a separate auth service issues them">
 
 <title>JSON Web Tokens (JWTs) – CSE312 Lectures</title>
 <style>
@@ -35,7 +36,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-9582434199d49cc9e91654cdeeb4866b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a50e0ac30c972af4133516bac05b195.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-70be65e10dfc7715c7a332b37406eead.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -52,6 +53,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 </head><body class="quarto-light"><a class="skip-link" href="#main-content">Skip to main content</a>
+<!-- <link rel="icon" type="image/x-icon" href="/static_files/favicon.ico"> -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("main-content")) {
@@ -82,7 +84,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#json-web-tokens-jwts" id="toc-json-web-tokens-jwts" class="nav-link active" data-scroll-target="#json-web-tokens-jwts">JSON Web Tokens (JWTs)</a></li>
+  <li><a href="#json-web-tokens-jwts" id="toc-json-web-tokens-jwts" class="nav-link active" data-scroll-target="#json-web-tokens-jwts">JSON Web Tokens (JWTs)</a>
+  <ul class="collapse">
   <li><a href="#why-jwt" id="toc-why-jwt" class="nav-link" data-scroll-target="#why-jwt">Why JWT?</a></li>
   <li><a href="#recall-auth-tokens" id="toc-recall-auth-tokens" class="nav-link" data-scroll-target="#recall-auth-tokens">Recall Auth Tokens</a></li>
   <li><a href="#recall-auth-tokens-1" id="toc-recall-auth-tokens-1" class="nav-link" data-scroll-target="#recall-auth-tokens-1">Recall Auth Tokens</a></li>
@@ -101,9 +104,20 @@ document.addEventListener("DOMContentLoaded", function () {
   <li><a href="#jwt---verification-1" id="toc-jwt---verification-1" class="nav-link" data-scroll-target="#jwt---verification-1">JWT - Verification</a></li>
   <li><a href="#jwt---verification-2" id="toc-jwt---verification-2" class="nav-link" data-scroll-target="#jwt---verification-2">JWT - Verification</a></li>
   <li><a href="#jwt---verification-3" id="toc-jwt---verification-3" class="nav-link" data-scroll-target="#jwt---verification-3">JWT - Verification</a></li>
+  <li><a href="#registered-claims" id="toc-registered-claims" class="nav-link" data-scroll-target="#registered-claims">Registered Claims</a></li>
+  <li><a href="#verifying-a-jwt" id="toc-verifying-a-jwt" class="nav-link" data-scroll-target="#verifying-a-jwt">Verifying a JWT</a></li>
+  <li><a href="#storing-jwts" id="toc-storing-jwts" class="nav-link" data-scroll-target="#storing-jwts">Storing JWTs</a></li>
+  <li><a href="#logging-out" id="toc-logging-out" class="nav-link" data-scroll-target="#logging-out">Logging Out</a></li>
+  <li><a href="#compromised-jwts" id="toc-compromised-jwts" class="nav-link" data-scroll-target="#compromised-jwts">Compromised JWTs</a></li>
   <li><a href="#jwt---encryption" id="toc-jwt---encryption" class="nav-link" data-scroll-target="#jwt---encryption">JWT - Encryption</a></li>
-  <li><a href="#when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" id="toc-when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="nav-link" data-scroll-target="#when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens">• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</a></li>
+  <li><a href="#recall-oauth" id="toc-recall-oauth" class="nav-link" data-scroll-target="#recall-oauth">Recall OAuth</a></li>
+  </ul></li>
+  <li><a href="#jwts-in-the-project" id="toc-jwts-in-the-project" class="nav-link" data-scroll-target="#jwts-in-the-project">JWTs in the Project</a>
+  <ul class="collapse">
+  <li><a href="#the-auth-service" id="toc-the-auth-service" class="nav-link" data-scroll-target="#the-auth-service">The Auth Service</a></li>
+  <li><a href="#keys" id="toc-keys" class="nav-link" data-scroll-target="#keys">Keys</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further Reading</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -113,9 +127,13 @@ document.addEventListener("DOMContentLoaded", function () {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">JSON Web Tokens (JWTs)</h1>
-<p class="subtitle lead">CSE312 — Web Development</p>
 </div>
 
+<div>
+  <div class="description">
+    Self-contained auth tokens: How JWTs are built, signed, and verified, and how a separate auth service issues them
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -130,16 +148,15 @@ document.addEventListener("DOMContentLoaded", function () {
 </header>
 
 
-<section id="json-web-tokens-jwts" class="level2">
-<h2 class="anchored" data-anchor-id="json-web-tokens-jwts">JSON Web Tokens (JWTs)</h2>
-</section>
+<section id="json-web-tokens-jwts" class="level1">
+<h1>JSON Web Tokens (JWTs)</h1>
 <section id="why-jwt" class="level2">
 <h2 class="anchored" data-anchor-id="why-jwt">Why JWT?</h2>
 <ul>
 <li>We'll use JWTs for persistent authentication</li>
 <li>We currently use authentication tokens to solve the same problem</li>
 <li>Why do we need a new mechanism?</li>
-<li>What's wrong with auth tokens?</li>
+<li>What's wrong with auth tokens??</li>
 </ul>
 </section>
 <section id="recall-auth-tokens" class="level2">
@@ -149,15 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Store token in database on login</li>
 <li>Lookup token in database for authentication</li>
 </ul>
-<p>Register username/password</p>
-<p>Issues auth token in cookie</p>
-<p>User/Client</p>
-<p>Auth Database</p>
-<p>Requests with auth token</p>
-<p>Server</p>
-<p>-Passwords</p>
-<p>-auth tokens</p>
-<p><img src="assets/slide03-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/auth_tokens.svg" class="img-fluid" alt="The user/client registers a username and password with the server. The server issues an auth token in a cookie. The user/client then sends requests with the auth token to the server. The server talks to the auth database, which stores passwords and auth tokens."></p>
 </section>
 <section id="recall-auth-tokens-1" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-1">Recall Auth Tokens</h2>
@@ -168,51 +177,25 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Database lookup is required</li>
 </ul>
-<p>Register username/password</p>
-<p>Issues auth token in cookie</p>
-<p>User/Client</p>
-<p>Auth Database</p>
-<p>Requests with auth token</p>
-<p>Server</p>
-<p>-Passwords</p>
-<p>-auth tokens</p>
-<p><img src="assets/slide04-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/auth_tokens.svg" class="img-fluid" alt="The user/client registers a username and password with the server. The server issues an auth token in a cookie. The user/client then sends requests with the auth token to the server. The server talks to the auth database, which stores passwords and auth tokens."></p>
 </section>
 <section id="recall-auth-tokens-2" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-2">Recall Auth Tokens</h2>
 <ul>
 <li>When your app gets HUGE
 <ul>
-<li>Make it distributed</li>
+<li>Make it distributed!</li>
 <li>Separate parts of your app onto different servers</li>
 </ul></li>
 </ul>
-<p>Register username/password</p>
-<p>Issues auth token in cookie</p>
-<p>Auth Server</p>
-<p>Auth Database</p>
-<p>-Passwords</p>
-<p>User/Client</p>
-<p>Requests with auth token</p>
-<p>-auth tokens</p>
-<p>App Server</p>
-<p><img src="assets/slide05-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/auth_tokens_distributed.svg" class="img-fluid" alt="The user/client registers a username and password with the auth server. The auth server issues an auth token in a cookie. The user/client sends requests with the auth token to a separate app server. Only the auth server talks to the auth database, which stores passwords and auth tokens."></p>
 </section>
 <section id="recall-auth-tokens-3" class="level2">
 <h2 class="anchored" data-anchor-id="recall-auth-tokens-3">Recall Auth Tokens</h2>
 <ul>
 <li>App server needs to verify the auth token</li>
 </ul>
-<p>Register username/password</p>
-<p>Issues auth token in cookie</p>
-<p>Auth Server</p>
-<p>Auth Database</p>
-<p>-Passwords</p>
-<p>User/Client</p>
-<p>Requests with auth token</p>
-<p>-auth tokens</p>
-<p>App Server</p>
-<p><img src="assets/slide06-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/auth_tokens_distributed.svg" class="img-fluid" alt="The user/client registers a username and password with the auth server. The auth server issues an auth token in a cookie. The user/client sends requests with the auth token to a separate app server. Only the auth server talks to the auth database, which stores passwords and auth tokens."></p>
 </section>
 <section id="auth-tokens---distributed" class="level2">
 <h2 class="anchored" data-anchor-id="auth-tokens---distributed">Auth Tokens - Distributed</h2>
@@ -254,22 +237,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Issue a self-contained JWT</li>
 </ul></li>
 </ul>
-<p>Register username/password</p>
-<p>Issues JWT in cookie</p>
-<p>Auth Server</p>
-<p>Auth Database</p>
-<p>-Passwords</p>
-<p>User/Client</p>
-<p>Requests with JWT</p>
-<p>App Server</p>
-<p><img src="assets/slide09-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<p><img src="assets/jwt_distributed.svg" class="img-fluid" alt="The user/client registers a username and password with the auth server. The auth server issues a JWT in a cookie. The user/client sends requests with the JWT to a separate app server. The auth database now stores only passwords."></p>
 </section>
 <section id="jwt" class="level2">
 <h2 class="anchored" data-anchor-id="jwt">JWT</h2>
 <ul>
-<li>JWTs are tokens that are designed to be self- contained
+<li>JWTs are tokens that are designed to be self-contained
 <ul>
-<li>Contain all information needed for authentication/ authorization</li>
+<li>Contain all information needed for authentication/authorization</li>
 <li>No need to talk to the DB or the auth server</li>
 <li>Auth server doesn't even need to store JWTs</li>
 </ul></li>
@@ -328,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Base64
 <ul>
 <li>Maps 3 bytes of arbitrary data into 4 ASCII characters</li>
-<li>64 characters: a-z, A-Z, 0-1, '+', '/'</li>
+<li>64 characters: a-z, A-Z, 0-9, '+', '/'</li>
 <li>If length%3 != 0, pad with '='</li>
 <li>Not suitable for the web</li>
 </ul></li>
@@ -376,8 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>The issuer (Auth server) will cryptographically sign the JWTs it issues</li>
 <li>Apps will verify this signature</li>
 <li>Attackers cannot forge the signatures</li>
-<li>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE- gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9 MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX- SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBA yPq4a8sIxQXcLqyObr84CZQv3q67NFI- ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwta L5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxl PM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski- nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c 9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9h JVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izj HwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1n ZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc</li>
+<li>Example of a signed JWT:</li>
 </ul>
+<div class="jwt-token">
+<p>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsaWNlIn0.Bh0qjhE-gYMC3uQOORQ7yrsjUeESQ6fBqrt5dpGXRQ5i4z9FCsN1USZVw10MFZf9XPq5mt9MLyMNSrMsvVnCFYcWONbmupgWxMi4MMkziy9LePgFosFX-SSb64mWZsE6t8MG657ZmvkmRpq7AINtOi4UZpFmpTcvNFrVRXIi8os9i6PcPbplBAyPq4a8sIxQXcLqyObr84CZQv3q67NFI-ZP0RQHu9qm65CxdchHVW7kuwTWyTvvZWNMS3Ga_9VY2QdYr8oyMAYDySCwtaL5eTk8Zm8TNiBHLCD15H8A7IQ7_r2V7cXxeXBgDXfs1DqufcEv6lSsBN1i3rat096bxlPM183zTRKD-WYHLzIJV1FTRCms4lmwYlPfDski-nX41sWIvUk2FNtuWl1QcQmR8WVxFhXtmicka4caU83iL_zlTGVTswuW5Bd6UBsJ1c9c_OBE28RnMtR23duJZsL7lTqCIn9H_7GvLrwWy1JgAp4CRqeiFR8j8vJne1XcIJJ9hJVWL-2bdbe6Iu_SAWUpmiAeXy3NfJaTibSSCANs2ple_eCY7mg1ebrGHIdNq9W3izjHwyNFAg8p5K3aNnv8rLe6yJhXg0CS94s3oLkhiEa83y4pvnjO2Adgm9o4Z3uE0Hb1nZN_LJuOWMZbdPZavmPKlTFsSzUZ_hE0AdWtabc</p>
+</div>
 </section>
 <section id="jwt---verification-1" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---verification-1">JWT - Verification</h2>
@@ -385,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Public/Private key
 <ul>
 <li>In CSE312, we'll prefer to sign tokens with a private RSA key using the RS256 algorithm</li>
-<li>This algorithm computes a SHA256 hash of the headers and claims of the token</li>
+<li>This algorithm computes a SHA256 hash of the encoded headers and claims of the token</li>
 <li>Sign this hash using the auth server's private key</li>
 <li>The Base64URL encoding of this signature is the 3rd part of the token</li>
 </ul></li>
@@ -400,8 +378,8 @@ document.addEventListener("DOMContentLoaded", function () {
 <ul>
 <li>Public/Private key
 <ul>
-<li>Attackers can generate JWTs to with valid headers and claims</li>
-<li>Attacks cannot forge the signature</li>
+<li>Attackers can generate JWTs with valid headers and claims</li>
+<li>Attackers cannot forge the signature</li>
 </ul></li>
 <li>If the signature is not valid, do not accept the token</li>
 </ul>
@@ -412,7 +390,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Shared Secret
 <ul>
 <li>Alternatively, all servers can control a shared secret used to both sign and verify signatures</li>
-<li>If the secret is not compromised, this is just as good a private key signatures</li>
+<li>If the secret is not compromised, this is just as good as private key signatures</li>
 <li>Downside:
 <ul>
 <li>Expands your attack surface
@@ -421,34 +399,130 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul></li>
 <li>Not wise if you're issuing tokens that are verified by 3rd party servers</li>
 </ul></li>
-<li>Not allowed on HW5..</li>
+<li>Not allowed on the project. Only your auth service may have the signing key</li>
 </ul></li>
+</ul>
+</section>
+<section id="registered-claims" class="level2">
+<h2 class="anchored" data-anchor-id="registered-claims">Registered Claims</h2>
+<ul>
+<li>RFC 7519 defines some standard claims. All are optional
+<ul>
+<li><code>exp</code>: Expiration time, in seconds since 1970. Reject the token after this time</li>
+<li><code>iat</code>: When the token was issued</li>
+<li><code>sub</code>: Who the token is about (eg. the user's id)</li>
+<li><code>iss</code>: Who issued the token (eg. your auth service)</li>
+</ul></li>
+<li>Always set <code>exp</code>
+<ul>
+<li>A JWT can't be revoked. Expiring is how it stops working</li>
+</ul></li>
+</ul>
+</section>
+<section id="verifying-a-jwt" class="level2">
+<h2 class="anchored" data-anchor-id="verifying-a-jwt">Verifying a JWT</h2>
+<ul>
+<li>Use a library</li>
+<li>Check the signature with the auth service's public key</li>
+<li>Check <code>exp</code></li>
+<li><span class="yellow">Choose the algorithm yourself</span>. Never use the one in the token's header
+<ul>
+<li>An attacker can set <code>"alg": "none"</code>, or switch RS256 to HS256 and sign with your public key</li>
+</ul></li>
+</ul>
+</section>
+<section id="storing-jwts" class="level2">
+<h2 class="anchored" data-anchor-id="storing-jwts">Storing JWTs</h2>
+<ul>
+<li>Store the JWT in a cookie, the same way as an auth token
+<ul>
+<li>HttpOnly: JavaScript can't read it, so an XSS attack can't steal it</li>
+<li>Secure: Only sent over HTTPS</li>
+</ul></li>
+<li>Avoid localStorage
+<ul>
+<li>Any script running on your page can read it</li>
+</ul></li>
+</ul>
+</section>
+<section id="logging-out" class="level2">
+<h2 class="anchored" data-anchor-id="logging-out">Logging Out</h2>
+<ul>
+<li>The auth service doesn't store JWTs, so it can't delete one</li>
+<li>Logging out deletes the cookie from the browser
+<ul>
+<li>A copy of the token still works until it expires</li>
+</ul></li>
+<li>Options:
+<ul>
+<li>Short-lived tokens, plus refresh tokens to get new ones (Recall OAuth)</li>
+<li>Any other option requires communication with the auth server or database (This is what we're trying to avoid)</li>
+</ul></li>
+</ul>
+</section>
+<section id="compromised-jwts" class="level2">
+<h2 class="anchored" data-anchor-id="compromised-jwts">Compromised JWTs</h2>
+<ul>
+<li>A compromised JWT is valid until it expires</li>
+<li>Just like logging out, the auth server has no way to revoke a JWT once it's issued</li>
+<li>Using short expiration times limits the damage that can be done (Typically ~1 hour)</li>
 </ul>
 </section>
 <section id="jwt---encryption" class="level2">
 <h2 class="anchored" data-anchor-id="jwt---encryption">JWT - Encryption</h2>
 <ul>
-<li>JWTs can optionally be encrypted to obfuscate the headers and claims</li>
-<li>I don't have anything else to say about that</li>
+<li>JWTs can optionally be encrypted to obfuscate the headers and claims
+<ul>
+<li>Anything can be encrypted. Sometimes, people will encrypt JWTs</li>
+</ul></li>
 </ul>
-<p>😅</p>
-<p><img src="assets/slide20-1.png" class="img-fluid" alt="TODO: describe this image"></p>
 </section>
-<section id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens" class="level2">
-<h2 class="anchored" data-anchor-id="when-the-auth-and-resource-servers-are-separate-common-for-access-tokens-to-be-jwts-make-them-short-lived-and-issue-refresh-tokens">• When the auth and resource servers are separate • Common for access tokens to be JWTs • Make them short-lived and issue refresh tokens</h2>
-<p>Recall OAuth</p>
-<p>Authorization Grant</p>
-<p>Access Token and Refresh Token</p>
-<p>Authentication</p>
-<p>Refresh Token</p>
-<p>Server</p>
-<p>Access Token [and Refresh Token]</p>
-<p>API Access - Access Token Only</p>
-<p>Resource</p>
-<p>Private Data</p>
-<p>Your App / Client</p>
-<p>Server</p>
-<p><img src="assets/slide21-diagram.jpg" class="img-fluid" alt="TODO: describe this image"></p>
+<section id="recall-oauth" class="level2">
+<h2 class="anchored" data-anchor-id="recall-oauth">Recall OAuth</h2>
+<ul>
+<li>When the auth and resource servers are separate</li>
+<li>Common for access tokens to be JWTs</li>
+<li>Make them short-lived and issue refresh tokens</li>
+</ul>
+<p><img src="assets/oauth_refresh.svg" class="img-fluid" alt="Your app sends an authorization grant to the authentication server, which responds with an access token and a refresh token. Later your app sends the refresh token to the authentication server and gets back a new access token, and possibly a new refresh token. To use the API, your app sends only the access token to the resource server, which responds with private data."></p>
+</section>
+</section>
+<section id="jwts-in-the-project" class="level1">
+<h1>JWTs in the Project</h1>
+<section id="the-auth-service" class="level2">
+<h2 class="anchored" data-anchor-id="the-auth-service">The Auth Service</h2>
+<ul>
+<li>A separate service, in its own container, handles registration, login, and logout
+<ul>
+<li>It has the private key and the password database</li>
+<li>It issues a signed JWT in a cookie on login</li>
+</ul></li>
+<li>Nginx routes <code>/register</code>, <code>/login</code>, and <code>/logout</code> to the auth service, and everything else to your app</li>
+<li>Your app verifies JWTs with the public key
+<ul>
+<li>No request to the auth service and no database lookup</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-auth-service-1" class="level2 unnumbered unlisted">
+<h2 class="unnumbered unlisted anchored" data-anchor-id="the-auth-service-1">The Auth Service</h2>
+<p><img src="assets/jwt_project.svg" class="img-fluid" alt="The browser talks to nginx over HTTPS. Nginx routes /register, /login, and /logout to the auth service, and everything else to the app. The auth service holds the private key and the password database, and signs JWTs. The app holds only the public key, which it gets from a shared volume or a public key endpoint, and uses it to verify JWTs. The app has its own game data."></p>
+</section>
+<section id="keys" class="level2">
+<h2 class="anchored" data-anchor-id="keys">Keys</h2>
+<ul>
+<li>Generate the key pair when the auth service starts, if it doesn't have one yet</li>
+<li>Store the private key in a volume that only the auth service mounts
+<ul>
+<li>Keys must survive a restart, or every JWT stops working</li>
+<li><span class="yellow">Never commit a private key</span></li>
+<li>Not even your app server should hold the private key</li>
+</ul></li>
+<li>Share the public key with your app
+<ul>
+<li>A volume both containers mount, or an endpoint on the auth service that returns it</li>
+</ul></li>
+</ul>
 
 
 </section>
@@ -456,10 +530,43 @@ document.addEventListener("DOMContentLoaded", function () {
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <ul>
 <li><a href="https://www.rfc-editor.org/rfc/rfc7519">RFC 7519 - JWT</a></li>
+<li><a href="https://jwt.io/introduction">Introduction to JSON Web Tokens (jwt.io)</a></li>
 </ul>
+</section>
 </section>
 
 </main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("div.sourceCode[data-highlight-lines]").forEach(function (block) {
+    var lines = block.querySelectorAll("pre > code > span");
+    var spoken = [];
+    var count = 0;
+
+    block.getAttribute("data-highlight-lines").split(/[,|]/).forEach(function (range) {
+      var bounds = range.split("-");
+      var first = parseInt(bounds[0], 10);
+      var last = Math.min(parseInt(bounds[bounds.length - 1], 10), lines.length);
+      if (isNaN(first) || isNaN(last) || first > last) {
+        return;
+      }
+      for (var n = first; n <= last; n++) {
+        lines[n - 1].classList.add("highlight-line");
+        count++;
+      }
+      spoken.push(first === last ? String(first) : first + " to " + last);
+    });
+
+    // Screen readers get the highlighted line numbers, since the highlight itself is visual
+    if (count > 0) {
+      var note = document.createElement("p");
+      note.className = "visually-hidden";
+      note.textContent = (count === 1 ? "Highlighted line " : "Highlighted lines ") + spoken.join(", ");
+      block.insertBefore(note, block.firstChild);
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
